@@ -1328,11 +1328,11 @@ impl ImplItemKind {
         }
     }
 
-    fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> coq::TopLevel<'a> {
+    fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Vec<coq::TopLevelItem<'a>> {
         let definition_name = self.to_definition_name(name.to_string());
 
         match self {
-            ImplItemKind::Const { ty, body } => coq::TopLevel::new(&[
+            ImplItemKind::Const { ty, body } => vec![
                 coq::TopLevelItem::Comment(ty.to_coq()),
                 match body {
                     None => coq::TopLevelItem::Definition(coq::Definition::new(
@@ -1388,12 +1388,12 @@ impl ImplItemKind {
                         ))
                     }
                 },
-            ]),
+            ],
             ImplItemKind::Definition { definition, .. } => {
-                coq::TopLevel::new(&definition.to_coq(definition_name, &None, generic_tys, false))
+                definition.to_coq(definition_name, &None, generic_tys, false)
             }
             ImplItemKind::Type { ty } => {
-                coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+                vec![coq::TopLevelItem::Definition(coq::Definition::new(
                     &definition_name,
                     &coq::DefinitionKind::Alias {
                         args: vec![coq::ArgDecl::new(
@@ -1406,14 +1406,14 @@ impl ImplItemKind {
                         ty: Some(coq::Expression::just_name("Ty.t")),
                         body: coq::Expression::Code(nest([ty.to_coq().to_doc(false)])),
                     },
-                ))])
+                ))]
             }
         }
     }
 
-    fn to_doc<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Doc {
-        self.to_coq(name, generic_tys).to_doc()
-    }
+    // fn to_doc<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Doc {
+    //     self.to_coq(name, generic_tys).to_doc(false)
+    // }
 }
 
 impl Snippet {
@@ -1730,10 +1730,8 @@ impl TopLevelItem {
                                 None => vec![],
                                 Some(snippet) => snippet.to_coq(),
                             },
+                            kind.to_coq(name, generic_tys.clone()),
                             vec![
-                                coq::TopLevelItem::Code(concat([
-                                    kind.to_doc(name, generic_tys.clone())
-                                ])),
                                 coq::TopLevelItem::Line,
                                 coq::TopLevelItem::Definition(coq::Definition::new(
                                     &match kind.as_ref() {
@@ -1957,13 +1955,11 @@ impl TopLevelItem {
                                                     None => vec![],
                                                     Some(snippet) => snippet.to_coq(),
                                                 },
-                                                vec![
-                                                    coq::TopLevelItem::Code(kind.to_doc(
-                                                        item.name.as_str(),
-                                                        generic_tys.clone(),
-                                                    )),
-                                                    coq::TopLevelItem::Line,
-                                                ],
+                                                kind.to_coq(
+                                                    item.name.as_str(),
+                                                    generic_tys.clone(),
+                                                ),
+                                                vec![coq::TopLevelItem::Line],
                                             ]
                                             .concat()
                                         },
