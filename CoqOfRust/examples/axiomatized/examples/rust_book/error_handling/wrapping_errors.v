@@ -35,9 +35,7 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 Axiom Result :
   forall (T : Ty.t),
   (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
-    (Ty.apply
-      (Ty.path "core::result::Result")
-      [ T; Ty.path "wrapping_errors::DoubleError" ]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
@@ -74,8 +72,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      (* Trait polymorphic types *) [ (* T *) Ty.path "core::num::error::ParseIntError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 

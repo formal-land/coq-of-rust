@@ -48,11 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -76,14 +72,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* number :=
-      M.alloc
-        (Value.StructTuple
-          "core::option::Option::Some"
-          [ Value.Integer Integer.I32 7 ]) in
-    let* letter :=
-      M.alloc (Value.StructTuple "core::option::Option::None" []) in
-    let* emoticon :=
-      M.alloc (Value.StructTuple "core::option::Option::None" []) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 7 ]) in
+    let* letter := M.alloc (Value.StructTuple "core::option::Option::None" []) in
+    let* emoticon := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* _ :=
       let* α0 := M.alloc (Value.Tuple []) in
       M.match_operator
@@ -91,20 +82,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let γ := number in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* i := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Matched ") in
@@ -136,20 +119,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let γ := letter in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* j := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Matched ") in
@@ -177,16 +152,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
-                    let* α2 :=
-                      M.read
-                        (mk_str
-                          "Didn't match a number. Let's go with a letter!
+                    let* α2 := M.read (mk_str "Didn't match a number. Let's go with a letter!
 ") in
                     let* α3 := M.alloc (Value.Array [ α2 ]) in
                     M.pure (M.pointer_coercion α3) in
@@ -204,20 +173,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let γ := emoticon in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* i := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Matched ") in
@@ -254,16 +215,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_const"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                       let* α4 :=
                         (* Unsize *)
                           let* α2 :=
-                            M.read
-                              (mk_str
-                                "Didn't match a number. Let's go with a letter!
+                            M.read (mk_str "Didn't match a number. Let's go with a letter!
 ") in
                           let* α3 := M.alloc (Value.Array [ α2 ]) in
                           M.pure (M.pointer_coercion α3) in
@@ -277,16 +233,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_const"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                       let* α4 :=
                         (* Unsize *)
                           let* α2 :=
                             M.read
-                              (mk_str
-                                "I don't like letters. Let's go with an emoticon :)!
+                              (mk_str "I don't like letters. Let's go with an emoticon :)!
 ") in
                           let* α3 := M.alloc (Value.Array [ α2 ]) in
                           M.pure (M.pointer_coercion α3) in

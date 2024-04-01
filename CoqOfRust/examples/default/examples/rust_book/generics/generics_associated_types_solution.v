@@ -12,8 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Empty module 'Contains' *)
 
 Module Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Definition Self : Ty.t :=
-    Ty.path "generics_associated_types_solution::Container".
+  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
   
   (*
       type A = i32;
@@ -45,11 +44,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           [] in
       let* α1 := M.read self in
       let* α2 :=
-        M.alloc
-          (M.get_struct_tuple_field
-            α1
-            "generics_associated_types_solution::Container"
-            0) in
+        M.alloc (M.get_struct_tuple_field α1 "generics_associated_types_solution::Container" 0) in
       let* α3 := M.call_closure α0 [ α2; number_1 ] in
       LogicalOp.and
         α3
@@ -62,11 +57,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             [] in
         let* α1 := M.read self in
         let* α2 :=
-          M.alloc
-            (M.get_struct_tuple_field
-              α1
-              "generics_associated_types_solution::Container"
-              1) in
+          M.alloc (M.get_struct_tuple_field α1 "generics_associated_types_solution::Container" 1) in
         M.call_closure α0 [ α2; number_2 ])
     | _, _ => M.impossible
     end.
@@ -81,11 +72,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_tuple_field
-          α0
-          "generics_associated_types_solution::Container"
-          0)
+      M.read (M.get_struct_tuple_field α0 "generics_associated_types_solution::Container" 0)
     | _, _ => M.impossible
     end.
   
@@ -99,11 +86,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_tuple_field
-          α0
-          "generics_associated_types_solution::Container"
-          1)
+      M.read (M.get_struct_tuple_field α0 "generics_associated_types_solution::Container" 1)
     | _, _ => M.impossible
     end.
   
@@ -117,11 +100,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_tuple_field
-          α0
-          "generics_associated_types_solution::Container"
-          0)
+      M.read (M.get_struct_tuple_field α0 "generics_associated_types_solution::Container" 0)
     | _, _ => M.impossible
     end.
   
@@ -150,22 +129,10 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ C ], [ container ] =>
     let* container := M.alloc container in
-    let* α0 :=
-      M.get_trait_method
-        "generics_associated_types_solution::Contains"
-        C
-        []
-        "last"
-        [] in
+    let* α0 := M.get_trait_method "generics_associated_types_solution::Contains" C [] "last" [] in
     let* α1 := M.read container in
     let* α2 := M.call_closure α0 [ α1 ] in
-    let* α3 :=
-      M.get_trait_method
-        "generics_associated_types_solution::Contains"
-        C
-        []
-        "first"
-        [] in
+    let* α3 := M.get_trait_method "generics_associated_types_solution::Contains" C [] "first" [] in
     let* α4 := M.read container in
     let* α5 := M.call_closure α3 [ α4 ] in
     BinOp.Panic.sub α2 α5
@@ -181,13 +148,7 @@ Definition get_a (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ C ], [ container ] =>
     let* container := M.alloc container in
-    let* α0 :=
-      M.get_trait_method
-        "generics_associated_types_solution::Contains"
-        C
-        []
-        "a"
-        [] in
+    let* α0 := M.get_trait_method "generics_associated_types_solution::Contains" C [] "a" [] in
     let* α1 := M.read container in
     M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
@@ -220,18 +181,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* container :=
       let* α0 := M.read number_1 in
       let* α1 := M.read number_2 in
-      M.alloc
-        (Value.StructTuple
-          "generics_associated_types_solution::Container"
-          [ α0; α1 ]) in
+      M.alloc (Value.StructTuple "generics_associated_types_solution::Container" [ α0; α1 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Does container contain ") in
@@ -281,11 +235,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "First number: ") in
@@ -319,11 +269,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Last number: ") in
@@ -357,11 +303,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The difference is: ") in

@@ -18,19 +18,12 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
         o
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* _a := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "some
@@ -45,10 +38,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "nothing
@@ -97,18 +87,9 @@ Module tests.
             (Ty.path "std::fs::OpenOptions")
             "open"
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α2 :=
-          M.get_associated_function
-            (Ty.path "std::fs::OpenOptions")
-            "create"
-            [] in
-        let* α3 :=
-          M.get_associated_function
-            (Ty.path "std::fs::OpenOptions")
-            "append"
-            [] in
-        let* α4 :=
-          M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] in
+        let* α2 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" [] in
+        let* α3 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" [] in
+        let* α4 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 := M.call_closure α3 [ α6; Value.Bool true ] in
@@ -131,10 +112,7 @@ Module tests.
           [
             Value.StructRecord
               "core::ops::range::Range"
-              [
-                ("start", Value.Integer Integer.I32 0);
-                ("end_", Value.Integer Integer.I32 5)
-              ]
+              [ ("start", Value.Integer Integer.I32 0); ("end_", Value.Integer Integer.I32 5) ]
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -148,9 +126,7 @@ Module tests.
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply
-                        (Ty.path "core::ops::range::Range")
-                        [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
                       []
                       "next"
                       [] in
@@ -175,8 +151,7 @@ Module tests.
                             M.get_associated_function
                               (Ty.apply
                                 (Ty.path "core::result::Result")
-                                [ Ty.tuple []; Ty.path "std::io::error::Error"
-                                ])
+                                [ Ty.tuple []; Ty.path "std::io::error::Error" ])
                               "expect"
                               [] in
                           let* α1 :=
@@ -186,17 +161,12 @@ Module tests.
                               []
                               "write_all"
                               [] in
-                          let* α2 :=
-                            M.get_associated_function
-                              (Ty.path "str")
-                              "as_bytes"
-                              [] in
+                          let* α2 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
                           let* α3 := M.read (mk_str "Ferris
 ") in
                           let* α4 := M.call_closure α2 [ α3 ] in
                           let* α5 := M.call_closure α1 [ file; α4 ] in
-                          let* α6 :=
-                            M.read (mk_str "Could not write to ferris.txt") in
+                          let* α6 := M.read (mk_str "Could not write to ferris.txt") in
                           let* α7 := M.call_closure α0 [ α5; α6 ] in
                           M.alloc α7 in
                         M.alloc (Value.Tuple [])
@@ -239,18 +209,9 @@ Module tests.
             (Ty.path "std::fs::OpenOptions")
             "open"
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α2 :=
-          M.get_associated_function
-            (Ty.path "std::fs::OpenOptions")
-            "create"
-            [] in
-        let* α3 :=
-          M.get_associated_function
-            (Ty.path "std::fs::OpenOptions")
-            "append"
-            [] in
-        let* α4 :=
-          M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] in
+        let* α2 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" [] in
+        let* α3 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" [] in
+        let* α4 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 := M.call_closure α3 [ α6; Value.Bool true ] in
@@ -273,10 +234,7 @@ Module tests.
           [
             Value.StructRecord
               "core::ops::range::Range"
-              [
-                ("start", Value.Integer Integer.I32 0);
-                ("end_", Value.Integer Integer.I32 5)
-              ]
+              [ ("start", Value.Integer Integer.I32 0); ("end_", Value.Integer Integer.I32 5) ]
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -290,9 +248,7 @@ Module tests.
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply
-                        (Ty.path "core::ops::range::Range")
-                        [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
                       []
                       "next"
                       [] in
@@ -317,8 +273,7 @@ Module tests.
                             M.get_associated_function
                               (Ty.apply
                                 (Ty.path "core::result::Result")
-                                [ Ty.tuple []; Ty.path "std::io::error::Error"
-                                ])
+                                [ Ty.tuple []; Ty.path "std::io::error::Error" ])
                               "expect"
                               [] in
                           let* α1 :=
@@ -328,17 +283,12 @@ Module tests.
                               []
                               "write_all"
                               [] in
-                          let* α2 :=
-                            M.get_associated_function
-                              (Ty.path "str")
-                              "as_bytes"
-                              [] in
+                          let* α2 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
                           let* α3 := M.read (mk_str "Corro
 ") in
                           let* α4 := M.call_closure α2 [ α3 ] in
                           let* α5 := M.call_closure α1 [ file; α4 ] in
-                          let* α6 :=
-                            M.read (mk_str "Could not write to ferris.txt") in
+                          let* α6 := M.read (mk_str "Could not write to ferris.txt") in
                           let* α7 := M.call_closure α0 [ α5; α6 ] in
                           M.alloc α7 in
                         M.alloc (Value.Tuple [])

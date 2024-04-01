@@ -37,11 +37,7 @@ Module Impl_core_marker_Copy_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* StructTuple
@@ -50,12 +46,8 @@ End Impl_core_marker_Copy_for_clone_Unit.
     ty_params := [];
     fields :=
       [
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 

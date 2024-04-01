@@ -36,11 +36,7 @@ Module checked.
       | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
-        let* α0 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Formatter")
-            "write_str"
-            [] in
+        let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
         let* α1 := M.read f in
         let* α2 :=
           M.match_operator
@@ -112,11 +108,7 @@ Module checked.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
-                  [
-                    Value.StructTuple
-                      "result::checked::MathError::DivisionByZero"
-                      []
-                  ]);
+                  [ Value.StructTuple "result::checked::MathError::DivisionByZero" [] ]);
             fun γ =>
               let* α0 := M.read x in
               let* α1 := M.read y in
@@ -157,11 +149,7 @@ Module checked.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
-                  [
-                    Value.StructTuple
-                      "result::checked::MathError::NegativeSquareRoot"
-                      []
-                  ]);
+                  [ Value.StructTuple "result::checked::MathError::NegativeSquareRoot" [] ]);
             fun γ =>
               let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
               let* α1 := M.read x in
@@ -202,11 +190,7 @@ Module checked.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
-                  [
-                    Value.StructTuple
-                      "result::checked::MathError::NonPositiveLogarithm"
-                      []
-                  ]);
+                  [ Value.StructTuple "result::checked::MathError::NonPositiveLogarithm" [] ]);
             fun γ =>
               let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
               let* α1 := M.read x in
@@ -248,18 +232,10 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "") in
@@ -280,11 +256,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.never_to_any α10 in
             M.alloc α11;
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* ratio := M.copy γ0_0 in
             let* α0 := M.get_function "result::checked::ln" [] in
             let* α1 := M.read ratio in
@@ -295,17 +267,11 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::result::Result::Err"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                   let* why := M.copy γ0_0 in
                   let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                   let* α4 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "") in
@@ -327,10 +293,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α11;
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::result::Result::Ok"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                   let* ln := M.copy γ0_0 in
                   let* α0 := M.get_function "result::checked::sqrt" [] in
                   let* α1 := M.read ln in
@@ -341,18 +304,11 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       fun γ =>
                         let* γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            γ
-                            "core::result::Result::Err"
-                            0 in
+                          M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                         let* why := M.copy γ0_0 in
-                        let* α0 :=
-                          M.get_function "core::panicking::panic_fmt" [] in
+                        let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                         let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_v1"
-                            [] in
+                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                         let* α4 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "") in
@@ -374,10 +330,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc α11;
                       fun γ =>
                         let* γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            γ
-                            "core::result::Result::Ok"
-                            0 in
+                          M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                         let* sqrt := M.copy γ0_0 in
                         M.pure sqrt
                     ]
@@ -399,11 +352,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in

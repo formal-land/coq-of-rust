@@ -5,28 +5,19 @@ Require Import CoqOfRust.CoqOfRust.
 fn used_function() {}
 *)
 Definition used_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
 
 (*
 fn unused_function() {}
 *)
 Definition unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
 
 (*
 fn noisy_unused_function() {}
 *)
 Definition noisy_unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
 
 (*
 fn main() {

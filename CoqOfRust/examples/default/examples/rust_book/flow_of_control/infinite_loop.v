@@ -36,11 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Let's count until infinity!
@@ -66,8 +62,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 let* γ :=
                   let* α0 := M.read count in
-                  let* α1 :=
-                    M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
+                  let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
                   M.pure (M.use α1) in
                 let* _ :=
                   let* α0 := M.read γ in
@@ -76,10 +71,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const"
-                        [] in
+                      M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                     let* α4 :=
                       (* Unsize *)
                         let* α2 := M.read (mk_str "three
@@ -99,11 +91,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α5 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "") in
@@ -132,8 +120,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               let* γ :=
                 let* α0 := M.read count in
-                let* α1 :=
-                  M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
+                let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
                 M.pure (M.use α1) in
               let* _ :=
                 let* α0 := M.read γ in
@@ -142,10 +129,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                   let* α4 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "OK, that's enough

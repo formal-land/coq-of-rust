@@ -9,8 +9,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
+  Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
   
   (*
   Clone
@@ -19,8 +18,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -34,15 +32,10 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
+  Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (*
@@ -116,11 +109,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
@@ -151,10 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc
                 (Value.StructRecord
                   "scoping_rules_borrowing_the_ref_pattern::Point"
-                  [
-                    ("x", Value.Integer Integer.I32 0);
-                    ("y", Value.Integer Integer.I32 0)
-                  ]) in
+                  [ ("x", Value.Integer Integer.I32 0); ("y", Value.Integer Integer.I32 0) ]) in
             let* _copy_of_x :=
               let* α0 :=
                 M.match_operator
@@ -200,11 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "point is (") in
@@ -252,11 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "mutable_point is (") in
@@ -327,11 +305,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "tuple is ") in
@@ -350,8 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [ Ty.path "u32"; Ty.path "alloc::alloc::Global"
-                                ];
+                                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
                               Ty.path "u32"
                             ]
                         ] in

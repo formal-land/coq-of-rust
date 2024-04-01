@@ -31,11 +31,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
         (* Unsize *)
           let* α4 := M.read self in
           let* α5 :=
-            M.alloc
-              (M.get_struct_record_field
-                α4
-                "scoping_rules_lifetimes_traits::Borrowed"
-                "x") in
+            M.alloc (M.get_struct_record_field α4 "scoping_rules_lifetimes_traits::Borrowed" "x") in
           M.pure (M.pointer_coercion α5) in
       M.call_closure α0 [ α1; α2; α3; α6 ]
     | _, _ => M.impossible
@@ -61,10 +57,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
     match τ, α with
     | [], [] =>
       let* α0 := M.alloc (Value.Integer Integer.I32 10) in
-      M.pure
-        (Value.StructRecord
-          "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", α0) ])
+      M.pure (Value.StructRecord "scoping_rules_lifetimes_traits::Borrowed" [ ("x", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -98,11 +91,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "b is ") in

@@ -12,8 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Empty module 'Contains' *)
 
 Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-  Definition Self : Ty.t :=
-    Ty.path "generics_associated_types_problem::Container".
+  Definition Self : Ty.t := Ty.path "generics_associated_types_problem::Container".
   
   (*
       fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
@@ -35,11 +34,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           [] in
       let* α1 := M.read self in
       let* α2 :=
-        M.alloc
-          (M.get_struct_tuple_field
-            α1
-            "generics_associated_types_problem::Container"
-            0) in
+        M.alloc (M.get_struct_tuple_field α1 "generics_associated_types_problem::Container" 0) in
       let* α3 := M.call_closure α0 [ α2; number_1 ] in
       LogicalOp.and
         α3
@@ -52,11 +47,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             [] in
         let* α1 := M.read self in
         let* α2 :=
-          M.alloc
-            (M.get_struct_tuple_field
-              α1
-              "generics_associated_types_problem::Container"
-              1) in
+          M.alloc (M.get_struct_tuple_field α1 "generics_associated_types_problem::Container" 1) in
         M.call_closure α0 [ α2; number_2 ])
     | _, _ => M.impossible
     end.
@@ -71,11 +62,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_tuple_field
-          α0
-          "generics_associated_types_problem::Container"
-          0)
+      M.read (M.get_struct_tuple_field α0 "generics_associated_types_problem::Container" 0)
     | _, _ => M.impossible
     end.
   
@@ -89,11 +76,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_tuple_field
-          α0
-          "generics_associated_types_problem::Container"
-          1)
+      M.read (M.get_struct_tuple_field α0 "generics_associated_types_problem::Container" 1)
     | _, _ => M.impossible
     end.
   
@@ -101,8 +84,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
       Self
-      (* Trait polymorphic types *)
-        [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
+      (* Trait polymorphic types *) [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       (* Instance *)
         [
           ("contains", InstanceField.Method contains);
@@ -124,21 +106,11 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   | [ A; B; C ], [ container ] =>
     let* container := M.alloc container in
     let* α0 :=
-      M.get_trait_method
-        "generics_associated_types_problem::Contains"
-        C
-        [ A; B ]
-        "last"
-        [] in
+      M.get_trait_method "generics_associated_types_problem::Contains" C [ A; B ] "last" [] in
     let* α1 := M.read container in
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 :=
-      M.get_trait_method
-        "generics_associated_types_problem::Contains"
-        C
-        [ A; B ]
-        "first"
-        [] in
+      M.get_trait_method "generics_associated_types_problem::Contains" C [ A; B ] "first" [] in
     let* α4 := M.read container in
     let* α5 := M.call_closure α3 [ α4 ] in
     BinOp.Panic.sub α2 α5
@@ -172,18 +144,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* container :=
       let* α0 := M.read number_1 in
       let* α1 := M.read number_2 in
-      M.alloc
-        (Value.StructTuple
-          "generics_associated_types_problem::Container"
-          [ α0; α1 ]) in
+      M.alloc (Value.StructTuple "generics_associated_types_problem::Container" [ α0; α1 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Does container contain ") in
@@ -233,11 +198,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "First number: ") in
@@ -271,11 +232,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Last number: ") in
@@ -309,11 +266,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The difference is: ") in

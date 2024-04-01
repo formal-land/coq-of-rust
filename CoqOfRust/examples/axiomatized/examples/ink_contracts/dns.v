@@ -13,8 +13,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -28,8 +27,7 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -111,11 +109,7 @@ Module Impl_core_marker_Copy_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
@@ -151,15 +145,13 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
-Axiom Hash :
-  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -173,10 +165,7 @@ Axiom Hash :
     name := "Register";
     ty_params := [];
     fields :=
-      [
-        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
-        ("from", Ty.path "dns::AccountId")
-      ];
+      [ ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]); ("from", Ty.path "dns::AccountId") ];
   } *)
 
 (* StructRecord
@@ -187,10 +176,7 @@ Axiom Hash :
       [
         ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_address",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "dns::AccountId" ]);
+        ("old_address", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
         ("new_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -203,10 +189,7 @@ Axiom Hash :
       [
         ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_owner",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "dns::AccountId" ]);
+        ("old_owner", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
         ("new_owner", Ty.path "dns::AccountId")
       ];
   } *)
@@ -243,8 +226,7 @@ Module Impl_dns_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_dns_Env.
 
 (* StructRecord
@@ -256,17 +238,11 @@ End Impl_dns_Env.
         ("name_to_address",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [
-              Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-              Ty.path "dns::AccountId"
-            ]);
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
         ("name_to_owner",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [
-              Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-              Ty.path "dns::AccountId"
-            ]);
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
         ("default_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -350,10 +326,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
@@ -366,8 +339,7 @@ Module Impl_dns_DomainNameService.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -379,8 +351,7 @@ Module Impl_dns_DomainNameService.
   
   Parameter register : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_register :
-    M.IsAssociatedFunction Self "register" register.
+  Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
   
   Parameter get_owner_or_default : (list Ty.t) -> (list Value.t) -> M.
   
@@ -389,13 +360,11 @@ Module Impl_dns_DomainNameService.
   
   Parameter set_address : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_set_address :
-    M.IsAssociatedFunction Self "set_address" set_address.
+  Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer.
+  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter get_address_or_default : (list Ty.t) -> (list Value.t) -> M.
   
@@ -404,11 +373,9 @@ Module Impl_dns_DomainNameService.
   
   Parameter get_address : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_address :
-    M.IsAssociatedFunction Self "get_address" get_address.
+  Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
   
   Parameter get_owner : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_owner :
-    M.IsAssociatedFunction Self "get_owner" get_owner.
+  Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.
 End Impl_dns_DomainNameService.

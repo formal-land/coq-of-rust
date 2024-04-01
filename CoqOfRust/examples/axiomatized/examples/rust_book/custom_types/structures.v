@@ -5,8 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Person";
     ty_params := [];
-    fields :=
-      [ ("name", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
+    fields := [ ("name", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
   } *)
 
 Module Impl_core_fmt_Debug_for_structures_Person.
@@ -47,10 +46,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
     name := "Rectangle";
     ty_params := [];
     fields :=
-      [
-        ("top_left", Ty.path "structures::Point");
-        ("bottom_right", Ty.path "structures::Point")
-      ];
+      [ ("top_left", Ty.path "structures::Point"); ("bottom_right", Ty.path "structures::Point") ];
   } *)
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -925,7 +925,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     Rc::new(TopLevel(results))
 }
 
-const LINE_WIDTH: usize = 80;
+const LINE_WIDTH: usize = 100;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     let top_level = compile_top_level(tcx, opts);

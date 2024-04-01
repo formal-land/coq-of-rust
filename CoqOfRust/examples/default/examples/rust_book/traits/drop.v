@@ -23,11 +23,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "> Dropping ") in
@@ -44,9 +40,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α7 := M.read self in
               let* α8 :=
-                M.call_closure
-                  α6
-                  [ M.get_struct_record_field α7 "drop::Droppable" "name" ] in
+                M.call_closure α6 [ M.get_struct_record_field α7 "drop::Droppable" "name" ] in
               let* α9 := M.alloc (Value.Array [ α8 ]) in
               M.pure (M.pointer_coercion α9) in
           let* α11 := M.call_closure α1 [ α5; α10 ] in
@@ -117,11 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_const"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "Exiting block B
@@ -136,11 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Just exited block B
@@ -154,11 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Exiting block A
@@ -173,11 +155,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Just exited block A
@@ -189,19 +167,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 :=
-        M.get_function "core::mem::drop" [ Ty.path "drop::Droppable" ] in
+      let* α0 := M.get_function "core::mem::drop" [ Ty.path "drop::Droppable" ] in
       let* α1 := M.read _a in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "end of the main function

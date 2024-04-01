@@ -7,9 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
   
-  Parameter print_in_option :
-      forall (T : Ty.t),
-      (list Ty.t) -> (list Value.t) -> M.
+  Parameter print_in_option : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (T : Ty.t),
@@ -17,8 +15,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       "generics_where_clauses::PrintInOption"
       (Self T)
       (* Trait polymorphic types *) []
-      (* Instance *)
-        [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
+      (* Instance *) [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

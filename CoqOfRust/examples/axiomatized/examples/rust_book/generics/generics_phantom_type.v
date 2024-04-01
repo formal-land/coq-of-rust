@@ -40,11 +40,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   {
     name := "PhantomStruct";
     ty_params := [ "A"; "B" ];
-    fields :=
-      [
-        ("first", A);
-        ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
-      ];
+    fields := [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ]) ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.

@@ -77,11 +77,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   {
     name := "PhantomStruct";
     ty_params := [ "A"; "B" ];
-    fields :=
-      [
-        ("first", A);
-        ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
-      ];
+    fields := [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ]) ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -117,14 +113,8 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
         M.call_closure
           α0
           [
-            M.get_struct_record_field
-              α1
-              "generics_phantom_type::PhantomStruct"
-              "first";
-            M.get_struct_record_field
-              α2
-              "generics_phantom_type::PhantomStruct"
-              "first"
+            M.get_struct_record_field α1 "generics_phantom_type::PhantomStruct" "first";
+            M.get_struct_record_field α2 "generics_phantom_type::PhantomStruct" "first"
           ] in
       LogicalOp.and
         α3
@@ -140,14 +130,8 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
         M.call_closure
           α0
           [
-            M.get_struct_record_field
-              α1
-              "generics_phantom_type::PhantomStruct"
-              "phantom";
-            M.get_struct_record_field
-              α2
-              "generics_phantom_type::PhantomStruct"
-              "phantom"
+            M.get_struct_record_field α1 "generics_phantom_type::PhantomStruct" "phantom";
+            M.get_struct_record_field α2 "generics_phantom_type::PhantomStruct" "phantom"
           ])
     | _, _ => M.impossible
     end.
@@ -196,18 +180,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics_phantom_type::PhantomTuple"
-          [
-            Value.UnicodeChar 81;
-            Value.StructTuple "core::marker::PhantomData" []
-          ]) in
+          [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* _tuple2 :=
       M.alloc
         (Value.StructTuple
           "generics_phantom_type::PhantomTuple"
-          [
-            Value.UnicodeChar 81;
-            Value.StructTuple "core::marker::PhantomData" []
-          ]) in
+          [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* _struct1 :=
       M.alloc
         (Value.StructRecord

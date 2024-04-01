@@ -25,8 +25,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* γ :=
               let* α0 := M.read divisor in
-              let* α1 :=
-                M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
+              let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
               M.pure (M.use α1) in
             let* _ :=
               let* α0 := M.read γ in
@@ -70,11 +69,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in
@@ -104,19 +99,11 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α14 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* quotient := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in
@@ -184,32 +171,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "option::try_division" [] in
-      let* α1 :=
-        M.call_closure
-          α0
-          [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "option::try_division" [] in
-      let* α1 :=
-        M.call_closure
-          α0
-          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* none := M.alloc (Value.StructTuple "core::option::Option::None" []) in
-    let* _equivalent_none :=
-      M.alloc (Value.StructTuple "core::option::Option::None" []) in
+    let* _equivalent_none := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* optional_float :=
       let* α0 := M.read UnsupportedLiteral in
       M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -224,8 +200,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ]
-                ] in
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ] ] in
             let* α8 := M.call_closure α7 [ optional_float ] in
             let* α9 :=
               M.get_associated_function
@@ -250,11 +225,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -269,8 +240,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                ] in
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
             let* α8 := M.call_closure α7 [ none ] in
             let* α9 :=
               M.get_associated_function

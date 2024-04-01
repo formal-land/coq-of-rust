@@ -26,8 +26,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Empty module 'Blue' *)
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self : Ty.t :=
-    Ty.path "generics_bounds_test_case_empty_bounds::Cardinal".
+  Definition Self : Ty.t := Ty.path "generics_bounds_test_case_empty_bounds::Cardinal".
   
   Axiom Implements :
     M.IsTraitInstance
@@ -38,8 +37,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self : Ty.t :=
-    Ty.path "generics_bounds_test_case_empty_bounds::BlueJay".
+  Definition Self : Ty.t := Ty.path "generics_bounds_test_case_empty_bounds::BlueJay".
   
   Axiom Implements :
     M.IsTraitInstance
@@ -93,28 +91,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* cardinal :=
-      M.alloc
-        (Value.StructTuple
-          "generics_bounds_test_case_empty_bounds::Cardinal"
-          []) in
+      M.alloc (Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" []) in
     let* blue_jay :=
-      M.alloc
-        (Value.StructTuple
-          "generics_bounds_test_case_empty_bounds::BlueJay"
-          []) in
+      M.alloc (Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" []) in
     let* _turkey :=
-      M.alloc
-        (Value.StructTuple
-          "generics_bounds_test_case_empty_bounds::Turkey"
-          []) in
+      M.alloc (Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" []) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "A cardinal is ") in
@@ -132,8 +117,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α7 :=
               M.get_function
                 "generics_bounds_test_case_empty_bounds::red"
-                [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal"
-                ] in
+                [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" ] in
             let* α8 := M.call_closure α7 [ cardinal ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -146,11 +130,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "A blue jay is ") in

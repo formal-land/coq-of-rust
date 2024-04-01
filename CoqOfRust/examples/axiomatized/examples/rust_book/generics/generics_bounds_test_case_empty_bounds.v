@@ -26,8 +26,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Empty module 'Blue' *)
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self : Ty.t :=
-    Ty.path "generics_bounds_test_case_empty_bounds::Cardinal".
+  Definition Self : Ty.t := Ty.path "generics_bounds_test_case_empty_bounds::Cardinal".
   
   Axiom Implements :
     M.IsTraitInstance
@@ -38,8 +37,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self : Ty.t :=
-    Ty.path "generics_bounds_test_case_empty_bounds::BlueJay".
+  Definition Self : Ty.t := Ty.path "generics_bounds_test_case_empty_bounds::BlueJay".
   
   Axiom Implements :
     M.IsTraitInstance

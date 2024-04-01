@@ -7,15 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("area_code",
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
         ("number", Ty.path "u32")
       ];
   } *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
@@ -28,15 +26,10 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* StructRecord
@@ -69,11 +62,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* StructRecord
@@ -90,8 +79,7 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   } *)
 
 Module Impl_unpacking_options_via_question_mark_Person.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::Person".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Person".
   
   Parameter work_phone_area_code : (list Ty.t) -> (list Value.t) -> M.
   

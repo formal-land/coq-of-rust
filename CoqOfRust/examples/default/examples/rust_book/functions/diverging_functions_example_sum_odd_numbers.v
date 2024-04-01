@@ -32,15 +32,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
-            let* α2 :=
-              M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
+            let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
             let* α3 := M.read (mk_str "
 ") in
             let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
@@ -124,9 +119,7 @@ Module main.
                     let* α0 :=
                       M.get_trait_method
                         "core::iter::traits::iterator::Iterator"
-                        (Ty.apply
-                          (Ty.path "core::ops::range::Range")
-                          [ Ty.path "u32" ])
+                        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
                         []
                         "next"
                         [] in
@@ -149,15 +142,8 @@ Module main.
                           let* i := M.copy γ0_0 in
                           let* addition :=
                             let* α0 := M.read i in
-                            let* α1 :=
-                              BinOp.Panic.rem
-                                α0
-                                (Value.Integer Integer.U32 2) in
-                            let* α2 :=
-                              M.alloc
-                                (BinOp.Pure.eq
-                                  α1
-                                  (Value.Integer Integer.U32 1)) in
+                            let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.U32 2) in
+                            let* α2 := M.alloc (BinOp.Pure.eq α1 (Value.Integer Integer.U32 1)) in
                             let* α3 :=
                               M.match_operator
                                 α2
@@ -165,16 +151,12 @@ Module main.
                                   fun γ =>
                                     let* _ :=
                                       let* α0 := M.read γ in
-                                      M.is_constant_or_break_match
-                                        α0
-                                        (Value.Bool true) in
+                                      M.is_constant_or_break_match α0 (Value.Bool true) in
                                     M.pure i;
                                   fun γ =>
                                     let* _ :=
                                       let* α0 := M.read γ in
-                                      M.is_constant_or_break_match
-                                        α0
-                                        (Value.Bool false) in
+                                      M.is_constant_or_break_match α0 (Value.Bool false) in
                                     let* α0 := M.continue in
                                     let* α1 := M.read α0 in
                                     let* α2 := M.never_to_any α1 in

@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -72,8 +68,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.path "call_runtime::AccountId" ]
+      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::AccountId" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
@@ -202,10 +197,7 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
@@ -244,8 +236,7 @@ Module Impl_call_runtime_Env.
   
   Parameter call_runtime : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_call_runtime :
-    M.IsAssociatedFunction Self "call_runtime" call_runtime.
+  Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -253,8 +244,7 @@ Module Impl_call_runtime_RuntimeCaller.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -267,16 +257,10 @@ Module Impl_call_runtime_RuntimeCaller.
   Parameter transfer_through_runtime : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_through_runtime :
-    M.IsAssociatedFunction
-      Self
-      "transfer_through_runtime"
-      transfer_through_runtime.
+    M.IsAssociatedFunction Self "transfer_through_runtime" transfer_through_runtime.
   
   Parameter call_nonexistent_extrinsic : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :
-    M.IsAssociatedFunction
-      Self
-      "call_nonexistent_extrinsic"
-      call_nonexistent_extrinsic.
+    M.IsAssociatedFunction Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.

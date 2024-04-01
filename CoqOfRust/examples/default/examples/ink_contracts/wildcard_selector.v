@@ -24,8 +24,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] =>
-      M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
+    | [], [] => M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
     | _, _ => M.impossible
     end.
   
@@ -47,10 +46,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             (Ty.path "core::result::Result")
             [
               Ty.tuple
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "alloc::string::String"
-                ];
+                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ];
               Ty.tuple []
             ])
           "unwrap"
@@ -60,10 +56,7 @@ Module Impl_wildcard_selector_WildcardSelector.
           "wildcard_selector::decode_input"
           [
             Ty.tuple
-              [
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                Ty.path "alloc::string::String"
-              ]
+              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ]
           ] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.call_closure α0 [ α2 ] in
@@ -81,10 +74,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                   let* α6 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "Wildcard selector: ") in
@@ -119,8 +109,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_wildcard :
-    M.IsAssociatedFunction Self "wildcard" wildcard.
+  Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -135,11 +124,7 @@ Module Impl_wildcard_selector_WildcardSelector.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Wildcard complement message: ") in

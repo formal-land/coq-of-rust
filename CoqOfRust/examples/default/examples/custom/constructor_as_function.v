@@ -55,21 +55,14 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish"
-          [] in
+        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Constructor") in
       let* α5 :=
         (* Unsize *)
           let* α3 := M.read self in
           let* α4 :=
-            M.alloc
-              (M.get_struct_tuple_field
-                α3
-                "constructor_as_function::Constructor"
-                0) in
+            M.alloc (M.get_struct_tuple_field α3 "constructor_as_function::Constructor" 0) in
           M.pure (M.pointer_coercion α4) in
       M.call_closure α0 [ α1; α2; α5 ]
     | _, _ => M.impossible
@@ -103,19 +96,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-              Ty.function
-                [ Ty.path "i32" ]
-                (Ty.path "constructor_as_function::Constructor")
+              Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
             ])
           []
           "collect"
           [
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [
-                Ty.path "constructor_as_function::Constructor";
-                Ty.path "alloc::alloc::Global"
-              ]
+              [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 :=
         M.get_trait_method
@@ -127,16 +115,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "map"
           [
             Ty.path "constructor_as_function::Constructor";
-            Ty.function
-              [ Ty.path "i32" ]
-              (Ty.path "constructor_as_function::Constructor")
+            Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
           ] in
       let* α2 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           []
           "into_iter"
           [] in
@@ -151,10 +135,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α5 :=
@@ -173,18 +154,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α11 :=
         M.call_closure
           α1
-          [ α10; M.constructor_as_closure "constructor_as_function::Constructor"
-          ] in
+          [ α10; M.constructor_as_closure "constructor_as_function::Constructor" ] in
       let* α12 := M.call_closure α0 [ α11 ] in
       M.alloc α12 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -201,9 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [
-                      Ty.path "constructor_as_function::Constructor";
-                      Ty.path "alloc::alloc::Global"
+                    [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global"
                     ]
                 ] in
             let* α7 := M.call_closure α6 [ v ] in

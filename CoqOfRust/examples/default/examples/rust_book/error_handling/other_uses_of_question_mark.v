@@ -10,10 +10,7 @@ Axiom Result :
         T;
         Ty.apply
           (Ty.path "alloc::boxed::Box")
-          [
-            Ty.dyn [ ("core::error::Error::Trait", []) ];
-            Ty.path "alloc::alloc::Global"
-          ]
+          [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
       ]).
 
 (* StructTuple
@@ -33,11 +30,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "EmptyVec") in
       M.call_closure α0 [ α1; α2 ]
@@ -65,17 +58,9 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_fmt"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
       let* α1 := M.read f in
-      let* α2 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Arguments")
-          "new_const"
-          [] in
+      let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
       let* α5 :=
         (* Unsize *)
           let* α3 := M.read (mk_str "invalid first item to double") in
@@ -98,11 +83,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::error::Error"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 (*
@@ -123,9 +104,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::result::Result")
             [
-              Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "other_uses_of_question_mark::EmptyVec"
             ])
           []
@@ -135,18 +114,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [
-              Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ])
           "ok_or"
           [ Ty.path "other_uses_of_question_mark::EmptyVec" ] in
       let* α2 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "first"
           [] in
       let* α3 :=
@@ -154,20 +127,14 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::Deref"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           []
           "deref"
           [] in
       let* α4 := M.call_closure α3 [ vec ] in
       let* α5 := M.call_closure α2 [ α4 ] in
       let* α6 :=
-        M.call_closure
-          α1
-          [ α5; Value.StructTuple "other_uses_of_question_mark::EmptyVec" []
-          ] in
+        M.call_closure α1 [ α5; Value.StructTuple "other_uses_of_question_mark::EmptyVec" [] ] in
       let* α7 := M.call_closure α0 [ α6 ] in
       let* α8 := M.alloc α7 in
       let* α9 :=
@@ -231,8 +198,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           []
           "branch"
           [] in
-      let* α1 :=
-        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α1 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α2 := M.read first in
       let* α3 := M.read α2 in
       let* α4 := M.call_closure α1 [ α3 ] in
@@ -313,19 +279,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The first doubled is ") in
@@ -348,19 +306,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Error: ") in
@@ -411,9 +361,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* numbers :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -423,9 +371,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -444,10 +390,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [] in
@@ -455,9 +398,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* strings :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -467,9 +408,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -485,24 +424,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α9 in
     let* _ :=
       let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
-      let* α1 :=
-        M.get_function "other_uses_of_question_mark::double_first" [] in
+      let* α1 := M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read numbers in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
       let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
-      let* α1 :=
-        M.get_function "other_uses_of_question_mark::double_first" [] in
+      let* α1 := M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read empty in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
       let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
-      let* α1 :=
-        M.get_function "other_uses_of_question_mark::double_first" [] in
+      let* α1 := M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read strings in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in

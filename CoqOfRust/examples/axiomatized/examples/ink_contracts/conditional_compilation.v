@@ -38,17 +38,12 @@ Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
 
-Axiom BlockNumber :
-  (Ty.path "conditional_compilation::BlockNumber") = (Ty.path "u32").
+Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path "u32").
 
 (* StructRecord
   {
@@ -65,10 +60,7 @@ Axiom BlockNumber :
     name := "Changes";
     ty_params := [];
     fields :=
-      [
-        ("new_value", Ty.path "bool");
-        ("by_", Ty.path "conditional_compilation::AccountId")
-      ];
+      [ ("new_value", Ty.path "bool"); ("by_", Ty.path "conditional_compilation::AccountId") ];
   } *)
 
 (* StructRecord
@@ -110,13 +102,11 @@ Module Impl_conditional_compilation_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
   Parameter block_number : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_block_number :
-    M.IsAssociatedFunction Self "block_number" block_number.
+  Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
 
 (* StructRecord
@@ -127,13 +117,11 @@ End Impl_conditional_compilation_Env.
   } *)
 
 Module Impl_conditional_compilation_ConditionalCompilation.
-  Definition Self : Ty.t :=
-    Ty.path "conditional_compilation::ConditionalCompilation".
+  Definition Self : Ty.t := Ty.path "conditional_compilation::ConditionalCompilation".
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -145,18 +133,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Parameter new_foo : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_foo :
-    M.IsAssociatedFunction Self "new_foo" new_foo.
+  Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
   
   Parameter new_bar : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_bar :
-    M.IsAssociatedFunction Self "new_bar" new_bar.
+  Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
   
   Parameter new_foo_bar : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_foo_bar :
-    M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
+  Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
   
   Parameter inherent_flip_foo : (list Ty.t) -> (list Value.t) -> M.
   
@@ -170,8 +155,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
 End Impl_conditional_compilation_ConditionalCompilation.
 
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.
-  Definition Self : Ty.t :=
-    Ty.path "conditional_compilation::ConditionalCompilation".
+  Definition Self : Ty.t := Ty.path "conditional_compilation::ConditionalCompilation".
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   

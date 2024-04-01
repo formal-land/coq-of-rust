@@ -32,10 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* optional :=
-      M.alloc
-        (Value.StructTuple
-          "core::option::Option::Some"
-          [ Value.Integer Integer.I32 0 ]) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 0 ]) in
     let* α0 :=
       M.loop
         (M.match_operator
@@ -43,10 +40,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::option::Option::Some"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
               let* i := M.copy γ0_0 in
               let* α0 := M.alloc (Value.Tuple []) in
               M.match_operator
@@ -55,9 +49,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     let* γ :=
                       let* α0 := M.read i in
-                      let* α1 :=
-                        M.alloc
-                          (BinOp.Pure.gt α0 (Value.Integer Integer.I32 9)) in
+                      let* α1 := M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 9)) in
                       M.pure (M.use α1) in
                     let* _ :=
                       let* α0 := M.read γ in
@@ -72,8 +64,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [] in
                         let* α4 :=
                           (* Unsize *)
-                            let* α2 :=
-                              M.read (mk_str "Greater than 9, quit!
+                            let* α2 := M.read (mk_str "Greater than 9, quit!
 ") in
                             let* α3 := M.alloc (Value.Array [ α2 ]) in
                             M.pure (M.pointer_coercion α3) in
@@ -82,19 +73,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc α6 in
                       M.alloc (Value.Tuple []) in
                     let* _ :=
-                      M.assign
-                        optional
-                        (Value.StructTuple "core::option::Option::None" []) in
+                      M.assign optional (Value.StructTuple "core::option::Option::None" []) in
                     M.alloc (Value.Tuple []);
                   fun γ =>
                     let* _ :=
                       let* _ :=
                         let* α0 := M.get_function "std::io::stdio::_print" [] in
                         let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_v1"
-                            [] in
+                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                         let* α5 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "`i` is `") in
@@ -118,13 +104,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (Value.Tuple []) in
                     let* _ :=
                       let* α0 := M.read i in
-                      let* α1 :=
-                        BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
-                      M.assign
-                        optional
-                        (Value.StructTuple
-                          "core::option::Option::Some"
-                          [ α1 ]) in
+                      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+                      M.assign optional (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
                     M.alloc (Value.Tuple [])
                 ];
             fun γ =>

@@ -31,17 +31,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* path :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "std::path::Path")
-          "new"
-          [ Ty.path "str" ] in
+      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
       let* α1 := M.read (mk_str ".") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _display :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "std::path::Path") "display" [] in
+      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "display" [] in
       let* α1 := M.read path in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -52,12 +47,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "join"
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 :=
-        M.get_trait_method
-          "core::ops::deref::Deref"
-          (Ty.path "std::path::PathBuf")
-          []
-          "deref"
-          [] in
+        M.get_trait_method "core::ops::deref::Deref" (Ty.path "std::path::PathBuf") [] "deref" [] in
       let* α2 :=
         M.get_associated_function
           (Ty.path "std::path::Path")
@@ -98,15 +88,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "package.tgz") in
       let* α2 := M.call_closure α0 [ new_path; α1 ] in
       M.alloc α2 in
-    let* α0 :=
-      M.get_associated_function (Ty.path "std::path::Path") "to_str" [] in
+    let* α0 := M.get_associated_function (Ty.path "std::path::Path") "to_str" [] in
     let* α1 :=
-      M.get_trait_method
-        "core::ops::deref::Deref"
-        (Ty.path "std::path::PathBuf")
-        []
-        "deref"
-        [] in
+      M.get_trait_method "core::ops::deref::Deref" (Ty.path "std::path::PathBuf") [] "deref" [] in
     let* α2 := M.call_closure α1 [ new_path ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
@@ -119,25 +103,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function
                 "std::panicking::begin_panic"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α1 :=
-              M.read (mk_str "new path is not a valid UTF-8 sequence") in
+            let* α1 := M.read (mk_str "new path is not a valid UTF-8 sequence") in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.never_to_any α2 in
             M.alloc α3;
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* s := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "new path is ") in

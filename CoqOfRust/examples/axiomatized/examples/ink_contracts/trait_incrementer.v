@@ -38,9 +38,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       "trait_incrementer::Increment"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *)
-        [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get)
-        ].
+      (* Instance *) [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

@@ -22,9 +22,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* names :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -34,9 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -62,9 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "iter"
           [] in
       let* α2 :=
@@ -72,10 +66,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::Deref"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           []
           "deref"
           [] in
@@ -123,8 +114,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               let* γ := M.read γ in
                               let* _ :=
-                                let* α0 :=
-                                  M.get_function "std::io::stdio::_print" [] in
+                                let* α0 := M.get_function "std::io::stdio::_print" [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")
@@ -132,10 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     [] in
                                 let* α4 :=
                                   (* Unsize *)
-                                    let* α2 :=
-                                      M.read
-                                        (mk_str
-                                          "There is a rustacean among us!
+                                    let* α2 := M.read (mk_str "There is a rustacean among us!
 ") in
                                     let* α3 := M.alloc (Value.Array [ α2 ]) in
                                     M.pure (M.pointer_coercion α3) in
@@ -145,8 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.alloc (Value.Tuple []);
                             fun γ =>
                               let* _ :=
-                                let* α0 :=
-                                  M.get_function "std::io::stdio::_print" [] in
+                                let* α0 := M.get_function "std::io::stdio::_print" [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")
@@ -157,8 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     let* α2 := M.read (mk_str "Hello ") in
                                     let* α3 := M.read (mk_str "
 ") in
-                                    let* α4 :=
-                                      M.alloc (Value.Array [ α2; α3 ]) in
+                                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                                     M.pure (M.pointer_coercion α4) in
                                 let* α9 :=
                                   (* Unsize *)
@@ -169,11 +154,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "&")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                [ Ty.path "str" ]
-                                            ]
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                         ] in
                                     let* α7 := M.call_closure α6 [ name ] in
                                     let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -190,11 +171,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "names: ") in
@@ -211,10 +188,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ names ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in

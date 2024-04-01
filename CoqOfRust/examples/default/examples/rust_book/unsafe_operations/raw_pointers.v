@@ -26,9 +26,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read raw_p in
               let* α1 := M.read α0 in
               let* α2 :=
-                M.alloc
-                  (UnOp.Pure.not
-                    (BinOp.Pure.eq α1 (Value.Integer Integer.U32 10))) in
+                M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 (Value.Integer Integer.U32 10))) in
               M.pure (M.use α2) in
             let* _ :=
               let* α0 := M.read γ in

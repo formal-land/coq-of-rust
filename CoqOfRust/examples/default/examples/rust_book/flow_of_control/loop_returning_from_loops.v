@@ -35,8 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 let* γ :=
                   let* α0 := M.read counter in
-                  let* α1 :=
-                    M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 10)) in
+                  let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 10)) in
                   M.pure (M.use α1) in
                 let* _ :=
                   let* α0 := M.read γ in
@@ -74,11 +73,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.read γ in
                     M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind :=
-                    M.alloc
-                      (Value.StructTuple
-                        "core::panicking::AssertKind::Eq"
-                        []) in
+                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
@@ -89,12 +84,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α4 :=
                     M.call_closure
                       α0
-                      [
-                        α1;
-                        α2;
-                        α3;
-                        Value.StructTuple "core::option::Option::None" []
-                      ] in
+                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in

@@ -26,19 +26,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* triple :=
       M.alloc
         (Value.Tuple
-          [
-            Value.Integer Integer.I32 0;
-            Value.Integer Integer.I32 (-2);
-            Value.Integer Integer.I32 3
+          [ Value.Integer Integer.I32 0; Value.Integer Integer.I32 (-2); Value.Integer Integer.I32 3
           ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Tell me about ") in
@@ -75,11 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* z := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "First is `0`, `y` is ") in
@@ -118,15 +107,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read
-                      (mk_str "First is `1` and the rest doesn't matter
+                  let* α2 := M.read (mk_str "First is `1` and the rest doesn't matter
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
@@ -144,15 +128,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read
-                      (mk_str "last is `2` and the rest doesn't matter
+                  let* α2 := M.read (mk_str "last is `2` and the rest doesn't matter
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
@@ -173,16 +152,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 :=
-                    M.read
-                      (mk_str
-                        "First is `3`, last is `4`, and the rest doesn't matter
+                    M.read (mk_str "First is `3`, last is `4`, and the rest doesn't matter
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
@@ -194,14 +168,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read (mk_str "It doesn't matter what they are
+                  let* α2 := M.read (mk_str "It doesn't matter what they are
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in

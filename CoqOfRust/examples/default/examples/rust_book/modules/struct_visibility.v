@@ -31,16 +31,11 @@ Module my.
       | [], [ contents ] =>
         let* contents := M.alloc contents in
         let* α0 := M.read contents in
-        M.pure
-          (Value.StructRecord
-            "struct_visibility::my::ClosedBox"
-            [ ("contents", α0) ])
+        M.pure (Value.StructRecord "struct_visibility::my::ClosedBox" [ ("contents", α0) ])
       | _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_new :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new" (new T).
+    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
@@ -74,18 +69,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* open_box :=
       let* α0 := M.read (mk_str "public information") in
-      M.alloc
-        (Value.StructRecord
-          "struct_visibility::my::OpenBox"
-          [ ("contents", α0) ]) in
+      M.alloc (Value.StructRecord "struct_visibility::my::OpenBox" [ ("contents", α0) ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The open box contains: ") in
@@ -103,11 +91,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α7 :=
               M.call_closure
                 α6
-                [
-                  M.get_struct_record_field
-                    open_box
-                    "struct_visibility::my::OpenBox"
-                    "contents"
+                [ M.get_struct_record_field open_box "struct_visibility::my::OpenBox" "contents"
                 ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in

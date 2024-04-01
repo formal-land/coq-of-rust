@@ -13,8 +13,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_erc721_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -28,8 +27,7 @@ Module Impl_core_default_Default_for_erc721_Mapping_K_V.
 End Impl_core_default_Default_for_erc721_Mapping_K_V.
 
 Module Impl_erc721_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -105,11 +103,7 @@ Module Impl_core_marker_Copy_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
@@ -145,8 +139,7 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_erc721_AccountId.
 
@@ -168,25 +161,15 @@ Axiom TokenId : (Ty.path "erc721::TokenId") = (Ty.path "u32").
     fields :=
       [
         ("token_owner",
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
         ("token_approvals",
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
         ("owned_tokens_count",
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [ Ty.path "erc721::AccountId"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "erc721::AccountId"; Ty.path "u32" ]);
         ("operator_approvals",
           Ty.apply
             (Ty.path "erc721::Mapping")
-            [
-              Ty.tuple
-                [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
-              Ty.tuple []
-            ])
+            [ Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ]; Ty.tuple [] ])
       ];
   } *)
 
@@ -292,10 +275,7 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_erc721_Error.
 
 Module Impl_core_clone_Clone_for_erc721_Error.
@@ -315,11 +295,7 @@ Module Impl_core_marker_Copy_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_Error.
 
 (* StructRecord
@@ -328,14 +304,8 @@ End Impl_core_marker_Copy_for_erc721_Error.
     ty_params := [];
     fields :=
       [
-        ("from",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "erc721::AccountId" ]);
-        ("to",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "erc721::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc721::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc721::AccountId" ]);
         ("id", Ty.path "u32")
       ];
   } *)
@@ -396,8 +366,7 @@ Module Impl_erc721_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -405,8 +374,7 @@ Module Impl_erc721_Erc721.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -433,8 +401,7 @@ Module Impl_erc721_Erc721.
   
   Parameter owner_of : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_owner_of :
-    M.IsAssociatedFunction Self "owner_of" owner_of.
+  Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
   
   Parameter approved_or_owner : (list Ty.t) -> (list Value.t) -> M.
   
@@ -443,18 +410,15 @@ Module Impl_erc721_Erc721.
   
   Parameter exists_ : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_exists_ :
-    M.IsAssociatedFunction Self "exists_" exists_.
+  Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
   
   Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance_of :
-    M.IsAssociatedFunction Self "balance_of" balance_of.
+  Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
   
   Parameter get_approved : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_approved :
-    M.IsAssociatedFunction Self "get_approved" get_approved.
+  Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
   
   Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
   
@@ -473,13 +437,11 @@ Module Impl_erc721_Erc721.
   
   Parameter approve_for : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_approve_for :
-    M.IsAssociatedFunction Self "approve_for" approve_for.
+  Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
   
   Parameter approve : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_approve :
-    M.IsAssociatedFunction Self "approve" approve.
+  Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
   
   Parameter remove_token_from : (list Ty.t) -> (list Value.t) -> M.
   
@@ -488,8 +450,7 @@ Module Impl_erc721_Erc721.
   
   Parameter add_token_to : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_add_token_to :
-    M.IsAssociatedFunction Self "add_token_to" add_token_to.
+  Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
   
   Parameter transfer_token_from : (list Ty.t) -> (list Value.t) -> M.
   
@@ -498,8 +459,7 @@ Module Impl_erc721_Erc721.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer.
+  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
   

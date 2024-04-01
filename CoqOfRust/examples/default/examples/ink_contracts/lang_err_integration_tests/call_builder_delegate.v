@@ -2,8 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
-  (Ty.path "call_builder_delegate::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "call_builder_delegate::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 (* {
@@ -26,8 +25,7 @@ Axiom Hash :
   } *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
-  Definition Self : Ty.t :=
-    Ty.path "call_builder_delegate::CallBuilderDelegateTest".
+  Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
   (*
   Default
@@ -35,18 +33,9 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "i32")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
-      M.pure
-        (Value.StructRecord
-          "call_builder_delegate::CallBuilderDelegateTest"
-          [ ("value", α1) ])
+      M.pure (Value.StructRecord "call_builder_delegate::CallBuilderDelegateTest" [ ("value", α1) ])
     | _, _ => M.impossible
     end.
   
@@ -59,8 +48,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
-  Definition Self : Ty.t :=
-    Ty.path "call_builder_delegate::CallBuilderDelegateTest".
+  Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
   (*
       pub fn new(value: i32) -> Self {
@@ -72,10 +60,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
-      M.pure
-        (Value.StructRecord
-          "call_builder_delegate::CallBuilderDelegateTest"
-          [ ("value", α0) ])
+      M.pure (Value.StructRecord "call_builder_delegate::CallBuilderDelegateTest" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -110,8 +95,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_delegate :
-    M.IsAssociatedFunction Self "delegate" delegate.
+  Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
   
   (*
       pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {

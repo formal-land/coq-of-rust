@@ -73,11 +73,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "closure_annotated: ") in
@@ -102,8 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 :=
               M.call_closure
                 α7
-                [ closure_annotated; Value.Tuple [ Value.Integer Integer.I32 1 ]
-                ] in
+                [ closure_annotated; Value.Tuple [ Value.Integer Integer.I32 1 ] ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
             let* α11 := M.alloc (Value.Array [ α10 ]) in
@@ -115,11 +110,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "closure_inferred: ") in
@@ -142,10 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "call"
                 [] in
             let* α8 :=
-              M.call_closure
-                α7
-                [ closure_inferred; Value.Tuple [ Value.Integer Integer.I32 1 ]
-                ] in
+              M.call_closure α7 [ closure_inferred; Value.Tuple [ Value.Integer Integer.I32 1 ] ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
             let* α11 := M.alloc (Value.Array [ α10 ]) in
@@ -161,19 +149,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              M.match_operator
-                α0
-                [ fun γ => M.pure (Value.Integer Integer.I32 1) ]
+              M.match_operator α0 [ fun γ => M.pure (Value.Integer Integer.I32 1) ]
             | _ => M.impossible
             end)) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "closure returning one: ") in

@@ -62,13 +62,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
     M.IsTraitInstance
       "core::ops::arith::Add"
       Self
-      (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
-      (* Instance *)
-        [
-          ("Output", InstanceField.Ty _Output);
-          ("add", InstanceField.Method add)
-        ].
+      (* Trait polymorphic types *) [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
+      (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
@@ -82,13 +77,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
     M.IsTraitInstance
       "core::ops::arith::Add"
       Self
-      (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
-      (* Instance *)
-        [
-          ("Output", InstanceField.Ty _Output);
-          ("add", InstanceField.Method add)
-        ].
+      (* Trait polymorphic types *) [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
+      (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

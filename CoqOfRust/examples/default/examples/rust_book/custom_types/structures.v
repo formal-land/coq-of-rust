@@ -5,8 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Person";
     ty_params := [];
-    fields :=
-      [ ("name", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
+    fields := [ ("name", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
   } *)
 
 Module Impl_core_fmt_Debug_for_structures_Person.
@@ -31,15 +30,12 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       let* α5 :=
         (* Unsize *)
           let* α4 := M.read self in
-          M.pure
-            (M.pointer_coercion
-              (M.get_struct_record_field α4 "structures::Person" "name")) in
+          M.pure (M.pointer_coercion (M.get_struct_record_field α4 "structures::Person" "name")) in
       let* α6 := M.read (mk_str "age") in
       let* α9 :=
         (* Unsize *)
           let* α7 := M.read self in
-          let* α8 :=
-            M.alloc (M.get_struct_record_field α7 "structures::Person" "age") in
+          let* α8 := M.alloc (M.get_struct_record_field α7 "structures::Person" "age") in
           M.pure (M.pointer_coercion α8) in
       M.call_closure α0 [ α1; α2; α3; α5; α6; α9 ]
     | _, _ => M.impossible
@@ -78,10 +74,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
     name := "Rectangle";
     ty_params := [];
     fields :=
-      [
-        ("top_left", Ty.path "structures::Point");
-        ("bottom_right", Ty.path "structures::Point")
-      ];
+      [ ("top_left", Ty.path "structures::Point"); ("bottom_right", Ty.path "structures::Point") ];
   } *)
 
 (*
@@ -156,18 +149,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* peter :=
       let* α0 := M.read name in
       let* α1 := M.read age in
-      M.alloc
-        (Value.StructRecord
-          "structures::Person"
-          [ ("name", α0); ("age", α1) ]) in
+      M.alloc (Value.StructRecord "structures::Person" [ ("name", α0); ("age", α1) ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -192,16 +178,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* point :=
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
-      M.alloc
-        (Value.StructRecord "structures::Point" [ ("x", α0); ("y", α1) ]) in
+      M.alloc (Value.StructRecord "structures::Point" [ ("x", α0); ("y", α1) ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "point coordinates: (") in
@@ -218,18 +199,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "f32" ] in
             let* α8 :=
-              M.call_closure
-                α7
-                [ M.get_struct_record_field point "structures::Point" "x" ] in
+              M.call_closure α7 [ M.get_struct_record_field point "structures::Point" "x" ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
                 [ Ty.path "f32" ] in
             let* α10 :=
-              M.call_closure
-                α9
-                [ M.get_struct_record_field point "structures::Point" "y" ] in
+              M.call_closure α9 [ M.get_struct_record_field point "structures::Point" "y" ] in
             let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
             M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α6; α12 ] in
@@ -243,11 +220,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "second point: (") in
@@ -266,8 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 :=
               M.call_closure
                 α7
-                [ M.get_struct_record_field bottom_right "structures::Point" "x"
-                ] in
+                [ M.get_struct_record_field bottom_right "structures::Point" "x" ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -276,8 +248,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α10 :=
               M.call_closure
                 α9
-                [ M.get_struct_record_field bottom_right "structures::Point" "y"
-                ] in
+                [ M.get_struct_record_field bottom_right "structures::Point" "y" ] in
             let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
             M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α6; α12 ] in
@@ -289,16 +260,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         point
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_record_field_or_break_match
-                γ
-                "structures::Point"
-                "x" in
-            let* γ0_1 :=
-              M.get_struct_record_field_or_break_match
-                γ
-                "structures::Point"
-                "y" in
+            let* γ0_0 := M.get_struct_record_field_or_break_match γ "structures::Point" "x" in
+            let* γ0_1 := M.get_struct_record_field_or_break_match γ "structures::Point" "y" in
             let* left_edge := M.copy γ0_0 in
             let* top_edge := M.copy γ0_1 in
             let* _rectangle :=
@@ -309,27 +272,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Value.StructRecord
                   "structures::Rectangle"
                   [
-                    ("top_left",
-                      Value.StructRecord
-                        "structures::Point"
-                        [ ("x", α0); ("y", α1) ]);
+                    ("top_left", Value.StructRecord "structures::Point" [ ("x", α0); ("y", α1) ]);
                     ("bottom_right", α2)
                   ]) in
             let* _unit := M.alloc (Value.StructTuple "structures::Unit" []) in
             let* pair_ :=
               let* α0 := M.read UnsupportedLiteral in
-              M.alloc
-                (Value.StructTuple
-                  "structures::Pair"
-                  [ Value.Integer Integer.I32 1; α0 ]) in
+              M.alloc (Value.StructTuple "structures::Pair" [ Value.Integer Integer.I32 1; α0 ]) in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "pair contains ") in
@@ -346,20 +299,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_debug"
                         [ Ty.path "i32" ] in
                     let* α8 :=
-                      M.call_closure
-                        α7
-                        [ M.get_struct_tuple_field pair_ "structures::Pair" 0
-                        ] in
+                      M.call_closure α7 [ M.get_struct_tuple_field pair_ "structures::Pair" 0 ] in
                     let* α9 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_debug"
                         [ Ty.path "f32" ] in
                     let* α10 :=
-                      M.call_closure
-                        α9
-                        [ M.get_struct_tuple_field pair_ "structures::Pair" 1
-                        ] in
+                      M.call_closure α9 [ M.get_struct_tuple_field pair_ "structures::Pair" 1 ] in
                     let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                     M.pure (M.pointer_coercion α11) in
                 let* α13 := M.call_closure α1 [ α6; α12 ] in
@@ -370,26 +317,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               pair_
               [
                 fun γ =>
-                  let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "structures::Pair"
-                      0 in
-                  let* γ0_1 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "structures::Pair"
-                      1 in
+                  let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "structures::Pair" 0 in
+                  let* γ0_1 := M.get_struct_tuple_field_or_break_match γ "structures::Pair" 1 in
                   let* integer := M.copy γ0_0 in
                   let* decimal := M.copy γ0_1 in
                   let* _ :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α6 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "pair contains ") in

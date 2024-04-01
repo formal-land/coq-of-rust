@@ -13,11 +13,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "You called ") in
@@ -56,11 +52,7 @@ Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "You called ") in
@@ -116,11 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -143,9 +131,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "u32" ] in
             let* α10 :=
-              BinOp.Panic.add
-                (Value.Integer Integer.U32 1)
-                (Value.Integer Integer.U32 1) in
+              BinOp.Panic.add (Value.Integer Integer.U32 1) (Value.Integer Integer.U32 1) in
             let* α11 := M.alloc α10 in
             let* α12 := M.call_closure α9 [ α11 ] in
             let* α13 := M.alloc (Value.Array [ α8; α12 ]) in
@@ -157,11 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -177,10 +159,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α8 :=
-              M.call_closure
-                α7
-                [ mk_str "{ let x = 1u32; x * x + 2 * x - 1 }" ] in
+            let* α8 := M.call_closure α7 [ mk_str "{ let x = 1u32; x * x + 2 * x - 1 }" ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")

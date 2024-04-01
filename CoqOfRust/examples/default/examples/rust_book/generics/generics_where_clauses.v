@@ -12,11 +12,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           println!("{:?}", Some(self));
       }
   *)
-  Definition print_in_option
-      (T : Ty.t)
-      (τ : list Ty.t)
-      (α : list Value.t)
-      : M :=
+  Definition print_in_option (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
@@ -24,11 +20,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "") in
@@ -44,9 +36,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
                   "new_debug"
                   [ Ty.apply (Ty.path "core::option::Option") [ T ] ] in
               let* α7 := M.read self in
-              let* α8 :=
-                M.alloc
-                  (Value.StructTuple "core::option::Option::Some" [ α7 ]) in
+              let* α8 := M.alloc (Value.StructTuple "core::option::Option::Some" [ α7 ]) in
               let* α9 := M.call_closure α6 [ α8 ] in
               let* α10 := M.alloc (Value.Array [ α9 ]) in
               M.pure (M.pointer_coercion α10) in
@@ -65,8 +55,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       "generics_where_clauses::PrintInOption"
       (Self T)
       (* Trait polymorphic types *) []
-      (* Instance *)
-        [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
+      (* Instance *) [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (*
@@ -91,10 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α2 :=
@@ -114,9 +100,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "generics_where_clauses::PrintInOption"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           []
           "print_in_option"
           [] in

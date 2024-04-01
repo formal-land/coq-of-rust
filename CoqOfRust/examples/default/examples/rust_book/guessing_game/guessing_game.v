@@ -56,11 +56,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Guess the number!
@@ -80,11 +76,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_const"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "Please input your guess.
@@ -96,11 +88,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc α6 in
           M.alloc (Value.Tuple []) in
         let* guess :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "alloc::string::String")
-              "new"
-              [] in
+          let* α0 := M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
           let* α1 := M.call_closure α0 [] in
           M.alloc α1 in
         let* _ :=
@@ -111,11 +99,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "usize"; Ty.path "std::io::error::Error" ])
               "expect"
               [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "std::io::stdio::Stdin")
-              "read_line"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "std::io::stdio::Stdin") "read_line" [] in
           let* α2 := M.get_function "std::io::stdio::stdin" [] in
           let* α3 := M.call_closure α2 [] in
           let* α4 := M.alloc α3 in
@@ -124,11 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call_closure α0 [ α5; α6 ] in
           M.alloc α7 in
         let* guess :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "str")
-              "parse"
-              [ Ty.path "u32" ] in
+          let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "u32" ] in
           let* α1 := M.get_associated_function (Ty.path "str") "trim" [] in
           let* α2 :=
             M.get_trait_method
@@ -147,18 +127,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::result::Result::Ok"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                   let* num := M.copy γ0_0 in
                   M.pure num;
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::result::Result::Err"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                   let* α0 := M.continue in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in
@@ -168,11 +142,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α5 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "You guessed: ") in
@@ -194,8 +164,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.call_closure α0 [ α10 ] in
             M.alloc α11 in
           M.alloc (Value.Tuple []) in
-        let* α0 :=
-          M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
+        let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
         let* α1 := M.call_closure α0 [ guess; secret_number ] in
         let* α2 := M.alloc α1 in
         M.match_operator
@@ -205,10 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Too small!
@@ -223,10 +189,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Too big!
@@ -242,10 +205,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                   let* α4 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "You win!

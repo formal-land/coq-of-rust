@@ -39,8 +39,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* γ :=
               let* α0 := M.read b in
-              let* α1 :=
-                M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
+              let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
               M.pure (M.use α1) in
             let* _ :=
               let* α0 := M.read γ in

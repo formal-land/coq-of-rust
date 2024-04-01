@@ -109,35 +109,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.call_closure
           α0
-          [
-            Value.StructTuple
-              "generics_functions::SGen"
-              [ Value.Integer Integer.I32 6 ]
-          ] in
+          [ Value.StructTuple "generics_functions::SGen" [ Value.Integer Integer.I32 6 ] ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.get_function "generics_functions::generic" [ Ty.path "char" ] in
+      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
         M.call_closure
           α0
-          [
-            Value.StructTuple
-              "generics_functions::SGen"
-              [ Value.UnicodeChar 97 ]
-          ] in
+          [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.get_function "generics_functions::generic" [ Ty.path "char" ] in
+      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
         M.call_closure
           α0
-          [
-            Value.StructTuple
-              "generics_functions::SGen"
-              [ Value.UnicodeChar 99 ]
-          ] in
+          [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -18,11 +18,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "DoubleError") in
       M.call_closure α0 [ α1; α2 ]
@@ -79,17 +75,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_fmt"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
       let* α1 := M.read f in
-      let* α2 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Arguments")
-          "new_const"
-          [] in
+      let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
       let* α5 :=
         (* Unsize *)
           let* α3 := M.read (mk_str "invalid first item to double") in
@@ -137,14 +125,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
         [
           Ty.path "i32";
           Ty.function
-            [
-              Ty.tuple
-                [
-                  Ty.apply
-                    (Ty.path "&")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                ]
-            ]
+            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ] ]
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ])
@@ -153,15 +134,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "core::option::Option")
-          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-          ])
+          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ])
         "ok_or"
         [ Ty.path "defining_an_error_type::DoubleError" ] in
     let* α2 :=
       M.get_associated_function
-        (Ty.apply
-          (Ty.path "slice")
-          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+        (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
         "first"
         [] in
     let* α3 :=
@@ -169,19 +147,14 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
         "core::ops::deref::Deref"
         (Ty.apply
           (Ty.path "alloc::vec::Vec")
-          [
-            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            Ty.path "alloc::alloc::Global"
-          ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
         []
         "deref"
         [] in
     let* α4 := M.call_closure α3 [ vec ] in
     let* α5 := M.call_closure α2 [ α4 ] in
     let* α6 :=
-      M.call_closure
-        α1
-        [ α5; Value.StructTuple "defining_an_error_type::DoubleError" [] ] in
+      M.call_closure α1 [ α5; Value.StructTuple "defining_an_error_type::DoubleError" [] ] in
     M.call_closure
       α0
       [
@@ -200,40 +173,24 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "defining_an_error_type::DoubleError"
-                          ])
+                          [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ])
                         "map"
-                        [
-                          Ty.path "i32";
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "i32" ] ]
-                            (Ty.path "i32")
+                        [ Ty.path "i32"; Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
                         ] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                         "map_err"
                         [
                           Ty.path "defining_an_error_type::DoubleError";
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.path "core::num::error::ParseIntError" ]
-                            ]
+                            [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
                             (Ty.path "defining_an_error_type::DoubleError")
                         ] in
                     let* α2 :=
-                      M.get_associated_function
-                        (Ty.path "str")
-                        "parse"
-                        [ Ty.path "i32" ] in
+                      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
                     let* α3 := M.read s in
                     let* α4 := M.read α3 in
                     let* α5 := M.call_closure α2 [ α4 ] in
@@ -252,9 +209,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     fun γ =>
                                       M.pure
-                                        (Value.StructTuple
-                                          "defining_an_error_type::DoubleError"
-                                          [])
+                                        (Value.StructTuple "defining_an_error_type::DoubleError" [])
                                   ]
                               | _ => M.impossible
                               end)
@@ -274,9 +229,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                   fun γ =>
                                     let* i := M.copy γ in
                                     let* α0 := M.read i in
-                                    BinOp.Panic.mul
-                                      (Value.Integer Integer.I32 2)
-                                      α0
+                                    BinOp.Panic.mul (Value.Integer Integer.I32 2) α0
                                 ]
                             | _ => M.impossible
                             end)
@@ -305,19 +258,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The first doubled is ") in
@@ -340,19 +285,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Error: ") in
@@ -396,9 +333,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* numbers :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -408,9 +343,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -429,10 +362,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [] in
@@ -440,9 +370,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* strings :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -452,9 +380,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"

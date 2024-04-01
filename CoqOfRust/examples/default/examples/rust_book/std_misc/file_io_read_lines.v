@@ -33,17 +33,13 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "std::io::BufRead"
-        (Ty.apply
-          (Ty.path "std::io::buffered::bufreader::BufReader")
-          [ Ty.path "std::fs::File" ])
+        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
         []
         "lines"
         [] in
     let* α1 :=
       M.get_associated_function
-        (Ty.apply
-          (Ty.path "std::io::buffered::bufreader::BufReader")
-          [ Ty.path "std::fs::File" ])
+        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
         "new"
         [] in
     let* α2 := M.read file in
@@ -70,13 +66,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* lines :=
       let* α0 := M.get_function "file_io_read_lines::read_lines" [] in
-      let* α1 :=
-        M.get_trait_method
-          "alloc::string::ToString"
-          (Ty.path "str")
-          []
-          "to_string"
-          [] in
+      let* α1 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
       let* α2 := M.read (mk_str "./hosts") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -86,10 +76,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         "core::iter::traits::collect::IntoIterator"
         (Ty.apply
           (Ty.path "std::io::Lines")
-          [
-            Ty.apply
-              (Ty.path "std::io::buffered::bufreader::BufReader")
-              [ Ty.path "std::fs::File" ]
+          [ Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ]
           ])
         []
         "into_iter"
@@ -130,15 +117,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::option::Option::Some"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* line := M.copy γ0_0 in
                       let* _ :=
                         let* _ :=
-                          let* α0 :=
-                            M.get_function "std::io::stdio::_print" [] in
+                          let* α0 := M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")

@@ -48,10 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "core::str::error::Utf8Error"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error" ])
           "unwrap"
           [] in
       let* α1 := M.get_function "core::str::converts::from_utf8" [] in
@@ -62,11 +59,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in

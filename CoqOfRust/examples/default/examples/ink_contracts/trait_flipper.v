@@ -24,13 +24,7 @@ Module Impl_trait_flipper_Flipper.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "bool")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
     | _, _ => M.impossible
@@ -54,9 +48,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 :=
-          M.read
-            (M.get_struct_record_field α1 "trait_flipper::Flipper" "value") in
+        let* α2 := M.read (M.get_struct_record_field α1 "trait_flipper::Flipper" "value") in
         M.assign
           (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
           (UnOp.Pure.not α2) in
@@ -84,7 +76,5 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       "trait_flipper::Flip"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *)
-        [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get)
-        ].
+      (* Instance *) [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

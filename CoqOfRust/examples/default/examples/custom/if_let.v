@@ -65,27 +65,17 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "if_let::Container::Left"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "if_let::Container::Left" 0 in
                   let* value := M.copy γ0_0 in
                   M.pure (Value.Tuple [ value ]);
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "if_let::Container::Right"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "if_let::Container::Right" 0 in
                   let* value := M.copy γ0_0 in
                   M.pure (Value.Tuple [ value ])
               ]
               (M.closure
-                (fun γ =>
-                  match γ with
-                  | [ value ] => M.pure value
-                  | _ => M.impossible
-                  end));
+                (fun γ => match γ with | [ value ] => M.pure value | _ => M.impossible end));
           fun γ => M.alloc (Value.Integer Integer.I32 0)
         ] in
     M.read α0
@@ -128,10 +118,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* x :=
-      M.alloc
-        (Value.StructTuple
-          "core::option::Option::Some"
-          [ Value.Integer Integer.I32 5 ]) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 5 ]) in
     let* _ :=
       let* α0 := M.alloc (Value.Tuple []) in
       M.match_operator
@@ -139,20 +126,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* y := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "if: ") in
@@ -182,25 +161,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         x
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* y := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "match: ") in
@@ -231,35 +198,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* y := M.copy γ0_0 in
             let* γ :=
               let* α0 := M.read y in
-              let* α1 :=
-                M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 3)) in
+              let* α1 := M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 3)) in
               M.pure (M.use α1) in
             let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* z := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "if and: ") in
@@ -296,17 +250,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         x
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* y := M.copy γ0_0 in
             let* γ :=
               let* α0 := M.read y in
@@ -315,19 +261,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let γ := x in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* z := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "match and: ") in

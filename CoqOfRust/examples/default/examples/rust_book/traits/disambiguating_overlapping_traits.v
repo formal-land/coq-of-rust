@@ -11,8 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Form";
     ty_params := [];
-    fields :=
-      [ ("username", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
+    fields := [ ("username", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
   } *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
@@ -28,21 +27,11 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.path "alloc::string::String")
-          []
-          "clone"
-          [] in
+        M.get_trait_method "core::clone::Clone" (Ty.path "alloc::string::String") [] "clone" [] in
       let* α1 := M.read self in
       M.call_closure
         α0
-        [
-          M.get_struct_record_field
-            α1
-            "disambiguating_overlapping_traits::Form"
-            "username"
-        ]
+        [ M.get_struct_record_field α1 "disambiguating_overlapping_traits::Form" "username" ]
     | _, _ => M.impossible
     end.
   
@@ -67,11 +56,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_record_field
-          α0
-          "disambiguating_overlapping_traits::Form"
-          "age")
+      M.read (M.get_struct_record_field α0 "disambiguating_overlapping_traits::Form" "age")
     | _, _ => M.impossible
     end.
   
@@ -105,13 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* form :=
-      let* α0 :=
-        M.get_trait_method
-          "alloc::borrow::ToOwned"
-          (Ty.path "str")
-          []
-          "to_owned"
-          [] in
+      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -129,13 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "alloc::string::ToString"
-          (Ty.path "str")
-          []
-          "to_string"
-          [] in
+      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -169,30 +142,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.read γ in
                     M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind :=
-                    M.alloc
-                      (Value.StructTuple
-                        "core::panicking::AssertKind::Eq"
-                        []) in
+                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [
-                        Ty.path "alloc::string::String";
-                        Ty.path "alloc::string::String"
-                      ] in
+                      [ Ty.path "alloc::string::String"; Ty.path "alloc::string::String" ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
                   let* α4 :=
                     M.call_closure
                       α0
-                      [
-                        α1;
-                        α2;
-                        α3;
-                        Value.StructTuple "core::option::Option::None" []
-                      ] in
+                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in
@@ -236,11 +197,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.read γ in
                     M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind :=
-                    M.alloc
-                      (Value.StructTuple
-                        "core::panicking::AssertKind::Eq"
-                        []) in
+                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
@@ -251,12 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α4 :=
                     M.call_closure
                       α0
-                      [
-                        α1;
-                        α2;
-                        α3;
-                        Value.StructTuple "core::option::Option::None" []
-                      ] in
+                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in

@@ -13,8 +13,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -28,8 +27,7 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
   
   Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -81,11 +79,7 @@ Module Impl_core_marker_Copy_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_mother_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
@@ -134,18 +128,14 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_AccountId.
 
 Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
-Axiom Hash :
-  (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -235,10 +225,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_Bids.
 
 Module Impl_core_clone_Clone_for_mother_Bids.
@@ -323,10 +310,7 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_Outline.
 
 Module Impl_core_clone_Clone_for_mother_Outline.
@@ -421,10 +405,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_Status.
 
 Module Impl_core_clone_Clone_for_mother_Status.
@@ -453,9 +434,7 @@ End Impl_core_clone_Clone_for_mother_Status.
         ("status", Ty.path "mother::Status");
         ("finalized", Ty.path "bool");
         ("vector",
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -505,10 +484,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_Auction.
 
 Module Impl_core_clone_Clone_for_mother_Auction.
@@ -601,10 +577,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_mother_Failure.
 
 (* StructRecord
@@ -636,8 +609,7 @@ Module Impl_mother_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_mother_Env.
 
 (* StructRecord
@@ -648,9 +620,7 @@ End Impl_mother_Env.
       [
         ("auction", Ty.path "mother::Auction");
         ("balances",
-          Ty.apply
-            (Ty.path "mother::Mapping")
-            [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
       ];
   } *)
 
@@ -672,8 +642,7 @@ Module Impl_mother_Mother.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -685,18 +654,15 @@ Module Impl_mother_Mother.
   
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   Parameter failed_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_failed_new :
-    M.IsAssociatedFunction Self "failed_new" failed_new.
+  Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
   
   Parameter echo_auction : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_echo_auction :
-    M.IsAssociatedFunction Self "echo_auction" echo_auction.
+  Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
   
   Parameter revert_or_trap : (list Ty.t) -> (list Value.t) -> M.
   
@@ -705,6 +671,5 @@ Module Impl_mother_Mother.
   
   Parameter debug_log : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_debug_log :
-    M.IsAssociatedFunction Self "debug_log" debug_log.
+  Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.
 End Impl_mother_Mother.

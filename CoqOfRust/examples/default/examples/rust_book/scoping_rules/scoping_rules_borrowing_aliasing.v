@@ -5,8 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Point";
     ty_params := [];
-    fields :=
-      [ ("x", Ty.path "i32"); ("y", Ty.path "i32"); ("z", Ty.path "i32") ];
+    fields := [ ("x", Ty.path "i32"); ("y", Ty.path "i32"); ("z", Ty.path "i32") ];
   } *)
 
 (*
@@ -83,11 +82,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -108,12 +103,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α10 :=
               M.call_closure
                 α8
-                [
-                  M.get_struct_record_field
-                    α9
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "x"
-                ] in
+                [ M.get_struct_record_field α9 "scoping_rules_borrowing_aliasing::Point" "x" ] in
             let* α11 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -123,12 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α13 :=
               M.call_closure
                 α11
-                [
-                  M.get_struct_record_field
-                    α12
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "y"
-                ] in
+                [ M.get_struct_record_field α12 "scoping_rules_borrowing_aliasing::Point" "y" ] in
             let* α14 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -137,12 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α15 :=
               M.call_closure
                 α14
-                [
-                  M.get_struct_record_field
-                    point
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "z"
-                ] in
+                [ M.get_struct_record_field point "scoping_rules_borrowing_aliasing::Point" "z" ] in
             let* α16 := M.alloc (Value.Array [ α10; α13; α15 ]) in
             M.pure (M.pointer_coercion α16) in
         let* α18 := M.call_closure α1 [ α7; α17 ] in
@@ -152,11 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -177,12 +153,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α10 :=
               M.call_closure
                 α8
-                [
-                  M.get_struct_record_field
-                    α9
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "x"
-                ] in
+                [ M.get_struct_record_field α9 "scoping_rules_borrowing_aliasing::Point" "x" ] in
             let* α11 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -192,12 +163,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α13 :=
               M.call_closure
                 α11
-                [
-                  M.get_struct_record_field
-                    α12
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "y"
-                ] in
+                [ M.get_struct_record_field α12 "scoping_rules_borrowing_aliasing::Point" "y" ] in
             let* α14 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -206,12 +172,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α15 :=
               M.call_closure
                 α14
-                [
-                  M.get_struct_record_field
-                    point
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "z"
-                ] in
+                [ M.get_struct_record_field point "scoping_rules_borrowing_aliasing::Point" "z" ] in
             let* α16 := M.alloc (Value.Array [ α10; α13; α15 ]) in
             M.pure (M.pointer_coercion α16) in
         let* α18 := M.call_closure α1 [ α7; α17 ] in
@@ -222,35 +183,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.read mutable_borrow in
       M.assign
-        (M.get_struct_record_field
-          α0
-          "scoping_rules_borrowing_aliasing::Point"
-          "x")
+        (M.get_struct_record_field α0 "scoping_rules_borrowing_aliasing::Point" "x")
         (Value.Integer Integer.I32 5) in
     let* _ :=
       let* α0 := M.read mutable_borrow in
       M.assign
-        (M.get_struct_record_field
-          α0
-          "scoping_rules_borrowing_aliasing::Point"
-          "y")
+        (M.get_struct_record_field α0 "scoping_rules_borrowing_aliasing::Point" "y")
         (Value.Integer Integer.I32 2) in
     let* _ :=
       let* α0 := M.read mutable_borrow in
       M.assign
-        (M.get_struct_record_field
-          α0
-          "scoping_rules_borrowing_aliasing::Point"
-          "z")
+        (M.get_struct_record_field α0 "scoping_rules_borrowing_aliasing::Point" "z")
         (Value.Integer Integer.I32 1) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -271,12 +219,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α10 :=
               M.call_closure
                 α8
-                [
-                  M.get_struct_record_field
-                    α9
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "x"
-                ] in
+                [ M.get_struct_record_field α9 "scoping_rules_borrowing_aliasing::Point" "x" ] in
             let* α11 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -286,12 +229,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α13 :=
               M.call_closure
                 α11
-                [
-                  M.get_struct_record_field
-                    α12
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "y"
-                ] in
+                [ M.get_struct_record_field α12 "scoping_rules_borrowing_aliasing::Point" "y" ] in
             let* α14 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -301,12 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α16 :=
               M.call_closure
                 α14
-                [
-                  M.get_struct_record_field
-                    α15
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "z"
-                ] in
+                [ M.get_struct_record_field α15 "scoping_rules_borrowing_aliasing::Point" "z" ] in
             let* α17 := M.alloc (Value.Array [ α10; α13; α16 ]) in
             M.pure (M.pointer_coercion α17) in
         let* α19 := M.call_closure α1 [ α7; α18 ] in
@@ -317,11 +250,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point now has coordinates: (") in
@@ -342,12 +271,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α10 :=
               M.call_closure
                 α8
-                [
-                  M.get_struct_record_field
-                    α9
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "x"
-                ] in
+                [ M.get_struct_record_field α9 "scoping_rules_borrowing_aliasing::Point" "x" ] in
             let* α11 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -357,12 +281,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α13 :=
               M.call_closure
                 α11
-                [
-                  M.get_struct_record_field
-                    α12
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "y"
-                ] in
+                [ M.get_struct_record_field α12 "scoping_rules_borrowing_aliasing::Point" "y" ] in
             let* α14 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
@@ -372,12 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α16 :=
               M.call_closure
                 α14
-                [
-                  M.get_struct_record_field
-                    α15
-                    "scoping_rules_borrowing_aliasing::Point"
-                    "z"
-                ] in
+                [ M.get_struct_record_field α15 "scoping_rules_borrowing_aliasing::Point" "z" ] in
             let* α17 := M.alloc (Value.Array [ α10; α13; α16 ]) in
             M.pure (M.pointer_coercion α17) in
         let* α19 := M.call_closure α1 [ α7; α18 ] in

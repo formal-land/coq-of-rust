@@ -94,11 +94,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Casting: ") in
@@ -137,11 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1000 as a u16 is: ") in
@@ -167,11 +159,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1000 as a u8 is : ") in
@@ -197,11 +185,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "  -1 as a u8 is : ") in
@@ -227,11 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1000 mod 256 is : ") in
@@ -247,9 +227,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "i32" ] in
             let* α7 :=
-              BinOp.Panic.rem
-                (Value.Integer Integer.I32 1000)
-                (Value.Integer Integer.I32 256) in
+              BinOp.Panic.rem (Value.Integer Integer.I32 1000) (Value.Integer Integer.I32 256) in
             let* α8 := M.alloc α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
             let* α10 := M.alloc (Value.Array [ α9 ]) in
@@ -261,11 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str " 128 as a i16 is: ") in
@@ -291,11 +265,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str " 128 as a i8 is : ") in
@@ -321,11 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1000 as a u8 is : ") in
@@ -351,11 +317,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str " 232 as a i8 is : ") in
@@ -381,11 +343,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str " 300.0 as u8 is : ") in
@@ -412,11 +370,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "-100.0 as u8 is : ") in
@@ -443,11 +397,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "   nan as u8 is : ") in
@@ -475,11 +425,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str " 300.0 as u8 is : ") in
@@ -495,10 +441,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "u8" ] in
             let* α7 :=
-              M.get_associated_function
-                (Ty.path "f32")
-                "to_int_unchecked"
-                [ Ty.path "u8" ] in
+              M.get_associated_function (Ty.path "f32") "to_int_unchecked" [ Ty.path "u8" ] in
             let* α8 := M.read UnsupportedLiteral in
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
@@ -512,11 +455,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "-100.0 as u8 is : ") in
@@ -532,10 +471,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "u8" ] in
             let* α7 :=
-              M.get_associated_function
-                (Ty.path "f32")
-                "to_int_unchecked"
-                [ Ty.path "u8" ] in
+              M.get_associated_function (Ty.path "f32") "to_int_unchecked" [ Ty.path "u8" ] in
             let* α8 := M.read UnsupportedLiteral in
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
@@ -549,11 +485,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "   nan as u8 is : ") in
@@ -569,10 +501,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "u8" ] in
             let* α7 :=
-              M.get_associated_function
-                (Ty.path "f32")
-                "to_int_unchecked"
-                [ Ty.path "u8" ] in
+              M.get_associated_function (Ty.path "f32") "to_int_unchecked" [ Ty.path "u8" ] in
             let* α8 := M.get_constant "core::f32::NAN" in
             let* α9 := M.read α8 in
             let* α10 := M.call_closure α7 [ α9 ] in

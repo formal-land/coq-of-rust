@@ -30,11 +30,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.

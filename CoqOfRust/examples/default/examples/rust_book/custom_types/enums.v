@@ -61,10 +61,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 :=
@@ -72,9 +69,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                       (mk_str
                         ("page loaded, r"
                           ++
-                          (String.String
-                            "233"
-                            ("f" ++ (String.String "233" "
+                          (String.String "233" ("f" ++ (String.String "233" "
 "))))) in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
@@ -86,10 +81,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "page unloaded
@@ -101,19 +93,11 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "enums::WebEvent::KeyPress"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::KeyPress" 0 in
             let* c := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "pressed '") in
@@ -136,19 +120,11 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "enums::WebEvent::Paste"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::Paste" 0 in
             let* s := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "pasted """) in
@@ -171,26 +147,14 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_record_field_or_break_match
-                γ
-                "enums::WebEvent::Click"
-                "x" in
-            let* γ0_1 :=
-              M.get_struct_record_field_or_break_match
-                γ
-                "enums::WebEvent::Click"
-                "y" in
+            let* γ0_0 := M.get_struct_record_field_or_break_match γ "enums::WebEvent::Click" "x" in
+            let* γ0_1 := M.get_struct_record_field_or_break_match γ "enums::WebEvent::Click" "y" in
             let* x := M.copy γ0_0 in
             let* y := M.copy γ0_1 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "clicked at x=") in
@@ -245,18 +209,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* pressed :=
-      M.alloc
-        (Value.StructTuple
-          "enums::WebEvent::KeyPress"
-          [ Value.UnicodeChar 120 ]) in
+      M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ]) in
     let* pasted :=
-      let* α0 :=
-        M.get_trait_method
-          "alloc::borrow::ToOwned"
-          (Ty.path "str")
-          []
-          "to_owned"
-          [] in
+      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
       let* α1 := M.read (mk_str "my text") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc (Value.StructTuple "enums::WebEvent::Paste" [ α2 ]) in
@@ -264,13 +219,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructRecord
           "enums::WebEvent::Click"
-          [
-            ("x", Value.Integer Integer.I64 20);
-            ("y", Value.Integer Integer.I64 80)
-          ]) in
+          [ ("x", Value.Integer Integer.I64 20); ("y", Value.Integer Integer.I64 80) ]) in
     let* load := M.alloc (Value.StructTuple "enums::WebEvent::PageLoad" []) in
-    let* unload :=
-      M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
+    let* unload := M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read pressed in

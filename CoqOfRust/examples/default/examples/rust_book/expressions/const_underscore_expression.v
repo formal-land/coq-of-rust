@@ -34,11 +34,7 @@ Module underscore.
       match τ, α with
       | [], [ self ] =>
         let* self := M.alloc self in
-        M.read
-          (M.get_struct_record_field
-            self
-            "const_underscore_expression::Bar"
-            "test")
+        M.read (M.get_struct_record_field self "const_underscore_expression::Bar" "test")
       | _, _ => M.impossible
       end.
     

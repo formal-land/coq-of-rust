@@ -33,8 +33,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed".
+  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed".
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   

@@ -43,10 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α2 :=
@@ -74,10 +71,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α2 :=
@@ -96,11 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "2 in vec1: ") in
@@ -127,10 +117,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "bool")
                 ] in
             let* α8 :=
-              M.get_associated_function
-                (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-                "iter"
-                [] in
+              M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "iter" [] in
             let* α9 :=
               M.get_trait_method
                 "core::ops::deref::Deref"
@@ -160,8 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* γ := M.read γ in
                               let* x := M.copy γ in
                               let* α0 := M.read x in
-                              M.pure
-                                (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                              M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
                           ]
                       | _ => M.impossible
                       end)
@@ -177,11 +163,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "2 in vec2: ") in
@@ -204,8 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
                 []
                 "any"
-                [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool")
-                ] in
+                [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ] in
             let* α8 :=
               M.get_trait_method
                 "core::iter::traits::collect::IntoIterator"
@@ -234,8 +215,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               let* x := M.copy γ in
                               let* α0 := M.read x in
-                              M.pure
-                                (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                              M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
                           ]
                       | _ => M.impossible
                       end)
@@ -251,11 +231,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "vec1 len: ") in
@@ -289,11 +265,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "First element of vec1 is: ") in
@@ -317,8 +289,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "usize" ]
                 "index"
                 [] in
-            let* α8 :=
-              M.call_closure α7 [ vec1; Value.Integer Integer.Usize 0 ] in
+            let* α8 := M.call_closure α7 [ vec1; Value.Integer Integer.Usize 0 ] in
             let* α9 := M.call_closure α6 [ α8 ] in
             let* α10 := M.alloc (Value.Array [ α9 ]) in
             M.pure (M.pointer_coercion α10) in
@@ -329,27 +300,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* array1 :=
       M.alloc
         (Value.Array
-          [
-            Value.Integer Integer.I32 1;
-            Value.Integer Integer.I32 2;
-            Value.Integer Integer.I32 3
+          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2; Value.Integer Integer.I32 3
           ]) in
     let* array2 :=
       M.alloc
         (Value.Array
-          [
-            Value.Integer Integer.I32 4;
-            Value.Integer Integer.I32 5;
-            Value.Integer Integer.I32 6
+          [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5; Value.Integer Integer.I32 6
           ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "2 in array1: ") in
@@ -376,10 +337,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "bool")
                 ] in
             let* α8 :=
-              M.get_associated_function
-                (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-                "iter"
-                [] in
+              M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "iter" [] in
             let* α9 := (* Unsize *) M.pure (M.pointer_coercion array1) in
             let* α10 := M.call_closure α8 [ α9 ] in
             let* α11 := M.alloc α10 in
@@ -400,8 +358,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* γ := M.read γ in
                               let* x := M.copy γ in
                               let* α0 := M.read x in
-                              M.pure
-                                (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                              M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
                           ]
                       | _ => M.impossible
                       end)
@@ -417,11 +374,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "2 in array2: ") in
@@ -450,9 +403,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 :=
               M.get_trait_method
                 "core::iter::traits::collect::IntoIterator"
-                (Ty.apply
-                  (Ty.path "&")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ])
+                (Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ])
                 []
                 "into_iter"
                 [] in
@@ -475,8 +426,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* x := M.copy γ in
                               let* α0 := M.read x in
                               let* α1 := M.read α0 in
-                              M.pure
-                                (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2))
+                              M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2))
                           ]
                       | _ => M.impossible
                       end)

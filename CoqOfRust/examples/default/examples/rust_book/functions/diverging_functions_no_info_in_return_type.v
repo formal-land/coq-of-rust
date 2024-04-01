@@ -7,10 +7,7 @@ fn some_fn() {
 }
 *)
 Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -22,24 +19,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* a :=
-      let* α0 :=
-        M.get_function
-          "diverging_functions_no_info_in_return_type::some_fn"
-          [] in
+      let* α0 := M.get_function "diverging_functions_no_info_in_return_type::some_fn" [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "std::io::stdio::_print" [] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Arguments")
-          "new_const"
-          [] in
+      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
       let* α4 :=
         (* Unsize *)
-          let* α2 :=
-            M.read
-              (mk_str "This function returns and you can see this line.
+          let* α2 := M.read (mk_str "This function returns and you can see this line.
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
           M.pure (M.pointer_coercion α3) in

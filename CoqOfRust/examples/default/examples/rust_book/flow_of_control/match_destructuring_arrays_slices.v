@@ -46,10 +46,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* array :=
       M.alloc
         (Value.Array
-          [
-            Value.Integer Integer.I32 1;
-            Value.Integer Integer.I32 (-2);
-            Value.Integer Integer.I32 6
+          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 (-2); Value.Integer Integer.I32 6
           ]) in
     let* α0 :=
       M.match_operator
@@ -66,11 +63,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* third := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "array[0] = 0, array[1] = ") in
@@ -109,11 +102,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* third := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "array[0] = 1, array[2] = ") in
@@ -141,22 +130,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_rest := M.get_slice_rest_or_break_match γ 2 0 in
             let* _ :=
               let* α0 := M.read γ0_0 in
-              M.is_constant_or_break_match
-                α0
-                (Value.Integer Integer.I32 (-1)) in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 (-1)) in
             let* second := M.copy γ0_1 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "array[0] = -1, array[1] = ") in
-                  let* α3 :=
-                    M.read (mk_str " and all the other ones were ignored
+                  let* α3 := M.read (mk_str " and all the other ones were ignored
 ") in
                   let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                   M.pure (M.pointer_coercion α4) in
@@ -185,11 +167,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* tail := M.copy γ0_rest in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "array[0] = 3, array[1] = ") in
@@ -227,11 +205,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* last := M.copy γ0_rev0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "array[0] = ") in

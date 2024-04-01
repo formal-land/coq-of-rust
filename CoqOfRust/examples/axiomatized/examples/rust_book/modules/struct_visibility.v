@@ -22,9 +22,7 @@ Module my.
     
     Parameter new : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom AssociatedFunction_new :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new" (new T).
+    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 

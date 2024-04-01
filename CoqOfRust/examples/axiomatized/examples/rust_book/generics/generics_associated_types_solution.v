@@ -12,8 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Empty module 'Contains' *)
 
 Module Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Definition Self : Ty.t :=
-    Ty.path "generics_associated_types_solution::Container".
+  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
   
   Definition _A : Ty.t := Ty.path "i32".
   

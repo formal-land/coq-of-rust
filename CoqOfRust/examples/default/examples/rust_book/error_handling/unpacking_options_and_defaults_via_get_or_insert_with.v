@@ -35,8 +35,7 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit".
+  Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit".
   
   (*
   Debug
@@ -46,11 +45,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 :=
         M.match_operator
@@ -117,8 +112,7 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* my_fruit :=
-      M.alloc (Value.StructTuple "core::option::Option::None" []) in
+    let* my_fruit := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* get_lemon_as_fallback :=
       M.alloc
         (M.closure
@@ -140,8 +134,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [] in
                         let* α4 :=
                           (* Unsize *)
-                            let* α2 :=
-                              M.read (mk_str "Providing lemon as fallback
+                            let* α2 := M.read (mk_str "Providing lemon as fallback
 ") in
                             let* α3 := M.alloc (Value.Array [ α2 ]) in
                             M.pure (M.pointer_coercion α3) in
@@ -163,16 +156,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [
-              Ty.path
-                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-            ])
+            [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ])
           "get_or_insert_with"
           [
             Ty.function
               [ Ty.tuple [] ]
-              (Ty.path
-                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
+              (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
           ] in
       let* α1 := M.read get_lemon_as_fallback in
       let* α2 := M.call_closure α0 [ my_fruit; α1 ] in
@@ -180,11 +169,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "my_fruit is: ") in
@@ -201,10 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "&mut")
-                    [
-                      Ty.path
-                        "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-                    ]
+                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ first_available_fruit ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -216,11 +198,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "first_available_fruit is: ") in
@@ -237,10 +215,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "&mut")
-                    [
-                      Ty.path
-                        "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-                    ]
+                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ first_available_fruit ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -263,16 +238,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [
-              Ty.path
-                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-            ])
+            [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ])
           "get_or_insert_with"
           [
             Ty.function
               [ Ty.tuple [] ]
-              (Ty.path
-                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
+              (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
           ] in
       let* α1 := M.read get_lemon_as_fallback in
       let* α2 := M.call_closure α0 [ my_apple; α1 ] in
@@ -280,11 +251,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "should_be_apple is: ") in
@@ -301,10 +268,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "&mut")
-                    [
-                      Ty.path
-                        "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-                    ]
+                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ should_be_apple ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -316,11 +280,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "my_apple is unchanged: ") in
@@ -337,10 +297,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [
-                      Ty.path
-                        "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-                    ]
+                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ my_apple ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in

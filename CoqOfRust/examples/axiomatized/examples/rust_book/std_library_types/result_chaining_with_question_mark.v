@@ -26,8 +26,7 @@ Module checked.
   } *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Definition Self : Ty.t :=
-      Ty.path "result_chaining_with_question_mark::checked::MathError".
+    Definition Self : Ty.t := Ty.path "result_chaining_with_question_mark::checked::MathError".
     
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
@@ -43,10 +42,7 @@ Module checked.
     (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [
-          Ty.path "f64";
-          Ty.path "result_chaining_with_question_mark::checked::MathError"
-        ]).
+        [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]).
   
   Parameter div : (list Ty.t) -> (list Value.t) -> M.
   

@@ -43,9 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α4 := M.call_closure α3 [ Value.Integer Integer.U8 20 ] in
@@ -73,11 +71,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "The person's age is ") in
@@ -110,11 +104,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "The person's name is ") in
@@ -139,16 +129,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
-                    let* α2 :=
-                      M.read
-                        (mk_str "The person's age from person struct is ") in
+                    let* α2 := M.read (mk_str "The person's age from person struct is ") in
                     let* α3 := M.read (mk_str "
 ") in
                     let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
@@ -194,9 +178,7 @@ Module main.
         [
           ("name", Ty.path "alloc::string::String");
           ("age",
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+            Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
         ];
     } *)
   

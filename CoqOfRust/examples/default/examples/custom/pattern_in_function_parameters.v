@@ -92,29 +92,19 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                 let* α0 := M.read start in
                                 let* α1 :=
                                   LogicalOp.and
-                                    (BinOp.Pure.lt
-                                      α0
-                                      (Value.Integer Integer.U32 55296))
+                                    (BinOp.Pure.lt α0 (Value.Integer Integer.U32 55296))
                                     (let* α0 := M.read end_ in
-                                    M.pure
-                                      (BinOp.Pure.le
-                                        (Value.Integer Integer.U32 57344)
-                                        α0)) in
+                                    M.pure (BinOp.Pure.le (Value.Integer Integer.U32 57344) α0)) in
                                 let* α2 := M.alloc α1 in
                                 M.pure (M.use α2) in
                               let* _ :=
                                 let* α0 := M.read γ in
-                                M.is_constant_or_break_match
-                                  α0
-                                  (Value.Bool true) in
+                                M.is_constant_or_break_match α0 (Value.Bool true) in
                               let* α0 :=
                                 M.get_associated_function
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "usize";
-                                      Ty.path
-                                        "core::num::error::TryFromIntError"
+                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ])
                                   "ok"
                                   [] in
@@ -126,10 +116,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                   "try_from"
                                   [] in
                               let* α2 := M.read count in
-                              let* α3 :=
-                                BinOp.Panic.sub
-                                  α2
-                                  (Value.Integer Integer.U32 2048) in
+                              let* α3 := BinOp.Panic.sub α2 (Value.Integer Integer.U32 2048) in
                               let* α4 := M.call_closure α1 [ α3 ] in
                               let* α5 := M.call_closure α0 [ α4 ] in
                               M.alloc α5;
@@ -138,10 +125,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "usize";
-                                      Ty.path
-                                        "core::num::error::TryFromIntError"
+                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ])
                                   "ok"
                                   [] in
@@ -157,9 +141,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                               let* α4 := M.call_closure α0 [ α3 ] in
                               M.alloc α4
                           ];
-                      fun γ =>
-                        M.alloc
-                          (Value.StructTuple "core::option::Option::None" [])
+                      fun γ => M.alloc (Value.StructTuple "core::option::Option::None" [])
                     ] in
                 M.read α0
             ]

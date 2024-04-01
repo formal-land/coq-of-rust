@@ -17,13 +17,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -47,8 +41,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,18 +58,12 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
-Axiom Hash :
-  (Ty.path "call_builder::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 (* {
@@ -201,33 +188,19 @@ Module Impl_call_builder_CallBuilderTest.
           result
           [
             fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Ok"
-                  0 in
+              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               M.alloc (Value.StructTuple "core::option::Option::None" []);
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
               M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]);
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 :=
@@ -239,10 +212,7 @@ Module Impl_call_builder_CallBuilderTest.
               let* α8 :=
                 (* Unsize *)
                   let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "none"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] in
                   let* α6 := M.call_closure α5 [] in
                   let* α7 := M.alloc α6 in
                   M.pure (M.pointer_coercion α7) in
@@ -363,8 +333,5 @@ Module Impl_call_builder_CallBuilderTest.
     end.
   
   Axiom AssociatedFunction_call_instantiate_fallible :
-    M.IsAssociatedFunction
-      Self
-      "call_instantiate_fallible"
-      call_instantiate_fallible.
+    M.IsAssociatedFunction Self "call_instantiate_fallible" call_instantiate_fallible.
 End Impl_call_builder_CallBuilderTest.

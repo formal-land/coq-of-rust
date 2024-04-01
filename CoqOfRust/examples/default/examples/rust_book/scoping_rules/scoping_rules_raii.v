@@ -15,9 +15,7 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
     let* _box1 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
@@ -55,9 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _box2 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
@@ -87,10 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           Value.StructRecord
             "core::ops::range::Range"
-            [
-              ("start", Value.Integer Integer.U32 0);
-              ("end_", Value.Integer Integer.U32 1000)
-            ]
+            [ ("start", Value.Integer Integer.U32 0); ("end_", Value.Integer Integer.U32 1000) ]
         ] in
     let* α2 := M.alloc α1 in
     let* α3 :=
@@ -104,9 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply
-                      (Ty.path "core::ops::range::Range")
-                      [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
                     []
                     "next"
                     [] in
@@ -122,13 +113,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::option::Option::Some"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* _ :=
-                        let* α0 :=
-                          M.get_function "scoping_rules_raii::create_box" [] in
+                        let* α0 := M.get_function "scoping_rules_raii::create_box" [] in
                         let* α1 := M.call_closure α0 [] in
                         M.alloc α1 in
                       M.alloc (Value.Tuple [])
