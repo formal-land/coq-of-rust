@@ -45,58 +45,49 @@ Module main.
     | [], [ arg ] =>
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
-        M.read
-          (|
-            (let _ :=
+        M.read (|
+            let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
-                                          [
-                                            M.read (| (mk_str "arg = ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "arg = " |); M.read (| mk_str "
+" |) ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.path "i32" ]
-                                                  |)),
+                                                  |),
                                                 [ arg ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
-            M.alloc (| (BinOp.Panic.mul (| (M.read (| arg |)), (Value.Integer Integer.I32 2) |)) |))
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| BinOp.Panic.mul (| M.read (| arg |), Value.Integer Integer.I32 2 |) |)
           |)))
     | _, _ => M.impossible
     end.
@@ -126,11 +117,10 @@ Module main.
     | [], [ arg ] =>
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
-        M.read
-          (|
-            (let result := M.copy (| Value.DeclaredButUndefined |) in
+        M.read (|
+            let result := M.copy (| Value.DeclaredButUndefined |) in
             let _ := InlineAssembly in
-            result)
+            result
           |)))
     | _, _ => M.impossible
     end.

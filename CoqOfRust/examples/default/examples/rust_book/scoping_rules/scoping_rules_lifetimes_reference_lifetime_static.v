@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  (M.run ltac:(M.monadic (M.alloc (| (M.alloc (| (Value.Integer Integer.I32 18) |)) |)))).
+  (M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 18 |) |)))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -14,14 +14,13 @@ Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator
-        (|
+      M.match_operator (|
           β0,
           [
             fun γ =>
               ltac:(M.monadic
-                (M.read
-                  (| (M.get_constant (| "scoping_rules_lifetimes_reference_lifetime_static::NUM" |))
+                (M.read (|
+                    M.get_constant (| "scoping_rules_lifetimes_reference_lifetime_static::NUM" |)
                   |)))
           ]
         |)))
@@ -56,181 +55,162 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            let static_string := M.copy (| (mk_str "I'm in read-only memory") |) in
+      (M.read (|
+          let _ :=
+            let static_string := M.copy (| mk_str "I'm in read-only memory" |) in
             let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "static_string: ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                            M.read (| mk_str "static_string: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                  |)),
+                                                  |),
                                                 [ static_string ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
-            M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
-            let lifetime_num := M.alloc (| (Value.Integer Integer.I32 9) |) in
+            let lifetime_num := M.alloc (| Value.Integer Integer.I32 9 |) in
             let coerced_static :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function
-                        (| "scoping_rules_lifetimes_reference_lifetime_static::coerce_static", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (|
+                          "scoping_rules_lifetimes_reference_lifetime_static::coerce_static",
+                          []
+                        |),
                       [ lifetime_num ]
-                    |))
+                    |)
                 |) in
             let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "coerced_static: ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                            M.read (| mk_str "coerced_static: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                  |)),
+                                                  |),
                                                 [ coerced_static ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
-            M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "NUM: ") |);
-                                          M.read (| (mk_str " stays accessible!
-") |)
-                                        ])
+                                          M.read (| mk_str "NUM: " |);
+                                          M.read (| mk_str " stays accessible!
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.read
-                                                  (|
-                                                    (M.get_constant
-                                                      (|
+                                                M.read (|
+                                                    M.get_constant (|
                                                         "scoping_rules_lifetimes_reference_lifetime_static::NUM"
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

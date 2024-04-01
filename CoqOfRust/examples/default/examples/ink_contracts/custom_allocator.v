@@ -31,34 +31,29 @@ Module Impl_custom_allocator_CustomAllocator.
           "custom_allocator::CustomAllocator"
           [
             ("value",
-              M.call_closure
-                (|
-                  (M.get_associated_function
-                    (|
-                      (Ty.apply (Ty.path "slice") [ Ty.path "bool" ]),
+              M.call_closure (|
+                  M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [ Ty.path "bool" ],
                       "into_vec",
                       [ Ty.path "alloc::alloc::Global" ]
-                    |)),
+                    |),
                   [
                     (* Unsize *)
                       M.pointer_coercion
-                        (M.read
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.apply
+                        (M.read (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.apply
                                       (Ty.path "alloc::boxed::Box")
                                       [
                                         Ty.apply (Ty.path "array") [ Ty.path "bool" ];
                                         Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      ],
                                     "new",
                                     []
-                                  |)),
-                                [ M.alloc (| (Value.Array [ M.read (| init_value |) ]) |) ]
-                              |))
+                                  |),
+                                [ M.alloc (| Value.Array [ M.read (| init_value |) ] |) ]
+                              |)
                           |))
                   ]
                 |))
@@ -77,17 +72,12 @@ Module Impl_custom_allocator_CustomAllocator.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "custom_allocator::CustomAllocator"), "new", []
-              |)),
+        (M.call_closure (|
+            M.get_associated_function (| Ty.path "custom_allocator::CustomAllocator", "new", [] |),
             [
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "bool"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
+                    |),
                   []
                 |)
             ]
@@ -107,23 +97,19 @@ Module Impl_custom_allocator_CustomAllocator.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
-              M.assign
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_trait_method
-                        (|
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.call_closure (|
+                      M.get_trait_method (|
                           "core::ops::index::IndexMut",
-                          (Ty.apply
+                          Ty.apply
                             (Ty.path "alloc::vec::Vec")
-                            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]),
+                            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                           [ Ty.path "usize" ],
                           "index_mut",
                           []
-                        |)),
+                        |),
                       [
                         M.get_struct_record_field
                           (M.read (| self |))
@@ -131,22 +117,19 @@ Module Impl_custom_allocator_CustomAllocator.
                           "value";
                         Value.Integer Integer.Usize 0
                       ]
-                    |)),
-                  (UnOp.Pure.not
-                    (M.read
-                      (|
-                        (M.call_closure
-                          (|
-                            (M.get_trait_method
-                              (|
+                    |),
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.call_closure (|
+                            M.get_trait_method (|
                                 "core::ops::index::Index",
-                                (Ty.apply
+                                Ty.apply
                                   (Ty.path "alloc::vec::Vec")
-                                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]),
+                                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                                 [ Ty.path "usize" ],
                                 "index",
                                 []
-                              |)),
+                              |),
                             [
                               M.get_struct_record_field
                                 (M.read (| self |))
@@ -154,10 +137,10 @@ Module Impl_custom_allocator_CustomAllocator.
                                 "value";
                               Value.Integer Integer.Usize 0
                             ]
-                          |))
-                      |)))
+                          |)
+                      |))
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -174,20 +157,17 @@ Module Impl_custom_allocator_CustomAllocator.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.call_closure
-              (|
-                (M.get_trait_method
-                  (|
+        M.read (|
+            M.call_closure (|
+                M.get_trait_method (|
                     "core::ops::index::Index",
-                    (Ty.apply
+                    Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]),
+                      [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                     [ Ty.path "usize" ],
                     "index",
                     []
-                  |)),
+                  |),
                 [
                   M.get_struct_record_field
                     (M.read (| self |))
@@ -195,7 +175,7 @@ Module Impl_custom_allocator_CustomAllocator.
                     "value";
                   Value.Integer Integer.Usize 0
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.

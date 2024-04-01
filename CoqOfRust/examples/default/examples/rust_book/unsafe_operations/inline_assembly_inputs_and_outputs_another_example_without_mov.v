@@ -16,16 +16,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x := M.alloc (| (Value.Integer Integer.U64 3) |) in
+      (M.read (|
+          let x := M.alloc (| Value.Integer Integer.U64 3 |) in
           let _ :=
             let _ := InlineAssembly in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc (| (Value.Tuple [ x; M.alloc (| (Value.Integer Integer.U64 8) |) ]) |)),
+            M.match_operator (|
+                M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer Integer.U64 8 |) ] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -33,47 +31,37 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
+                                    (M.alloc (|
+                                        UnOp.Pure.not
                                           (BinOp.Pure.eq
-                                            (M.read (| (M.read (| left_val |)) |))
-                                            (M.read (| (M.read (| right_val |)) |))))
+                                            (M.read (| M.read (| left_val |) |))
+                                            (M.read (| M.read (| right_val |) |)))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [ Ty.path "u64"; Ty.path "u64" ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -82,17 +70,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -36,31 +36,28 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function (| (Ty.path "core::fmt::Formatter"), "write_str", [] |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [
               M.read (| f |);
-              M.read
-                (|
-                  (M.match_operator
-                    (|
+              M.read (|
+                  M.match_operator (|
                       self,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
-                            M.alloc (| (M.read (| (mk_str "Apple") |)) |)));
+                            M.alloc (| M.read (| mk_str "Apple" |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
-                            M.alloc (| (M.read (| (mk_str "Carrot") |)) |)));
+                            M.alloc (| M.read (| mk_str "Carrot" |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
-                            M.alloc (| (M.read (| (mk_str "Potato") |)) |)))
+                            M.alloc (| M.read (| mk_str "Potato" |) |)))
                       ]
-                    |))
+                    |)
                 |)
             ]
           |)))
@@ -94,18 +91,19 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Peeled") |);
+              M.read (| mk_str "Peeled" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (| (M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Peeled" 0)
+                  (M.alloc (|
+                      M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Peeled" 0
                     |))
             ]
           |)))
@@ -139,18 +137,19 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Chopped") |);
+              M.read (| mk_str "Chopped" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (| (M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Chopped" 0)
+                  (M.alloc (|
+                      M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Chopped" 0
                     |))
             ]
           |)))
@@ -184,18 +183,19 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Cooked") |);
+              M.read (| mk_str "Cooked" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (| (M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Cooked" 0)
+                  (M.alloc (|
+                      M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Cooked" 0
                     |))
             ]
           |)))
@@ -223,30 +223,25 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               food,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let food := M.copy (| γ0_0 |) in
-                    M.alloc
-                      (|
-                        (Value.StructTuple
+                    M.alloc (|
+                        Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "combinators_map::Peeled" [ M.read (| food |) ] ])
+                          [ Value.StructTuple "combinators_map::Peeled" [ M.read (| food |) ] ]
                       |)));
                 fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| (Value.StructTuple "core::option::Option::None" []) |)))
+                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -264,34 +259,28 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ peeled ] =>
     ltac:(M.monadic
       (let peeled := M.alloc (| peeled |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               peeled,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ0_0, "combinators_map::Peeled", 0
+                      M.get_struct_tuple_field_or_break_match (| γ0_0, "combinators_map::Peeled", 0
                         |) in
                     let food := M.copy (| γ1_0 |) in
-                    M.alloc
-                      (|
-                        (Value.StructTuple
+                    M.alloc (|
+                        Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "combinators_map::Chopped" [ M.read (| food |) ] ])
+                          [ Value.StructTuple "combinators_map::Chopped" [ M.read (| food |) ] ]
                       |)));
                 fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| (Value.StructTuple "core::option::Option::None" []) |)))
+                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -306,11 +295,9 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ chopped ] =>
     ltac:(M.monadic
       (let chopped := M.alloc (| chopped |) in
-      M.call_closure
-        (|
-          (M.get_associated_function
-            (|
-              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ]),
+      M.call_closure (|
+          M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
               "map",
               [
                 Ty.path "combinators_map::Cooked";
@@ -318,7 +305,7 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
                   (Ty.path "combinators_map::Cooked")
               ]
-            |)),
+            |),
           [
             M.read (| chopped |);
             M.closure
@@ -326,15 +313,16 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator
-                      (|
-                        (M.alloc (| α0 |)),
+                    M.match_operator (|
+                        M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match
-                                  (| γ, "combinators_map::Chopped", 0
+                                M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "combinators_map::Chopped",
+                                    0
                                   |) in
                               let food := M.copy (| γ0_0 |) in
                               Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
@@ -359,11 +347,9 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
-      M.call_closure
-        (|
-          (M.get_associated_function
-            (|
-              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ]),
+      M.call_closure (|
+          M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
               "map",
               [
                 Ty.path "combinators_map::Cooked";
@@ -371,15 +357,11 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
                   (Ty.path "combinators_map::Cooked")
               ]
-            |)),
+            |),
           [
-            M.call_closure
-              (|
-                (M.get_associated_function
-                  (|
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "combinators_map::Peeled" ]),
+            M.call_closure (|
+                M.get_associated_function (|
+                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Peeled" ],
                     "map",
                     [
                       Ty.path "combinators_map::Chopped";
@@ -387,15 +369,13 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                         [ Ty.tuple [ Ty.path "combinators_map::Peeled" ] ]
                         (Ty.path "combinators_map::Chopped")
                     ]
-                  |)),
+                  |),
                 [
-                  M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (|
-                          (Ty.apply
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply
                             (Ty.path "core::option::Option")
-                            [ Ty.path "combinators_map::Food" ]),
+                            [ Ty.path "combinators_map::Food" ],
                           "map",
                           [
                             Ty.path "combinators_map::Peeled";
@@ -403,7 +383,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.tuple [ Ty.path "combinators_map::Food" ] ]
                               (Ty.path "combinators_map::Peeled")
                           ]
-                        |)),
+                        |),
                       [
                         M.read (| food |);
                         M.closure
@@ -411,9 +391,8 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator
-                                  (|
-                                    (M.alloc (| α0 |)),
+                                M.match_operator (|
+                                    M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
@@ -432,15 +411,16 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator
-                            (|
-                              (M.alloc (| α0 |)),
+                          M.match_operator (|
+                              M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match
-                                        (| γ, "combinators_map::Peeled", 0
+                                      M.get_struct_tuple_field_or_break_match (|
+                                          γ,
+                                          "combinators_map::Peeled",
+                                          0
                                         |) in
                                     let f := M.copy (| γ0_0 |) in
                                     Value.StructTuple
@@ -457,15 +437,16 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator
-                      (|
-                        (M.alloc (| α0 |)),
+                    M.match_operator (|
+                        M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match
-                                  (| γ, "combinators_map::Chopped", 0
+                                M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "combinators_map::Chopped",
+                                    0
                                   |) in
                               let f := M.copy (| γ0_0 |) in
                               Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
@@ -491,99 +472,88 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               food,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let food := M.copy (| γ0_0 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Mmm. I love ") |);
-                                                  M.read (| (mk_str "
-") |)
-                                                ])
+                                                  M.read (| mk_str "Mmm. I love " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_debug",
                                                           [ Ty.path "combinators_map::Cooked" ]
-                                                        |)),
+                                                        |),
                                                       [ food ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
-                                                [ M.read (| (mk_str "Oh no! It wasn't edible.
-") |)
-                                                ])
+                                          (M.alloc (|
+                                              Value.Array
+                                                [ M.read (| mk_str "Oh no! It wasn't edible.
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)))
+                    M.alloc (| Value.Tuple [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -608,100 +578,83 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let apple :=
-            M.alloc
-              (|
-                (Value.StructTuple
+      (M.read (|
+          let apple :=
+            M.alloc (|
+                Value.StructTuple
                   "core::option::Option::Some"
-                  [ Value.StructTuple "combinators_map::Food::Apple" [] ])
+                  [ Value.StructTuple "combinators_map::Food::Apple" [] ]
               |) in
           let carrot :=
-            M.alloc
-              (|
-                (Value.StructTuple
+            M.alloc (|
+                Value.StructTuple
                   "core::option::Option::Some"
-                  [ Value.StructTuple "combinators_map::Food::Carrot" [] ])
+                  [ Value.StructTuple "combinators_map::Food::Carrot" [] ]
               |) in
-          let potato := M.alloc (| (Value.StructTuple "core::option::Option::None" []) |) in
+          let potato := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
           let cooked_apple :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "combinators_map::cook", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::cook", [] |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_function (| "combinators_map::chop", [] |)),
+                      M.call_closure (|
+                          M.get_function (| "combinators_map::chop", [] |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_function (| "combinators_map::peel", [] |)),
+                            M.call_closure (|
+                                M.get_function (| "combinators_map::peel", [] |),
                                 [ M.read (| apple |) ]
                               |)
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let cooked_carrot :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "combinators_map::cook", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::cook", [] |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_function (| "combinators_map::chop", [] |)),
+                      M.call_closure (|
+                          M.get_function (| "combinators_map::chop", [] |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_function (| "combinators_map::peel", [] |)),
+                            M.call_closure (|
+                                M.get_function (| "combinators_map::peel", [] |),
                                 [ M.read (| carrot |) ]
                               |)
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let cooked_potato :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (| (M.get_function (| "combinators_map::process", [] |)), [ M.read (| potato |) ]
-                  |))
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::process", [] |),
+                    [ M.read (| potato |) ]
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "combinators_map::eat", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::eat", [] |),
                     [ M.read (| cooked_apple |) ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "combinators_map::eat", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::eat", [] |),
                     [ M.read (| cooked_carrot |) ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "combinators_map::eat", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "combinators_map::eat", [] |),
                     [ M.read (| cooked_potato |) ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

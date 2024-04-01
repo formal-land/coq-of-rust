@@ -11,58 +11,52 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`elided_input`: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`elided_input`: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |)),
+                                                |),
                                               [ x ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -77,58 +71,52 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`annotated_input`: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`annotated_input`: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |)),
+                                                |),
                                               [ x ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -176,152 +164,131 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x := M.alloc (| (Value.Integer Integer.I32 3) |) in
+      (M.read (|
+          let x := M.alloc (| Value.Integer Integer.I32 3 |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "scoping_rules_lifetimes_elision::elided_input", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "scoping_rules_lifetimes_elision::elided_input", [] |),
                     [ x ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "scoping_rules_lifetimes_elision::annotated_input", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "scoping_rules_lifetimes_elision::annotated_input", [] |),
                     [ x ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`elided_pass`: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`elided_pass`: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
                                                             "scoping_rules_lifetimes_elision::elided_pass",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [ x ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`annotated_pass`: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`annotated_pass`: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
                                                             "scoping_rules_lifetimes_elision::annotated_pass",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [ x ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

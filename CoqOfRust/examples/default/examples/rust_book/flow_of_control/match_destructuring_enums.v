@@ -76,589 +76,564 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let color :=
-            M.alloc
-              (|
-                (Value.StructTuple
+      (M.read (|
+          let color :=
+            M.alloc (|
+                Value.StructTuple
                   "match_destructuring_enums::Color::RGB"
                   [
                     Value.Integer Integer.U32 122;
                     Value.Integer Integer.U32 17;
                     Value.Integer Integer.U32 40
-                  ])
+                  ]
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (| (Value.Array [ M.read (| (mk_str "What color is it?
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array [ M.read (| mk_str "What color is it?
+" |) ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.match_operator
-            (|
+            M.alloc (| Value.Tuple [] |) in
+          M.match_operator (|
               color,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
-                                                [ M.read (| (mk_str "The color is Red!
-") |) ])
+                                          (M.alloc (|
+                                              Value.Array
+                                                [ M.read (| mk_str "The color is Red!
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
-                                                [ M.read (| (mk_str "The color is Blue!
-") |) ])
+                                          (M.alloc (|
+                                              Value.Array
+                                                [ M.read (| mk_str "The color is Blue!
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
-                                                [ M.read (| (mk_str "The color is Green!
-") |) ])
+                                          (M.alloc (|
+                                              Value.Array
+                                                [ M.read (| mk_str "The color is Green!
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::RGB", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::RGB",
+                          0
                         |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::RGB", 1
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::RGB",
+                          1
                         |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::RGB", 2
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::RGB",
+                          2
                         |) in
                     let r := M.copy (| γ0_0 |) in
                     let g := M.copy (| γ0_1 |) in
                     let b := M.copy (| γ0_2 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Red: ") |);
-                                                  M.read (| (mk_str ", green: ") |);
-                                                  M.read (| (mk_str ", and blue: ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "Red: " |);
+                                                  M.read (| mk_str ", green: " |);
+                                                  M.read (| mk_str ", and blue: " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ r ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ g ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ b ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSV", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSV",
+                          0
                         |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSV", 1
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSV",
+                          1
                         |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSV", 2
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSV",
+                          2
                         |) in
                     let h := M.copy (| γ0_0 |) in
                     let s := M.copy (| γ0_1 |) in
                     let v := M.copy (| γ0_2 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Hue: ") |);
-                                                  M.read (| (mk_str ", saturation: ") |);
-                                                  M.read (| (mk_str ", value: ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "Hue: " |);
+                                                  M.read (| mk_str ", saturation: " |);
+                                                  M.read (| mk_str ", value: " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ h ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ s ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ v ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSL", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSL",
+                          0
                         |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSL", 1
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSL",
+                          1
                         |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::HSL", 2
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::HSL",
+                          2
                         |) in
                     let h := M.copy (| γ0_0 |) in
                     let s := M.copy (| γ0_1 |) in
                     let l := M.copy (| γ0_2 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Hue: ") |);
-                                                  M.read (| (mk_str ", saturation: ") |);
-                                                  M.read (| (mk_str ", lightness: ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "Hue: " |);
+                                                  M.read (| mk_str ", saturation: " |);
+                                                  M.read (| mk_str ", lightness: " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ h ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ s ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ l ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMY", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMY",
+                          0
                         |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMY", 1
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMY",
+                          1
                         |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMY", 2
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMY",
+                          2
                         |) in
                     let c := M.copy (| γ0_0 |) in
                     let m := M.copy (| γ0_1 |) in
                     let y := M.copy (| γ0_2 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Cyan: ") |);
-                                                  M.read (| (mk_str ", magenta: ") |);
-                                                  M.read (| (mk_str ", yellow: ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "Cyan: " |);
+                                                  M.read (| mk_str ", magenta: " |);
+                                                  M.read (| mk_str ", yellow: " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ c ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ m ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ y ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMYK", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMYK",
+                          0
                         |) in
                     let γ0_1 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMYK", 1
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMYK",
+                          1
                         |) in
                     let γ0_2 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMYK", 2
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMYK",
+                          2
                         |) in
                     let γ0_3 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "match_destructuring_enums::Color::CMYK", 3
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_destructuring_enums::Color::CMYK",
+                          3
                         |) in
                     let c := M.copy (| γ0_0 |) in
                     let m := M.copy (| γ0_1 |) in
                     let y := M.copy (| γ0_2 |) in
                     let k := M.copy (| γ0_3 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Cyan: ") |);
-                                                  M.read (| (mk_str ", magenta: ") |);
-                                                  M.read (| (mk_str ", yellow: ") |);
-                                                  M.read (| (mk_str ", key (black): ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "Cyan: " |);
+                                                  M.read (| mk_str ", magenta: " |);
+                                                  M.read (| mk_str ", yellow: " |);
+                                                  M.read (| mk_str ", key (black): " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ c ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ m ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ y ]
                                                     |);
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ k ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)))
+                    M.alloc (| Value.Tuple [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.

@@ -14,10 +14,8 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ tuple ] =>
     ltac:(M.monadic
       (let tuple := M.alloc (| tuple |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               tuple,
               [
                 fun γ =>
@@ -25,21 +23,19 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
                     (let γ0_0 := M.get_tuple_field γ 0 in
                     let γ0_1 := M.get_tuple_field γ 1 in
                     let _ :=
-                      M.is_constant_or_break_match
-                        (| (M.read (| γ0_0 |)), (Value.Integer Integer.I32 0)
+                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 0
                         |) in
                     let _ :=
-                      M.is_constant_or_break_match
-                        (| (M.read (| γ0_1 |)), (Value.Integer Integer.I32 0)
+                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer Integer.I32 0
                         |) in
-                    M.alloc (| (Value.Integer Integer.I32 0) |)));
+                    M.alloc (| Value.Integer Integer.I32 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.get_tuple_field γ 0 in
                     let γ0_1 := M.get_tuple_field γ 1 in
-                    M.alloc (| (Value.Integer Integer.I32 1) |)))
+                    M.alloc (| Value.Integer Integer.I32 1 |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -63,22 +59,22 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Constructor") |);
+              M.read (| mk_str "Constructor" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (|
-                      (M.get_struct_tuple_field
+                  (M.alloc (|
+                      M.get_struct_tuple_field
                         (M.read (| self |))
                         "constructor_as_function::Constructor"
-                        0)
+                        0
                     |))
             ]
           |)))
@@ -104,17 +100,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let v :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+      (M.read (|
+          let v :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        (Ty.apply
+                        Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
                           [
                             Ty.apply
@@ -123,7 +115,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.function
                               [ Ty.path "i32" ]
                               (Ty.path "constructor_as_function::Constructor")
-                          ]),
+                          ],
                         [],
                         "collect",
                         [
@@ -134,16 +126,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               Ty.path "alloc::alloc::Global"
                             ]
                         ]
-                      |)),
+                      |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_trait_method
-                            (|
+                      M.call_closure (|
+                          M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              (Ty.apply
+                              Ty.apply
                                 (Ty.path "alloc::vec::into_iter::IntoIter")
-                                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]),
+                                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                               [],
                               "map",
                               [
@@ -152,61 +142,53 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "i32" ]
                                   (Ty.path "constructor_as_function::Constructor")
                               ]
-                            |)),
+                            |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_trait_method
-                                  (|
+                            M.call_closure (|
+                                M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
-                                    (Ty.apply
+                                    Ty.apply
                                       (Ty.path "alloc::vec::Vec")
-                                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]),
+                                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                     [],
                                     "into_iter",
                                     []
-                                  |)),
+                                  |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (|
-                                          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                                           "into_vec",
                                           [ Ty.path "alloc::alloc::Global" ]
-                                        |)),
+                                        |),
                                       [
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.read
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_associated_function
-                                                      (|
-                                                        (Ty.apply
+                                            (M.read (|
+                                                M.call_closure (|
+                                                    M.get_associated_function (|
+                                                        Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
                                                           [
                                                             Ty.apply
                                                               (Ty.path "array")
                                                               [ Ty.path "i32" ];
                                                             Ty.path "alloc::alloc::Global"
-                                                          ]),
+                                                          ],
                                                         "new",
                                                         []
-                                                      |)),
+                                                      |),
                                                     [
-                                                      M.alloc
-                                                        (|
-                                                          (Value.Array
+                                                      M.alloc (|
+                                                          Value.Array
                                                             [
                                                               Value.Integer Integer.I32 1;
                                                               Value.Integer Integer.I32 2;
                                                               Value.Integer Integer.I32 3
-                                                            ])
+                                                            ]
                                                         |)
                                                     ]
-                                                  |))
+                                                  |)
                                               |))
                                       ]
                                     |)
@@ -216,41 +198,36 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [
                                                     Ty.apply
@@ -261,18 +238,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Ty.path "alloc::alloc::Global"
                                                       ]
                                                   ]
-                                                |)),
+                                                |),
                                               [ v ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

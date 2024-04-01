@@ -22,22 +22,22 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Ref") |);
+              M.read (| mk_str "Ref" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (|
-                      (M.get_struct_tuple_field
+                  (M.alloc (|
+                      M.get_struct_tuple_field
                         (M.read (| self |))
                         "scoping_rules_lifetimes_bounds::Ref"
-                        0)
+                        0
                     |))
             ]
           |)))
@@ -66,58 +66,52 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`print`: t is ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`print`: t is " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [ T ]
-                                                |)),
+                                                |),
                                               [ t ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -135,58 +129,52 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "`print_ref`: t is ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "`print_ref`: t is " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [ Ty.apply (Ty.path "&") [ T ] ]
-                                                |)),
+                                                |),
                                               [ t ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -204,40 +192,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x := M.alloc (| (Value.Integer Integer.I32 7) |) in
+      (M.read (|
+          let x := M.alloc (| Value.Integer Integer.I32 7 |) in
           let ref_x :=
-            M.alloc (| (Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ]) |) in
+            M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (|
                         "scoping_rules_lifetimes_bounds::print_ref",
                         [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ]
                         ]
-                      |)),
+                      |),
                     [ ref_x ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (|
                         "scoping_rules_lifetimes_bounds::print",
                         [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ]
                         ]
-                      |)),
+                      |),
                     [ M.read (| ref_x |) ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

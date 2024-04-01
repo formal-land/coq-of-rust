@@ -37,22 +37,20 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
         (let self := M.alloc (| self |) in
         let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
-        M.read
-          (|
-            (M.match_operator
-              (|
+        M.read (|
+            M.match_operator (|
                 self,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| (BinOp.Panic.add (| (M.read (| x |)), (M.read (| y |)) |)) |)));
+                      M.alloc (| BinOp.Panic.add (| M.read (| x |), M.read (| y |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| (BinOp.Panic.sub (| (M.read (| x |)), (M.read (| y |)) |)) |)))
+                      M.alloc (| BinOp.Panic.sub (| M.read (| x |), M.read (| y |) |) |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.

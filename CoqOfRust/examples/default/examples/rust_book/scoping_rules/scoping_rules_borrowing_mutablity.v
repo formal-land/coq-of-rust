@@ -24,29 +24,25 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (|
+        M.read (|
+            M.match_operator (|
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator
-                        (|
+                      (M.match_operator (|
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.match_operator
-                                  (|
+                                (M.match_operator (|
                                     Value.DeclaredButUndefined,
                                     [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                                   |)))
                           ]
                         |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -79,48 +75,42 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ book ] =>
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "I immutably borrowed ") |);
-                                          M.read (| (mk_str " - ") |);
-                                          M.read (| (mk_str " edition
-") |)
-                                        ])
+                                          M.read (| mk_str "I immutably borrowed " |);
+                                          M.read (| mk_str " - " |);
+                                          M.read (| mk_str " edition
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| book |))
@@ -128,14 +118,12 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "title"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| book |))
@@ -143,15 +131,15 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "year"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -167,57 +155,50 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ book ] =>
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
-      M.read
-        (|
-          (let _ :=
-            M.assign
-              (|
-                (M.get_struct_record_field
+      M.read (|
+          let _ :=
+            M.assign (|
+                M.get_struct_record_field
                   (M.read (| book |))
                   "scoping_rules_borrowing_mutablity::Book"
-                  "year"),
-                (Value.Integer Integer.U32 2014)
+                  "year",
+                Value.Integer Integer.U32 2014
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "I mutably borrowed ") |);
-                                          M.read (| (mk_str " - ") |);
-                                          M.read (| (mk_str " edition
-") |)
-                                        ])
+                                          M.read (| mk_str "I mutably borrowed " |);
+                                          M.read (| mk_str " - " |);
+                                          M.read (| mk_str " edition
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| book |))
@@ -225,14 +206,12 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "title"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| book |))
@@ -240,15 +219,15 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "year"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -284,49 +263,41 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let immutabook :=
-            M.alloc
-              (|
-                (Value.StructRecord
+      (M.read (|
+          let immutabook :=
+            M.alloc (|
+                Value.StructRecord
                   "scoping_rules_borrowing_mutablity::Book"
                   [
-                    ("author", M.read (| (mk_str "Douglas Hofstadter") |));
+                    ("author", M.read (| mk_str "Douglas Hofstadter" |));
                     ("title",
-                      M.read (| (mk_str ("G" ++ (String.String "246" "del, Escher, Bach"))) |));
+                      M.read (| mk_str ("G" ++ (String.String "246" "del, Escher, Bach")) |));
                     ("year", Value.Integer Integer.U32 1979)
-                  ])
+                  ]
               |) in
           let mutabook := M.copy (| immutabook |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |),
                     [ immutabook ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |),
                     [ mutabook ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [] |),
                     [ mutabook ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

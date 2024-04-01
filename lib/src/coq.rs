@@ -412,7 +412,7 @@ impl<'a> Expression<'a> {
                 with_paren,
                 nest([
                     func.to_doc(false),
-                    line(),
+                    text(" "),
                     optional_insert(!args.is_empty(), text("(||)")),
                     optional_insert(
                         args.is_empty(),
@@ -427,7 +427,7 @@ impl<'a> Expression<'a> {
                                             text(" := "),
                                             arg.to_doc(false),
                                         ])),
-                                        None => arg.to_doc(true),
+                                        None => arg.to_doc(false),
                                     }),
                                     [text(","), line()],
                                 ),

@@ -10,10 +10,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x := M.alloc (| (M.alloc (| (Value.Integer Integer.I32 1) |)) |) in
-          M.alloc (| (Value.Tuple []) |))
+      (M.read (|
+          let x := M.alloc (| M.alloc (| Value.Integer Integer.I32 1 |) |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -21,11 +21,9 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
         (Value.StructTuple
           "conditional_compilation::AccountId"
           [
-            M.call_closure
-              (|
-                (M.get_trait_method
-                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                  |)),
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
                 []
               |)
           ]))
@@ -51,11 +49,11 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -140,8 +138,8 @@ Module Impl_conditional_compilation_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (| (M.get_struct_record_field (M.read (| self |)) "conditional_compilation::Env" "caller")
+        M.read (|
+            M.get_struct_record_field (M.read (| self |)) "conditional_compilation::Env" "caller"
           |)))
     | _, _ => M.impossible
     end.
@@ -196,11 +194,12 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "conditional_compilation::ConditionalCompilation"), "init_env", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "conditional_compilation::ConditionalCompilation",
+                "init_env",
+                []
+              |),
             []
           |)))
     | _, _ => M.impossible
@@ -223,11 +222,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           "conditional_compilation::ConditionalCompilation"
           [
             ("value",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "bool"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
+                    |),
                   []
                 |))
           ]))
@@ -305,70 +302,61 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
-              M.assign
-                (|
-                  (M.get_struct_record_field
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.get_struct_record_field
                     (M.read (| self |))
                     "conditional_compilation::ConditionalCompilation"
-                    "value"),
-                  (UnOp.Pure.not
-                    (M.read
-                      (|
-                        (M.get_struct_record_field
+                    "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field
                           (M.read (| self |))
                           "conditional_compilation::ConditionalCompilation"
-                          "value")
-                      |)))
+                          "value"
+                      |))
                 |) in
             let caller :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "caller", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "caller",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |)
                       ]
-                    |))
+                    |)
                 |) in
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "emit_event", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "emit_event",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |);
                         Value.StructTuple
                           "conditional_compilation::Event::Changes"
@@ -377,20 +365,19 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                               "conditional_compilation::Changes"
                               [
                                 ("new_value",
-                                  M.read
-                                    (|
-                                      (M.get_struct_record_field
+                                  M.read (|
+                                      M.get_struct_record_field
                                         (M.read (| self |))
                                         "conditional_compilation::ConditionalCompilation"
-                                        "value")
+                                        "value"
                                     |));
                                 ("by_", M.read (| caller |))
                               ]
                           ]
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -415,95 +402,83 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let caller :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "caller", []
-                        |)),
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "caller",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |)
                       ]
-                    |))
+                    |)
                 |) in
             let block_number :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "block_number", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "block_number",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |)
                       ]
-                    |))
+                    |)
                 |) in
             let _ :=
-              M.assign
-                (|
-                  (M.get_struct_record_field
+              M.assign (|
+                  M.get_struct_record_field
                     (M.read (| self |))
                     "conditional_compilation::ConditionalCompilation"
-                    "value"),
-                  (UnOp.Pure.not
-                    (M.read
-                      (|
-                        (M.get_struct_record_field
+                    "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field
                           (M.read (| self |))
                           "conditional_compilation::ConditionalCompilation"
-                          "value")
-                      |)))
+                          "value"
+                      |))
                 |) in
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "emit_event", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "emit_event",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |);
                         Value.StructTuple
                           "conditional_compilation::Event::ChangesDated"
@@ -512,21 +487,20 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                               "conditional_compilation::ChangesDated"
                               [
                                 ("new_value",
-                                  M.read
-                                    (|
-                                      (M.get_struct_record_field
+                                  M.read (|
+                                      M.get_struct_record_field
                                         (M.read (| self |))
                                         "conditional_compilation::ConditionalCompilation"
-                                        "value")
+                                        "value"
                                     |));
                                 ("by_", M.read (| caller |));
                                 ("when", M.read (| block_number |))
                               ]
                           ]
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -548,25 +522,22 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
-              M.assign
-                (|
-                  (M.get_struct_record_field
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.get_struct_record_field
                     (M.read (| self |))
                     "conditional_compilation::ConditionalCompilation"
-                    "value"),
-                  (UnOp.Pure.not
-                    (M.read
-                      (|
-                        (M.get_struct_record_field
+                    "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field
                           (M.read (| self |))
                           "conditional_compilation::ConditionalCompilation"
-                          "value")
-                      |)))
+                          "value"
+                      |))
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -581,12 +552,11 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.get_struct_record_field
+        M.read (|
+            M.get_struct_record_field
               (M.read (| self |))
               "conditional_compilation::ConditionalCompilation"
-              "value")
+              "value"
           |)))
     | _, _ => M.impossible
     end.
@@ -607,54 +577,47 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
-        M.read
-          (|
-            (let caller :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "caller", []
-                        |)),
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "caller",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |)
                       ]
-                    |))
+                    |)
                 |) in
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "conditional_compilation::Env"), "emit_event", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "conditional_compilation::Env",
+                          "emit_event",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "conditional_compilation::ConditionalCompilation"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "conditional_compilation::ConditionalCompilation",
                                     "init_env",
                                     []
-                                  |)),
+                                  |),
                                 []
-                              |))
+                              |)
                           |);
                         Value.StructTuple
                           "conditional_compilation::Event::Changes"
@@ -664,18 +627,17 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                               [ ("new_value", M.read (| value |)); ("by_", M.read (| caller |)) ]
                           ]
                       ]
-                    |))
+                    |)
                 |) in
             let _ :=
-              M.assign
-                (|
-                  (M.get_struct_record_field
+              M.assign (|
+                  M.get_struct_record_field
                     (M.read (| self |))
                     "conditional_compilation::ConditionalCompilation"
-                    "value"),
-                  (M.read (| value |))
+                    "value",
+                  M.read (| value |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.

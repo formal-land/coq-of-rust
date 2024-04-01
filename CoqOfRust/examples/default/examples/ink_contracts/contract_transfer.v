@@ -21,11 +21,9 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
         (Value.StructTuple
           "contract_transfer::AccountId"
           [
-            M.call_closure
-              (|
-                (M.get_trait_method
-                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                  |)),
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
                 []
               |)
           ]))
@@ -51,11 +49,11 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -97,8 +95,7 @@ Module Impl_contract_transfer_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (| (M.get_struct_record_field (M.read (| self |)) "contract_transfer::Env" "caller")
+        M.read (| M.get_struct_record_field (M.read (| self |)) "contract_transfer::Env" "caller"
           |)))
     | _, _ => M.impossible
     end.
@@ -162,9 +159,8 @@ Module Impl_contract_transfer_GiveMe.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.call_closure
-          (|
-            (M.get_associated_function (| (Ty.path "contract_transfer::GiveMe"), "init_env", [] |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [] |),
             []
           |)))
     | _, _ => M.impossible
@@ -207,291 +203,247 @@ Module Impl_contract_transfer_GiveMe.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
-        M.read
-          (|
-            (let _ :=
+        M.read (|
+            let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "requested value: ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                            M.read (| mk_str "requested value: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.path "u128" ]
-                                                  |)),
+                                                  |),
                                                 [ value ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
             let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "contract balance: ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                            M.read (| mk_str "contract balance: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.path "u128" ]
-                                                  |)),
+                                                  |),
                                                 [
-                                                  M.alloc
-                                                    (|
-                                                      (M.call_closure
-                                                        (|
-                                                          (M.get_associated_function
-                                                            (|
-                                                              (Ty.path "contract_transfer::Env"),
+                                                  M.alloc (|
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "contract_transfer::Env",
                                                               "balance",
                                                               []
-                                                            |)),
+                                                            |),
                                                           [
-                                                            M.alloc
-                                                              (|
-                                                                (M.call_closure
-                                                                  (|
-                                                                    (M.get_associated_function
-                                                                      (|
-                                                                        (Ty.path
-                                                                          "contract_transfer::GiveMe"),
+                                                            M.alloc (|
+                                                                M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "contract_transfer::GiveMe",
                                                                         "env",
                                                                         []
-                                                                      |)),
+                                                                      |),
                                                                     [ M.read (| self |) ]
-                                                                  |))
+                                                                  |)
                                                               |)
                                                           ]
-                                                        |))
+                                                        |)
                                                     |)
                                                 ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
             let _ :=
-              M.match_operator
-                (|
-                  (M.alloc (| (Value.Tuple []) |)),
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc
-                              (|
-                                (UnOp.Pure.not
+                            (M.alloc (|
+                                UnOp.Pure.not
                                   (BinOp.Pure.le
                                     (M.read (| value |))
-                                    (M.call_closure
-                                      (|
-                                        (M.get_associated_function
-                                          (| (Ty.path "contract_transfer::Env"), "balance", []
-                                          |)),
+                                    (M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "contract_transfer::Env",
+                                            "balance",
+                                            []
+                                          |),
                                         [
-                                          M.alloc
-                                            (|
-                                              (M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (|
-                                                      (Ty.path "contract_transfer::GiveMe"),
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::GiveMe",
                                                       "env",
                                                       []
-                                                    |)),
+                                                    |),
                                                   [ M.read (| self |) ]
-                                                |))
+                                                |)
                                             |)
                                         ]
-                                      |))))
+                                      |)))
                               |)) in
                         let _ :=
-                          M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
-                        M.alloc
-                          (|
-                            (M.never_to_any
-                              (|
-                                (M.call_closure
-                                  (|
-                                    (M.get_function
-                                      (|
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.call_closure (|
+                                    M.get_function (|
                                         "std::panicking::begin_panic",
                                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |)),
-                                    [ M.read (| (mk_str "insufficient funds!") |) ]
-                                  |))
-                              |))
+                                      |),
+                                    [ M.read (| mk_str "insufficient funds!" |) ]
+                                  |)
+                              |)
                           |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-            M.match_operator
-              (|
-                (M.alloc (| (Value.Tuple []) |)),
+            M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc
-                            (|
-                              (M.call_closure
-                                (|
-                                  (M.get_associated_function
-                                    (|
-                                      (Ty.apply
+                          (M.alloc (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
                                         (Ty.path "core::result::Result")
-                                        [ Ty.tuple []; Ty.tuple [] ]),
+                                        [ Ty.tuple []; Ty.tuple [] ],
                                       "is_err",
                                       []
-                                    |)),
+                                    |),
                                   [
-                                    M.alloc
-                                      (|
-                                        (M.call_closure
-                                          (|
-                                            (M.get_associated_function
-                                              (| (Ty.path "contract_transfer::Env"), "transfer", []
-                                              |)),
+                                    M.alloc (|
+                                        M.call_closure (|
+                                            M.get_associated_function (|
+                                                Ty.path "contract_transfer::Env",
+                                                "transfer",
+                                                []
+                                              |),
                                             [
-                                              M.alloc
-                                                (|
-                                                  (M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "contract_transfer::GiveMe"),
+                                              M.alloc (|
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "contract_transfer::GiveMe",
                                                           "env",
                                                           []
-                                                        |)),
+                                                        |),
                                                       [ M.read (| self |) ]
-                                                    |))
+                                                    |)
                                                 |);
-                                              M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (|
-                                                      (Ty.path "contract_transfer::Env"),
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::Env",
                                                       "caller",
                                                       []
-                                                    |)),
+                                                    |),
                                                   [
-                                                    M.alloc
-                                                      (|
-                                                        (M.call_closure
-                                                          (|
-                                                            (M.get_associated_function
-                                                              (|
-                                                                (Ty.path
-                                                                  "contract_transfer::GiveMe"),
+                                                    M.alloc (|
+                                                        M.call_closure (|
+                                                            M.get_associated_function (|
+                                                                Ty.path "contract_transfer::GiveMe",
                                                                 "env",
                                                                 []
-                                                              |)),
+                                                              |),
                                                             [ M.read (| self |) ]
-                                                          |))
+                                                          |)
                                                       |)
                                                   ]
                                                 |);
                                               M.read (| value |)
                                             ]
-                                          |))
+                                          |)
                                       |)
                                   ]
-                                |))
+                                |)
                             |)) in
-                      let _ :=
-                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
-                      M.alloc
-                        (|
-                          (M.never_to_any
-                            (|
-                              (M.call_closure
-                                (|
-                                  (M.get_function
-                                    (|
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                          M.never_to_any (|
+                              M.call_closure (|
+                                  M.get_function (|
                                       "std::panicking::begin_panic",
                                       [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                    |)),
+                                    |),
                                   [
-                                    M.read
-                                      (|
-                                        (mk_str
-                                          "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.")
+                                    M.read (|
+                                        mk_str
+                                          "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
                                       |)
                                   ]
-                                |))
-                            |))
+                                |)
+                            |)
                         |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -509,146 +461,123 @@ Module Impl_contract_transfer_GiveMe.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
+        M.read (|
+            let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "received payment: ") |);
-                                            M.read (| (mk_str "
-") |)
-                                          ])
+                                            M.read (| mk_str "received payment: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
                                       |));
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
+                                    (M.alloc (|
+                                        Value.Array
                                           [
-                                            M.call_closure
-                                              (|
-                                                (M.get_associated_function
-                                                  (|
-                                                    (Ty.path "core::fmt::rt::Argument"),
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
                                                     [ Ty.path "u128" ]
-                                                  |)),
+                                                  |),
                                                 [
-                                                  M.alloc
-                                                    (|
-                                                      (M.call_closure
-                                                        (|
-                                                          (M.get_associated_function
-                                                            (|
-                                                              (Ty.path "contract_transfer::Env"),
+                                                  M.alloc (|
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "contract_transfer::Env",
                                                               "transferred_value",
                                                               []
-                                                            |)),
+                                                            |),
                                                           [
-                                                            M.alloc
-                                                              (|
-                                                                (M.call_closure
-                                                                  (|
-                                                                    (M.get_associated_function
-                                                                      (|
-                                                                        (Ty.path
-                                                                          "contract_transfer::GiveMe"),
+                                                            M.alloc (|
+                                                                M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "contract_transfer::GiveMe",
                                                                         "env",
                                                                         []
-                                                                      |)),
+                                                                      |),
                                                                     [ M.read (| self |) ]
-                                                                  |))
+                                                                  |)
                                                               |)
                                                           ]
-                                                        |))
+                                                        |)
                                                     |)
                                                 ]
                                               |)
-                                          ])
+                                          ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
             let _ :=
-              M.match_operator
-                (|
-                  (M.alloc (| (Value.Tuple []) |)),
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc
-                              (|
-                                (UnOp.Pure.not
+                            (M.alloc (|
+                                UnOp.Pure.not
                                   (BinOp.Pure.eq
-                                    (M.call_closure
-                                      (|
-                                        (M.get_associated_function
-                                          (|
-                                            (Ty.path "contract_transfer::Env"),
+                                    (M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "contract_transfer::Env",
                                             "transferred_value",
                                             []
-                                          |)),
+                                          |),
                                         [
-                                          M.alloc
-                                            (|
-                                              (M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (|
-                                                      (Ty.path "contract_transfer::GiveMe"),
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::GiveMe",
                                                       "env",
                                                       []
-                                                    |)),
+                                                    |),
                                                   [ M.read (| self |) ]
-                                                |))
+                                                |)
                                             |)
                                         ]
                                       |))
-                                    (Value.Integer Integer.U128 10)))
+                                    (Value.Integer Integer.U128 10))
                               |)) in
                         let _ :=
-                          M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
-                        M.alloc
-                          (|
-                            (M.never_to_any
-                              (|
-                                (M.call_closure
-                                  (|
-                                    (M.get_function
-                                      (|
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.call_closure (|
+                                    M.get_function (|
                                         "std::panicking::begin_panic",
                                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |)),
-                                    [ M.read (| (mk_str "payment was not ten") |) ]
-                                  |))
-                              |))
+                                      |),
+                                    [ M.read (| mk_str "payment was not ten" |) ]
+                                  |)
+                              |)
                           |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.

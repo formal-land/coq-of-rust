@@ -21,38 +21,32 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ number ] =>
     ltac:(M.monadic
       (let number := M.alloc (| number |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               number,
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc
-                      (|
-                        (M.read
-                          (|
-                            (mk_str
+                    (M.alloc (|
+                        M.read (|
+                            mk_str
                               "We're sorry, the call cannot be completed as dialed. 
-            Please hang up and try again.")
-                          |))
+            Please hang up and try again."
+                          |)
                       |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc
-                      (|
-                        (M.read
-                          (|
-                            (mk_str
+                    (M.alloc (|
+                        M.read (|
+                            mk_str
                               "Hello, this is Mr. Awesome's Pizza. My name is Fred.
-            What can I get for you today?")
-                          |))
+            What can I get for you today?"
+                          |)
                       |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| (M.read (| (mk_str "Hi! Who is this again?") |)) |)))
+                  ltac:(M.monadic (M.alloc (| M.read (| mk_str "Hi! Who is this again?" |) |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -94,487 +88,433 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let contacts :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+      (M.read (|
+          let contacts :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "new",
                         []
-                      |)),
+                      |),
                     []
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "insert",
                         []
-                      |)),
-                    [ contacts; M.read (| (mk_str "Daniel") |); M.read (| (mk_str "798-1364") |) ]
-                  |))
+                      |),
+                    [ contacts; M.read (| mk_str "Daniel" |); M.read (| mk_str "798-1364" |) ]
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "insert",
                         []
-                      |)),
-                    [ contacts; M.read (| (mk_str "Ashley") |); M.read (| (mk_str "645-7689") |) ]
-                  |))
+                      |),
+                    [ contacts; M.read (| mk_str "Ashley" |); M.read (| mk_str "645-7689" |) ]
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "insert",
                         []
-                      |)),
-                    [ contacts; M.read (| (mk_str "Katie") |); M.read (| (mk_str "435-8291") |) ]
-                  |))
+                      |),
+                    [ contacts; M.read (| mk_str "Katie" |); M.read (| mk_str "435-8291" |) ]
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "insert",
                         []
-                      |)),
-                    [ contacts; M.read (| (mk_str "Robert") |); M.read (| (mk_str "956-1745") |) ]
-                  |))
+                      |),
+                    [ contacts; M.read (| mk_str "Robert" |); M.read (| mk_str "956-1745" |) ]
+                  |)
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_associated_function
-                          (|
-                            (Ty.apply
+            M.match_operator (|
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_associated_function (|
+                            Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
                               [
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                 Ty.path "std::hash::random::RandomState"
-                              ]),
+                              ],
                             "get",
                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                          |)),
+                          |),
                         [ contacts; mk_str "Daniel" ]
-                      |))
-                  |)),
+                      |)
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          (| γ, "core::option::Option::Some", 0
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
                           |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let number := M.copy (| γ0_0 |) in
                       let _ :=
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "std::io::stdio::_print", [] |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                        |)),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
                                       [
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.read (| (mk_str "Calling Daniel: ") |);
-                                                    M.read (| (mk_str "
-") |)
-                                                  ])
+                                                    M.read (| mk_str "Calling Daniel: " |);
+                                                    M.read (| mk_str "
+" |)
+                                                  ]
                                               |));
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.call_closure
-                                                      (|
-                                                        (M.get_associated_function
-                                                          (|
-                                                            (Ty.path "core::fmt::rt::Argument"),
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
                                                                 [ Ty.path "str" ]
                                                             ]
-                                                          |)),
+                                                          |),
                                                         [
-                                                          M.alloc
-                                                            (|
-                                                              (M.call_closure
-                                                                (|
-                                                                  (M.get_function
-                                                                    (| "hash_map::call", []
-                                                                    |)),
+                                                          M.alloc (|
+                                                              M.call_closure (|
+                                                                  M.get_function (|
+                                                                      "hash_map::call",
+                                                                      []
+                                                                    |),
                                                                   [ M.read (| number |) ]
-                                                                |))
+                                                                |)
                                                             |)
                                                         ]
                                                       |)
-                                                  ])
+                                                  ]
                                               |))
                                       ]
                                     |)
                                 ]
-                              |))
+                              |)
                           |) in
-                      M.alloc (| (Value.Tuple []) |)));
+                      M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "std::io::stdio::_print", [] |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                        |)),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
                                       [
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.read
-                                                      (| (mk_str "Don't have Daniel's number.
-")
+                                                    M.read (| mk_str "Don't have Daniel's number.
+"
                                                       |)
-                                                  ])
+                                                  ]
                                               |))
                                       ]
                                     |)
                                 ]
-                              |))
+                              |)
                           |) in
-                      M.alloc (| (Value.Tuple []) |)))
+                      M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "insert",
                         []
-                      |)),
-                    [ contacts; M.read (| (mk_str "Daniel") |); M.read (| (mk_str "164-6743") |) ]
-                  |))
+                      |),
+                    [ contacts; M.read (| mk_str "Daniel" |); M.read (| mk_str "164-6743" |) ]
+                  |)
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_associated_function
-                          (|
-                            (Ty.apply
+            M.match_operator (|
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_associated_function (|
+                            Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
                               [
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                 Ty.path "std::hash::random::RandomState"
-                              ]),
+                              ],
                             "get",
                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                          |)),
+                          |),
                         [ contacts; mk_str "Ashley" ]
-                      |))
-                  |)),
+                      |)
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          (| γ, "core::option::Option::Some", 0
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
                           |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let number := M.copy (| γ0_0 |) in
                       let _ :=
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "std::io::stdio::_print", [] |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                        |)),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
                                       [
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.read (| (mk_str "Calling Ashley: ") |);
-                                                    M.read (| (mk_str "
-") |)
-                                                  ])
+                                                    M.read (| mk_str "Calling Ashley: " |);
+                                                    M.read (| mk_str "
+" |)
+                                                  ]
                                               |));
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.call_closure
-                                                      (|
-                                                        (M.get_associated_function
-                                                          (|
-                                                            (Ty.path "core::fmt::rt::Argument"),
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
                                                                 [ Ty.path "str" ]
                                                             ]
-                                                          |)),
+                                                          |),
                                                         [
-                                                          M.alloc
-                                                            (|
-                                                              (M.call_closure
-                                                                (|
-                                                                  (M.get_function
-                                                                    (| "hash_map::call", []
-                                                                    |)),
+                                                          M.alloc (|
+                                                              M.call_closure (|
+                                                                  M.get_function (|
+                                                                      "hash_map::call",
+                                                                      []
+                                                                    |),
                                                                   [ M.read (| number |) ]
-                                                                |))
+                                                                |)
                                                             |)
                                                         ]
                                                       |)
-                                                  ])
+                                                  ]
                                               |))
                                       ]
                                     |)
                                 ]
-                              |))
+                              |)
                           |) in
-                      M.alloc (| (Value.Tuple []) |)));
+                      M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "std::io::stdio::_print", [] |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                        |)),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
                                       [
                                         (* Unsize *)
                                           M.pointer_coercion
-                                            (M.alloc
-                                              (|
-                                                (Value.Array
+                                            (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    M.read
-                                                      (| (mk_str "Don't have Ashley's number.
-")
+                                                    M.read (| mk_str "Don't have Ashley's number.
+"
                                                       |)
-                                                  ])
+                                                  ]
                                               |))
                                       ]
                                     |)
                                 ]
-                              |))
+                              |)
                           |) in
-                      M.alloc (| (Value.Tuple []) |)))
+                      M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
                           [
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.apply (Ty.path "&") [ Ty.path "str" ];
                             Ty.path "std::hash::random::RandomState"
-                          ]),
+                          ],
                         "remove",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |)),
+                      |),
                     [ contacts; mk_str "Ashley" ]
-                  |))
+                  |)
               |) in
           M.use
-            (M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_trait_method
-                          (|
+            (M.match_operator (|
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            (Ty.apply
+                            Ty.apply
                               (Ty.path "std::collections::hash::map::Iter")
                               [
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                              ]),
+                              ],
                             [],
                             "into_iter",
                             []
-                          |)),
+                          |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (|
-                                  (Ty.apply
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.apply
                                     (Ty.path "std::collections::hash::map::HashMap")
                                     [
                                       Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                       Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                       Ty.path "std::hash::random::RandomState"
-                                    ]),
+                                    ],
                                   "iter",
                                   []
-                                |)),
+                                |),
                               [ contacts ]
                             |)
                         ]
-                      |))
-                  |)),
+                      |)
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
-                      M.loop
-                        (|
+                      M.loop (|
                           ltac:(M.monadic
                             (let _ :=
-                              M.match_operator
-                                (|
-                                  (M.alloc
-                                    (|
-                                      (M.call_closure
-                                        (|
-                                          (M.get_trait_method
-                                            (|
+                              M.match_operator (|
+                                  M.alloc (|
+                                      M.call_closure (|
+                                          M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
-                                              (Ty.apply
+                                              Ty.apply
                                                 (Ty.path "std::collections::hash::map::Iter")
                                                 [
                                                   Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                                   Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                                ]),
+                                                ],
                                               [],
                                               "next",
                                               []
-                                            |)),
+                                            |),
                                           [ iter ]
-                                        |))
-                                    |)),
+                                        |)
+                                    |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc
-                                          (| (M.never_to_any (| (M.read (| (M.break (||)) |)) |))
+                                        (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match
-                                            (| γ, "core::option::Option::Some", 0
+                                          M.get_struct_tuple_field_or_break_match (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
                                             |) in
                                         let γ1_0 := M.get_tuple_field γ0_0 0 in
                                         let γ1_1 := M.get_tuple_field γ0_0 1 in
@@ -583,49 +523,39 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         let number := M.copy (| γ1_1 |) in
                                         let _ :=
                                           let _ :=
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (| "std::io::stdio::_print", []
-                                                      |)),
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (| "std::io::stdio::_print", []
+                                                      |),
                                                     [
-                                                      M.call_closure
-                                                        (|
-                                                          (M.get_associated_function
-                                                            (|
-                                                              (Ty.path "core::fmt::Arguments"),
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
                                                               "new_v1",
                                                               []
-                                                            |)),
+                                                            |),
                                                           [
                                                             (* Unsize *)
                                                               M.pointer_coercion
-                                                                (M.alloc
-                                                                  (|
-                                                                    (Value.Array
+                                                                (M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        M.read
-                                                                          (| (mk_str "Calling ")
+                                                                        M.read (| mk_str "Calling "
                                                                           |);
-                                                                        M.read (| (mk_str ": ") |);
-                                                                        M.read (| (mk_str "
-") |)
-                                                                      ])
+                                                                        M.read (| mk_str ": " |);
+                                                                        M.read (| mk_str "
+" |)
+                                                                      ]
                                                                   |));
                                                             (* Unsize *)
                                                               M.pointer_coercion
-                                                                (M.alloc
-                                                                  (|
-                                                                    (Value.Array
+                                                                (M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        M.call_closure
-                                                                          (|
-                                                                            (M.get_associated_function
-                                                                              (|
-                                                                                (Ty.path
-                                                                                  "core::fmt::rt::Argument"),
+                                                                        M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 "new_display",
                                                                                 [
                                                                                   Ty.apply
@@ -640,15 +570,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                         ]
                                                                                     ]
                                                                                 ]
-                                                                              |)),
+                                                                              |),
                                                                             [ contact ]
                                                                           |);
-                                                                        M.call_closure
-                                                                          (|
-                                                                            (M.get_associated_function
-                                                                              (|
-                                                                                (Ty.path
-                                                                                  "core::fmt::rt::Argument"),
+                                                                        M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 "new_display",
                                                                                 [
                                                                                   Ty.apply
@@ -656,41 +584,38 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                     [ Ty.path "str"
                                                                                     ]
                                                                                 ]
-                                                                              |)),
+                                                                              |),
                                                                             [
-                                                                              M.alloc
-                                                                                (|
-                                                                                  (M.call_closure
-                                                                                    (|
-                                                                                      (M.get_function
-                                                                                        (|
+                                                                              M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                      M.get_function (|
                                                                                           "hash_map::call",
                                                                                           []
-                                                                                        |)),
+                                                                                        |),
                                                                                       [
-                                                                                        M.read
-                                                                                          (| number
+                                                                                        M.read (|
+                                                                                            number
                                                                                           |)
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
                                                                                 |)
                                                                             ]
                                                                           |)
-                                                                      ])
+                                                                      ]
                                                                   |))
                                                           ]
                                                         |)
                                                     ]
-                                                  |))
+                                                  |)
                                               |) in
-                                          M.alloc (| (Value.Tuple []) |) in
-                                        M.alloc (| (Value.Tuple []) |)))
+                                          M.alloc (| Value.Tuple [] |) in
+                                        M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                            M.alloc (| (Value.Tuple []) |)))
+                            M.alloc (| Value.Tuple [] |)))
                         |)))
                 ]
-              |)))
+              |))
         |)))
   | _, _ => M.impossible
   end.

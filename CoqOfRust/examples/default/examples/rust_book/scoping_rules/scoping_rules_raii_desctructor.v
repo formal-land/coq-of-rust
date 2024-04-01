@@ -20,37 +20,34 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
+        M.read (|
+            let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (|
-                                        (Value.Array
-                                          [ M.read (| (mk_str "ToDrop is being dropped
-") |) ])
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "ToDrop is being dropped
+" |) ]
                                       |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
-            M.alloc (| (Value.Tuple []) |))
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -73,36 +70,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x := M.alloc (| (Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" []) |) in
+      (M.read (|
+          let x := M.alloc (| Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (| (Value.Array [ M.read (| (mk_str "Made a ToDrop!
-") |) ])
+                                  (M.alloc (| Value.Array [ M.read (| mk_str "Made a ToDrop!
+" |) ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

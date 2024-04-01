@@ -31,16 +31,11 @@ Module Impl_generics_new_type_idiom_Years.
         Value.StructTuple
           "generics_new_type_idiom::Days"
           [
-            BinOp.Panic.mul
-              (|
-                (M.read
-                  (|
-                    (M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "generics_new_type_idiom::Years"
-                      0)
-                  |)),
-                (Value.Integer Integer.I64 365)
+            BinOp.Panic.mul (|
+                M.read (|
+                    M.get_struct_tuple_field (M.read (| self |)) "generics_new_type_idiom::Years" 0
+                  |),
+                Value.Integer Integer.I64 365
               |)
           ]))
     | _, _ => M.impossible
@@ -65,13 +60,11 @@ Module Impl_generics_new_type_idiom_Days.
         Value.StructTuple
           "generics_new_type_idiom::Years"
           [
-            BinOp.Panic.div
-              (|
-                (M.read
-                  (|
-                    (M.get_struct_tuple_field (M.read (| self |)) "generics_new_type_idiom::Days" 0)
-                  |)),
-                (Value.Integer Integer.I64 365)
+            BinOp.Panic.div (|
+                M.read (|
+                    M.get_struct_tuple_field (M.read (| self |)) "generics_new_type_idiom::Days" 0
+                  |),
+                Value.Integer Integer.I64 365
               |)
           ]))
     | _, _ => M.impossible
@@ -91,8 +84,7 @@ Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let age := M.alloc (| age |) in
       BinOp.Pure.ge
-        (M.read
-          (| (M.get_struct_tuple_field (M.read (| age |)) "generics_new_type_idiom::Years" 0)
+        (M.read (| M.get_struct_tuple_field (M.read (| age |)) "generics_new_type_idiom::Years" 0
           |))
         (Value.Integer Integer.I64 18)))
   | _, _ => M.impossible
@@ -111,164 +103,139 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let age :=
-            M.alloc
-              (|
-                (Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer Integer.I64 5 ])
+      (M.read (|
+          let age :=
+            M.alloc (|
+                Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer Integer.I64 5 ]
               |) in
           let age_days :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (| (Ty.path "generics_new_type_idiom::Years"), "to_days", []
-                      |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "generics_new_type_idiom::Years",
+                        "to_days",
+                        []
+                      |),
                     [ age ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [
-                                          M.read (| (mk_str "Old enough ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Old enough " |); M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "bool" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
                                                             "generics_new_type_idiom::old_enough",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [ age ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [
-                                          M.read (| (mk_str "Old enough ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Old enough " |); M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "bool" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
                                                             "generics_new_type_idiom::old_enough",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [
-                                                          M.alloc
-                                                            (|
-                                                              (M.call_closure
-                                                                (|
-                                                                  (M.get_associated_function
-                                                                    (|
-                                                                      (Ty.path
-                                                                        "generics_new_type_idiom::Days"),
+                                                          M.alloc (|
+                                                              M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "generics_new_type_idiom::Days",
                                                                       "to_years",
                                                                       []
-                                                                    |)),
+                                                                    |),
                                                                   [ age_days ]
-                                                                |))
+                                                                |)
                                                             |)
                                                         ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

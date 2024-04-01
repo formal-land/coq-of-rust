@@ -14,10 +14,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ := InlineAssembly in
-          M.alloc (| (Value.Tuple []) |))
+      (M.read (|
+          let _ := InlineAssembly in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

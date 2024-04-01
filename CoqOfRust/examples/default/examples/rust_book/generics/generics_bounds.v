@@ -23,30 +23,30 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_struct_field2_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_struct_field2_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "Rectangle") |);
-              M.read (| (mk_str "length") |);
+              M.read (| mk_str "Rectangle" |);
+              M.read (| mk_str "length" |);
               (* Unsize *)
                 M.pointer_coercion
                   (M.get_struct_record_field
                     (M.read (| self |))
                     "generics_bounds::Rectangle"
                     "length");
-              M.read (| (mk_str "height") |);
+              M.read (| mk_str "height" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (|
-                      (M.get_struct_record_field
+                  (M.alloc (|
+                      M.get_struct_record_field
                         (M.read (| self |))
                         "generics_bounds::Rectangle"
-                        "height")
+                        "height"
                     |))
             ]
           |)))
@@ -81,22 +81,13 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Panic.mul
-          (|
-            (M.read
-              (|
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "generics_bounds::Rectangle"
-                  "length")
-              |)),
-            (M.read
-              (|
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "generics_bounds::Rectangle"
-                  "height")
-              |))
+        BinOp.Panic.mul (|
+            M.read (|
+                M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "length"
+              |),
+            M.read (|
+                M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "height"
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -119,55 +110,49 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
-      M.read
-        (|
-          (let _ :=
+      M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [ Ty.apply (Ty.path "&") [ T ] ]
-                                                |)),
+                                                |),
                                               [ t ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -182,9 +167,8 @@ Definition area (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
-      M.call_closure
-        (|
-          (M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |)),
+      M.call_closure (|
+          M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |),
           [ M.read (| t |) ]
         |)))
   | _, _ => M.impossible
@@ -214,103 +198,90 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let rectangle :=
-            M.alloc
-              (|
-                (Value.StructRecord
+      (M.read (|
+          let rectangle :=
+            M.alloc (|
+                Value.StructRecord
                   "generics_bounds::Rectangle"
                   [
                     ("length", M.read (| UnsupportedLiteral |));
                     ("height", M.read (| UnsupportedLiteral |))
-                  ])
+                  ]
               |) in
           let _triangle :=
-            M.alloc
-              (|
-                (Value.StructRecord
+            M.alloc (|
+                Value.StructRecord
                   "generics_bounds::Triangle"
                   [
                     ("length", M.read (| UnsupportedLiteral |));
                     ("height", M.read (| UnsupportedLiteral |))
-                  ])
+                  ]
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function
-                      (| "generics_bounds::print_debug", [ Ty.path "generics_bounds::Rectangle" ]
-                      |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (|
+                        "generics_bounds::print_debug",
+                        [ Ty.path "generics_bounds::Rectangle" ]
+                      |),
                     [ rectangle ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "Area: ") |); M.read (| (mk_str "
-") |)
-                                        ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Area: " |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "f64" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_trait_method
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
                                                             "generics_bounds::HasArea",
-                                                            (Ty.path "generics_bounds::Rectangle"),
+                                                            Ty.path "generics_bounds::Rectangle",
                                                             [],
                                                             "area",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [ rectangle ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -12,184 +12,166 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
+      (M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc (| (Value.Array [ M.read (| (mk_str "1
-") |) ]) |));
+                                  (M.alloc (| Value.Array [ M.read (| mk_str "1
+" |) ] |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (M.call_closure
-                                        (|
-                                          (M.get_associated_function
-                                            (| (Ty.path "core::fmt::rt::Argument"), "none", []
-                                            |)),
+                                  (M.alloc (|
+                                      M.call_closure (|
+                                          M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "none",
+                                              []
+                                            |),
                                           []
-                                        |))
+                                        |)
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (| "core::cmp::min", [ Ty.path "i32" ]
-                                                          |)),
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
+                                                            "core::cmp::min",
+                                                            [ Ty.path "i32" ]
+                                                          |),
                                                         [
-                                                          BinOp.Panic.add
-                                                            (|
-                                                              (Value.Integer Integer.I32 1),
-                                                              (Value.Integer Integer.I32 2)
+                                                          BinOp.Panic.add (|
+                                                              Value.Integer Integer.I32 1,
+                                                              Value.Integer Integer.I32 2
                                                             |);
                                                           Value.Integer Integer.I32 2
                                                         ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (| "core::cmp::min", [ Ty.path "i32" ]
-                                                          |)),
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
+                                                            "core::cmp::min",
+                                                            [ Ty.path "i32" ]
+                                                          |),
                                                         [
                                                           Value.Integer Integer.I32 5;
-                                                          M.call_closure
-                                                            (|
-                                                              (M.get_function
-                                                                (|
+                                                          M.call_closure (|
+                                                              M.get_function (|
                                                                   "core::cmp::min",
                                                                   [ Ty.path "i32" ]
-                                                                |)),
+                                                                |),
                                                               [
-                                                                BinOp.Panic.mul
-                                                                  (|
-                                                                    (Value.Integer Integer.I32 2),
-                                                                    (Value.Integer Integer.I32 3)
+                                                                BinOp.Panic.mul (|
+                                                                    Value.Integer Integer.I32 2,
+                                                                    Value.Integer Integer.I32 3
                                                                   |);
                                                                 Value.Integer Integer.I32 4
                                                               ]
                                                             |)
                                                         ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

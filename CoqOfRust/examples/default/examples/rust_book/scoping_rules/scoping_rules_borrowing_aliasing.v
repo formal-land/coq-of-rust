@@ -69,62 +69,55 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let point :=
-            M.alloc
-              (|
-                (Value.StructRecord
+      (M.read (|
+          let point :=
+            M.alloc (|
+                Value.StructRecord
                   "scoping_rules_borrowing_aliasing::Point"
                   [
                     ("x", Value.Integer Integer.I32 0);
                     ("y", Value.Integer Integer.I32 0);
                     ("z", Value.Integer Integer.I32 0)
-                  ])
+                  ]
               |) in
           let borrowed_point := M.alloc (| point |) in
           let another_borrow := M.alloc (| point |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "Point has coordinates: (") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ")
-") |)
-                                        ])
+                                          M.read (| mk_str "Point has coordinates: (" |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ")
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| borrowed_point |))
@@ -132,14 +125,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "x"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| another_borrow |))
@@ -147,14 +138,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "y"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   point
@@ -162,55 +151,50 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "z"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "Point has coordinates: (") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ")
-") |)
-                                        ])
+                                          M.read (| mk_str "Point has coordinates: (" |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ")
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| borrowed_point |))
@@ -218,14 +202,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "x"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| another_borrow |))
@@ -233,14 +215,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "y"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   point
@@ -248,83 +228,75 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "z"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let mutable_borrow := M.alloc (| point |) in
           let _ :=
-            M.assign
-              (|
-                (M.get_struct_record_field
+            M.assign (|
+                M.get_struct_record_field
                   (M.read (| mutable_borrow |))
                   "scoping_rules_borrowing_aliasing::Point"
-                  "x"),
-                (Value.Integer Integer.I32 5)
+                  "x",
+                Value.Integer Integer.I32 5
               |) in
           let _ :=
-            M.assign
-              (|
-                (M.get_struct_record_field
+            M.assign (|
+                M.get_struct_record_field
                   (M.read (| mutable_borrow |))
                   "scoping_rules_borrowing_aliasing::Point"
-                  "y"),
-                (Value.Integer Integer.I32 2)
+                  "y",
+                Value.Integer Integer.I32 2
               |) in
           let _ :=
-            M.assign
-              (|
-                (M.get_struct_record_field
+            M.assign (|
+                M.get_struct_record_field
                   (M.read (| mutable_borrow |))
                   "scoping_rules_borrowing_aliasing::Point"
-                  "z"),
-                (Value.Integer Integer.I32 1)
+                  "z",
+                Value.Integer Integer.I32 1
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "Point has coordinates: (") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ")
-") |)
-                                        ])
+                                          M.read (| mk_str "Point has coordinates: (" |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ")
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| mutable_borrow |))
@@ -332,14 +304,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "x"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| mutable_borrow |))
@@ -347,14 +317,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "y"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| mutable_borrow |))
@@ -362,56 +330,51 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "z"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let new_borrowed_point := M.alloc (| point |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "Point now has coordinates: (") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ", ") |);
-                                          M.read (| (mk_str ")
-") |)
-                                        ])
+                                          M.read (| mk_str "Point now has coordinates: (" |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ", " |);
+                                          M.read (| mk_str ")
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| new_borrowed_point |))
@@ -419,14 +382,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "x"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| new_borrowed_point |))
@@ -434,14 +395,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "y"
                                               ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "i32" ]
-                                                |)),
+                                                |),
                                               [
                                                 M.get_struct_record_field
                                                   (M.read (| new_borrowed_point |))
@@ -449,15 +408,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "z"
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

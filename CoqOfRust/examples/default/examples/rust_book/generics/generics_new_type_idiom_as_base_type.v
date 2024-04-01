@@ -19,33 +19,31 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let years :=
-            M.alloc
-              (|
-                (Value.StructTuple
+      (M.read (|
+          let years :=
+            M.alloc (|
+                Value.StructTuple
                   "generics_new_type_idiom_as_base_type::Years"
-                  [ Value.Integer Integer.I64 42 ])
+                  [ Value.Integer Integer.I64 42 ]
               |) in
           let years_as_primitive_1 :=
-            M.copy
-              (| (M.get_struct_tuple_field years "generics_new_type_idiom_as_base_type::Years" 0)
+            M.copy (| M.get_struct_tuple_field years "generics_new_type_idiom_as_base_type::Years" 0
               |) in
-          M.match_operator
-            (|
+          M.match_operator (|
               years,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "generics_new_type_idiom_as_base_type::Years", 0
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "generics_new_type_idiom_as_base_type::Years",
+                          0
                         |) in
                     let years_as_primitive_2 := M.copy (| γ0_0 |) in
-                    M.alloc (| (Value.Tuple []) |)))
+                    M.alloc (| Value.Tuple [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.

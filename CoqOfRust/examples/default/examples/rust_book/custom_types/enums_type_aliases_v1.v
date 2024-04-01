@@ -34,16 +34,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let x :=
-            M.alloc
-              (|
-                (Value.StructTuple
+      (M.read (|
+          let x :=
+            M.alloc (|
+                Value.StructTuple
                   "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-                  [])
+                  []
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

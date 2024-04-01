@@ -53,23 +53,19 @@ Module main.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
-        M.read
-          (|
-            (let lo := M.copy (| Value.DeclaredButUndefined |) in
+        M.read (|
+            let lo := M.copy (| Value.DeclaredButUndefined |) in
             let hi := M.copy (| Value.DeclaredButUndefined |) in
             let _ :=
               let _ := InlineAssembly in
-              M.alloc (| (Value.Tuple []) |) in
-            M.alloc
-              (|
-                (BinOp.Panic.add
-                  (|
-                    (BinOp.Panic.shl
-                      (| (M.rust_cast (M.read (| hi |))), (Value.Integer Integer.I32 64)
-                      |)),
-                    (M.rust_cast (M.read (| lo |)))
-                  |))
-              |))
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (|
+                BinOp.Panic.add (|
+                    BinOp.Panic.shl (| M.rust_cast (M.read (| hi |)), Value.Integer Integer.I32 64
+                      |),
+                    M.rust_cast (M.read (| lo |))
+                  |)
+              |)
           |)))
     | _, _ => M.impossible
     end.

@@ -24,14 +24,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _mutable_integer := M.alloc (| (Value.Integer Integer.I32 7) |) in
+      (M.read (|
+          let _mutable_integer := M.alloc (| Value.Integer Integer.I32 7 |) in
           let _ :=
             let _mutable_integer := M.copy (| _mutable_integer |) in
-            M.alloc (| (Value.Tuple []) |) in
-          let _ := M.assign (| _mutable_integer, (Value.Integer Integer.I32 3) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          let _ := M.assign (| _mutable_integer, Value.Integer Integer.I32 3 |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -21,11 +21,9 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
         (Value.StructTuple
           "e2e_call_runtime::AccountId"
           [
-            M.call_closure
-              (|
-                (M.get_trait_method
-                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                  |)),
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
                 []
               |)
           ]))
@@ -51,11 +49,11 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -145,11 +143,8 @@ Module Impl_e2e_call_runtime_Contract.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "e2e_call_runtime::Contract"), "init_env", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [] |),
             []
           |)))
     | _, _ => M.impossible
@@ -180,19 +175,15 @@ Module Impl_e2e_call_runtime_Contract.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.call_closure
-          (|
-            (M.get_associated_function (| (Ty.path "e2e_call_runtime::Env"), "balance", [] |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [] |),
             [
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "e2e_call_runtime::Contract"), "env", []
-                        |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "env", []
+                        |),
                       [ M.read (| self |) ]
-                    |))
+                    |)
                 |)
             ]
           |)))

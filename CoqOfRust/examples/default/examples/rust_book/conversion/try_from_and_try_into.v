@@ -20,22 +20,22 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "core::fmt::Formatter"), "debug_tuple_field1_finish", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
             [
               M.read (| f |);
-              M.read (| (mk_str "EvenNumber") |);
+              M.read (| mk_str "EvenNumber" |);
               (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc
-                    (|
-                      (M.get_struct_tuple_field
+                  (M.alloc (|
+                      M.get_struct_tuple_field
                         (M.read (| self |))
                         "try_from_and_try_into::EvenNumber"
-                        0)
+                        0
                     |))
             ]
           |)))
@@ -74,11 +74,11 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read
-            (| (M.get_struct_tuple_field (M.read (| self |)) "try_from_and_try_into::EvenNumber" 0)
+          (M.read (|
+              M.get_struct_tuple_field (M.read (| self |)) "try_from_and_try_into::EvenNumber" 0
             |))
-          (M.read
-            (| (M.get_struct_tuple_field (M.read (| other |)) "try_from_and_try_into::EvenNumber" 0)
+          (M.read (|
+              M.get_struct_tuple_field (M.read (| other |)) "try_from_and_try_into::EvenNumber" 0
             |))))
     | _, _ => M.impossible
     end.
@@ -113,43 +113,36 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     | [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
-        M.read
-          (|
-            (M.match_operator
-              (|
-                (M.alloc (| (Value.Tuple []) |)),
+        M.read (|
+            M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc
-                            (|
-                              (BinOp.Pure.eq
-                                (BinOp.Panic.rem
-                                  (| (M.read (| value |)), (Value.Integer Integer.I32 2)
+                          (M.alloc (|
+                              BinOp.Pure.eq
+                                (BinOp.Panic.rem (| M.read (| value |), Value.Integer Integer.I32 2
                                   |))
-                                (Value.Integer Integer.I32 0))
+                                (Value.Integer Integer.I32 0)
                             |)) in
-                      let _ :=
-                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
-                      M.alloc
-                        (|
-                          (Value.StructTuple
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                          Value.StructTuple
                             "core::result::Result::Ok"
                             [
                               Value.StructTuple
                                 "try_from_and_try_into::EvenNumber"
                                 [ M.read (| value |) ]
-                            ])
+                            ]
                         |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc
-                        (| (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ])
+                      (M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]
                         |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -182,42 +175,35 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (Value.Tuple
+      (M.read (|
+          let _ :=
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_trait_method
-                                  (|
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_trait_method (|
                                     "core::convert::TryFrom",
-                                    (Ty.path "try_from_and_try_into::EvenNumber"),
+                                    Ty.path "try_from_and_try_into::EvenNumber",
                                     [ Ty.path "i32" ],
                                     "try_from",
                                     []
-                                  |)),
+                                  |),
                                 [ Value.Integer Integer.I32 8 ]
-                              |))
+                              |)
                           |);
-                        M.alloc
-                          (|
-                            (Value.StructTuple
+                        M.alloc (|
+                            Value.StructTuple
                               "core::result::Result::Ok"
                               [
                                 Value.StructTuple
                                   "try_from_and_try_into::EvenNumber"
                                   [ Value.Integer Integer.I32 8 ]
-                              ])
+                              ]
                           |)
-                      ])
-                  |)),
+                      ]
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -225,28 +211,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::result::Result")
                                                     [
                                                       Ty.path "try_from_and_try_into::EvenNumber";
                                                       Ty.tuple []
-                                                    ]),
+                                                    ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -257,33 +239,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ],
                                                   "eq",
                                                   []
-                                                |)),
+                                                |),
                                               [ M.read (| left_val |); M.read (| right_val |) ]
-                                            |)))
+                                            |))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [
                                                           Ty.apply
@@ -301,7 +275,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               Ty.tuple []
                                                             ]
                                                         ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -310,43 +284,37 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (Value.Tuple
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_trait_method
-                                  (|
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_trait_method (|
                                     "core::convert::TryFrom",
-                                    (Ty.path "try_from_and_try_into::EvenNumber"),
+                                    Ty.path "try_from_and_try_into::EvenNumber",
                                     [ Ty.path "i32" ],
                                     "try_from",
                                     []
-                                  |)),
+                                  |),
                                 [ Value.Integer Integer.I32 5 ]
-                              |))
+                              |)
                           |);
-                        M.alloc
-                          (| (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ])
+                        M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]
                           |)
-                      ])
-                  |)),
+                      ]
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -354,28 +322,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::result::Result")
                                                     [
                                                       Ty.path "try_from_and_try_into::EvenNumber";
                                                       Ty.tuple []
-                                                    ]),
+                                                    ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -386,33 +350,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ],
                                                   "eq",
                                                   []
-                                                |)),
+                                                |),
                                               [ M.read (| left_val |); M.read (| right_val |) ]
-                                            |)))
+                                            |))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [
                                                           Ty.apply
@@ -430,7 +386,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               Ty.tuple []
                                                             ]
                                                         ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -439,52 +395,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
           let result :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "core::convert::TryInto",
-                        (Ty.path "i32"),
+                        Ty.path "i32",
                         [ Ty.path "try_from_and_try_into::EvenNumber" ],
                         "try_into",
                         []
-                      |)),
+                      |),
                     [ Value.Integer Integer.I32 8 ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (Value.Tuple
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
                         result;
-                        M.alloc
-                          (|
-                            (Value.StructTuple
+                        M.alloc (|
+                            Value.StructTuple
                               "core::result::Result::Ok"
                               [
                                 Value.StructTuple
                                   "try_from_and_try_into::EvenNumber"
                                   [ Value.Integer Integer.I32 8 ]
-                              ])
+                              ]
                           |)
-                      ])
-                  |)),
+                      ]
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -492,28 +442,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::result::Result")
                                                     [
                                                       Ty.path "try_from_and_try_into::EvenNumber";
                                                       Ty.tuple []
-                                                    ]),
+                                                    ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -524,33 +470,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ],
                                                   "eq",
                                                   []
-                                                |)),
+                                                |),
                                               [ M.read (| left_val |); M.read (| right_val |) ]
-                                            |)))
+                                            |))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [
                                                           Ty.apply
@@ -568,7 +506,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               Ty.tuple []
                                                             ]
                                                         ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -577,45 +515,39 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
           let result :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "core::convert::TryInto",
-                        (Ty.path "i32"),
+                        Ty.path "i32",
                         [ Ty.path "try_from_and_try_into::EvenNumber" ],
                         "try_into",
                         []
-                      |)),
+                      |),
                     [ Value.Integer Integer.I32 5 ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (Value.Tuple
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
                         result;
-                        M.alloc
-                          (| (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ])
+                        M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]
                           |)
-                      ])
-                  |)),
+                      ]
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -623,28 +555,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::result::Result")
                                                     [
                                                       Ty.path "try_from_and_try_into::EvenNumber";
                                                       Ty.tuple []
-                                                    ]),
+                                                    ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -655,33 +583,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ],
                                                   "eq",
                                                   []
-                                                |)),
+                                                |),
                                               [ M.read (| left_val |); M.read (| right_val |) ]
-                                            |)))
+                                            |))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [
                                                           Ty.apply
@@ -699,7 +619,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               Ty.tuple []
                                                             ]
                                                         ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -708,17 +628,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

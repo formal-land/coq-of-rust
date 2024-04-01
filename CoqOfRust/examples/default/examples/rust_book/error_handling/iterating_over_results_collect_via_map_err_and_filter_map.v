@@ -18,85 +18,71 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let strings :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]),
+      (M.read (|
+          let strings :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
-                      |)),
+                      |),
                     [
                       (* Unsize *)
                         M.pointer_coercion
-                          (M.read
-                            (|
-                              (M.call_closure
-                                (|
-                                  (M.get_associated_function
-                                    (|
-                                      (Ty.apply
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
                                         (Ty.path "alloc::boxed::Box")
                                         [
                                           Ty.apply
                                             (Ty.path "array")
                                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                                           Ty.path "alloc::alloc::Global"
-                                        ]),
+                                        ],
                                       "new",
                                       []
-                                    |)),
+                                    |),
                                   [
-                                    M.alloc
-                                      (|
-                                        (Value.Array
+                                    M.alloc (|
+                                        Value.Array
                                           [
-                                            M.read (| (mk_str "42") |);
-                                            M.read (| (mk_str "tofu") |);
-                                            M.read (| (mk_str "93") |);
-                                            M.read (| (mk_str "999") |);
-                                            M.read (| (mk_str "18") |)
-                                          ])
+                                            M.read (| mk_str "42" |);
+                                            M.read (| mk_str "tofu" |);
+                                            M.read (| mk_str "93" |);
+                                            M.read (| mk_str "999" |);
+                                            M.read (| mk_str "18" |)
+                                          ]
                                       |)
                                   ]
-                                |))
+                                |)
                             |))
                     ]
-                  |))
+                  |)
               |) in
           let errors :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           [
                             Ty.path "core::num::error::ParseIntError";
                             Ty.path "alloc::alloc::Global"
-                          ]),
+                          ],
                         "new",
                         []
-                      |)),
+                      |),
                     []
-                  |))
+                  |)
               |) in
           let numbers :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        (Ty.apply
+                        Ty.apply
                           (Ty.path "core::iter::adapters::filter_map::FilterMap")
                           [
                             Ty.apply
@@ -124,7 +110,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   ]
                               ]
                               (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
-                          ]),
+                          ],
                         [],
                         "collect",
                         [
@@ -132,14 +118,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "alloc::vec::Vec")
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                         ]
-                      |)),
+                      |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_trait_method
-                            (|
+                      M.call_closure (|
+                          M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              (Ty.apply
+                              Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
                                 [
                                   Ty.apply
@@ -153,7 +137,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     (Ty.apply
                                       (Ty.path "core::result::Result")
                                       [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ])
-                                ]),
+                                ],
                               [],
                               "filter_map",
                               [
@@ -170,19 +154,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   ]
                                   (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
                               ]
-                            |)),
+                            |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_trait_method
-                                  (|
+                            M.call_closure (|
+                                M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    (Ty.apply
+                                    Ty.apply
                                       (Ty.path "alloc::vec::into_iter::IntoIter")
                                       [
                                         Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                         Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      ],
                                     [],
                                     "map",
                                     [
@@ -196,23 +178,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError"
                                           ])
                                     ]
-                                  |)),
+                                  |),
                                 [
-                                  M.call_closure
-                                    (|
-                                      (M.get_trait_method
-                                        (|
+                                  M.call_closure (|
+                                      M.get_trait_method (|
                                           "core::iter::traits::collect::IntoIterator",
-                                          (Ty.apply
+                                          Ty.apply
                                             (Ty.path "alloc::vec::Vec")
                                             [
                                               Ty.apply (Ty.path "&") [ Ty.path "str" ];
                                               Ty.path "alloc::alloc::Global"
-                                            ]),
+                                            ],
                                           [],
                                           "into_iter",
                                           []
-                                        |)),
+                                        |),
                                       [ M.read (| strings |) ]
                                     |);
                                   M.closure
@@ -220,21 +200,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator
-                                            (|
-                                              (M.alloc (| α0 |)),
+                                          M.match_operator (|
+                                              M.alloc (| α0 |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let s := M.copy (| γ |) in
-                                                    M.call_closure
-                                                      (|
-                                                        (M.get_associated_function
-                                                          (|
-                                                            (Ty.path "str"),
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "str",
                                                             "parse",
                                                             [ Ty.path "u8" ]
-                                                          |)),
+                                                          |),
                                                         [ M.read (| s |) ]
                                                       |)))
                                               ]
@@ -248,35 +225,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator
-                                      (|
-                                        (M.alloc (| α0 |)),
+                                    M.match_operator (|
+                                        M.alloc (| α0 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let r := M.copy (| γ |) in
-                                              M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (|
-                                                      (Ty.apply
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.apply
                                                         (Ty.path "core::result::Result")
-                                                        [ Ty.path "u8"; Ty.tuple [] ]),
+                                                        [ Ty.path "u8"; Ty.tuple [] ],
                                                       "ok",
                                                       []
-                                                    |)),
+                                                    |),
                                                   [
-                                                    M.call_closure
-                                                      (|
-                                                        (M.get_associated_function
-                                                          (|
-                                                            (Ty.apply
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               [
                                                                 Ty.path "u8";
                                                                 Ty.path
                                                                   "core::num::error::ParseIntError"
-                                                              ]),
+                                                              ],
                                                             "map_err",
                                                             [
                                                               Ty.tuple [];
@@ -290,7 +262,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 ]
                                                                 (Ty.tuple [])
                                                             ]
-                                                          |)),
+                                                          |),
                                                         [
                                                           M.read (| r |);
                                                           M.closure
@@ -298,19 +270,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [ α0 ] =>
-                                                                  M.match_operator
-                                                                    (|
-                                                                      (M.alloc (| α0 |)),
+                                                                  M.match_operator (|
+                                                                      M.alloc (| α0 |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let e :=
                                                                               M.copy (| γ |) in
-                                                                            M.call_closure
-                                                                              (|
-                                                                                (M.get_associated_function
-                                                                                  (|
-                                                                                    (Ty.apply
+                                                                            M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                    Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
                                                                                       [
@@ -318,10 +287,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                           "core::num::error::ParseIntError";
                                                                                         Ty.path
                                                                                           "alloc::alloc::Global"
-                                                                                      ]),
+                                                                                      ],
                                                                                     "push",
                                                                                     []
-                                                                                  |)),
+                                                                                  |),
                                                                                 [
                                                                                   errors;
                                                                                   M.read (| e |)
@@ -342,44 +311,36 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [
-                                          M.read (| (mk_str "Numbers: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Numbers: " |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [
                                                     Ty.apply
@@ -387,53 +348,45 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
                                                       ]
                                                   ]
-                                                |)),
+                                                |),
                                               [ numbers ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [
-                                          M.read (| (mk_str "Errors: ") |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Errors: " |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
                                                   [
                                                     Ty.apply
@@ -443,18 +396,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Ty.path "alloc::alloc::Global"
                                                       ]
                                                   ]
-                                                |)),
+                                                |),
                                               [ errors ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -29,20 +29,21 @@ Module main.
     | [ F ], [ f ] =>
       ltac:(M.monadic
         (let f := M.alloc (| f |) in
-        M.read
-          (|
-            (let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_trait_method
-                        (| "core::ops::function::FnOnce", F, [ Ty.tuple [] ], "call_once", []
-                        |)),
+        M.read (|
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [ Ty.tuple [] ],
+                          "call_once",
+                          []
+                        |),
                       [ M.read (| f |); Value.Tuple [] ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.

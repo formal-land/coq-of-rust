@@ -29,11 +29,9 @@ Module Impl_trait_flipper_Flipper.
           "trait_flipper::Flipper"
           [
             ("value",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "bool"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
+                    |),
                   []
                 |))
           ]))
@@ -56,22 +54,19 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
-              M.assign
-                (|
-                  (M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value"),
-                  (UnOp.Pure.not
-                    (M.read
-                      (|
-                        (M.get_struct_record_field
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field
                           (M.read (| self |))
                           "trait_flipper::Flipper"
-                          "value")
-                      |)))
+                          "value"
+                      |))
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -86,8 +81,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (| (M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value")
+        M.read (| M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value"
           |)))
     | _, _ => M.impossible
     end.

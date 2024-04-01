@@ -42,25 +42,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+      (M.read (|
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "core::convert::Into",
-                        (Ty.path "i32"),
+                        Ty.path "i32",
                         [ Ty.path "into::Number" ],
                         "into",
                         []
-                      |)),
+                      |),
                     [ Value.Integer Integer.I32 5 ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

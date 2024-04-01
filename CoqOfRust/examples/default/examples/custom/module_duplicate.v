@@ -12,35 +12,33 @@ Module foo.
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (M.read
-            (|
-              (let _ :=
+          (M.read (|
+              let _ :=
                 let _ :=
-                  M.alloc
-                    (|
-                      (M.call_closure
-                        (|
-                          (M.get_function (| "std::io::stdio::_print", [] |)),
+                  M.alloc (|
+                      M.call_closure (|
+                          M.get_function (| "std::io::stdio::_print", [] |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                  |)),
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    []
+                                  |),
                                 [
                                   (* Unsize *)
                                     M.pointer_coercion
-                                      (M.alloc
-                                        (| (Value.Array [ M.read (| (mk_str "foo::gre::bar
-") |) ])
+                                      (M.alloc (|
+                                          Value.Array [ M.read (| mk_str "foo::gre::bar
+" |) ]
                                         |))
                                 ]
                               |)
                           ]
-                        |))
+                        |)
                     |) in
-                M.alloc (| (Value.Tuple []) |) in
-              M.alloc (| (Value.Tuple []) |))
+                M.alloc (| Value.Tuple [] |) in
+              M.alloc (| Value.Tuple [] |)
             |)))
       | _, _ => M.impossible
       end.
@@ -56,42 +54,38 @@ Module foo.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.read
-          (|
-            (let _ :=
+        (M.read (|
+            let _ :=
               let _ :=
-                M.alloc
-                  (|
-                    (M.call_closure
-                      (|
-                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
-                          M.call_closure
-                            (|
-                              (M.get_associated_function
-                                (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                |)),
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  []
+                                |),
                               [
                                 (* Unsize *)
                                   M.pointer_coercion
-                                    (M.alloc
-                                      (| (Value.Array [ M.read (| (mk_str "foo::bar
-") |) ])
-                                      |))
+                                    (M.alloc (| Value.Array [ M.read (| mk_str "foo::bar
+" |) ] |))
                               ]
                             |)
                         ]
-                      |))
+                      |)
                   |) in
-              M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| Value.Tuple [] |) in
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (| (M.get_function (| "module_duplicate::foo::gre::f_foo_gre", [] |)), []
-                    |))
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "module_duplicate::foo::gre::f_foo_gre", [] |),
+                      []
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.
@@ -106,14 +100,12 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            M.alloc
-              (|
-                (M.call_closure (| (M.get_function (| "module_duplicate::foo::f_foo", [] |)), [] |))
+      (M.read (|
+          let _ :=
+            M.alloc (|
+                M.call_closure (| M.get_function (| "module_duplicate::foo::f_foo", [] |), [] |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

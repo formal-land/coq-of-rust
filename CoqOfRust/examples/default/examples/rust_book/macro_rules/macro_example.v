@@ -11,31 +11,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "std::io::stdio::_print", [] |)),
+      (M.read (|
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "std::io::stdio::_print", [] |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_associated_function
-                            (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                            |)),
+                      M.call_closure (|
+                          M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              []
+                            |),
                           [
                             (* Unsize *)
                               M.pointer_coercion
-                                (M.alloc (| (Value.Array [ M.read (| (mk_str "Hello!
-") |) ]) |))
+                                (M.alloc (| Value.Array [ M.read (| mk_str "Hello!
+" |) ] |))
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

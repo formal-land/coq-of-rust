@@ -21,11 +21,9 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
         (Value.StructTuple
           "call_builder::AccountId"
           [
-            M.call_closure
-              (|
-                (M.get_trait_method
-                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                  |)),
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
                 []
               |)
           ]))
@@ -51,11 +49,11 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -154,16 +152,14 @@ Module Impl_call_builder_CallBuilderTest.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.call_closure
-          (|
-            (M.get_trait_method
-              (|
+        (M.call_closure (|
+            M.get_trait_method (|
                 "core::default::Default",
-                (Ty.path "call_builder::CallBuilderTest"),
+                Ty.path "call_builder::CallBuilderTest",
                 [],
                 "default",
                 []
-              |)),
+              |),
             []
           |)))
     | _, _ => M.impossible
@@ -197,97 +193,81 @@ Module Impl_call_builder_CallBuilderTest.
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
         let selector := M.alloc (| selector |) in
-        M.read
-          (|
-            (let result :=
-              M.alloc
-                (|
-                  (M.never_to_any
-                    (|
-                      (M.call_closure
-                        (|
-                          (M.get_function (| "core::panicking::panic", [] |)),
-                          [ M.read (| (mk_str "not yet implemented") |) ]
-                        |))
-                    |))
+        M.read (|
+            let result :=
+              M.alloc (|
+                  M.never_to_any (|
+                      M.call_closure (|
+                          M.get_function (| "core::panicking::panic", [] |),
+                          [ M.read (| mk_str "not yet implemented" |) ]
+                        |)
+                    |)
                 |) in
-            M.match_operator
-              (|
+            M.match_operator (|
                 result,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          (| γ, "core::result::Result::Ok", 0
+                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
                           |) in
-                      M.alloc (| (Value.StructTuple "core::option::Option::None" []) |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          (| γ, "core::result::Result::Err", 0
+                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
                           |) in
                       let e := M.copy (| γ0_0 |) in
-                      M.alloc
-                        (| (Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ])
+                      M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ]
                         |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          (| γ, "core::result::Result::Err", 0
+                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
                           |) in
-                      M.alloc
-                        (|
-                          (M.never_to_any
-                            (|
-                              (M.call_closure
-                                (|
-                                  (M.get_function (| "core::panicking::panic_fmt", [] |)),
+                      M.alloc (|
+                          M.never_to_any (|
+                              M.call_closure (|
+                                  M.get_function (| "core::panicking::panic_fmt", [] |),
                                   [
-                                    M.call_closure
-                                      (|
-                                        (M.get_associated_function
-                                          (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                          |)),
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_v1",
+                                            []
+                                          |),
                                         [
                                           (* Unsize *)
                                             M.pointer_coercion
-                                              (M.alloc
-                                                (|
-                                                  (Value.Array
+                                              (M.alloc (|
+                                                  Value.Array
                                                     [
-                                                      M.read
-                                                        (|
-                                                          (mk_str
-                                                            "not implemented: No other `LangError` variants exist at the moment.")
+                                                      M.read (|
+                                                          mk_str
+                                                            "not implemented: No other `LangError` variants exist at the moment."
                                                         |)
-                                                    ])
+                                                    ]
                                                 |));
                                           (* Unsize *)
                                             M.pointer_coercion
-                                              (M.alloc
-                                                (|
-                                                  (M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                              (M.alloc (|
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "none",
                                                           []
-                                                        |)),
+                                                        |),
                                                       []
-                                                    |))
+                                                    |)
                                                 |))
                                         ]
                                       |)
                                   ]
-                                |))
-                            |))
+                                |)
+                            |)
                         |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.

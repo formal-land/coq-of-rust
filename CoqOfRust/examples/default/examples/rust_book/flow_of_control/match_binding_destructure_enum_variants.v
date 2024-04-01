@@ -31,138 +31,122 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (M.match_operator
-            (|
-              (M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function
-                        (| "match_binding_destructure_enum_variants::some_number", []
-                        |)),
+      (M.read (|
+          M.match_operator (|
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "match_binding_destructure_enum_variants::some_number", []
+                        |),
                       []
-                    |))
-                |)),
+                    |)
+                |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let n := M.copy (| γ0_0 |) in
                     let _ :=
-                      M.is_constant_or_break_match
-                        (| (M.read (| γ0_0 |)), (Value.Integer Integer.U32 42)
+                      M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer Integer.U32 42
                         |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "The Answer: ") |);
-                                                  M.read (| (mk_str "!
-") |)
-                                                ])
+                                                  M.read (| mk_str "The Answer: " |);
+                                                  M.read (| mk_str "!
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ n ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let n := M.copy (| γ0_0 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.read (| (mk_str "Not interesting... ") |);
-                                                  M.read (| (mk_str "
-") |)
-                                                ])
+                                                  M.read (| mk_str "Not interesting... " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
                                             |));
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (|
-                                              (Value.Array
+                                          (M.alloc (|
+                                              Value.Array
                                                 [
-                                                  M.call_closure
-                                                    (|
-                                                      (M.get_associated_function
-                                                        (|
-                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
                                                           [ Ty.path "u32" ]
-                                                        |)),
+                                                        |),
                                                       [ n ]
                                                     |)
-                                                ])
+                                                ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
-                fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.

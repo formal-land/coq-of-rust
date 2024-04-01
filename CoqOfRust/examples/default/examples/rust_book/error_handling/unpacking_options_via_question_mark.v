@@ -23,21 +23,18 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (|
+        M.read (|
+            M.match_operator (|
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator
-                        (|
+                      (M.match_operator (|
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                         |)))
                 ]
-              |))
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -81,11 +78,11 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -134,87 +131,69 @@ Module Impl_unpacking_options_via_question_mark_Person.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.get_struct_record_field
-              (M.match_operator
-                (|
-                  (M.alloc
-                    (|
-                      (M.call_closure
-                        (|
-                          (M.get_trait_method
-                            (|
+        M.read (|
+            M.get_struct_record_field
+              (M.match_operator (|
+                  M.alloc (|
+                      M.call_closure (|
+                          M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              (Ty.apply
+                              Ty.apply
                                 (Ty.path "core::option::Option")
-                                [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]),
+                                [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                               [],
                               "branch",
                               []
-                            |)),
+                            |),
                           [
-                            M.read
-                              (|
-                                (M.get_struct_record_field
-                                  (M.match_operator
-                                    (|
-                                      (M.alloc
-                                        (|
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                            M.read (|
+                                M.get_struct_record_field
+                                  (M.match_operator (|
+                                      M.alloc (|
+                                          M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     [
                                                       Ty.path
                                                         "unpacking_options_via_question_mark::Job"
-                                                    ]),
+                                                    ],
                                                   [],
                                                   "branch",
                                                   []
-                                                |)),
+                                                |),
                                               [
-                                                M.read
-                                                  (|
-                                                    (M.get_struct_record_field
+                                                M.read (|
+                                                    M.get_struct_record_field
                                                       (M.read (| self |))
                                                       "unpacking_options_via_question_mark::Person"
-                                                      "job")
+                                                      "job"
                                                   |)
                                               ]
-                                            |))
-                                        |)),
+                                            |)
+                                        |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match
-                                                (|
+                                              M.get_struct_tuple_field_or_break_match (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
                                                 |) in
                                             let residual := M.copy (| γ0_0 |) in
-                                            M.alloc
-                                              (|
-                                                (M.never_to_any
-                                                  (|
-                                                    (M.read
-                                                      (|
-                                                        (M.return_
-                                                          (|
-                                                            (M.call_closure
-                                                              (|
-                                                                (M.get_trait_method
-                                                                  (|
+                                            M.alloc (|
+                                                M.never_to_any (|
+                                                    M.read (|
+                                                        M.return_ (|
+                                                            M.call_closure (|
+                                                                M.get_trait_method (|
                                                                     "core::ops::try_trait::FromResidual",
-                                                                    (Ty.apply
+                                                                    Ty.apply
                                                                       (Ty.path
                                                                         "core::option::Option")
-                                                                      [ Ty.path "u8" ]),
+                                                                      [ Ty.path "u8" ],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -226,18 +205,17 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                                     ],
                                                                     "from_residual",
                                                                     []
-                                                                  |)),
+                                                                  |),
                                                                 [ M.read (| residual |) ]
-                                                              |))
-                                                          |))
-                                                      |))
-                                                  |))
+                                                              |)
+                                                          |)
+                                                      |)
+                                                  |)
                                               |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match
-                                                (|
+                                              M.get_struct_tuple_field_or_break_match (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -247,35 +225,31 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                       ]
                                     |))
                                   "unpacking_options_via_question_mark::Job"
-                                  "phone_number")
+                                  "phone_number"
                               |)
                           ]
-                        |))
-                    |)),
+                        |)
+                    |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            (| γ, "core::ops::control_flow::ControlFlow::Break", 0
+                          M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
                             |) in
                         let residual := M.copy (| γ0_0 |) in
-                        M.alloc
-                          (|
-                            (M.never_to_any
-                              (|
-                                (M.read
-                                  (|
-                                    (M.return_
-                                      (|
-                                        (M.call_closure
-                                          (|
-                                            (M.get_trait_method
-                                              (|
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.read (|
+                                    M.return_ (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
-                                                (Ty.apply
+                                                Ty.apply
                                                   (Ty.path "core::option::Option")
-                                                  [ Ty.path "u8" ]),
+                                                  [ Ty.path "u8" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -283,25 +257,27 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                 ],
                                                 "from_residual",
                                                 []
-                                              |)),
+                                              |),
                                             [ M.read (| residual |) ]
-                                          |))
-                                      |))
-                                  |))
-                              |))
+                                          |)
+                                      |)
+                                  |)
+                              |)
                           |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            (| γ, "core::ops::control_flow::ControlFlow::Continue", 0
+                          M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
                             |) in
                         let val := M.copy (| γ0_0 |) in
                         val))
                   ]
                 |))
               "unpacking_options_via_question_mark::PhoneNumber"
-              "area_code")
+              "area_code"
           |)))
     | _, _ => M.impossible
     end.
@@ -328,12 +304,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let p :=
-            M.alloc
-              (|
-                (Value.StructRecord
+      (M.read (|
+          let p :=
+            M.alloc (|
+                Value.StructRecord
                   "unpacking_options_via_question_mark::Person"
                   [
                     ("job",
@@ -359,36 +333,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   ])
                             ]
                         ])
-                  ])
+                  ]
               |) in
           let _ :=
-            M.match_operator
-              (|
-                (M.alloc
-                  (|
-                    (Value.Tuple
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "unpacking_options_via_question_mark::Person"),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "unpacking_options_via_question_mark::Person",
                                     "work_phone_area_code",
                                     []
-                                  |)),
+                                  |),
                                 [ p ]
-                              |))
+                              |)
                           |);
-                        M.alloc
-                          (|
-                            (Value.StructTuple
+                        M.alloc (|
+                            Value.StructTuple
                               "core::option::Option::Some"
-                              [ Value.Integer Integer.U8 61 ])
+                              [ Value.Integer Integer.U8 61 ]
                           |)
-                      ])
-                  |)),
+                      ]
+                  |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -396,25 +364,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let γ0_1 := M.get_tuple_field γ 1 in
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator
-                        (|
-                          (M.alloc (| (Value.Tuple []) |)),
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.alloc
-                                      (|
-                                        (UnOp.Pure.not
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::option::Option")
-                                                    [ Ty.path "u8" ]),
+                                                    [ Ty.path "u8" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -422,33 +386,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ],
                                                   "eq",
                                                   []
-                                                |)),
+                                                |),
                                               [ M.read (| left_val |); M.read (| right_val |) ]
-                                            |)))
+                                            |))
                                       |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match
-                                    (| (M.read (| γ |)), (Value.Bool true)
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
                                     |) in
-                                M.alloc
-                                  (|
-                                    (M.never_to_any
-                                      (|
-                                        (M.read
-                                          (|
-                                            (let kind :=
-                                              M.alloc
-                                                (|
-                                                  (Value.StructTuple
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
-                                                    [])
+                                                    []
                                                 |) in
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_function
-                                                      (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [
                                                           Ty.apply
@@ -458,7 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             (Ty.path "core::option::Option")
                                                             [ Ty.path "u8" ]
                                                         ]
-                                                      |)),
+                                                      |),
                                                     [
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
@@ -467,17 +423,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         "core::option::Option::None"
                                                         []
                                                     ]
-                                                  |))
-                                              |))
-                                          |))
-                                      |))
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
                                   |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |)))
                 ]
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

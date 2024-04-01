@@ -22,32 +22,27 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.call_closure
-          (|
-            (M.get_associated_function (| (Ty.path "core::fmt::Formatter"), "write_fmt", [] |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
             [
               M.read (| f |);
-              M.call_closure
-                (|
-                  (M.get_associated_function (| (Ty.path "core::fmt::Arguments"), "new_v1", [] |)),
+              M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
                     (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| (Value.Array [ M.read (| (mk_str "Circle of radius ") |) ]) |));
+                        (M.alloc (| Value.Array [ M.read (| mk_str "Circle of radius " |) ] |));
                     (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc
-                          (|
-                            (Value.Array
+                        (M.alloc (|
+                            Value.Array
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (|
-                                        (Ty.path "core::fmt::rt::Argument"),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         "new_display",
                                         [ Ty.path "i32" ]
-                                      |)),
+                                      |),
                                     [
                                       M.get_struct_record_field
                                         (M.read (| self |))
@@ -55,7 +50,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                                         "radius"
                                     ]
                                   |)
-                              ])
+                              ]
                           |))
                   ]
                 |)
@@ -82,32 +77,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let circle :=
-            M.alloc
-              (|
-                (Value.StructRecord
+      (M.read (|
+          let circle :=
+            M.alloc (|
+                Value.StructRecord
                   "converting_to_string::Circle"
-                  [ ("radius", Value.Integer Integer.I32 6) ])
+                  [ ("radius", Value.Integer Integer.I32 6) ]
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_trait_method
-                      (|
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
                         "alloc::string::ToString",
-                        (Ty.path "converting_to_string::Circle"),
+                        Ty.path "converting_to_string::Circle",
                         [],
                         "to_string",
                         []
-                      |)),
+                      |),
                     [ circle ]
-                  |))
+                  |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

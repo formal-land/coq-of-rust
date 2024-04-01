@@ -28,13 +28,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
-            M.alloc
-              (| (M.call_closure (| (M.get_function (| "dead_code::used_function", [] |)), [] |))
+      (M.read (|
+          let _ :=
+            M.alloc (| M.call_closure (| M.get_function (| "dead_code::used_function", [] |), [] |)
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

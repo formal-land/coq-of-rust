@@ -21,11 +21,9 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
         (Value.StructTuple
           "custom_environment::AccountId"
           [
-            M.call_closure
-              (|
-                (M.get_trait_method
-                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                  |)),
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
                 []
               |)
           ]))
@@ -51,11 +49,11 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (M.match_operator
-              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |))
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
           |)))
     | _, _ => M.impossible
     end.
@@ -138,43 +136,33 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
           "custom_environment::EventWithTopics"
           [
             ("first_topic",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                    |),
                   []
                 |));
             ("second_topic",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                    |),
                   []
                 |));
             ("third_topic",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                    |),
                   []
                 |));
             ("fourth_topic",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                    |),
                   []
                 |));
             ("fifth_topic",
-              M.call_closure
-                (|
-                  (M.get_trait_method
-                    (| "core::default::Default", (Ty.path "u128"), [], "default", []
-                    |)),
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                    |),
                   []
                 |))
           ]))
@@ -215,8 +203,7 @@ Module Impl_custom_environment_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (| (M.get_struct_record_field (M.read (| self |)) "custom_environment::Env" "caller")
+        M.read (| M.get_struct_record_field (M.read (| self |)) "custom_environment::Env" "caller"
           |)))
     | _, _ => M.impossible
     end.
@@ -255,11 +242,8 @@ Module Impl_custom_environment_Topics.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.call_closure
-          (|
-            (M.get_associated_function
-              (| (Ty.path "custom_environment::Topics"), "init_env", []
-              |)),
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "custom_environment::Topics", "init_env", [] |),
             []
           |)))
     | _, _ => M.impossible
@@ -276,11 +260,14 @@ Module Impl_custom_environment_Topics.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.call_closure
-          (|
-            (M.get_trait_method
-              (| "core::default::Default", (Ty.path "custom_environment::Topics"), [], "default", []
-              |)),
+        (M.call_closure (|
+            M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "custom_environment::Topics",
+                [],
+                "default",
+                []
+              |),
             []
           |)))
     | _, _ => M.impossible
@@ -299,47 +286,44 @@ Module Impl_custom_environment_Topics.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read
-          (|
-            (let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (| (Ty.path "custom_environment::Env"), "emit_event", []
-                        |)),
+        M.read (|
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "custom_environment::Env",
+                          "emit_event",
+                          []
+                        |),
                       [
-                        M.alloc
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (| (Ty.path "custom_environment::Topics"), "env", []
-                                  |)),
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "custom_environment::Topics",
+                                    "env",
+                                    []
+                                  |),
                                 [ M.read (| self |) ]
-                              |))
+                              |)
                           |);
                         Value.StructTuple
                           "custom_environment::Event::EventWithTopics"
                           [
-                            M.call_closure
-                              (|
-                                (M.get_trait_method
-                                  (|
+                            M.call_closure (|
+                                M.get_trait_method (|
                                     "core::default::Default",
-                                    (Ty.path "custom_environment::EventWithTopics"),
+                                    Ty.path "custom_environment::EventWithTopics",
                                     [],
                                     "default",
                                     []
-                                  |)),
+                                  |),
                                 []
                               |)
                           ]
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |)
           |)))
     | _, _ => M.impossible
     end.

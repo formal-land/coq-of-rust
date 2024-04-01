@@ -30,73 +30,64 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _ :=
+      (M.read (|
+          let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read
-                                            (| (mk_str "Sum of odd numbers up to 9 (excluding): ")
+                                          M.read (|
+                                              mk_str "Sum of odd numbers up to 9 (excluding): "
                                             |);
-                                          M.read (| (mk_str "
-") |)
-                                        ])
+                                          M.read (| mk_str "
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u32" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_function
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_function (|
                                                             "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [ Value.Integer Integer.U32 9 ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
@@ -126,25 +117,20 @@ Module main.
     | [], [ up_to ] =>
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
-        M.read
-          (|
-            (let acc := M.alloc (| (Value.Integer Integer.U32 0) |) in
+        M.read (|
+            let acc := M.alloc (| Value.Integer Integer.U32 0 |) in
             let _ :=
               M.use
-                (M.match_operator
-                  (|
-                    (M.alloc
-                      (|
-                        (M.call_closure
-                          (|
-                            (M.get_trait_method
-                              (|
+                (M.match_operator (|
+                    M.alloc (|
+                        M.call_closure (|
+                            M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]),
+                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
                                 [],
                                 "into_iter",
                                 []
-                              |)),
+                              |),
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -153,109 +139,97 @@ Module main.
                                   ("end_", M.read (| up_to |))
                                 ]
                             ]
-                          |))
-                      |)),
+                          |)
+                      |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
-                          M.loop
-                            (|
+                          M.loop (|
                               ltac:(M.monadic
                                 (let _ :=
-                                  M.match_operator
-                                    (|
-                                      (M.alloc
-                                        (|
-                                          (M.call_closure
-                                            (|
-                                              (M.get_trait_method
-                                                (|
+                                  M.match_operator (|
+                                      M.alloc (|
+                                          M.call_closure (|
+                                              M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
-                                                  (Ty.apply
+                                                  Ty.apply
                                                     (Ty.path "core::ops::range::Range")
-                                                    [ Ty.path "u32" ]),
+                                                    [ Ty.path "u32" ],
                                                   [],
                                                   "next",
                                                   []
-                                                |)),
+                                                |),
                                               [ iter ]
-                                            |))
-                                        |)),
+                                            |)
+                                        |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc
-                                              (|
-                                                (M.never_to_any (| (M.read (| (M.break (||)) |)) |))
+                                            (M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match
-                                                (| γ, "core::option::Option::Some", 0
+                                              M.get_struct_tuple_field_or_break_match (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
                                                 |) in
                                             let i := M.copy (| γ0_0 |) in
                                             let addition :=
-                                              M.copy
-                                                (|
-                                                  (M.match_operator
-                                                    (|
-                                                      (M.alloc
-                                                        (|
-                                                          (BinOp.Pure.eq
-                                                            (BinOp.Panic.rem
-                                                              (|
-                                                                (M.read (| i |)),
-                                                                (Value.Integer Integer.U32 2)
+                                              M.copy (|
+                                                  M.match_operator (|
+                                                      M.alloc (|
+                                                          BinOp.Pure.eq
+                                                            (BinOp.Panic.rem (|
+                                                                M.read (| i |),
+                                                                Value.Integer Integer.U32 2
                                                               |))
-                                                            (Value.Integer Integer.U32 1))
-                                                        |)),
+                                                            (Value.Integer Integer.U32 1)
+                                                        |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let _ :=
-                                                              M.is_constant_or_break_match
-                                                                (|
-                                                                  (M.read (| γ |)),
-                                                                  (Value.Bool true)
+                                                              M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
                                                                 |) in
                                                             i));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let _ :=
-                                                              M.is_constant_or_break_match
-                                                                (|
-                                                                  (M.read (| γ |)),
-                                                                  (Value.Bool false)
+                                                              M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool false
                                                                 |) in
-                                                            M.alloc
-                                                              (|
-                                                                (M.never_to_any
-                                                                  (|
-                                                                    (M.read (| (M.continue (||)) |))
-                                                                  |))
+                                                            M.alloc (|
+                                                                M.never_to_any (|
+                                                                    M.read (| M.continue (||) |)
+                                                                  |)
                                                               |)))
                                                       ]
-                                                    |))
+                                                    |)
                                                 |) in
                                             let _ :=
                                               let β := acc in
-                                              M.assign
-                                                (|
+                                              M.assign (|
                                                   β,
-                                                  (BinOp.Panic.add
-                                                    (| (M.read (| β |)), (M.read (| addition |))
-                                                    |))
+                                                  BinOp.Panic.add (|
+                                                      M.read (| β |),
+                                                      M.read (| addition |)
+                                                    |)
                                                 |) in
-                                            M.alloc (| (Value.Tuple []) |)))
+                                            M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                M.alloc (| (Value.Tuple []) |)))
+                                M.alloc (| Value.Tuple [] |)))
                             |)))
                     ]
                   |)) in
-            acc)
+            acc
           |)))
     | _, _ => M.impossible
     end.

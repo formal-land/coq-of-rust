@@ -13,110 +13,91 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let child :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+      (M.read (|
+          let child :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ]),
+                          [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
                         "unwrap",
                         []
-                      |)),
+                      |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_associated_function
-                            (| (Ty.path "std::process::Command"), "spawn", []
-                            |)),
+                      M.call_closure (|
+                          M.get_associated_function (| Ty.path "std::process::Command", "spawn", []
+                            |),
                           [
-                            M.call_closure
-                              (|
-                                (M.get_associated_function
-                                  (|
-                                    (Ty.path "std::process::Command"),
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "std::process::Command",
                                     "arg",
                                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |)),
+                                  |),
                                 [
-                                  M.alloc
-                                    (|
-                                      (M.call_closure
-                                        (|
-                                          (M.get_associated_function
-                                            (|
-                                              (Ty.path "std::process::Command"),
+                                  M.alloc (|
+                                      M.call_closure (|
+                                          M.get_associated_function (|
+                                              Ty.path "std::process::Command",
                                               "new",
                                               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                            |)),
-                                          [ M.read (| (mk_str "sleep") |) ]
-                                        |))
+                                            |),
+                                          [ M.read (| mk_str "sleep" |) ]
+                                        |)
                                     |);
-                                  M.read (| (mk_str "5") |)
+                                  M.read (| mk_str "5" |)
                                 ]
                               |)
                           ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let _result :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ]),
+                          [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
                         "unwrap",
                         []
-                      |)),
+                      |),
                     [
-                      M.call_closure
-                        (|
-                          (M.get_associated_function
-                            (| (Ty.path "std::process::Child"), "wait", []
-                            |)),
+                      M.call_closure (|
+                          M.get_associated_function (| Ty.path "std::process::Child", "wait", [] |),
                           [ child ]
                         |)
                     ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array [ M.read (| (mk_str "reached end of main
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array [ M.read (| mk_str "reached end of main
+" |) ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -27,91 +27,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let nanoseconds := M.copy (| (M.use (M.alloc (| (Value.Integer Integer.U64 5) |))) |) in
-          let inches := M.copy (| (M.use (M.alloc (| (Value.Integer Integer.U64 2) |))) |) in
+      (M.read (|
+          let nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 5 |)) |) in
+          let inches := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 2 |)) |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.read (| (mk_str "") |);
-                                          M.read (| (mk_str " nanoseconds + ") |);
-                                          M.read (| (mk_str " inches = ") |);
-                                          M.read (| (mk_str " unit?
-") |)
-                                        ])
+                                          M.read (| mk_str "" |);
+                                          M.read (| mk_str " nanoseconds + " |);
+                                          M.read (| mk_str " inches = " |);
+                                          M.read (| mk_str " unit?
+" |)
+                                        ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u64" ]
-                                                |)),
+                                                |),
                                               [ nanoseconds ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u64" ]
-                                                |)),
+                                                |),
                                               [ inches ]
                                             |);
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "u64" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (BinOp.Panic.add
-                                                      (|
-                                                        (M.read (| nanoseconds |)),
-                                                        (M.read (| inches |))
-                                                      |))
+                                                M.alloc (|
+                                                    BinOp.Panic.add (|
+                                                        M.read (| nanoseconds |),
+                                                        M.read (| inches |)
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

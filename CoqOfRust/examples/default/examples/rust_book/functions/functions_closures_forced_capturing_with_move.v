@@ -25,90 +25,75 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let haystack :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]),
+      (M.read (|
+          let haystack :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
-                      |)),
+                      |),
                     [
                       (* Unsize *)
                         M.pointer_coercion
-                          (M.read
-                            (|
-                              (M.call_closure
-                                (|
-                                  (M.get_associated_function
-                                    (|
-                                      (Ty.apply
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
                                         (Ty.path "alloc::boxed::Box")
                                         [
                                           Ty.apply (Ty.path "array") [ Ty.path "i32" ];
                                           Ty.path "alloc::alloc::Global"
-                                        ]),
+                                        ],
                                       "new",
                                       []
-                                    |)),
+                                    |),
                                   [
-                                    M.alloc
-                                      (|
-                                        (Value.Array
+                                    M.alloc (|
+                                        Value.Array
                                           [
                                             Value.Integer Integer.I32 1;
                                             Value.Integer Integer.I32 2;
                                             Value.Integer Integer.I32 3
-                                          ])
+                                          ]
                                       |)
                                   ]
-                                |))
+                                |)
                             |))
                     ]
-                  |))
+                  |)
               |) in
           let contains :=
-            M.alloc
-              (|
-                (M.closure
+            M.alloc (|
+                M.closure
                   (fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator
-                          (|
-                            (M.alloc (| α0 |)),
+                        M.match_operator (|
+                            M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let needle := M.copy (| γ |) in
-                                  M.call_closure
-                                    (|
-                                      (M.get_associated_function
-                                        (|
-                                          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]),
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                                           "contains",
                                           []
-                                        |)),
+                                        |),
                                       [
-                                        M.call_closure
-                                          (|
-                                            (M.get_trait_method
-                                              (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
                                                 "core::ops::deref::Deref",
-                                                (Ty.apply
+                                                Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
-                                                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global"
-                                                  ]),
+                                                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                                 [],
                                                 "deref",
                                                 []
-                                              |)),
+                                              |),
                                             [ haystack ]
                                           |);
                                         M.read (| needle |)
@@ -117,53 +102,45 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                       | _ => M.impossible (||)
-                      end)))
+                      end))
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "bool" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_trait_method
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
                                                             "core::ops::function::Fn",
-                                                            (Ty.function
+                                                            Ty.function
                                                               [
                                                                 Ty.tuple
                                                                   [
@@ -172,7 +149,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       [ Ty.path "i32" ]
                                                                   ]
                                                               ]
-                                                              (Ty.path "bool")),
+                                                              (Ty.path "bool"),
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -183,73 +160,64 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             ],
                                                             "call",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [
                                                           contains;
                                                           Value.Tuple
                                                             [
-                                                              M.alloc
-                                                                (| (Value.Integer Integer.I32 1)
+                                                              M.alloc (| Value.Integer Integer.I32 1
                                                                 |)
                                                             ]
                                                         ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
                                     |));
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
+                                  (M.alloc (|
+                                      Value.Array
                                         [
-                                          M.call_closure
-                                            (|
-                                              (M.get_associated_function
-                                                (|
-                                                  (Ty.path "core::fmt::rt::Argument"),
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
                                                   [ Ty.path "bool" ]
-                                                |)),
+                                                |),
                                               [
-                                                M.alloc
-                                                  (|
-                                                    (M.call_closure
-                                                      (|
-                                                        (M.get_trait_method
-                                                          (|
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
                                                             "core::ops::function::Fn",
-                                                            (Ty.function
+                                                            Ty.function
                                                               [
                                                                 Ty.tuple
                                                                   [
@@ -258,7 +226,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       [ Ty.path "i32" ]
                                                                   ]
                                                               ]
-                                                              (Ty.path "bool")),
+                                                              (Ty.path "bool"),
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -269,29 +237,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             ],
                                                             "call",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [
                                                           contains;
                                                           Value.Tuple
                                                             [
-                                                              M.alloc
-                                                                (| (Value.Integer Integer.I32 4)
+                                                              M.alloc (| Value.Integer Integer.I32 4
                                                                 |)
                                                             ]
                                                         ]
-                                                      |))
+                                                      |)
                                                   |)
                                               ]
                                             |)
-                                        ])
+                                        ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

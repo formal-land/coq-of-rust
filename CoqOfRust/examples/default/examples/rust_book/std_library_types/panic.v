@@ -17,43 +17,35 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
-              (M.alloc (| (Value.Tuple []) |)),
+      M.read (|
+          M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
-                        (M.alloc
-                          (| (BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0))
+                        (M.alloc (|
+                            BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
                           |)) in
-                    let _ :=
-                      M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
-                    M.alloc
-                      (|
-                        (M.never_to_any
-                          (|
-                            (M.call_closure
-                              (|
-                                (M.get_function
-                                  (|
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                        M.never_to_any (|
+                            M.call_closure (|
+                                M.get_function (|
                                     "std::panicking::begin_panic",
                                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |)),
-                                [ M.read (| (mk_str "division by zero") |) ]
-                              |))
-                          |))
+                                  |),
+                                [ M.read (| mk_str "division by zero" |) ]
+                              |)
+                          |)
                       |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc
-                      (| (BinOp.Panic.div (| (M.read (| dividend |)), (M.read (| divisor |)) |))
+                    (M.alloc (| BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |)
                       |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -75,62 +67,54 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _x :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_associated_function
-                      (|
-                        (Ty.apply
+      (M.read (|
+          let _x :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
                           (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]),
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                         "new",
                         []
-                      |)),
+                      |),
                     [ Value.Integer Integer.I32 0 ]
-                  |))
+                  |)
               |) in
           let _ :=
-            M.alloc
-              (|
-                (M.call_closure
-                  (|
-                    (M.get_function (| "panic::division", [] |)),
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "panic::division", [] |),
                     [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ]
-                  |))
+                  |)
               |) in
           let _ :=
             let _ :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_function (| "std::io::stdio::_print", [] |)),
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                              |)),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
                             [
                               (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc
-                                    (|
-                                      (Value.Array
-                                        [ M.read (| (mk_str "This point won't be reached!
-") |) ])
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "This point won't be reached!
+" |) ]
                                     |))
                             ]
                           |)
                       ]
-                    |))
+                    |)
                 |) in
-            M.alloc (| (Value.Tuple []) |) in
-          M.alloc (| (Value.Tuple []) |))
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.

@@ -14,73 +14,66 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   | [ A ], [ o ] =>
     ltac:(M.monadic
       (let o := M.alloc (| o |) in
-      M.read
-        (|
-          (M.match_operator
-            (|
+      M.read (|
+          M.match_operator (|
               o,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        (| γ, "core::option::Option::Some", 0
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
                         |) in
                     let _a := M.copy (| γ0_0 |) in
                     let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (| (Value.Array [ M.read (| (mk_str "some
-") |) ])
+                                          (M.alloc (| Value.Array [ M.read (| mk_str "some
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)));
+                    M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.alloc
-                        (|
-                          (M.call_closure
-                            (|
-                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
                               [
-                                M.call_closure
-                                  (|
-                                    (M.get_associated_function
-                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
-                                      |)),
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        []
+                                      |),
                                     [
                                       (* Unsize *)
                                         M.pointer_coercion
-                                          (M.alloc
-                                            (| (Value.Array [ M.read (| (mk_str "nothing
-") |) ])
+                                          (M.alloc (| Value.Array [ M.read (| mk_str "nothing
+" |) ]
                                             |))
                                     ]
                                   |)
                               ]
-                            |))
+                            |)
                         |) in
-                    M.alloc (| (Value.Tuple []) |)))
+                    M.alloc (| Value.Tuple [] |)))
               ]
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.
@@ -106,52 +99,48 @@ Module tests.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.read
-          (|
-            (let file :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (|
-                          (Ty.apply
+        (M.read (|
+            let file :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply
                             (Ty.path "core::result::Result")
-                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]),
+                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                           "expect",
                           []
-                        |)),
+                        |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (|
-                                (Ty.path "std::fs::OpenOptions"),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "std::fs::OpenOptions",
                                 "open",
                                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              |)),
+                              |),
                             [
-                              M.call_closure
-                                (|
-                                  (M.get_associated_function
-                                    (| (Ty.path "std::fs::OpenOptions"), "create", []
-                                    |)),
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "std::fs::OpenOptions",
+                                      "create",
+                                      []
+                                    |),
                                   [
-                                    M.call_closure
-                                      (|
-                                        (M.get_associated_function
-                                          (| (Ty.path "std::fs::OpenOptions"), "append", []
-                                          |)),
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "std::fs::OpenOptions",
+                                            "append",
+                                            []
+                                          |),
                                         [
-                                          M.alloc
-                                            (|
-                                              (M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (| (Ty.path "std::fs::OpenOptions"), "new", []
-                                                    |)),
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "std::fs::OpenOptions",
+                                                      "new",
+                                                      []
+                                                    |),
                                                   []
-                                                |))
+                                                |)
                                             |);
                                           Value.Bool true
                                         ]
@@ -159,28 +148,24 @@ Module tests.
                                     Value.Bool true
                                   ]
                                 |);
-                              M.read (| (mk_str "ferris.txt") |)
+                              M.read (| mk_str "ferris.txt" |)
                             ]
                           |);
-                        M.read (| (mk_str "Failed to open ferris.txt") |)
+                        M.read (| mk_str "Failed to open ferris.txt" |)
                       ]
-                    |))
+                    |)
                 |) in
             M.use
-              (M.match_operator
-                (|
-                  (M.alloc
-                    (|
-                      (M.call_closure
-                        (|
-                          (M.get_trait_method
-                            (|
+              (M.match_operator (|
+                  M.alloc (|
+                      M.call_closure (|
+                          M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
-                              (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]),
+                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
                               [],
                               "into_iter",
                               []
-                            |)),
+                            |),
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
@@ -189,99 +174,91 @@ Module tests.
                                 ("end_", Value.Integer Integer.I32 5)
                               ]
                           ]
-                        |))
-                    |)),
+                        |)
+                    |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
-                        M.loop
-                          (|
+                        M.loop (|
                             ltac:(M.monadic
                               (let _ :=
-                                M.match_operator
-                                  (|
-                                    (M.alloc
-                                      (|
-                                        (M.call_closure
-                                          (|
-                                            (M.get_trait_method
-                                              (|
+                                M.match_operator (|
+                                    M.alloc (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
-                                                (Ty.apply
+                                                Ty.apply
                                                   (Ty.path "core::ops::range::Range")
-                                                  [ Ty.path "i32" ]),
+                                                  [ Ty.path "i32" ],
                                                 [],
                                                 "next",
                                                 []
-                                              |)),
+                                              |),
                                             [ iter ]
-                                          |))
-                                      |)),
+                                          |)
+                                      |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc
-                                            (| (M.never_to_any (| (M.read (| (M.break (||)) |)) |))
+                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match
-                                              (| γ, "core::option::Option::Some", 0
+                                            M.get_struct_tuple_field_or_break_match (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
                                               |) in
                                           let _ :=
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_associated_function
-                                                      (|
-                                                        (Ty.apply
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_associated_function (|
+                                                        Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           [
                                                             Ty.tuple [];
                                                             Ty.path "std::io::error::Error"
-                                                          ]),
+                                                          ],
                                                         "expect",
                                                         []
-                                                      |)),
+                                                      |),
                                                     [
-                                                      M.call_closure
-                                                        (|
-                                                          (M.get_trait_method
-                                                            (|
+                                                      M.call_closure (|
+                                                          M.get_trait_method (|
                                                               "std::io::Write",
-                                                              (Ty.path "std::fs::File"),
+                                                              Ty.path "std::fs::File",
                                                               [],
                                                               "write_all",
                                                               []
-                                                            |)),
+                                                            |),
                                                           [
                                                             file;
-                                                            M.call_closure
-                                                              (|
-                                                                (M.get_associated_function
-                                                                  (| (Ty.path "str"), "as_bytes", []
-                                                                  |)),
-                                                                [ M.read (| (mk_str "Ferris
-") |) ]
+                                                            M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                    Ty.path "str",
+                                                                    "as_bytes",
+                                                                    []
+                                                                  |),
+                                                                [ M.read (| mk_str "Ferris
+" |) ]
                                                               |)
                                                           ]
                                                         |);
-                                                      M.read
-                                                        (| (mk_str "Could not write to ferris.txt")
+                                                      M.read (|
+                                                          mk_str "Could not write to ferris.txt"
                                                         |)
                                                     ]
-                                                  |))
+                                                  |)
                                               |) in
-                                          M.alloc (| (Value.Tuple []) |)))
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                              M.alloc (| (Value.Tuple []) |)))
+                              M.alloc (| Value.Tuple [] |)))
                           |)))
                   ]
-                |)))
+                |))
           |)))
     | _, _ => M.impossible
     end.
@@ -306,52 +283,48 @@ Module tests.
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (M.read
-          (|
-            (let file :=
-              M.alloc
-                (|
-                  (M.call_closure
-                    (|
-                      (M.get_associated_function
-                        (|
-                          (Ty.apply
+        (M.read (|
+            let file :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply
                             (Ty.path "core::result::Result")
-                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]),
+                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                           "expect",
                           []
-                        |)),
+                        |),
                       [
-                        M.call_closure
-                          (|
-                            (M.get_associated_function
-                              (|
-                                (Ty.path "std::fs::OpenOptions"),
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "std::fs::OpenOptions",
                                 "open",
                                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              |)),
+                              |),
                             [
-                              M.call_closure
-                                (|
-                                  (M.get_associated_function
-                                    (| (Ty.path "std::fs::OpenOptions"), "create", []
-                                    |)),
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "std::fs::OpenOptions",
+                                      "create",
+                                      []
+                                    |),
                                   [
-                                    M.call_closure
-                                      (|
-                                        (M.get_associated_function
-                                          (| (Ty.path "std::fs::OpenOptions"), "append", []
-                                          |)),
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "std::fs::OpenOptions",
+                                            "append",
+                                            []
+                                          |),
                                         [
-                                          M.alloc
-                                            (|
-                                              (M.call_closure
-                                                (|
-                                                  (M.get_associated_function
-                                                    (| (Ty.path "std::fs::OpenOptions"), "new", []
-                                                    |)),
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "std::fs::OpenOptions",
+                                                      "new",
+                                                      []
+                                                    |),
                                                   []
-                                                |))
+                                                |)
                                             |);
                                           Value.Bool true
                                         ]
@@ -359,28 +332,24 @@ Module tests.
                                     Value.Bool true
                                   ]
                                 |);
-                              M.read (| (mk_str "ferris.txt") |)
+                              M.read (| mk_str "ferris.txt" |)
                             ]
                           |);
-                        M.read (| (mk_str "Failed to open ferris.txt") |)
+                        M.read (| mk_str "Failed to open ferris.txt" |)
                       ]
-                    |))
+                    |)
                 |) in
             M.use
-              (M.match_operator
-                (|
-                  (M.alloc
-                    (|
-                      (M.call_closure
-                        (|
-                          (M.get_trait_method
-                            (|
+              (M.match_operator (|
+                  M.alloc (|
+                      M.call_closure (|
+                          M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
-                              (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]),
+                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
                               [],
                               "into_iter",
                               []
-                            |)),
+                            |),
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
@@ -389,99 +358,91 @@ Module tests.
                                 ("end_", Value.Integer Integer.I32 5)
                               ]
                           ]
-                        |))
-                    |)),
+                        |)
+                    |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
-                        M.loop
-                          (|
+                        M.loop (|
                             ltac:(M.monadic
                               (let _ :=
-                                M.match_operator
-                                  (|
-                                    (M.alloc
-                                      (|
-                                        (M.call_closure
-                                          (|
-                                            (M.get_trait_method
-                                              (|
+                                M.match_operator (|
+                                    M.alloc (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
-                                                (Ty.apply
+                                                Ty.apply
                                                   (Ty.path "core::ops::range::Range")
-                                                  [ Ty.path "i32" ]),
+                                                  [ Ty.path "i32" ],
                                                 [],
                                                 "next",
                                                 []
-                                              |)),
+                                              |),
                                             [ iter ]
-                                          |))
-                                      |)),
+                                          |)
+                                      |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc
-                                            (| (M.never_to_any (| (M.read (| (M.break (||)) |)) |))
+                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match
-                                              (| γ, "core::option::Option::Some", 0
+                                            M.get_struct_tuple_field_or_break_match (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
                                               |) in
                                           let _ :=
-                                            M.alloc
-                                              (|
-                                                (M.call_closure
-                                                  (|
-                                                    (M.get_associated_function
-                                                      (|
-                                                        (Ty.apply
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_associated_function (|
+                                                        Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           [
                                                             Ty.tuple [];
                                                             Ty.path "std::io::error::Error"
-                                                          ]),
+                                                          ],
                                                         "expect",
                                                         []
-                                                      |)),
+                                                      |),
                                                     [
-                                                      M.call_closure
-                                                        (|
-                                                          (M.get_trait_method
-                                                            (|
+                                                      M.call_closure (|
+                                                          M.get_trait_method (|
                                                               "std::io::Write",
-                                                              (Ty.path "std::fs::File"),
+                                                              Ty.path "std::fs::File",
                                                               [],
                                                               "write_all",
                                                               []
-                                                            |)),
+                                                            |),
                                                           [
                                                             file;
-                                                            M.call_closure
-                                                              (|
-                                                                (M.get_associated_function
-                                                                  (| (Ty.path "str"), "as_bytes", []
-                                                                  |)),
-                                                                [ M.read (| (mk_str "Corro
-") |) ]
+                                                            M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                    Ty.path "str",
+                                                                    "as_bytes",
+                                                                    []
+                                                                  |),
+                                                                [ M.read (| mk_str "Corro
+" |) ]
                                                               |)
                                                           ]
                                                         |);
-                                                      M.read
-                                                        (| (mk_str "Could not write to ferris.txt")
+                                                      M.read (|
+                                                          mk_str "Could not write to ferris.txt"
                                                         |)
                                                     ]
-                                                  |))
+                                                  |)
                                               |) in
-                                          M.alloc (| (Value.Tuple []) |)))
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                              M.alloc (| (Value.Tuple []) |)))
+                              M.alloc (| Value.Tuple [] |)))
                           |)))
                   ]
-                |)))
+                |))
           |)))
     | _, _ => M.impossible
     end.

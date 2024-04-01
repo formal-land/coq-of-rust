@@ -27,293 +27,249 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let n := M.alloc (| (Value.Integer Integer.I32 1) |) in
-          M.loop
-            (|
+      (M.read (|
+          let n := M.alloc (| Value.Integer Integer.I32 1 |) in
+          M.loop (|
               ltac:(M.monadic
-                (M.match_operator
-                  (|
-                    (M.alloc (| (Value.Tuple []) |)),
+                (M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc
-                                (| (BinOp.Pure.lt (M.read (| n |)) (Value.Integer Integer.I32 101))
+                              (M.alloc (|
+                                  BinOp.Pure.lt (M.read (| n |)) (Value.Integer Integer.I32 101)
                                 |)) in
                           let _ :=
-                            M.is_constant_or_break_match
-                              (| (M.read (| γ |)), (Value.Bool true)
-                              |) in
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
-                            M.match_operator
-                              (|
-                                (M.alloc (| (Value.Tuple []) |)),
+                            M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.alloc
-                                            (|
-                                              (BinOp.Pure.eq
-                                                (BinOp.Panic.rem
-                                                  (|
-                                                    (M.read (| n |)),
-                                                    (Value.Integer Integer.I32 15)
+                                          (M.alloc (|
+                                              BinOp.Pure.eq
+                                                (BinOp.Panic.rem (|
+                                                    M.read (| n |),
+                                                    Value.Integer Integer.I32 15
                                                   |))
-                                                (Value.Integer Integer.I32 0))
+                                                (Value.Integer Integer.I32 0)
                                             |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match
-                                          (| (M.read (| γ |)), (Value.Bool true)
+                                        M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
                                           |) in
                                       let _ :=
                                         let _ :=
-                                          M.alloc
-                                            (|
-                                              (M.call_closure
-                                                (|
-                                                  (M.get_function
-                                                    (| "std::io::stdio::_print", []
-                                                    |)),
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_function (| "std::io::stdio::_print", [] |),
                                                   [
-                                                    M.call_closure
-                                                      (|
-                                                        (M.get_associated_function
-                                                          (|
-                                                            (Ty.path "core::fmt::Arguments"),
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             "new_const",
                                                             []
-                                                          |)),
+                                                          |),
                                                         [
                                                           (* Unsize *)
                                                             M.pointer_coercion
-                                                              (M.alloc
-                                                                (|
-                                                                  (Value.Array
+                                                              (M.alloc (|
+                                                                  Value.Array
                                                                     [
-                                                                      M.read
-                                                                        (| (mk_str "fizzbuzz
-")
+                                                                      M.read (| mk_str "fizzbuzz
+"
                                                                         |)
-                                                                    ])
+                                                                    ]
                                                                 |))
                                                         ]
                                                       |)
                                                   ]
-                                                |))
+                                                |)
                                             |) in
-                                        M.alloc (| (Value.Tuple []) |) in
-                                      M.alloc (| (Value.Tuple []) |)));
+                                        M.alloc (| Value.Tuple [] |) in
+                                      M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.match_operator
-                                        (|
-                                          (M.alloc (| (Value.Tuple []) |)),
+                                      (M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
-                                                    (M.alloc
-                                                      (|
-                                                        (BinOp.Pure.eq
-                                                          (BinOp.Panic.rem
-                                                            (|
-                                                              (M.read (| n |)),
-                                                              (Value.Integer Integer.I32 3)
+                                                    (M.alloc (|
+                                                        BinOp.Pure.eq
+                                                          (BinOp.Panic.rem (|
+                                                              M.read (| n |),
+                                                              Value.Integer Integer.I32 3
                                                             |))
-                                                          (Value.Integer Integer.I32 0))
+                                                          (Value.Integer Integer.I32 0)
                                                       |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match
-                                                    (| (M.read (| γ |)), (Value.Bool true)
+                                                  M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
                                                     |) in
                                                 let _ :=
                                                   let _ :=
-                                                    M.alloc
-                                                      (|
-                                                        (M.call_closure
-                                                          (|
-                                                            (M.get_function
-                                                              (| "std::io::stdio::_print", []
-                                                              |)),
+                                                    M.alloc (|
+                                                        M.call_closure (|
+                                                            M.get_function (|
+                                                                "std::io::stdio::_print",
+                                                                []
+                                                              |),
                                                             [
-                                                              M.call_closure
-                                                                (|
-                                                                  (M.get_associated_function
-                                                                    (|
-                                                                      (Ty.path
-                                                                        "core::fmt::Arguments"),
+                                                              M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       "new_const",
                                                                       []
-                                                                    |)),
+                                                                    |),
                                                                   [
                                                                     (* Unsize *)
                                                                       M.pointer_coercion
-                                                                        (M.alloc
-                                                                          (|
-                                                                            (Value.Array
+                                                                        (M.alloc (|
+                                                                            Value.Array
                                                                               [
-                                                                                M.read
-                                                                                  (|
-                                                                                    (mk_str "fizz
-")
+                                                                                M.read (|
+                                                                                    mk_str "fizz
+"
                                                                                   |)
-                                                                              ])
+                                                                              ]
                                                                           |))
                                                                   ]
                                                                 |)
                                                             ]
-                                                          |))
+                                                          |)
                                                       |) in
-                                                  M.alloc (| (Value.Tuple []) |) in
-                                                M.alloc (| (Value.Tuple []) |)));
+                                                  M.alloc (| Value.Tuple [] |) in
+                                                M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (M.match_operator
-                                                  (|
-                                                    (M.alloc (| (Value.Tuple []) |)),
+                                                (M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
-                                                              (M.alloc
-                                                                (|
-                                                                  (BinOp.Pure.eq
-                                                                    (BinOp.Panic.rem
-                                                                      (|
-                                                                        (M.read (| n |)),
-                                                                        (Value.Integer
-                                                                          Integer.I32
-                                                                          5)
+                                                              (M.alloc (|
+                                                                  BinOp.Pure.eq
+                                                                    (BinOp.Panic.rem (|
+                                                                        M.read (| n |),
+                                                                        Value.Integer Integer.I32 5
                                                                       |))
-                                                                    (Value.Integer Integer.I32 0))
+                                                                    (Value.Integer Integer.I32 0)
                                                                 |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match
-                                                              (| (M.read (| γ |)), (Value.Bool true)
+                                                            M.is_constant_or_break_match (|
+                                                                M.read (| γ |),
+                                                                Value.Bool true
                                                               |) in
                                                           let _ :=
                                                             let _ :=
-                                                              M.alloc
-                                                                (|
-                                                                  (M.call_closure
-                                                                    (|
-                                                                      (M.get_function
-                                                                        (|
+                                                              M.alloc (|
+                                                                  M.call_closure (|
+                                                                      M.get_function (|
                                                                           "std::io::stdio::_print",
                                                                           []
-                                                                        |)),
+                                                                        |),
                                                                       [
-                                                                        M.call_closure
-                                                                          (|
-                                                                            (M.get_associated_function
-                                                                              (|
-                                                                                (Ty.path
-                                                                                  "core::fmt::Arguments"),
+                                                                        M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
                                                                                 "new_const",
                                                                                 []
-                                                                              |)),
+                                                                              |),
                                                                             [
                                                                               (* Unsize *)
                                                                                 M.pointer_coercion
-                                                                                  (M.alloc
-                                                                                    (|
-                                                                                      (Value.Array
+                                                                                  (M.alloc (|
+                                                                                      Value.Array
                                                                                         [
-                                                                                          M.read
-                                                                                            (|
-                                                                                              (mk_str
+                                                                                          M.read (|
+                                                                                              mk_str
                                                                                                 "buzz
-")
+"
                                                                                             |)
-                                                                                        ])
+                                                                                        ]
                                                                                     |))
                                                                             ]
                                                                           |)
                                                                       ]
-                                                                    |))
+                                                                    |)
                                                                 |) in
-                                                            M.alloc (| (Value.Tuple []) |) in
-                                                          M.alloc (| (Value.Tuple []) |)));
+                                                            M.alloc (| Value.Tuple [] |) in
+                                                          M.alloc (| Value.Tuple [] |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let _ :=
                                                             let _ :=
-                                                              M.alloc
-                                                                (|
-                                                                  (M.call_closure
-                                                                    (|
-                                                                      (M.get_function
-                                                                        (|
+                                                              M.alloc (|
+                                                                  M.call_closure (|
+                                                                      M.get_function (|
                                                                           "std::io::stdio::_print",
                                                                           []
-                                                                        |)),
+                                                                        |),
                                                                       [
-                                                                        M.call_closure
-                                                                          (|
-                                                                            (M.get_associated_function
-                                                                              (|
-                                                                                (Ty.path
-                                                                                  "core::fmt::Arguments"),
+                                                                        M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
                                                                                 "new_v1",
                                                                                 []
-                                                                              |)),
+                                                                              |),
                                                                             [
                                                                               (* Unsize *)
                                                                                 M.pointer_coercion
-                                                                                  (M.alloc
-                                                                                    (|
-                                                                                      (Value.Array
+                                                                                  (M.alloc (|
+                                                                                      Value.Array
                                                                                         [
-                                                                                          M.read
-                                                                                            (|
-                                                                                              (mk_str
-                                                                                                "")
+                                                                                          M.read (|
+                                                                                              mk_str
+                                                                                                ""
                                                                                             |);
-                                                                                          M.read
-                                                                                            (|
-                                                                                              (mk_str
+                                                                                          M.read (|
+                                                                                              mk_str
                                                                                                 "
-")
+"
                                                                                             |)
-                                                                                        ])
+                                                                                        ]
                                                                                     |));
                                                                               (* Unsize *)
                                                                                 M.pointer_coercion
-                                                                                  (M.alloc
-                                                                                    (|
-                                                                                      (Value.Array
+                                                                                  (M.alloc (|
+                                                                                      Value.Array
                                                                                         [
-                                                                                          M.call_closure
-                                                                                            (|
-                                                                                              (M.get_associated_function
-                                                                                                (|
-                                                                                                  (Ty.path
-                                                                                                    "core::fmt::rt::Argument"),
+                                                                                          M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
                                                                                                   "new_display",
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "i32"
                                                                                                   ]
-                                                                                                |)),
+                                                                                                |),
                                                                                               [ n ]
                                                                                             |)
-                                                                                        ])
+                                                                                        ]
                                                                                     |))
                                                                             ]
                                                                           |)
                                                                       ]
-                                                                    |))
+                                                                    |)
                                                                 |) in
-                                                            M.alloc (| (Value.Tuple []) |) in
-                                                          M.alloc (| (Value.Tuple []) |)))
+                                                            M.alloc (| Value.Tuple [] |) in
+                                                          M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |)))
                                           ]
@@ -322,33 +278,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |) in
                           let _ :=
                             let β := n in
-                            M.assign
-                              (|
+                            M.assign (|
                                 β,
-                                (BinOp.Panic.add
-                                  (| (M.read (| β |)), (Value.Integer Integer.I32 1)
-                                  |))
+                                BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
                               |) in
-                          M.alloc (| (Value.Tuple []) |)));
+                          M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc
-                            (|
-                              (M.never_to_any
-                                (|
-                                  (M.read
-                                    (|
-                                      (let _ :=
-                                        M.alloc
-                                          (| (M.never_to_any (| (M.read (| (M.break (||)) |)) |))
+                          (M.alloc (|
+                              M.never_to_any (|
+                                  M.read (|
+                                      let _ :=
+                                        M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
-                                      M.alloc (| (Value.Tuple []) |))
-                                    |))
-                                |))
+                                      M.alloc (| Value.Tuple [] |)
+                                    |)
+                                |)
                             |)))
                     ]
                   |)))
-            |))
+            |)
         |)))
   | _, _ => M.impossible
   end.

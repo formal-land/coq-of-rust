@@ -35,11 +35,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        LogicalOp.and
-          (|
-            (M.call_closure
-              (|
-                (M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |)),
+        LogicalOp.and (|
+            M.call_closure (|
+                M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                 [
                   M.get_struct_tuple_field
                     (M.read (| self |))
@@ -50,18 +48,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
                     "generics_phantom_type::PhantomTuple"
                     0
                 ]
-              |)),
+              |),
             ltac:(M.monadic
-              (M.call_closure
-                (|
-                  (M.get_trait_method
-                    (|
+              (M.call_closure (|
+                  M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      (Ty.apply (Ty.path "core::marker::PhantomData") [ B ]),
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ B ],
                       [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ],
                       "eq",
                       []
-                    |)),
+                    |),
                   [
                     M.get_struct_tuple_field
                       (M.read (| self |))
@@ -120,11 +116,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        LogicalOp.and
-          (|
-            (M.call_closure
-              (|
-                (M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |)),
+        LogicalOp.and (|
+            M.call_closure (|
+                M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                 [
                   M.get_struct_record_field
                     (M.read (| self |))
@@ -135,18 +129,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
                     "generics_phantom_type::PhantomStruct"
                     "first"
                 ]
-              |)),
+              |),
             ltac:(M.monadic
-              (M.call_closure
-                (|
-                  (M.get_trait_method
-                    (|
+              (M.call_closure (|
+                  M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      (Ty.apply (Ty.path "core::marker::PhantomData") [ B ]),
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ B ],
                       [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ],
                       "eq",
                       []
-                    |)),
+                    |),
                   [
                     M.get_struct_record_field
                       (M.read (| self |))
@@ -203,43 +195,38 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
-      (M.read
-        (|
-          (let _tuple1 :=
-            M.alloc
-              (|
-                (Value.StructTuple
+      (M.read (|
+          let _tuple1 :=
+            M.alloc (|
+                Value.StructTuple
                   "generics_phantom_type::PhantomTuple"
-                  [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ])
+                  [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
               |) in
           let _tuple2 :=
-            M.alloc
-              (|
-                (Value.StructTuple
+            M.alloc (|
+                Value.StructTuple
                   "generics_phantom_type::PhantomTuple"
-                  [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ])
+                  [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
               |) in
           let _struct1 :=
-            M.alloc
-              (|
-                (Value.StructRecord
+            M.alloc (|
+                Value.StructRecord
                   "generics_phantom_type::PhantomStruct"
                   [
                     ("first", Value.UnicodeChar 81);
                     ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-                  ])
+                  ]
               |) in
           let _struct2 :=
-            M.alloc
-              (|
-                (Value.StructRecord
+            M.alloc (|
+                Value.StructRecord
                   "generics_phantom_type::PhantomStruct"
                   [
                     ("first", Value.UnicodeChar 81);
                     ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-                  ])
+                  ]
               |) in
-          M.alloc (| (Value.Tuple []) |))
+          M.alloc (| Value.Tuple [] |)
         |)))
   | _, _ => M.impossible
   end.
