@@ -25,9 +25,9 @@ Module Impl_trait_incrementer_Incrementer.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
-      let* init_value := M.alloc init_value in
-      let* α0 := M.read init_value in
-      M.pure (Value.StructRecord "trait_incrementer::Incrementer" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let init_value := M.alloc (| init_value |) in
+        Value.StructRecord "trait_incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -41,18 +41,20 @@ Module Impl_trait_incrementer_Incrementer.
   Definition inc_by (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; delta ] =>
-      let* self := M.alloc self in
-      let* delta := M.alloc delta in
-      let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (M.get_struct_record_field α0 "trait_incrementer::Incrementer" "value") in
-        let* α0 := M.read β in
-        let* α1 := M.read delta in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let delta := M.alloc (| delta |) in
+        M.read
+          (|
+            (let _ :=
+              let β :=
+                M.get_struct_record_field
+                  (M.read (| self |))
+                  "trait_incrementer::Incrementer"
+                  "value" in
+              M.assign (| β, (BinOp.Panic.add (| (M.read (| β |)), (M.read (| delta |)) |)) |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -70,10 +72,15 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "trait_incrementer::Incrementer") "inc_by" [] in
-      let* α1 := M.read self in
-      M.call_closure α0 [ α1; Value.Integer Integer.U64 1 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure
+          (|
+            (M.get_associated_function
+              (| (Ty.path "trait_incrementer::Incrementer"), "inc_by", []
+              |)),
+            [ M.read (| self |); Value.Integer Integer.U64 1 ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -85,9 +92,12 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "trait_incrementer::Incrementer" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.get_struct_record_field (M.read (| self |)) "trait_incrementer::Incrementer" "value")
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -110,14 +120,21 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   Definition reset (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 := M.read self in
-        M.assign
-          (M.get_struct_record_field α0 "trait_incrementer::Incrementer" "value")
-          (Value.Integer Integer.U64 0) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (let _ :=
+              M.assign
+                (|
+                  (M.get_struct_record_field
+                    (M.read (| self |))
+                    "trait_incrementer::Incrementer"
+                    "value"),
+                  (Value.Integer Integer.U64 0)
+                |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   

@@ -19,32 +19,58 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [ __H ], [ self; state ] =>
-      let* self := M.alloc self in
-      let* state := M.alloc state in
-      let* _ :=
-        let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u32") [] "hash" [ __H ] in
-        let* α1 := M.read self in
-        let* α2 := M.read state in
-        let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "id"; α2 ] in
-        M.alloc α3 in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::hash::Hash"
-            (Ty.path "alloc::string::String")
-            []
-            "hash"
-            [ __H ] in
-        let* α1 := M.read self in
-        let* α2 := M.read state in
-        let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "name"; α2 ] in
-        M.alloc α3 in
-      let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u64") [] "hash" [ __H ] in
-      let* α1 := M.read self in
-      let* α2 := M.read state in
-      let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "phone"; α2 ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let state := M.alloc (| state |) in
+        M.read
+          (|
+            (let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_trait_method
+                        (| "core::hash::Hash", (Ty.path "u32"), [], "hash", [ __H ]
+                        |)),
+                      [
+                        M.get_struct_record_field (M.read (| self |)) "hash::Person" "id";
+                        M.read (| state |)
+                      ]
+                    |))
+                |) in
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_trait_method
+                        (|
+                          "core::hash::Hash",
+                          (Ty.path "alloc::string::String"),
+                          [],
+                          "hash",
+                          [ __H ]
+                        |)),
+                      [
+                        M.get_struct_record_field (M.read (| self |)) "hash::Person" "name";
+                        M.read (| state |)
+                      ]
+                    |))
+                |) in
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "core::hash::Hash", (Ty.path "u64"), [], "hash", [ __H ]
+                      |)),
+                    [
+                      M.get_struct_record_field (M.read (| self |)) "hash::Person" "phone";
+                      M.read (| state |)
+                    ]
+                  |))
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -66,32 +92,53 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ T ], [ t ] =>
-    let* t := M.alloc t in
-    let* s :=
-      let* α0 := M.get_associated_function (Ty.path "std::hash::random::DefaultHasher") "new" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::hash::Hash"
-          T
-          []
-          "hash"
-          [ Ty.path "std::hash::random::DefaultHasher" ] in
-      let* α1 := M.read t in
-      let* α2 := M.call_closure α0 [ α1; s ] in
-      M.alloc α2 in
-    let* α0 :=
-      M.get_trait_method
-        "core::hash::Hasher"
-        (Ty.path "std::hash::random::DefaultHasher")
-        []
-        "finish"
-        [] in
-    let* α1 := M.call_closure α0 [ s ] in
-    let* α0 := M.alloc α1 in
-    M.read α0
+    ltac:(M.monadic
+      (let t := M.alloc (| t |) in
+      M.read
+        (|
+          (let s :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_associated_function
+                      (| (Ty.path "std::hash::random::DefaultHasher"), "new", []
+                      |)),
+                    []
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (|
+                        "core::hash::Hash",
+                        T,
+                        [],
+                        "hash",
+                        [ Ty.path "std::hash::random::DefaultHasher" ]
+                      |)),
+                    [ M.read (| t |); s ]
+                  |))
+              |) in
+          M.alloc
+            (|
+              (M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::hash::Hasher",
+                      (Ty.path "std::hash::random::DefaultHasher"),
+                      [],
+                      "finish",
+                      []
+                    |)),
+                  [ s ]
+                |))
+            |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -114,56 +161,96 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* person1 :=
-      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
-      let* α1 := M.read (mk_str "Janet") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc
-        (Value.StructRecord
-          "hash::Person"
-          [
-            ("id", Value.Integer Integer.U32 5);
-            ("name", α2);
-            ("phone", Value.Integer Integer.U64 5556667777)
-          ]) in
-    let* person2 :=
-      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
-      let* α1 := M.read (mk_str "Bob") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc
-        (Value.StructRecord
-          "hash::Person"
-          [
-            ("id", Value.Integer Integer.U32 5);
-            ("name", α2);
-            ("phone", Value.Integer Integer.U64 5556667777)
-          ]) in
-    let* _ :=
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-              let* α1 := M.call_closure α0 [ person1 ] in
-              let* α2 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-              let* α3 := M.call_closure α2 [ person2 ] in
-              let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
-              M.pure (M.use α4) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 := M.get_function "core::panicking::panic" [] in
-            let* α1 :=
-              M.read
-                (mk_str "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.never_to_any α2 in
-            M.alloc α3;
-          fun γ => M.alloc (Value.Tuple [])
-        ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let person1 :=
+            M.alloc
+              (|
+                (Value.StructRecord
+                  "hash::Person"
+                  [
+                    ("id", Value.Integer Integer.U32 5);
+                    ("name",
+                      M.call_closure
+                        (|
+                          (M.get_trait_method
+                            (| "alloc::string::ToString", (Ty.path "str"), [], "to_string", []
+                            |)),
+                          [ M.read (| (mk_str "Janet") |) ]
+                        |));
+                    ("phone", Value.Integer Integer.U64 5556667777)
+                  ])
+              |) in
+          let person2 :=
+            M.alloc
+              (|
+                (Value.StructRecord
+                  "hash::Person"
+                  [
+                    ("id", Value.Integer Integer.U32 5);
+                    ("name",
+                      M.call_closure
+                        (|
+                          (M.get_trait_method
+                            (| "alloc::string::ToString", (Ty.path "str"), [], "to_string", []
+                            |)),
+                          [ M.read (| (mk_str "Bob") |) ]
+                        |));
+                    ("phone", Value.Integer Integer.U64 5556667777)
+                  ])
+              |) in
+          let _ :=
+            M.match_operator
+              (|
+                (M.alloc (| (Value.Tuple []) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc
+                            (|
+                              (UnOp.Pure.not
+                                (BinOp.Pure.ne
+                                  (M.call_closure
+                                    (|
+                                      (M.get_function
+                                        (| "hash::calculate_hash", [ Ty.path "hash::Person" ]
+                                        |)),
+                                      [ person1 ]
+                                    |))
+                                  (M.call_closure
+                                    (|
+                                      (M.get_function
+                                        (| "hash::calculate_hash", [ Ty.path "hash::Person" ]
+                                        |)),
+                                      [ person2 ]
+                                    |))))
+                            |)) in
+                      let _ :=
+                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
+                      M.alloc
+                        (|
+                          (M.never_to_any
+                            (|
+                              (M.call_closure
+                                (|
+                                  (M.get_function (| "core::panicking::panic", [] |)),
+                                  [
+                                    M.read
+                                      (|
+                                        (mk_str
+                                          "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)")
+                                      |)
+                                  ]
+                                |))
+                            |))
+                        |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                ]
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

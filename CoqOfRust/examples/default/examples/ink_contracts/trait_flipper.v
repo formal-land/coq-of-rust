@@ -24,9 +24,19 @@ Module Impl_trait_flipper_Flipper.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "trait_flipper::Flipper"
+          [
+            ("value",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::default::Default", (Ty.path "bool"), [], "default", []
+                    |)),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -44,16 +54,25 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record_field α1 "trait_flipper::Flipper" "value") in
-        M.assign
-          (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
-          (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (let _ :=
+              M.assign
+                (|
+                  (M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value"),
+                  (UnOp.Pure.not
+                    (M.read
+                      (|
+                        (M.get_struct_record_field
+                          (M.read (| self |))
+                          "trait_flipper::Flipper"
+                          "value")
+                      |)))
+                |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -65,9 +84,11 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (| (M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value")
+          |)))
     | _, _ => M.impossible
     end.
   

@@ -11,52 +11,99 @@ fn create_fn() -> impl Fn() {
 Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "Fn") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 :=
-      M.alloc
-        (M.closure
-          (fun γ =>
-            match γ with
-            | [ α0 ] =>
-              let* α0 := M.alloc α0 in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                      let* α5 :=
-                        (* Unsize *)
-                          let* α2 := M.read (mk_str "This is a: ") in
-                          let* α3 := M.read (mk_str "
-") in
-                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                          M.pure (M.pointer_coercion α4) in
-                      let* α9 :=
-                        (* Unsize *)
-                          let* α6 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [ Ty.path "alloc::string::String" ] in
-                          let* α7 := M.call_closure α6 [ text ] in
-                          let* α8 := M.alloc (Value.Array [ α7 ]) in
-                          M.pure (M.pointer_coercion α8) in
-                      let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
-                ]
-            | _ => M.impossible
-            end)) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let text :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "alloc::borrow::ToOwned", (Ty.path "str"), [], "to_owned", []
+                      |)),
+                    [ M.read (| (mk_str "Fn") |) ]
+                  |))
+              |) in
+          M.alloc
+            (|
+              (M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      M.match_operator
+                        (|
+                          (M.alloc (| α0 |)),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read
+                                  (|
+                                    (let _ :=
+                                      M.alloc
+                                        (|
+                                          (M.call_closure
+                                            (|
+                                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                                              [
+                                                M.call_closure
+                                                  (|
+                                                    (M.get_associated_function
+                                                      (|
+                                                        (Ty.path "core::fmt::Arguments"),
+                                                        "new_v1",
+                                                        []
+                                                      |)),
+                                                    [
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.read
+                                                                    (| (mk_str "This is a: ")
+                                                                    |);
+                                                                  M.read (| (mk_str "
+") |)
+                                                                ])
+                                                            |));
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.call_closure
+                                                                    (|
+                                                                      (M.get_associated_function
+                                                                        (|
+                                                                          (Ty.path
+                                                                            "core::fmt::rt::Argument"),
+                                                                          "new_display",
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::string::String"
+                                                                          ]
+                                                                        |)),
+                                                                      [ text ]
+                                                                    |)
+                                                                ])
+                                                            |))
+                                                    ]
+                                                  |)
+                                              ]
+                                            |))
+                                        |) in
+                                    M.alloc (| (Value.Tuple []) |))
+                                  |)))
+                          ]
+                        |)
+                    | _ => M.impossible (||)
+                    end)))
+            |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -74,52 +121,99 @@ fn create_fnmut() -> impl FnMut() {
 Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "FnMut") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 :=
-      M.alloc
-        (M.closure
-          (fun γ =>
-            match γ with
-            | [ α0 ] =>
-              let* α0 := M.alloc α0 in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                      let* α5 :=
-                        (* Unsize *)
-                          let* α2 := M.read (mk_str "This is a: ") in
-                          let* α3 := M.read (mk_str "
-") in
-                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                          M.pure (M.pointer_coercion α4) in
-                      let* α9 :=
-                        (* Unsize *)
-                          let* α6 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [ Ty.path "alloc::string::String" ] in
-                          let* α7 := M.call_closure α6 [ text ] in
-                          let* α8 := M.alloc (Value.Array [ α7 ]) in
-                          M.pure (M.pointer_coercion α8) in
-                      let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
-                ]
-            | _ => M.impossible
-            end)) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let text :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "alloc::borrow::ToOwned", (Ty.path "str"), [], "to_owned", []
+                      |)),
+                    [ M.read (| (mk_str "FnMut") |) ]
+                  |))
+              |) in
+          M.alloc
+            (|
+              (M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      M.match_operator
+                        (|
+                          (M.alloc (| α0 |)),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read
+                                  (|
+                                    (let _ :=
+                                      M.alloc
+                                        (|
+                                          (M.call_closure
+                                            (|
+                                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                                              [
+                                                M.call_closure
+                                                  (|
+                                                    (M.get_associated_function
+                                                      (|
+                                                        (Ty.path "core::fmt::Arguments"),
+                                                        "new_v1",
+                                                        []
+                                                      |)),
+                                                    [
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.read
+                                                                    (| (mk_str "This is a: ")
+                                                                    |);
+                                                                  M.read (| (mk_str "
+") |)
+                                                                ])
+                                                            |));
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.call_closure
+                                                                    (|
+                                                                      (M.get_associated_function
+                                                                        (|
+                                                                          (Ty.path
+                                                                            "core::fmt::rt::Argument"),
+                                                                          "new_display",
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::string::String"
+                                                                          ]
+                                                                        |)),
+                                                                      [ text ]
+                                                                    |)
+                                                                ])
+                                                            |))
+                                                    ]
+                                                  |)
+                                              ]
+                                            |))
+                                        |) in
+                                    M.alloc (| (Value.Tuple []) |))
+                                  |)))
+                          ]
+                        |)
+                    | _ => M.impossible (||)
+                    end)))
+            |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -137,52 +231,99 @@ fn create_fnonce() -> impl FnOnce() {
 Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "FnOnce") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 :=
-      M.alloc
-        (M.closure
-          (fun γ =>
-            match γ with
-            | [ α0 ] =>
-              let* α0 := M.alloc α0 in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                      let* α5 :=
-                        (* Unsize *)
-                          let* α2 := M.read (mk_str "This is a: ") in
-                          let* α3 := M.read (mk_str "
-") in
-                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                          M.pure (M.pointer_coercion α4) in
-                      let* α9 :=
-                        (* Unsize *)
-                          let* α6 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [ Ty.path "alloc::string::String" ] in
-                          let* α7 := M.call_closure α6 [ text ] in
-                          let* α8 := M.alloc (Value.Array [ α7 ]) in
-                          M.pure (M.pointer_coercion α8) in
-                      let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
-                ]
-            | _ => M.impossible
-            end)) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let text :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "alloc::borrow::ToOwned", (Ty.path "str"), [], "to_owned", []
+                      |)),
+                    [ M.read (| (mk_str "FnOnce") |) ]
+                  |))
+              |) in
+          M.alloc
+            (|
+              (M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      M.match_operator
+                        (|
+                          (M.alloc (| α0 |)),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read
+                                  (|
+                                    (let _ :=
+                                      M.alloc
+                                        (|
+                                          (M.call_closure
+                                            (|
+                                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                                              [
+                                                M.call_closure
+                                                  (|
+                                                    (M.get_associated_function
+                                                      (|
+                                                        (Ty.path "core::fmt::Arguments"),
+                                                        "new_v1",
+                                                        []
+                                                      |)),
+                                                    [
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.read
+                                                                    (| (mk_str "This is a: ")
+                                                                    |);
+                                                                  M.read (| (mk_str "
+") |)
+                                                                ])
+                                                            |));
+                                                      (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc
+                                                            (|
+                                                              (Value.Array
+                                                                [
+                                                                  M.call_closure
+                                                                    (|
+                                                                      (M.get_associated_function
+                                                                        (|
+                                                                          (Ty.path
+                                                                            "core::fmt::rt::Argument"),
+                                                                          "new_display",
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::string::String"
+                                                                          ]
+                                                                        |)),
+                                                                      [ text ]
+                                                                    |)
+                                                                ])
+                                                            |))
+                                                    ]
+                                                  |)
+                                              ]
+                                            |))
+                                        |) in
+                                    M.alloc (| (Value.Tuple []) |))
+                                  |)))
+                          ]
+                        |)
+                    | _ => M.impossible (||)
+                    end)))
+            |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -204,45 +345,84 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* fn_plain :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fn" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* fn_mut :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnmut" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* fn_once :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnonce" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method "core::ops::function::Fn" Ty.associated [ Ty.tuple [] ] "call" [] in
-      let* α1 := M.call_closure α0 [ fn_plain; Value.Tuple [] ] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::function::FnMut"
-          Ty.associated
-          [ Ty.tuple [] ]
-          "call_mut"
-          [] in
-      let* α1 := M.call_closure α0 [ fn_mut; Value.Tuple [] ] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::function::FnOnce"
-          Ty.associated
-          [ Ty.tuple [] ]
-          "call_once"
-          [] in
-      let* α1 := M.read fn_once in
-      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let fn_plain :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function (| "functions_closures_as_output_parameters::create_fn", [] |)),
+                    []
+                  |))
+              |) in
+          let fn_mut :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function
+                      (| "functions_closures_as_output_parameters::create_fnmut", []
+                      |)),
+                    []
+                  |))
+              |) in
+          let fn_once :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function
+                      (| "functions_closures_as_output_parameters::create_fnonce", []
+                      |)),
+                    []
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "core::ops::function::Fn", Ty.associated, [ Ty.tuple [] ], "call", []
+                      |)),
+                    [ fn_plain; Value.Tuple [] ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (|
+                        "core::ops::function::FnMut",
+                        Ty.associated,
+                        [ Ty.tuple [] ],
+                        "call_mut",
+                        []
+                      |)),
+                    [ fn_mut; Value.Tuple [] ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (|
+                        "core::ops::function::FnOnce",
+                        Ty.associated,
+                        [ Ty.tuple [] ],
+                        "call_once",
+                        []
+                      |)),
+                    [ M.read (| fn_once |); Value.Tuple [] ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

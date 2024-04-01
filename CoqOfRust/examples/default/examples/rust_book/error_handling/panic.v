@@ -14,64 +14,105 @@ fn drink(beverage: &str) {
 Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ beverage ] =>
-    let* beverage := M.alloc beverage in
-    let* _ :=
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 :=
-                M.get_trait_method
-                  "core::cmp::PartialEq"
-                  (Ty.apply (Ty.path "&") [ Ty.path "str" ])
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                  "eq"
-                  [] in
-              let* α1 := M.call_closure α0 [ beverage; mk_str "lemonade" ] in
-              let* α2 := M.alloc α1 in
-              M.pure (M.use α2) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 :=
-              M.get_function
-                "std::panicking::begin_panic"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.never_to_any α2 in
-            M.alloc α3;
-          fun γ => M.alloc (Value.Tuple [])
-        ] in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Some refreshing ") in
-            let* α3 := M.read (mk_str " is all I need.
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α7 := M.call_closure α6 [ beverage ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (let beverage := M.alloc (| beverage |) in
+      M.read
+        (|
+          (let _ :=
+            M.match_operator
+              (|
+                (M.alloc (| (Value.Tuple []) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc
+                            (|
+                              (M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (|
+                                      "core::cmp::PartialEq",
+                                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                      "eq",
+                                      []
+                                    |)),
+                                  [ beverage; mk_str "lemonade" ]
+                                |))
+                            |)) in
+                      let _ :=
+                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
+                      M.alloc
+                        (|
+                          (M.never_to_any
+                            (|
+                              (M.call_closure
+                                (|
+                                  (M.get_function
+                                    (|
+                                      "std::panicking::begin_panic",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |)),
+                                  [ M.read (| (mk_str "AAAaaaaa!!!!") |) ]
+                                |))
+                            |))
+                        |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |)))
+                ]
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.read (| (mk_str "Some refreshing ") |);
+                                          M.read (| (mk_str " is all I need.
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ beverage ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -84,17 +125,24 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* α0 := M.get_function "panic::drink" [] in
-      let* α1 := M.read (mk_str "water") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 := M.get_function "panic::drink" [] in
-      let* α1 := M.read (mk_str "lemonade") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "panic::drink", [] |)), [ M.read (| (mk_str "water") |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "panic::drink", [] |)), [ M.read (| (mk_str "lemonade") |) ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

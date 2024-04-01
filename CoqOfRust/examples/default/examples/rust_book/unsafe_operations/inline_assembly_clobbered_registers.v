@@ -39,49 +39,88 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* name_buf := M.alloc (repeat (Value.Integer Integer.U8 0) 12) in
-    let* _ :=
-      let _ := InlineAssembly in
-      M.alloc (Value.Tuple []) in
-    let* name :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error" ])
-          "unwrap"
-          [] in
-      let* α1 := M.get_function "core::str::converts::from_utf8" [] in
-      let* α2 := (* Unsize *) M.pure (M.pointer_coercion name_buf) in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      M.alloc α4 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α7 := M.call_closure α6 [ name ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let name_buf := M.alloc (| (repeat (Value.Integer Integer.U8 0) 12) |) in
+          let _ :=
+            let _ := InlineAssembly in
+            M.alloc (| (Value.Tuple []) |) in
+          let name :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_associated_function
+                      (|
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                            Ty.path "core::str::error::Utf8Error"
+                          ]),
+                        "unwrap",
+                        []
+                      |)),
+                    [
+                      M.call_closure
+                        (|
+                          (M.get_function (| "core::str::converts::from_utf8", [] |)),
+                          [ (* Unsize *) M.pointer_coercion name_buf ]
+                        |)
+                    ]
+                  |))
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.read (| (mk_str "CPU Manufacturer ID: ") |);
+                                          M.read (| (mk_str "
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ name ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

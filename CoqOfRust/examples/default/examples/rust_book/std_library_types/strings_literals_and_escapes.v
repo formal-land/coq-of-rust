@@ -26,98 +26,178 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α7 := M.call_closure α6 [ byte_escape ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
-    let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α6 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Unicode character ") in
-            let* α3 := M.read (mk_str " (U+211D) is called ") in
-            let* α4 := M.read (mk_str "
-") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
-        let* α12 :=
-          (* Unsize *)
-            let* α7 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α8 := M.call_closure α7 [ unicode_codepoint ] in
-            let* α9 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α10 := M.call_closure α9 [ character_name ] in
-            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
-            M.pure (M.pointer_coercion α11) in
-        let* α13 := M.call_closure α1 [ α6; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc (Value.Tuple []) in
-    let* long_string :=
-      M.copy
-        (mk_str
-          "String literals
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let byte_escape := M.copy (| (mk_str "I'm writing Rust!") |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.read
+                                            (| (mk_str "What are you doing? (\x3F means ?) ")
+                                            |);
+                                          M.read (| (mk_str "
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ byte_escape ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let unicode_codepoint := M.copy (| (mk_str (String.String "029" "")) |) in
+          let character_name := M.copy (| (mk_str """DOUBLE-STRUCK CAPITAL R""") |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.read (| (mk_str "Unicode character ") |);
+                                          M.read (| (mk_str " (U+211D) is called ") |);
+                                          M.read (| (mk_str "
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ unicode_codepoint ]
+                                            |);
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ character_name ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let long_string :=
+            M.copy
+              (|
+                (mk_str
+                  "String literals
                         can span multiple lines.
-                        The linebreak and indentation here -><- can be escaped too!") in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α7 := M.call_closure α6 [ long_string ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+                        The linebreak and indentation here -><- can be escaped too!")
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [ M.read (| (mk_str "") |); M.read (| (mk_str "
+") |) ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |)),
+                                              [ long_string ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

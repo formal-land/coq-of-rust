@@ -9,7 +9,7 @@ fn main() {
 }
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 Module main.
   (*
@@ -20,10 +20,14 @@ Module main.
   Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_function "std::panicking::begin_panic" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-      let* α1 := M.read (mk_str "This call never returns.") in
-      M.call_closure α0 [ α1 ]
+      ltac:(M.monadic
+        (M.call_closure
+          (|
+            (M.get_function
+              (| "std::panicking::begin_panic", [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |)),
+            [ M.read (| (mk_str "This call never returns.") |) ]
+          |)))
     | _, _ => M.impossible
     end.
 End main.

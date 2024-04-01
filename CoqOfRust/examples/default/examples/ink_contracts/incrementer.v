@@ -19,9 +19,9 @@ Module Impl_incrementer_Incrementer.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
-      let* init_value := M.alloc init_value in
-      let* α0 := M.read init_value in
-      M.pure (Value.StructRecord "incrementer::Incrementer" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let init_value := M.alloc (| init_value |) in
+        Value.StructRecord "incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -35,10 +35,20 @@ Module Impl_incrementer_Incrementer.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "incrementer::Incrementer") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in
-      M.call_closure α0 [ α2 ]
+      ltac:(M.monadic
+        (M.call_closure
+          (|
+            (M.get_associated_function (| (Ty.path "incrementer::Incrementer"), "new", [] |)),
+            [
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::default::Default", (Ty.path "i32"), [], "default", []
+                    |)),
+                  []
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -52,18 +62,17 @@ Module Impl_incrementer_Incrementer.
   Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; by_ ] =>
-      let* self := M.alloc self in
-      let* by_ := M.alloc by_ in
-      let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (M.get_struct_record_field α0 "incrementer::Incrementer" "value") in
-        let* α0 := M.read β in
-        let* α1 := M.read by_ in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let by_ := M.alloc (| by_ |) in
+        M.read
+          (|
+            (let _ :=
+              let β :=
+                M.get_struct_record_field (M.read (| self |)) "incrementer::Incrementer" "value" in
+              M.assign (| β, (BinOp.Panic.add (| (M.read (| β |)), (M.read (| by_ |)) |)) |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -77,9 +86,11 @@ Module Impl_incrementer_Incrementer.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "incrementer::Incrementer" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (| (M.get_struct_record_field (M.read (| self |)) "incrementer::Incrementer" "value")
+          |)))
     | _, _ => M.impossible
     end.
   

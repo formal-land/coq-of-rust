@@ -9,22 +9,38 @@ fn function() {
 Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-        let* α4 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "called `function()`
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array [ M.read (| (mk_str "called `function()`
+") |) ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -38,22 +54,43 @@ Module deeply.
     Definition function (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [] =>
-        let* _ :=
-          let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-            let* α4 :=
-              (* Unsize *)
-                let* α2 := M.read (mk_str "called `deeply::nested::function()`
-") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
-                M.pure (M.pointer_coercion α3) in
-            let* α5 := M.call_closure α1 [ α4 ] in
-            let* α6 := M.call_closure α0 [ α5 ] in
-            M.alloc α6 in
-          M.alloc (Value.Tuple []) in
-        let* α0 := M.alloc (Value.Tuple []) in
-        M.read α0
+        ltac:(M.monadic
+          (M.read
+            (|
+              (let _ :=
+                let _ :=
+                  M.alloc
+                    (|
+                      (M.call_closure
+                        (|
+                          (M.get_function (| "std::io::stdio::_print", [] |)),
+                          [
+                            M.call_closure
+                              (|
+                                (M.get_associated_function
+                                  (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                                  |)),
+                                [
+                                  (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.alloc
+                                        (|
+                                          (Value.Array
+                                            [
+                                              M.read
+                                                (| (mk_str "called `deeply::nested::function()`
+")
+                                                |)
+                                            ])
+                                        |))
+                                ]
+                              |)
+                          ]
+                        |))
+                    |) in
+                M.alloc (| (Value.Tuple []) |) in
+              M.alloc (| (Value.Tuple []) |))
+            |)))
       | _, _ => M.impossible
       end.
   End nested.
@@ -83,49 +120,89 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* α0 := M.get_function "the_use_as_declaration::deeply::nested::function" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-        let* α4 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Entering block
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "the_use_as_declaration::deeply::nested::function" [] in
-        let* α1 := M.call_closure α0 [] in
-        M.alloc α1 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-          let* α4 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "Leaving block
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
-              M.pure (M.pointer_coercion α3) in
-          let* α5 := M.call_closure α1 [ α4 ] in
-          let* α6 := M.call_closure α0 [ α5 ] in
-          M.alloc α6 in
-        M.alloc (Value.Tuple []) in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* α0 := M.get_function "the_use_as_declaration::function" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function (| "the_use_as_declaration::deeply::nested::function", [] |)),
+                    []
+                  |))
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (| (Value.Array [ M.read (| (mk_str "Entering block
+") |) ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "the_use_as_declaration::deeply::nested::function", [] |)),
+                      []
+                    |))
+                |) in
+            let _ :=
+              let _ :=
+                M.alloc
+                  (|
+                    (M.call_closure
+                      (|
+                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                        [
+                          M.call_closure
+                            (|
+                              (M.get_associated_function
+                                (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                                |)),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (| (Value.Array [ M.read (| (mk_str "Leaving block
+") |) ])
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |))
+                  |) in
+              M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "the_use_as_declaration::function", [] |)), []
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

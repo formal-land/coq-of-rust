@@ -17,23 +17,29 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_struct_field1_finish"
-          [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "Borrowed") in
-      let* α3 := M.read (mk_str "x") in
-      let* α6 :=
-        (* Unsize *)
-          let* α4 := M.read self in
-          let* α5 :=
-            M.alloc (M.get_struct_record_field α4 "scoping_rules_lifetimes_traits::Borrowed" "x") in
-          M.pure (M.pointer_coercion α5) in
-      M.call_closure α0 [ α1; α2; α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure
+          (|
+            (M.get_associated_function
+              (| (Ty.path "core::fmt::Formatter"), "debug_struct_field1_finish", []
+              |)),
+            [
+              M.read (| f |);
+              M.read (| (mk_str "Borrowed") |);
+              M.read (| (mk_str "x") |);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc
+                    (|
+                      (M.get_struct_record_field
+                        (M.read (| self |))
+                        "scoping_rules_lifetimes_traits::Borrowed"
+                        "x")
+                    |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -56,8 +62,10 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.alloc (Value.Integer Integer.I32 10) in
-      M.pure (Value.StructRecord "scoping_rules_lifetimes_traits::Borrowed" [ ("x", α0) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "scoping_rules_lifetimes_traits::Borrowed"
+          [ ("x", M.alloc (| (Value.Integer Integer.I32 10) |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -78,42 +86,76 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* b :=
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "b is ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ] in
-            let* α7 := M.call_closure α6 [ b ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let b :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (|
+                        "core::default::Default",
+                        (Ty.path "scoping_rules_lifetimes_traits::Borrowed"),
+                        [],
+                        "default",
+                        []
+                      |)),
+                    []
+                  |))
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [ M.read (| (mk_str "b is ") |); M.read (| (mk_str "
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_debug",
+                                                  [
+                                                    Ty.path
+                                                      "scoping_rules_lifetimes_traits::Borrowed"
+                                                  ]
+                                                |)),
+                                              [ b ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

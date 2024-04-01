@@ -5,19 +5,19 @@ Require Import CoqOfRust.CoqOfRust.
 fn used_function() {}
 *)
 Definition used_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 (*
 fn unused_function() {}
 *)
 Definition unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 (*
 fn noisy_unused_function() {}
 *)
 Definition noisy_unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -27,11 +27,14 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* α0 := M.get_function "dead_code::used_function" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            M.alloc
+              (| (M.call_closure (| (M.get_function (| "dead_code::used_function", [] |)), [] |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

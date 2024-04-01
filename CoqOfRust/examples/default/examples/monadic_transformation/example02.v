@@ -26,77 +26,87 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* α0 := M.alloc (Value.Integer Integer.I32 1) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
-            M.alloc (Value.Bool false);
-          fun γ => M.alloc (Value.Bool true)
-        ] in
-    let* _ :=
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 := M.alloc (Value.Bool true) in
-              M.pure (M.use α0) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            M.alloc (Value.Integer Integer.I32 0);
-          fun γ => M.alloc (Value.Integer Integer.I32 1)
-        ] in
-    let* _ :=
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 := M.alloc (Value.Bool false) in
-              M.pure (M.use α0) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            M.alloc (Value.Integer Integer.I32 2);
-          fun γ =>
-            let* α0 := M.alloc (Value.Tuple []) in
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
             M.match_operator
-              α0
-              [
-                fun γ =>
-                  let* γ :=
-                    let* α0 := M.alloc (Value.Bool false) in
-                    M.pure (M.use α0) in
-                  let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
-                  M.alloc (Value.Integer Integer.I32 3);
-                fun γ =>
-                  let* α0 := M.alloc (Value.Tuple []) in
-                  M.match_operator
-                    α0
-                    [
-                      fun γ =>
-                        let* γ :=
-                          let* α0 := M.alloc (Value.Bool false) in
-                          M.pure (M.use α0) in
-                        let* _ :=
-                          let* α0 := M.read γ in
-                          M.is_constant_or_break_match α0 (Value.Bool true) in
-                        M.alloc (Value.Integer Integer.I32 4);
-                      fun γ => M.alloc (Value.Integer Integer.I32 5)
-                    ]
-              ]
-        ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+              (|
+                (M.alloc (| (Value.Integer Integer.I32 1) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ :=
+                        M.is_constant_or_break_match
+                          (| (M.read (| γ |)), (Value.Integer Integer.I32 0)
+                          |) in
+                      M.alloc (| (Value.Bool false) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| (Value.Bool true) |)))
+                ]
+              |) in
+          let _ :=
+            M.match_operator
+              (|
+                (M.alloc (| (Value.Tuple []) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| (Value.Bool true) |)) in
+                      let _ :=
+                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
+                      M.alloc (| (Value.Integer Integer.I32 0) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| (Value.Integer Integer.I32 1) |)))
+                ]
+              |) in
+          let _ :=
+            M.match_operator
+              (|
+                (M.alloc (| (Value.Tuple []) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| (Value.Bool false) |)) in
+                      let _ :=
+                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
+                      M.alloc (| (Value.Integer Integer.I32 2) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator
+                        (|
+                          (M.alloc (| (Value.Tuple []) |)),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.use (M.alloc (| (Value.Bool false) |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match
+                                    (| (M.read (| γ |)), (Value.Bool true)
+                                    |) in
+                                M.alloc (| (Value.Integer Integer.I32 3) |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.match_operator
+                                  (|
+                                    (M.alloc (| (Value.Tuple []) |)),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.use (M.alloc (| (Value.Bool false) |)) in
+                                          let _ :=
+                                            M.is_constant_or_break_match
+                                              (| (M.read (| γ |)), (Value.Bool true)
+                                              |) in
+                                          M.alloc (| (Value.Integer Integer.I32 4) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| (Value.Integer Integer.I32 5) |)))
+                                    ]
+                                  |)))
+                          ]
+                        |)))
+                ]
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

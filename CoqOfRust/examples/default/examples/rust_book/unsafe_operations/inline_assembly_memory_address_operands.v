@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 Module main.
   (*
@@ -26,10 +26,13 @@ Module main.
   Definition load_fpu_control_word (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ control ] =>
-      let* control := M.alloc control in
-      let _ := InlineAssembly in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let control := M.alloc (| control |) in
+        M.read
+          (|
+            (let _ := InlineAssembly in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
 End main.

@@ -9,10 +9,11 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* x :=
-      let* α0 := M.alloc (Value.Integer Integer.I32 1) in
-      M.alloc α0 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let x := M.alloc (| (M.alloc (| (Value.Integer Integer.I32 1) |)) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

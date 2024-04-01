@@ -17,9 +17,18 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "call_builder::AccountId"
+          [
+            M.call_closure
+              (|
+                (M.get_trait_method
+                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
+                  |)),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +49,14 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -116,7 +130,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "call_builder::CallBuilderTest" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" []))
     | _, _ => M.impossible
     end.
   
@@ -139,14 +153,19 @@ Module Impl_call_builder_CallBuilderTest.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "call_builder::CallBuilderTest")
-          []
-          "default"
-          [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (M.call_closure
+          (|
+            (M.get_trait_method
+              (|
+                "core::default::Default",
+                (Ty.path "call_builder::CallBuilderTest"),
+                [],
+                "default",
+                []
+              |)),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -174,54 +193,102 @@ Module Impl_call_builder_CallBuilderTest.
   Definition call (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; address; selector ] =>
-      let* self := M.alloc self in
-      let* address := M.alloc address in
-      let* selector := M.alloc selector in
-      let* result :=
-        let* α0 := M.get_function "core::panicking::panic" [] in
-        let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3 in
-      let* α0 :=
-        M.match_operator
-          result
-          [
-            fun γ =>
-              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-              M.alloc (Value.StructTuple "core::option::Option::None" []);
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-              let* e := M.copy γ0_0 in
-              let* α0 := M.read e in
-              M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]);
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-              let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 :=
-                    M.read
-                      (mk_str
-                        "not implemented: No other `LangError` variants exist at the moment.") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α8 :=
-                (* Unsize *)
-                  let* α5 :=
-                    M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] in
-                  let* α6 := M.call_closure α5 [] in
-                  let* α7 := M.alloc α6 in
-                  M.pure (M.pointer_coercion α7) in
-              let* α9 := M.call_closure α1 [ α4; α8 ] in
-              let* α10 := M.call_closure α0 [ α9 ] in
-              let* α11 := M.never_to_any α10 in
-              M.alloc α11
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let address := M.alloc (| address |) in
+        let selector := M.alloc (| selector |) in
+        M.read
+          (|
+            (let result :=
+              M.alloc
+                (|
+                  (M.never_to_any
+                    (|
+                      (M.call_closure
+                        (|
+                          (M.get_function (| "core::panicking::panic", [] |)),
+                          [ M.read (| (mk_str "not yet implemented") |) ]
+                        |))
+                    |))
+                |) in
+            M.match_operator
+              (|
+                result,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "core::result::Result::Ok", 0
+                          |) in
+                      M.alloc (| (Value.StructTuple "core::option::Option::None" []) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "core::result::Result::Err", 0
+                          |) in
+                      let e := M.copy (| γ0_0 |) in
+                      M.alloc
+                        (| (Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ])
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "core::result::Result::Err", 0
+                          |) in
+                      M.alloc
+                        (|
+                          (M.never_to_any
+                            (|
+                              (M.call_closure
+                                (|
+                                  (M.get_function (| "core::panicking::panic_fmt", [] |)),
+                                  [
+                                    M.call_closure
+                                      (|
+                                        (M.get_associated_function
+                                          (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                          |)),
+                                        [
+                                          (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc
+                                                (|
+                                                  (Value.Array
+                                                    [
+                                                      M.read
+                                                        (|
+                                                          (mk_str
+                                                            "not implemented: No other `LangError` variants exist at the moment.")
+                                                        |)
+                                                    ])
+                                                |));
+                                          (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc
+                                                (|
+                                                  (M.call_closure
+                                                    (|
+                                                      (M.get_associated_function
+                                                        (|
+                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                          "none",
+                                                          []
+                                                        |)),
+                                                      []
+                                                    |))
+                                                |))
+                                        ]
+                                      |)
+                                  ]
+                                |))
+                            |))
+                        |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -241,10 +308,11 @@ Module Impl_call_builder_CallBuilderTest.
   Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; address; selector ] =>
-      let* self := M.alloc self in
-      let* address := M.alloc address in
-      let* selector := M.alloc selector in
-      M.pure (Value.Tuple [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let address := M.alloc (| address |) in
+        let selector := M.alloc (| selector |) in
+        Value.Tuple []))
     | _, _ => M.impossible
     end.
   
@@ -283,11 +351,12 @@ Module Impl_call_builder_CallBuilderTest.
   Definition call_instantiate (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; code_hash; selector; init_value ] =>
-      let* self := M.alloc self in
-      let* code_hash := M.alloc code_hash in
-      let* selector := M.alloc selector in
-      let* init_value := M.alloc init_value in
-      M.pure (Value.StructTuple "core::option::Option::None" [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        let selector := M.alloc (| selector |) in
+        let init_value := M.alloc (| init_value |) in
+        Value.StructTuple "core::option::Option::None" []))
     | _, _ => M.impossible
     end.
   
@@ -324,11 +393,12 @@ Module Impl_call_builder_CallBuilderTest.
   Definition call_instantiate_fallible (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; code_hash; selector; init_value ] =>
-      let* self := M.alloc self in
-      let* code_hash := M.alloc code_hash in
-      let* selector := M.alloc selector in
-      let* init_value := M.alloc init_value in
-      M.pure (Value.StructTuple "core::option::Option::None" [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        let selector := M.alloc (| selector |) in
+        let init_value := M.alloc (| init_value |) in
+        Value.StructTuple "core::option::Option::None" []))
     | _, _ => M.impossible
     end.
   

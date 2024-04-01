@@ -9,13 +9,23 @@ fn call_me<F: Fn()>(f: F) {
 Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ F ], [ f ] =>
-    let* f := M.alloc f in
-    let* _ :=
-      let* α0 := M.get_trait_method "core::ops::function::Fn" F [ Ty.tuple [] ] "call" [] in
-      let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (let f := M.alloc (| f |) in
+      M.read
+        (|
+          (let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_trait_method
+                      (| "core::ops::function::Fn", F, [ Ty.tuple [] ], "call", []
+                      |)),
+                    [ f; Value.Tuple [] ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -27,22 +37,37 @@ fn function() {
 Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-        let* α4 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "I'm a function!
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (| (Value.Array [ M.read (| (mk_str "I'm a function!
+") |) ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -58,52 +83,92 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* closure :=
-      M.alloc
-        (M.closure
-          (fun γ =>
-            match γ with
-            | [ α0 ] =>
-              let* α0 := M.alloc α0 in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-                      let* α4 :=
-                        (* Unsize *)
-                          let* α2 := M.read (mk_str "I'm a closure!
-") in
-                          let* α3 := M.alloc (Value.Array [ α2 ]) in
-                          M.pure (M.pointer_coercion α3) in
-                      let* α5 := M.call_closure α1 [ α4 ] in
-                      let* α6 := M.call_closure α0 [ α5 ] in
-                      M.alloc α6 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
-                ]
-            | _ => M.impossible
-            end)) in
-    let* _ :=
-      let* α0 :=
-        M.get_function
-          "functions_closures_input_functions::call_me"
-          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
-      let* α1 := M.read closure in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 :=
-        M.get_function
-          "functions_closures_input_functions::call_me"
-          [ Ty.function [] (Ty.tuple []) ] in
-      let* α1 := M.get_function "functions_closures_input_functions::function" [] in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let closure :=
+            M.alloc
+              (|
+                (M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator
+                          (|
+                            (M.alloc (| α0 |)),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read
+                                    (|
+                                      (let _ :=
+                                        M.alloc
+                                          (|
+                                            (M.call_closure
+                                              (|
+                                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                                                [
+                                                  M.call_closure
+                                                    (|
+                                                      (M.get_associated_function
+                                                        (|
+                                                          (Ty.path "core::fmt::Arguments"),
+                                                          "new_const",
+                                                          []
+                                                        |)),
+                                                      [
+                                                        (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.alloc
+                                                              (|
+                                                                (Value.Array
+                                                                  [
+                                                                    M.read
+                                                                      (| (mk_str "I'm a closure!
+")
+                                                                      |)
+                                                                  ])
+                                                              |))
+                                                      ]
+                                                    |)
+                                                ]
+                                              |))
+                                          |) in
+                                      M.alloc (| (Value.Tuple []) |))
+                                    |)))
+                            ]
+                          |)
+                      | _ => M.impossible (||)
+                      end)))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function
+                      (|
+                        "functions_closures_input_functions::call_me",
+                        [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
+                      |)),
+                    [ M.read (| closure |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function
+                      (|
+                        "functions_closures_input_functions::call_me",
+                        [ Ty.function [] (Ty.tuple []) ]
+                      |)),
+                    [ M.get_function (| "functions_closures_input_functions::function", [] |) ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

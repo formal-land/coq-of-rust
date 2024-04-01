@@ -22,23 +22,37 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
-          []
-          "default"
-          [] in
-      let* α3 := M.call_closure α2 [] in
-      M.pure (Value.StructRecord "mother::Mapping" [ ("_key", α1); ("_value", α3) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "mother::Mapping"
+          [
+            ("_key",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply (Ty.path "core::marker::PhantomData") [ K ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |));
+            ("_value",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply (Ty.path "core::marker::PhantomData") [ V ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -93,9 +107,18 @@ Module Impl_core_default_Default_for_mother_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "mother::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "mother::AccountId"
+          [
+            M.call_closure
+              (|
+                (M.get_trait_method
+                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
+                  |)),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -116,9 +139,14 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -157,13 +185,12 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple_field α0 "mother::AccountId" 0) in
-      let* α2 := M.read other in
-      let* α3 := M.read (M.get_struct_tuple_field α2 "mother::AccountId" 0) in
-      M.pure (BinOp.Pure.eq α1 α3)
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        BinOp.Pure.eq
+          (M.read (| (M.get_struct_tuple_field (M.read (| self |)) "mother::AccountId" 0) |))
+          (M.read (| (M.get_struct_tuple_field (M.read (| other |)) "mother::AccountId" 0) |))))
     | _, _ => M.impossible
     end.
   
@@ -195,10 +222,16 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.alloc (Value.Tuple []) ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -255,27 +288,35 @@ Module Impl_core_default_Default_for_mother_Bids.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
-                  Ty.path "alloc::alloc::Global"
-                ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "mother::Bids" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "mother::Bids"
+          [
+            M.call_closure
+              (|
+                (M.get_trait_method
+                  (|
+                    "core::default::Default",
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ]),
+                    [],
+                    "default",
+                    []
+                  |)),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -307,47 +348,50 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
-                  Ty.path "alloc::alloc::Global"
-                ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          [
-            Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [
-                Ty.apply
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure
+          (|
+            (M.get_trait_method
+              (|
+                "core::cmp::PartialEq",
+                (Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [
                     Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
                     Ty.path "alloc::alloc::Global"
-                  ];
-                Ty.path "alloc::alloc::Global"
-              ]
-          ]
-          "eq"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      M.call_closure
-        α0
-        [ M.get_struct_tuple_field α1 "mother::Bids" 0; M.get_struct_tuple_field α2 "mother::Bids" 0
-        ]
+                  ]),
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ]
+                ],
+                "eq",
+                []
+              |)),
+            [
+              M.get_struct_tuple_field (M.read (| self |)) "mother::Bids" 0;
+              M.get_struct_tuple_field (M.read (| other |)) "mother::Bids" 0
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -379,10 +423,16 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.alloc (Value.Tuple []) ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -404,29 +454,36 @@ Module Impl_core_clone_Clone_for_mother_Bids.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
-                  Ty.path "alloc::alloc::Global"
-                ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          []
-          "clone"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.call_closure α0 [ M.get_struct_tuple_field α1 "mother::Bids" 0 ] in
-      M.pure (Value.StructTuple "mother::Bids" [ α2 ])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.StructTuple
+          "mother::Bids"
+          [
+            M.call_closure
+              (|
+                (M.get_trait_method
+                  (|
+                    "core::clone::Clone",
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ]),
+                    [],
+                    "clone",
+                    []
+                  |)),
+                [ M.get_struct_tuple_field (M.read (| self |)) "mother::Bids" 0 ]
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -481,24 +538,35 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* __self_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* __arg1_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
-        let* α1 := M.read other in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read
+          (|
+            (let __self_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Outline" ]
+                        |)),
+                      [ M.read (| self |) ]
+                    |))
+                |) in
+            let __arg1_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Outline" ]
+                        |)),
+                      [ M.read (| other |) ]
+                    |))
+                |) in
+            M.alloc (| (BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))) |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -530,8 +598,9 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.Tuple []))
     | _, _ => M.impossible
     end.
   
@@ -553,22 +622,29 @@ Module Impl_core_clone_Clone_for_mother_Outline.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::NoWinner" []);
-            fun γ =>
-              let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::WinnerDetected" []);
-            fun γ =>
-              let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::PayoutCompleted" [])
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| (Value.StructTuple "mother::Outline::NoWinner" []) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| (Value.StructTuple "mother::Outline::WinnerDetected" []) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| (Value.StructTuple "mother::Outline::PayoutCompleted" []) |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -633,91 +709,129 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* __self_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* __arg1_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
-        let* α1 := M.read other in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α2 :=
-        LogicalOp.and
-          (BinOp.Pure.eq α0 α1)
-          (let* α0 := M.read self in
-          let* α1 := M.read other in
-          let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
-          let* α3 :=
-            M.match_operator
-              α2
-              [
-                fun γ =>
-                  let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
-                  let* γ0_0 := M.read γ0_0 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_0 "mother::Status::EndingPeriod" 0 in
-                  let* __self_0 := M.alloc γ2_0 in
-                  let* γ0_1 := M.read γ0_1 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_1 "mother::Status::EndingPeriod" 0 in
-                  let* __arg1_0 := M.alloc γ2_0 in
-                  let* α0 := M.read __self_0 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.read __arg1_0 in
-                  let* α3 := M.read α2 in
-                  M.alloc (BinOp.Pure.eq α1 α3);
-                fun γ =>
-                  let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
-                  let* γ0_0 := M.read γ0_0 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_0 "mother::Status::Ended" 0 in
-                  let* __self_0 := M.alloc γ2_0 in
-                  let* γ0_1 := M.read γ0_1 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_1 "mother::Status::Ended" 0 in
-                  let* __arg1_0 := M.alloc γ2_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::cmp::PartialEq"
-                      (Ty.path "mother::Outline")
-                      [ Ty.path "mother::Outline" ]
-                      "eq"
-                      [] in
-                  let* α1 := M.read __self_0 in
-                  let* α2 := M.read __arg1_0 in
-                  let* α3 := M.call_closure α0 [ α1; α2 ] in
-                  M.alloc α3;
-                fun γ =>
-                  let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
-                  let* γ0_0 := M.read γ0_0 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_0 "mother::Status::RfDelay" 0 in
-                  let* __self_0 := M.alloc γ2_0 in
-                  let* γ0_1 := M.read γ0_1 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_1 "mother::Status::RfDelay" 0 in
-                  let* __arg1_0 := M.alloc γ2_0 in
-                  let* α0 := M.read __self_0 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.read __arg1_0 in
-                  let* α3 := M.read α2 in
-                  M.alloc (BinOp.Pure.eq α1 α3);
-                fun γ => M.alloc (Value.Bool true)
-              ] in
-          M.read α3) in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read
+          (|
+            (let __self_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Status" ]
+                        |)),
+                      [ M.read (| self |) ]
+                    |))
+                |) in
+            let __arg1_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Status" ]
+                        |)),
+                      [ M.read (| other |) ]
+                    |))
+                |) in
+            M.alloc
+              (|
+                (LogicalOp.and
+                  (|
+                    (BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))),
+                    ltac:(M.monadic
+                      (M.read
+                        (|
+                          (M.match_operator
+                            (|
+                              (M.alloc
+                                (| (Value.Tuple [ M.read (| self |); M.read (| other |) ])
+                                |)),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.get_tuple_field γ 0 in
+                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    let γ0_0 := M.read (| γ0_0 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_0, "mother::Status::EndingPeriod", 0
+                                        |) in
+                                    let __self_0 := M.alloc (| γ2_0 |) in
+                                    let γ0_1 := M.read (| γ0_1 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_1, "mother::Status::EndingPeriod", 0
+                                        |) in
+                                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                                    M.alloc
+                                      (|
+                                        (BinOp.Pure.eq
+                                          (M.read (| (M.read (| __self_0 |)) |))
+                                          (M.read (| (M.read (| __arg1_0 |)) |)))
+                                      |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.get_tuple_field γ 0 in
+                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    let γ0_0 := M.read (| γ0_0 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_0, "mother::Status::Ended", 0
+                                        |) in
+                                    let __self_0 := M.alloc (| γ2_0 |) in
+                                    let γ0_1 := M.read (| γ0_1 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_1, "mother::Status::Ended", 0
+                                        |) in
+                                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                                    M.alloc
+                                      (|
+                                        (M.call_closure
+                                          (|
+                                            (M.get_trait_method
+                                              (|
+                                                "core::cmp::PartialEq",
+                                                (Ty.path "mother::Outline"),
+                                                [ Ty.path "mother::Outline" ],
+                                                "eq",
+                                                []
+                                              |)),
+                                            [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                          |))
+                                      |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.get_tuple_field γ 0 in
+                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    let γ0_0 := M.read (| γ0_0 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_0, "mother::Status::RfDelay", 0
+                                        |) in
+                                    let __self_0 := M.alloc (| γ2_0 |) in
+                                    let γ0_1 := M.read (| γ0_1 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_1, "mother::Status::RfDelay", 0
+                                        |) in
+                                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                                    M.alloc
+                                      (|
+                                        (BinOp.Pure.eq
+                                          (M.read (| (M.read (| __self_0 |)) |))
+                                          (M.read (| (M.read (| __arg1_0 |)) |)))
+                                      |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| (Value.Bool true) |)))
+                              ]
+                            |))
+                        |)))
+                  |))
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -749,15 +863,24 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              M.match_operator Value.DeclaredButUndefined [ fun γ => M.alloc (Value.Tuple []) ]
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator
+                        (|
+                          Value.DeclaredButUndefined,
+                          [ fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |))) ]
+                        |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -779,45 +902,96 @@ Module Impl_core_clone_Clone_for_mother_Status.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Status::NotStarted" []);
-            fun γ =>
-              let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" []);
-            fun γ =>
-              let* γ := M.read γ in
-              let* γ1_0 :=
-                M.get_struct_tuple_field_or_break_match γ "mother::Status::EndingPeriod" 0 in
-              let* __self_0 := M.alloc γ1_0 in
-              let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] "clone" [] in
-              let* α1 := M.read __self_0 in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ]);
-            fun γ =>
-              let* γ := M.read γ in
-              let* γ1_0 := M.get_struct_tuple_field_or_break_match γ "mother::Status::Ended" 0 in
-              let* __self_0 := M.alloc γ1_0 in
-              let* α0 :=
-                M.get_trait_method "core::clone::Clone" (Ty.path "mother::Outline") [] "clone" [] in
-              let* α1 := M.read __self_0 in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ]);
-            fun γ =>
-              let* γ := M.read γ in
-              let* γ1_0 := M.get_struct_tuple_field_or_break_match γ "mother::Status::RfDelay" 0 in
-              let* __self_0 := M.alloc γ1_0 in
-              let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] "clone" [] in
-              let* α1 := M.read __self_0 in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| (Value.StructTuple "mother::Status::NotStarted" []) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| (Value.StructTuple "mother::Status::OpeningPeriod" []) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "mother::Status::EndingPeriod", 0
+                          |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc
+                        (|
+                          (Value.StructTuple
+                            "mother::Status::EndingPeriod"
+                            [
+                              M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (| "core::clone::Clone", (Ty.path "u32"), [], "clone", []
+                                    |)),
+                                  [ M.read (| __self_0 |) ]
+                                |)
+                            ])
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "mother::Status::Ended", 0
+                          |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc
+                        (|
+                          (Value.StructTuple
+                            "mother::Status::Ended"
+                            [
+                              M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (|
+                                      "core::clone::Clone",
+                                      (Ty.path "mother::Outline"),
+                                      [],
+                                      "clone",
+                                      []
+                                    |)),
+                                  [ M.read (| __self_0 |) ]
+                                |)
+                            ])
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "mother::Status::RfDelay", 0
+                          |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc
+                        (|
+                          (Value.StructTuple
+                            "mother::Status::RfDelay"
+                            [
+                              M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (| "core::clone::Clone", (Ty.path "u32"), [], "clone", []
+                                    |)),
+                                  [ M.read (| __self_0 |) ]
+                                |)
+                            ])
+                        |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -866,122 +1040,174 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          (Ty.path "alloc::string::String")
-          [ Ty.path "alloc::string::String" ]
-          "eq"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      let* α3 :=
-        M.call_closure
-          α0
-          [
-            M.get_struct_record_field α1 "mother::Auction" "name";
-            M.get_struct_record_field α2 "mother::Auction" "name"
-          ] in
-      let* α4 :=
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
         LogicalOp.and
-          α3
-          (let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-              "eq"
-              [] in
-          let* α1 := M.read self in
-          let* α2 := M.read other in
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field α1 "mother::Auction" "subject";
-              M.get_struct_record_field α2 "mother::Auction" "subject"
-            ]) in
-      let* α5 :=
-        LogicalOp.and
-          α4
-          (let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              (Ty.path "mother::Bids")
-              [ Ty.path "mother::Bids" ]
-              "eq"
-              [] in
-          let* α1 := M.read self in
-          let* α2 := M.read other in
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field α1 "mother::Auction" "bids";
-              M.get_struct_record_field α2 "mother::Auction" "bids"
-            ]) in
-      let* α6 :=
-        LogicalOp.and
-          α5
-          (let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
-              [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
-              "eq"
-              [] in
-          let* α1 := M.read self in
-          let* α2 := M.read other in
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field α1 "mother::Auction" "terms";
-              M.get_struct_record_field α2 "mother::Auction" "terms"
-            ]) in
-      let* α7 :=
-        LogicalOp.and
-          α6
-          (let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              (Ty.path "mother::Status")
-              [ Ty.path "mother::Status" ]
-              "eq"
-              [] in
-          let* α1 := M.read self in
-          let* α2 := M.read other in
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field α1 "mother::Auction" "status";
-              M.get_struct_record_field α2 "mother::Auction" "status"
-            ]) in
-      let* α8 :=
-        LogicalOp.and
-          α7
-          (let* α0 := M.read self in
-          let* α1 := M.read (M.get_struct_record_field α0 "mother::Auction" "finalized") in
-          let* α2 := M.read other in
-          let* α3 := M.read (M.get_struct_record_field α2 "mother::Auction" "finalized") in
-          M.pure (BinOp.Pure.eq α1 α3)) in
-      LogicalOp.and
-        α8
-        (let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-            [ Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-            ]
-            "eq"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        M.call_closure
-          α0
-          [
-            M.get_struct_record_field α1 "mother::Auction" "vector";
-            M.get_struct_record_field α2 "mother::Auction" "vector"
-          ])
+          (|
+            (LogicalOp.and
+              (|
+                (LogicalOp.and
+                  (|
+                    (LogicalOp.and
+                      (|
+                        (LogicalOp.and
+                          (|
+                            (LogicalOp.and
+                              (|
+                                (M.call_closure
+                                  (|
+                                    (M.get_trait_method
+                                      (|
+                                        "core::cmp::PartialEq",
+                                        (Ty.path "alloc::string::String"),
+                                        [ Ty.path "alloc::string::String" ],
+                                        "eq",
+                                        []
+                                      |)),
+                                    [
+                                      M.get_struct_record_field
+                                        (M.read (| self |))
+                                        "mother::Auction"
+                                        "name";
+                                      M.get_struct_record_field
+                                        (M.read (| other |))
+                                        "mother::Auction"
+                                        "name"
+                                    ]
+                                  |)),
+                                ltac:(M.monadic
+                                  (M.call_closure
+                                    (|
+                                      (M.get_trait_method
+                                        (|
+                                          "core::cmp::PartialEq",
+                                          (Ty.apply (Ty.path "array") [ Ty.path "u8" ]),
+                                          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                          "eq",
+                                          []
+                                        |)),
+                                      [
+                                        M.get_struct_record_field
+                                          (M.read (| self |))
+                                          "mother::Auction"
+                                          "subject";
+                                        M.get_struct_record_field
+                                          (M.read (| other |))
+                                          "mother::Auction"
+                                          "subject"
+                                      ]
+                                    |)))
+                              |)),
+                            ltac:(M.monadic
+                              (M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (|
+                                      "core::cmp::PartialEq",
+                                      (Ty.path "mother::Bids"),
+                                      [ Ty.path "mother::Bids" ],
+                                      "eq",
+                                      []
+                                    |)),
+                                  [
+                                    M.get_struct_record_field
+                                      (M.read (| self |))
+                                      "mother::Auction"
+                                      "bids";
+                                    M.get_struct_record_field
+                                      (M.read (| other |))
+                                      "mother::Auction"
+                                      "bids"
+                                  ]
+                                |)))
+                          |)),
+                        ltac:(M.monadic
+                          (M.call_closure
+                            (|
+                              (M.get_trait_method
+                                (|
+                                  "core::cmp::PartialEq",
+                                  (Ty.apply (Ty.path "array") [ Ty.path "u32" ]),
+                                  [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ],
+                                  "eq",
+                                  []
+                                |)),
+                              [
+                                M.get_struct_record_field
+                                  (M.read (| self |))
+                                  "mother::Auction"
+                                  "terms";
+                                M.get_struct_record_field
+                                  (M.read (| other |))
+                                  "mother::Auction"
+                                  "terms"
+                              ]
+                            |)))
+                      |)),
+                    ltac:(M.monadic
+                      (M.call_closure
+                        (|
+                          (M.get_trait_method
+                            (|
+                              "core::cmp::PartialEq",
+                              (Ty.path "mother::Status"),
+                              [ Ty.path "mother::Status" ],
+                              "eq",
+                              []
+                            |)),
+                          [
+                            M.get_struct_record_field
+                              (M.read (| self |))
+                              "mother::Auction"
+                              "status";
+                            M.get_struct_record_field
+                              (M.read (| other |))
+                              "mother::Auction"
+                              "status"
+                          ]
+                        |)))
+                  |)),
+                ltac:(M.monadic
+                  (BinOp.Pure.eq
+                    (M.read
+                      (|
+                        (M.get_struct_record_field
+                          (M.read (| self |))
+                          "mother::Auction"
+                          "finalized")
+                      |))
+                    (M.read
+                      (|
+                        (M.get_struct_record_field
+                          (M.read (| other |))
+                          "mother::Auction"
+                          "finalized")
+                      |))))
+              |)),
+            ltac:(M.monadic
+              (M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::cmp::PartialEq",
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                      ],
+                      "eq",
+                      []
+                    |)),
+                  [
+                    M.get_struct_record_field (M.read (| self |)) "mother::Auction" "vector";
+                    M.get_struct_record_field (M.read (| other |)) "mother::Auction" "vector"
+                  ]
+                |)))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1013,42 +1239,72 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              M.match_operator
-                Value.DeclaredButUndefined
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                Value.DeclaredButUndefined,
                 [
                   fun γ =>
-                    M.match_operator
-                      Value.DeclaredButUndefined
-                      [
-                        fun γ =>
-                          M.match_operator
-                            Value.DeclaredButUndefined
-                            [
-                              fun γ =>
-                                M.match_operator
-                                  Value.DeclaredButUndefined
-                                  [
-                                    fun γ =>
-                                      M.match_operator
-                                        Value.DeclaredButUndefined
-                                        [
-                                          fun γ =>
-                                            M.match_operator
-                                              Value.DeclaredButUndefined
-                                              [ fun γ => M.alloc (Value.Tuple []) ]
-                                        ]
-                                  ]
-                            ]
-                      ]
+                    ltac:(M.monadic
+                      (M.match_operator
+                        (|
+                          Value.DeclaredButUndefined,
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.match_operator
+                                  (|
+                                    Value.DeclaredButUndefined,
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.match_operator
+                                            (|
+                                              Value.DeclaredButUndefined,
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator
+                                                      (|
+                                                        Value.DeclaredButUndefined,
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.match_operator
+                                                                (|
+                                                                  Value.DeclaredButUndefined,
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator
+                                                                          (|
+                                                                            Value.DeclaredButUndefined,
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (M.alloc
+                                                                                    (|
+                                                                                      (Value.Tuple
+                                                                                        [])
+                                                                                    |)))
+                                                                            ]
+                                                                          |)))
+                                                                  ]
+                                                                |)))
+                                                        ]
+                                                      |)))
+                                              ]
+                                            |)))
+                                    ]
+                                  |)))
+                          ]
+                        |)))
                 ]
-          ] in
-      M.read α0
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1070,61 +1326,85 @@ Module Impl_core_clone_Clone_for_mother_Auction.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_trait_method "core::clone::Clone" (Ty.path "alloc::string::String") [] "clone" [] in
-      let* α1 := M.read self in
-      let* α2 := M.call_closure α0 [ M.get_struct_record_field α1 "mother::Auction" "name" ] in
-      let* α3 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
-          []
-          "clone"
-          [] in
-      let* α4 := M.read self in
-      let* α5 := M.call_closure α3 [ M.get_struct_record_field α4 "mother::Auction" "subject" ] in
-      let* α6 := M.get_trait_method "core::clone::Clone" (Ty.path "mother::Bids") [] "clone" [] in
-      let* α7 := M.read self in
-      let* α8 := M.call_closure α6 [ M.get_struct_record_field α7 "mother::Auction" "bids" ] in
-      let* α9 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
-          []
-          "clone"
-          [] in
-      let* α10 := M.read self in
-      let* α11 := M.call_closure α9 [ M.get_struct_record_field α10 "mother::Auction" "terms" ] in
-      let* α12 :=
-        M.get_trait_method "core::clone::Clone" (Ty.path "mother::Status") [] "clone" [] in
-      let* α13 := M.read self in
-      let* α14 := M.call_closure α12 [ M.get_struct_record_field α13 "mother::Auction" "status" ] in
-      let* α15 := M.get_trait_method "core::clone::Clone" (Ty.path "bool") [] "clone" [] in
-      let* α16 := M.read self in
-      let* α17 :=
-        M.call_closure α15 [ M.get_struct_record_field α16 "mother::Auction" "finalized" ] in
-      let* α18 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-          []
-          "clone"
-          [] in
-      let* α19 := M.read self in
-      let* α20 := M.call_closure α18 [ M.get_struct_record_field α19 "mother::Auction" "vector" ] in
-      M.pure
-        (Value.StructRecord
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.StructRecord
           "mother::Auction"
           [
-            ("name", α2);
-            ("subject", α5);
-            ("bids", α8);
-            ("terms", α11);
-            ("status", α14);
-            ("finalized", α17);
-            ("vector", α20)
-          ])
+            ("name",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::clone::Clone", (Ty.path "alloc::string::String"), [], "clone", []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "name" ]
+                |));
+            ("subject",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::clone::Clone",
+                      (Ty.apply (Ty.path "array") [ Ty.path "u8" ]),
+                      [],
+                      "clone",
+                      []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "subject" ]
+                |));
+            ("bids",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::clone::Clone", (Ty.path "mother::Bids"), [], "clone", []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "bids" ]
+                |));
+            ("terms",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::clone::Clone",
+                      (Ty.apply (Ty.path "array") [ Ty.path "u32" ]),
+                      [],
+                      "clone",
+                      []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "terms" ]
+                |));
+            ("status",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::clone::Clone", (Ty.path "mother::Status"), [], "clone", []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "status" ]
+                |));
+            ("finalized",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::clone::Clone", (Ty.path "bool"), [], "clone", []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "finalized" ]
+                |));
+            ("vector",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::clone::Clone",
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                      [],
+                      "clone",
+                      []
+                    |)),
+                  [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "vector" ]
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -1155,53 +1435,75 @@ Module Impl_core_default_Default_for_mother_Auction.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "alloc::string::String")
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
-          []
-          "default"
-          [] in
-      let* α3 := M.call_closure α2 [] in
-      let* α4 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Bids") [] "default" [] in
-      let* α5 := M.call_closure α4 [] in
-      let* α6 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
-          []
-          "default"
-          [] in
-      let* α7 := M.call_closure α6 [] in
-      let* α8 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-          []
-          "default"
-          [] in
-      let* α9 := M.call_closure α8 [] in
-      M.pure
+      ltac:(M.monadic
         (Value.StructRecord
           "mother::Auction"
           [
-            ("name", α1);
-            ("subject", α3);
-            ("bids", α5);
-            ("terms", α7);
+            ("name",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.path "alloc::string::String"),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |));
+            ("subject",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply (Ty.path "array") [ Ty.path "u8" ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |));
+            ("bids",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::default::Default", (Ty.path "mother::Bids"), [], "default", []
+                    |)),
+                  []
+                |));
+            ("terms",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply (Ty.path "array") [ Ty.path "u32" ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |));
             ("status", Value.StructTuple "mother::Status::OpeningPeriod" []);
             ("finalized", Value.Bool false);
-            ("vector", α9)
-          ])
+            ("vector",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -1251,59 +1553,85 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* __self_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* __arg1_tag :=
-        let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
-        let* α1 := M.read other in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α2 :=
-        LogicalOp.and
-          (BinOp.Pure.eq α0 α1)
-          (let* α0 := M.read self in
-          let* α1 := M.read other in
-          let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
-          let* α3 :=
-            M.match_operator
-              α2
-              [
-                fun γ =>
-                  let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
-                  let* γ0_0 := M.read γ0_0 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_0 "mother::Failure::Revert" 0 in
-                  let* __self_0 := M.alloc γ2_0 in
-                  let* γ0_1 := M.read γ0_1 in
-                  let* γ2_0 :=
-                    M.get_struct_tuple_field_or_break_match γ0_1 "mother::Failure::Revert" 0 in
-                  let* __arg1_0 := M.alloc γ2_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::cmp::PartialEq"
-                      (Ty.path "alloc::string::String")
-                      [ Ty.path "alloc::string::String" ]
-                      "eq"
-                      [] in
-                  let* α1 := M.read __self_0 in
-                  let* α2 := M.read __arg1_0 in
-                  let* α3 := M.call_closure α0 [ α1; α2 ] in
-                  M.alloc α3;
-                fun γ => M.alloc (Value.Bool true)
-              ] in
-          M.read α3) in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read
+          (|
+            (let __self_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Failure" ]
+                        |)),
+                      [ M.read (| self |) ]
+                    |))
+                |) in
+            let __arg1_tag :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function
+                        (| "core::intrinsics::discriminant_value", [ Ty.path "mother::Failure" ]
+                        |)),
+                      [ M.read (| other |) ]
+                    |))
+                |) in
+            M.alloc
+              (|
+                (LogicalOp.and
+                  (|
+                    (BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))),
+                    ltac:(M.monadic
+                      (M.read
+                        (|
+                          (M.match_operator
+                            (|
+                              (M.alloc
+                                (| (Value.Tuple [ M.read (| self |); M.read (| other |) ])
+                                |)),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.get_tuple_field γ 0 in
+                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    let γ0_0 := M.read (| γ0_0 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_0, "mother::Failure::Revert", 0
+                                        |) in
+                                    let __self_0 := M.alloc (| γ2_0 |) in
+                                    let γ0_1 := M.read (| γ0_1 |) in
+                                    let γ2_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        (| γ0_1, "mother::Failure::Revert", 0
+                                        |) in
+                                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                                    M.alloc
+                                      (|
+                                        (M.call_closure
+                                          (|
+                                            (M.get_trait_method
+                                              (|
+                                                "core::cmp::PartialEq",
+                                                (Ty.path "alloc::string::String"),
+                                                [ Ty.path "alloc::string::String" ],
+                                                "eq",
+                                                []
+                                              |)),
+                                            [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                          |))
+                                      |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| (Value.Bool true) |)))
+                              ]
+                            |))
+                        |)))
+                  |))
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1335,10 +1663,16 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.alloc (Value.Tuple []) ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.alloc (| (Value.Tuple []) |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1382,9 +1716,9 @@ Module Impl_mother_Env.
   Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "mother::Env" "caller")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| (M.get_struct_record_field (M.read (| self |)) "mother::Env" "caller") |)))
     | _, _ => M.impossible
     end.
   
@@ -1421,18 +1755,34 @@ Module Impl_core_default_Default_for_mother_Mother.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Auction") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
-          []
-          "default"
-          [] in
-      let* α3 := M.call_closure α2 [] in
-      M.pure (Value.StructRecord "mother::Mother" [ ("auction", α1); ("balances", α3) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "mother::Mother"
+          [
+            ("auction",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::default::Default", (Ty.path "mother::Auction"), [], "default", []
+                    |)),
+                  []
+                |));
+            ("balances",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply
+                        (Ty.path "mother::Mapping")
+                        [ Ty.path "mother::AccountId"; Ty.path "u128" ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -1464,9 +1814,11 @@ Module Impl_mother_Mother.
   Definition env (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "mother::Mother") "init_env" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure
+          (| (M.get_associated_function (| (Ty.path "mother::Mother"), "init_env", [] |)), []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1483,17 +1835,28 @@ Module Impl_mother_Mother.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ auction ] =>
-      let* auction := M.alloc auction in
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      let* α2 := M.read auction in
-      M.pure (Value.StructRecord "mother::Mother" [ ("balances", α1); ("auction", α2) ])
+      ltac:(M.monadic
+        (let auction := M.alloc (| auction |) in
+        Value.StructRecord
+          "mother::Mother"
+          [
+            ("balances",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (|
+                      "core::default::Default",
+                      (Ty.apply
+                        (Ty.path "mother::Mapping")
+                        [ Ty.path "mother::AccountId"; Ty.path "u128" ]),
+                      [],
+                      "default",
+                      []
+                    |)),
+                  []
+                |));
+            ("auction", M.read (| auction |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -1507,9 +1870,14 @@ Module Impl_mother_Mother.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Mother") [] "default" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (M.call_closure
+          (|
+            (M.get_trait_method
+              (| "core::default::Default", (Ty.path "mother::Mother"), [], "default", []
+              |)),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1527,37 +1895,66 @@ Module Impl_mother_Mother.
   Definition failed_new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ fail ] =>
-      let* fail := M.alloc fail in
-      let* α0 := M.alloc (Value.Tuple []) in
-      let* α1 :=
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let γ := M.use fail in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 :=
-                M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
-              let* α1 := M.read (mk_str "Reverting instantiation") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ]);
-            fun γ =>
-              let* α0 :=
-                M.get_trait_method
-                  "core::default::Default"
-                  (Ty.path "mother::Mother")
-                  []
-                  "default"
-                  [] in
-              let* α1 := M.call_closure α0 [] in
-              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
-          ] in
-      M.read α1
+      ltac:(M.monadic
+        (let fail := M.alloc (| fail |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                (M.alloc (| (Value.Tuple []) |)),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use fail in
+                      let _ :=
+                        M.is_constant_or_break_match (| (M.read (| γ |)), (Value.Bool true) |) in
+                      M.alloc
+                        (|
+                          (Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              Value.StructTuple
+                                "mother::Failure::Revert"
+                                [
+                                  M.call_closure
+                                    (|
+                                      (M.get_trait_method
+                                        (|
+                                          "alloc::string::ToString",
+                                          (Ty.path "str"),
+                                          [],
+                                          "to_string",
+                                          []
+                                        |)),
+                                      [ M.read (| (mk_str "Reverting instantiation") |) ]
+                                    |)
+                                ]
+                            ])
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc
+                        (|
+                          (Value.StructTuple
+                            "core::result::Result::Ok"
+                            [
+                              M.call_closure
+                                (|
+                                  (M.get_trait_method
+                                    (|
+                                      "core::default::Default",
+                                      (Ty.path "mother::Mother"),
+                                      [],
+                                      "default",
+                                      []
+                                    |)),
+                                  []
+                                |)
+                            ])
+                        |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1574,28 +1971,54 @@ Module Impl_mother_Mother.
   Definition echo_auction (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; auction ] =>
-      let* self := M.alloc self in
-      let* auction := M.alloc auction in
-      let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "mother::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "mother::Mother") "env" [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
-          M.get_trait_method "core::clone::Clone" (Ty.path "mother::Auction") [] "clone" [] in
-        let* α6 := M.call_closure α5 [ auction ] in
-        let* α7 :=
-          M.call_closure
-            α0
-            [
-              α4;
-              Value.StructTuple
-                "mother::Event::AuctionEchoed"
-                [ Value.StructRecord "mother::AuctionEchoed" [ ("auction", α6) ] ]
-            ] in
-        M.alloc α7 in
-      M.read auction
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let auction := M.alloc (| auction |) in
+        M.read
+          (|
+            (let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_associated_function (| (Ty.path "mother::Env"), "emit_event", [] |)),
+                      [
+                        M.alloc
+                          (|
+                            (M.call_closure
+                              (|
+                                (M.get_associated_function
+                                  (| (Ty.path "mother::Mother"), "env", []
+                                  |)),
+                                [ M.read (| self |) ]
+                              |))
+                          |);
+                        Value.StructTuple
+                          "mother::Event::AuctionEchoed"
+                          [
+                            Value.StructRecord
+                              "mother::AuctionEchoed"
+                              [
+                                ("auction",
+                                  M.call_closure
+                                    (|
+                                      (M.get_trait_method
+                                        (|
+                                          "core::clone::Clone",
+                                          (Ty.path "mother::Auction"),
+                                          [],
+                                          "clone",
+                                          []
+                                        |)),
+                                      [ auction ]
+                                    |))
+                              ]
+                          ]
+                      ]
+                    |))
+                |) in
+            auction)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1617,39 +2040,77 @@ Module Impl_mother_Mother.
   Definition revert_or_trap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; fail ] =>
-      let* self := M.alloc self in
-      let* fail := M.alloc fail in
-      let* α0 :=
-        M.match_operator
-          fail
-          [
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
-              let* γ1_0 :=
-                M.get_struct_tuple_field_or_break_match γ0_0 "mother::Failure::Revert" 0 in
-              let* α0 :=
-                M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
-              let* α1 := M.read (mk_str "Reverting on user demand!") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ]);
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
-              let* α0 :=
-                M.get_function
-                  "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 := M.read (mk_str "Trapping on user demand!") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3;
-            fun γ => M.alloc (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let fail := M.alloc (| fail |) in
+        M.read
+          (|
+            (M.match_operator
+              (|
+                fail,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "core::option::Option::Some", 0
+                          |) in
+                      let γ1_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ0_0, "mother::Failure::Revert", 0
+                          |) in
+                      M.alloc
+                        (|
+                          (Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              Value.StructTuple
+                                "mother::Failure::Revert"
+                                [
+                                  M.call_closure
+                                    (|
+                                      (M.get_trait_method
+                                        (|
+                                          "alloc::string::ToString",
+                                          (Ty.path "str"),
+                                          [],
+                                          "to_string",
+                                          []
+                                        |)),
+                                      [ M.read (| (mk_str "Reverting on user demand!") |) ]
+                                    |)
+                                ]
+                            ])
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          (| γ, "core::option::Option::Some", 0
+                          |) in
+                      M.alloc
+                        (|
+                          (M.never_to_any
+                            (|
+                              (M.call_closure
+                                (|
+                                  (M.get_function
+                                    (|
+                                      "std::panicking::begin_panic",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |)),
+                                  [ M.read (| (mk_str "Trapping on user demand!") |) ]
+                                |))
+                            |))
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc
+                        (| (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
+                        |)))
+                ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1664,35 +2125,62 @@ Module Impl_mother_Mother.
   Definition debug_log (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; _message ] =>
-      let* self := M.alloc self in
-      let* _message := M.alloc _message in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "debug_log: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "alloc::string::String" ] in
-              let* α7 := M.call_closure α6 [ _message ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _message := M.alloc (| _message |) in
+        M.read
+          (|
+            (let _ :=
+              let _ :=
+                M.alloc
+                  (|
+                    (M.call_closure
+                      (|
+                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                        [
+                          M.call_closure
+                            (|
+                              (M.get_associated_function
+                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                |)),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.read (| (mk_str "debug_log: ") |);
+                                            M.read (| (mk_str "
+") |)
+                                          ])
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.call_closure
+                                              (|
+                                                (M.get_associated_function
+                                                  (|
+                                                    (Ty.path "core::fmt::rt::Argument"),
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |)),
+                                                [ _message ]
+                                              |)
+                                          ])
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |))
+                  |) in
+              M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   

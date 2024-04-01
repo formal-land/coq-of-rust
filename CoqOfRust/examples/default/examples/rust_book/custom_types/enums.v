@@ -52,140 +52,268 @@ fn inspect(event: WebEvent) {
 Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ event ] =>
-    let* event := M.alloc event in
-    let* α0 :=
-      M.match_operator
-        event
-        [
-          fun γ =>
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 :=
-                    M.read
-                      (mk_str
-                        ("page loaded, r"
-                          ++
-                          (String.String "233" ("f" ++ (String.String "233" "
-"))))) in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "page unloaded
-") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::KeyPress" 0 in
-            let* c := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "pressed '") in
-                  let* α3 := M.read (mk_str "'.
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "char" ] in
-                  let* α7 := M.call_closure α6 [ c ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::Paste" 0 in
-            let* s := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "pasted """) in
-                  let* α3 := M.read (mk_str """.
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "alloc::string::String" ] in
-                  let* α7 := M.call_closure α6 [ s ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 := M.get_struct_record_field_or_break_match γ "enums::WebEvent::Click" "x" in
-            let* γ0_1 := M.get_struct_record_field_or_break_match γ "enums::WebEvent::Click" "y" in
-            let* x := M.copy γ0_0 in
-            let* y := M.copy γ0_1 in
-            let* _ :=
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                let* α6 :=
-                  (* Unsize *)
-                    let* α2 := M.read (mk_str "clicked at x=") in
-                    let* α3 := M.read (mk_str ", y=") in
-                    let* α4 := M.read (mk_str ".
-") in
-                    let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                    M.pure (M.pointer_coercion α5) in
-                let* α12 :=
-                  (* Unsize *)
-                    let* α7 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display"
-                        [ Ty.path "i64" ] in
-                    let* α8 := M.call_closure α7 [ x ] in
-                    let* α9 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display"
-                        [ Ty.path "i64" ] in
-                    let* α10 := M.call_closure α9 [ y ] in
-                    let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
-                    M.pure (M.pointer_coercion α11) in
-                let* α13 := M.call_closure α1 [ α6; α12 ] in
-                let* α14 := M.call_closure α0 [ α13 ] in
-                M.alloc α14 in
-              M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple [])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (let event := M.alloc (| event |) in
+      M.read
+        (|
+          (M.match_operator
+            (|
+              event,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.alloc
+                        (|
+                          (M.call_closure
+                            (|
+                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                              [
+                                M.call_closure
+                                  (|
+                                    (M.get_associated_function
+                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                                      |)),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [
+                                                  M.read
+                                                    (|
+                                                      (mk_str
+                                                        ("page loaded, r"
+                                                          ++
+                                                          (String.String
+                                                            "233"
+                                                            ("f" ++ (String.String "233" "
+")))))
+                                                    |)
+                                                ])
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |))
+                        |) in
+                    M.alloc (| (Value.Tuple []) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.alloc
+                        (|
+                          (M.call_closure
+                            (|
+                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                              [
+                                M.call_closure
+                                  (|
+                                    (M.get_associated_function
+                                      (| (Ty.path "core::fmt::Arguments"), "new_const", []
+                                      |)),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [ M.read (| (mk_str "page unloaded
+") |) ])
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |))
+                        |) in
+                    M.alloc (| (Value.Tuple []) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match
+                        (| γ, "enums::WebEvent::KeyPress", 0
+                        |) in
+                    let c := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc
+                        (|
+                          (M.call_closure
+                            (|
+                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                              [
+                                M.call_closure
+                                  (|
+                                    (M.get_associated_function
+                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                      |)),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [
+                                                  M.read (| (mk_str "pressed '") |);
+                                                  M.read (| (mk_str "'.
+") |)
+                                                ])
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [
+                                                  M.call_closure
+                                                    (|
+                                                      (M.get_associated_function
+                                                        (|
+                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                          "new_display",
+                                                          [ Ty.path "char" ]
+                                                        |)),
+                                                      [ c ]
+                                                    |)
+                                                ])
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |))
+                        |) in
+                    M.alloc (| (Value.Tuple []) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match
+                        (| γ, "enums::WebEvent::Paste", 0
+                        |) in
+                    let s := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc
+                        (|
+                          (M.call_closure
+                            (|
+                              (M.get_function (| "std::io::stdio::_print", [] |)),
+                              [
+                                M.call_closure
+                                  (|
+                                    (M.get_associated_function
+                                      (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                      |)),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [
+                                                  M.read (| (mk_str "pasted """) |);
+                                                  M.read (| (mk_str """.
+") |)
+                                                ])
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc
+                                            (|
+                                              (Value.Array
+                                                [
+                                                  M.call_closure
+                                                    (|
+                                                      (M.get_associated_function
+                                                        (|
+                                                          (Ty.path "core::fmt::rt::Argument"),
+                                                          "new_display",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |)),
+                                                      [ s ]
+                                                    |)
+                                                ])
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |))
+                        |) in
+                    M.alloc (| (Value.Tuple []) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_record_field_or_break_match
+                        (| γ, "enums::WebEvent::Click", "x"
+                        |) in
+                    let γ0_1 :=
+                      M.get_struct_record_field_or_break_match
+                        (| γ, "enums::WebEvent::Click", "y"
+                        |) in
+                    let x := M.copy (| γ0_0 |) in
+                    let y := M.copy (| γ0_1 |) in
+                    let _ :=
+                      let _ :=
+                        M.alloc
+                          (|
+                            (M.call_closure
+                              (|
+                                (M.get_function (| "std::io::stdio::_print", [] |)),
+                                [
+                                  M.call_closure
+                                    (|
+                                      (M.get_associated_function
+                                        (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                        |)),
+                                      [
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc
+                                              (|
+                                                (Value.Array
+                                                  [
+                                                    M.read (| (mk_str "clicked at x=") |);
+                                                    M.read (| (mk_str ", y=") |);
+                                                    M.read (| (mk_str ".
+") |)
+                                                  ])
+                                              |));
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc
+                                              (|
+                                                (Value.Array
+                                                  [
+                                                    M.call_closure
+                                                      (|
+                                                        (M.get_associated_function
+                                                          (|
+                                                            (Ty.path "core::fmt::rt::Argument"),
+                                                            "new_display",
+                                                            [ Ty.path "i64" ]
+                                                          |)),
+                                                        [ x ]
+                                                      |);
+                                                    M.call_closure
+                                                      (|
+                                                        (M.get_associated_function
+                                                          (|
+                                                            (Ty.path "core::fmt::rt::Argument"),
+                                                            "new_display",
+                                                            [ Ty.path "i64" ]
+                                                          |)),
+                                                        [ y ]
+                                                      |)
+                                                  ])
+                                              |))
+                                      ]
+                                    |)
+                                ]
+                              |))
+                          |) in
+                      M.alloc (| (Value.Tuple []) |) in
+                    M.alloc (| (Value.Tuple []) |)))
+              ]
+            |))
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -208,46 +336,73 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* pressed :=
-      M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ]) in
-    let* pasted :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "my text") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc (Value.StructTuple "enums::WebEvent::Paste" [ α2 ]) in
-    let* click :=
-      M.alloc
-        (Value.StructRecord
-          "enums::WebEvent::Click"
-          [ ("x", Value.Integer Integer.I64 20); ("y", Value.Integer Integer.I64 80) ]) in
-    let* load := M.alloc (Value.StructTuple "enums::WebEvent::PageLoad" []) in
-    let* unload := M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
-    let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read pressed in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read pasted in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read click in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read load in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read unload in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let pressed :=
+            M.alloc
+              (| (Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ])
+              |) in
+          let pasted :=
+            M.alloc
+              (|
+                (Value.StructTuple
+                  "enums::WebEvent::Paste"
+                  [
+                    M.call_closure
+                      (|
+                        (M.get_trait_method
+                          (| "alloc::borrow::ToOwned", (Ty.path "str"), [], "to_owned", []
+                          |)),
+                        [ M.read (| (mk_str "my text") |) ]
+                      |)
+                  ])
+              |) in
+          let click :=
+            M.alloc
+              (|
+                (Value.StructRecord
+                  "enums::WebEvent::Click"
+                  [ ("x", Value.Integer Integer.I64 20); ("y", Value.Integer Integer.I64 80) ])
+              |) in
+          let load := M.alloc (| (Value.StructTuple "enums::WebEvent::PageLoad" []) |) in
+          let unload := M.alloc (| (Value.StructTuple "enums::WebEvent::PageUnload" []) |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "enums::inspect", [] |)), [ M.read (| pressed |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "enums::inspect", [] |)), [ M.read (| pasted |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "enums::inspect", [] |)), [ M.read (| click |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "enums::inspect", [] |)), [ M.read (| load |) ]
+                  |))
+              |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (| (M.get_function (| "enums::inspect", [] |)), [ M.read (| unload |) ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

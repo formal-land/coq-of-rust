@@ -19,9 +19,13 @@ Module Impl_example05_Foo.
   Definition plus1 (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read (M.get_struct_tuple_field self "example05::Foo" 0) in
-      BinOp.Panic.add α0 (Value.Integer Integer.U32 1)
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        BinOp.Panic.add
+          (|
+            (M.read (| (M.get_struct_tuple_field self "example05::Foo" 0) |)),
+            (Value.Integer Integer.U32 1)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -37,13 +41,21 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* foo := M.alloc (Value.StructTuple "example05::Foo" [ Value.Integer Integer.U32 0 ]) in
-    let* _ :=
-      let* α0 := M.get_associated_function (Ty.path "example05::Foo") "plus1" [] in
-      let* α1 := M.read foo in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let foo :=
+            M.alloc (| (Value.StructTuple "example05::Foo" [ Value.Integer Integer.U32 0 ]) |) in
+          let _ :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_associated_function (| (Ty.path "example05::Foo"), "plus1", [] |)),
+                    [ M.read (| foo |) ]
+                  |))
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

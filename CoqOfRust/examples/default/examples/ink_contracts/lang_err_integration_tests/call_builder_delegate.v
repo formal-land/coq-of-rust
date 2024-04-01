@@ -33,9 +33,19 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructRecord "call_builder_delegate::CallBuilderDelegateTest" [ ("value", α1) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "call_builder_delegate::CallBuilderDelegateTest"
+          [
+            ("value",
+              M.call_closure
+                (|
+                  (M.get_trait_method
+                    (| "core::default::Default", (Ty.path "i32"), [], "default", []
+                    |)),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -58,9 +68,11 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ value ] =>
-      let* value := M.alloc value in
-      let* α0 := M.read value in
-      M.pure (Value.StructRecord "call_builder_delegate::CallBuilderDelegateTest" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let value := M.alloc (| value |) in
+        Value.StructRecord
+          "call_builder_delegate::CallBuilderDelegateTest"
+          [ ("value", M.read (| value |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -88,10 +100,11 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Definition delegate (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; code_hash; selector ] =>
-      let* self := M.alloc self in
-      let* code_hash := M.alloc code_hash in
-      let* selector := M.alloc selector in
-      M.pure (Value.StructTuple "core::option::Option::None" [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        let selector := M.alloc (| selector |) in
+        Value.StructTuple "core::option::Option::None" []))
     | _, _ => M.impossible
     end.
   
@@ -112,10 +125,11 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; code_hash; selector ] =>
-      let* self := M.alloc self in
-      let* code_hash := M.alloc code_hash in
-      let* selector := M.alloc selector in
-      M.pure (Value.Integer Integer.I32 0)
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        let selector := M.alloc (| selector |) in
+        Value.Integer Integer.I32 0))
     | _, _ => M.impossible
     end.
   

@@ -17,9 +17,18 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "contract_terminate::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "contract_terminate::AccountId"
+          [
+            M.call_closure
+              (|
+                (M.get_trait_method
+                  (| "core::default::Default", (Ty.path "u128"), [], "default", []
+                  |)),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +49,14 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (M.match_operator
+              (| Value.DeclaredButUndefined, [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |))
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -79,9 +93,11 @@ Module Impl_contract_terminate_Env.
   Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "contract_terminate::Env" "caller")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (| (M.get_struct_record_field (M.read (| self |)) "contract_terminate::Env" "caller")
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -124,10 +140,15 @@ Module Impl_contract_terminate_JustTerminate.
   Definition env (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "init_env" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure
+          (|
+            (M.get_associated_function
+              (| (Ty.path "contract_terminate::JustTerminate"), "init_env", []
+              |)),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -140,7 +161,7 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "contract_terminate::JustTerminate" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "contract_terminate::JustTerminate" []))
     | _, _ => M.impossible
     end.
   
@@ -154,26 +175,52 @@ Module Impl_contract_terminate_JustTerminate.
   Definition terminate_me (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "contract_terminate::Env") "terminate_contract" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "env" [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 := M.get_associated_function (Ty.path "contract_terminate::Env") "caller" [] in
-        let* α6 :=
-          M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "env" [] in
-        let* α7 := M.read self in
-        let* α8 := M.call_closure α6 [ α7 ] in
-        let* α9 := M.alloc α8 in
-        let* α10 := M.call_closure α5 [ α9 ] in
-        let* α11 := M.call_closure α0 [ α4; α10 ] in
-        M.alloc α11 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read
+          (|
+            (let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_associated_function
+                        (| (Ty.path "contract_terminate::Env"), "terminate_contract", []
+                        |)),
+                      [
+                        M.alloc
+                          (|
+                            (M.call_closure
+                              (|
+                                (M.get_associated_function
+                                  (| (Ty.path "contract_terminate::JustTerminate"), "env", []
+                                  |)),
+                                [ M.read (| self |) ]
+                              |))
+                          |);
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "contract_terminate::Env"), "caller", []
+                              |)),
+                            [
+                              M.alloc
+                                (|
+                                  (M.call_closure
+                                    (|
+                                      (M.get_associated_function
+                                        (| (Ty.path "contract_terminate::JustTerminate"), "env", []
+                                        |)),
+                                      [ M.read (| self |) ]
+                                    |))
+                                |)
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |))
+          |)))
     | _, _ => M.impossible
     end.
   

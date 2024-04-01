@@ -33,12 +33,17 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* x :=
-      M.alloc
-        (Value.StructTuple
-          "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-          []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let x :=
+            M.alloc
+              (|
+                (Value.StructTuple
+                  "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+                  [])
+              |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

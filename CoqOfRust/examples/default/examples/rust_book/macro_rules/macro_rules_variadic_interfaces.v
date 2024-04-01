@@ -13,98 +13,186 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* val :=
-        let* α0 :=
-          BinOp.Panic.add (Value.Integer Integer.Usize 1) (Value.Integer Integer.Usize 2) in
-        M.alloc α0 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "1 + 2 = ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "usize" ] in
-              let* α7 := M.call_closure α6 [ val ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* val :=
-        let* α0 :=
-          BinOp.Panic.add (Value.Integer Integer.Usize 3) (Value.Integer Integer.Usize 4) in
-        M.alloc α0 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "3 + 4 = ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "usize" ] in
-              let* α7 := M.call_closure α6 [ val ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      M.alloc (Value.Tuple []) in
-    let* val :=
-      let* α0 := BinOp.Panic.mul (Value.Integer Integer.Usize 2) (Value.Integer Integer.Usize 3) in
-      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.Usize 1) in
-      M.alloc α1 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "(2 * 3) + 1 = ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.call_closure α6 [ val ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read
+        (|
+          (let _ :=
+            let val :=
+              M.alloc
+                (|
+                  (BinOp.Panic.add
+                    (| (Value.Integer Integer.Usize 1), (Value.Integer Integer.Usize 2)
+                    |))
+                |) in
+            let _ :=
+              let _ :=
+                M.alloc
+                  (|
+                    (M.call_closure
+                      (|
+                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                        [
+                          M.call_closure
+                            (|
+                              (M.get_associated_function
+                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                |)),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.read (| (mk_str "1 + 2 = ") |);
+                                            M.read (| (mk_str "
+") |)
+                                          ])
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.call_closure
+                                              (|
+                                                (M.get_associated_function
+                                                  (|
+                                                    (Ty.path "core::fmt::rt::Argument"),
+                                                    "new_display",
+                                                    [ Ty.path "usize" ]
+                                                  |)),
+                                                [ val ]
+                                              |)
+                                          ])
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |))
+                  |) in
+              M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let _ :=
+            let val :=
+              M.alloc
+                (|
+                  (BinOp.Panic.add
+                    (| (Value.Integer Integer.Usize 3), (Value.Integer Integer.Usize 4)
+                    |))
+                |) in
+            let _ :=
+              let _ :=
+                M.alloc
+                  (|
+                    (M.call_closure
+                      (|
+                        (M.get_function (| "std::io::stdio::_print", [] |)),
+                        [
+                          M.call_closure
+                            (|
+                              (M.get_associated_function
+                                (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                                |)),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.read (| (mk_str "3 + 4 = ") |);
+                                            M.read (| (mk_str "
+") |)
+                                          ])
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc
+                                      (|
+                                        (Value.Array
+                                          [
+                                            M.call_closure
+                                              (|
+                                                (M.get_associated_function
+                                                  (|
+                                                    (Ty.path "core::fmt::rt::Argument"),
+                                                    "new_display",
+                                                    [ Ty.path "usize" ]
+                                                  |)),
+                                                [ val ]
+                                              |)
+                                          ])
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |))
+                  |) in
+              M.alloc (| (Value.Tuple []) |) in
+            M.alloc (| (Value.Tuple []) |) in
+          let val :=
+            M.alloc
+              (|
+                (BinOp.Panic.add
+                  (|
+                    (BinOp.Panic.mul
+                      (| (Value.Integer Integer.Usize 2), (Value.Integer Integer.Usize 3)
+                      |)),
+                    (Value.Integer Integer.Usize 1)
+                  |))
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc
+                (|
+                  (M.call_closure
+                    (|
+                      (M.get_function (| "std::io::stdio::_print", [] |)),
+                      [
+                        M.call_closure
+                          (|
+                            (M.get_associated_function
+                              (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                              |)),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.read (| (mk_str "(2 * 3) + 1 = ") |);
+                                          M.read (| (mk_str "
+") |)
+                                        ])
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc
+                                    (|
+                                      (Value.Array
+                                        [
+                                          M.call_closure
+                                            (|
+                                              (M.get_associated_function
+                                                (|
+                                                  (Ty.path "core::fmt::rt::Argument"),
+                                                  "new_display",
+                                                  [ Ty.path "usize" ]
+                                                |)),
+                                              [ val ]
+                                            |)
+                                        ])
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |))
+                |) in
+            M.alloc (| (Value.Tuple []) |) in
+          M.alloc (| (Value.Tuple []) |))
+        |)))
   | _, _ => M.impossible
   end.

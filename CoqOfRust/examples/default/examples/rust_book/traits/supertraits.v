@@ -27,90 +27,170 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ student ] =>
-    let* student := M.alloc student in
-    let* res :=
-      let* α0 := M.get_function "alloc::fmt::format" [] in
-      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-      let* α7 :=
-        (* Unsize *)
-          let* α2 := M.read (mk_str "My name is ") in
-          let* α3 := M.read (mk_str " and I attend ") in
-          let* α4 := M.read (mk_str ". My favorite language is ") in
-          let* α5 := M.read (mk_str ". My Git username is ") in
-          let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
-          M.pure (M.pointer_coercion α6) in
-      let* α33 :=
-        (* Unsize *)
-          let* α8 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "alloc::string::String" ] in
-          let* α9 :=
-            M.get_trait_method
-              "supertraits::Person"
-              (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
-              []
-              "name"
-              [] in
-          let* α10 := M.read student in
-          let* α11 := M.call_closure α9 [ α10 ] in
-          let* α12 := M.alloc α11 in
-          let* α13 := M.call_closure α8 [ α12 ] in
-          let* α14 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "alloc::string::String" ] in
-          let* α15 :=
-            M.get_trait_method
-              "supertraits::Student"
-              (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
-              []
-              "university"
-              [] in
-          let* α16 := M.read student in
-          let* α17 := M.call_closure α15 [ α16 ] in
-          let* α18 := M.alloc α17 in
-          let* α19 := M.call_closure α14 [ α18 ] in
-          let* α20 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "alloc::string::String" ] in
-          let* α21 :=
-            M.get_trait_method
-              "supertraits::Programmer"
-              (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
-              []
-              "fav_language"
-              [] in
-          let* α22 := M.read student in
-          let* α23 := M.call_closure α21 [ α22 ] in
-          let* α24 := M.alloc α23 in
-          let* α25 := M.call_closure α20 [ α24 ] in
-          let* α26 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "alloc::string::String" ] in
-          let* α27 :=
-            M.get_trait_method
-              "supertraits::CompSciStudent"
-              (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
-              []
-              "git_username"
-              [] in
-          let* α28 := M.read student in
-          let* α29 := M.call_closure α27 [ α28 ] in
-          let* α30 := M.alloc α29 in
-          let* α31 := M.call_closure α26 [ α30 ] in
-          let* α32 := M.alloc (Value.Array [ α13; α19; α25; α31 ]) in
-          M.pure (M.pointer_coercion α32) in
-      let* α34 := M.call_closure α1 [ α7; α33 ] in
-      let* α35 := M.call_closure α0 [ α34 ] in
-      M.alloc α35 in
-    M.read res
+    ltac:(M.monadic
+      (let student := M.alloc (| student |) in
+      M.read
+        (|
+          (let res :=
+            M.alloc
+              (|
+                (M.call_closure
+                  (|
+                    (M.get_function (| "alloc::fmt::format", [] |)),
+                    [
+                      M.call_closure
+                        (|
+                          (M.get_associated_function
+                            (| (Ty.path "core::fmt::Arguments"), "new_v1", []
+                            |)),
+                          [
+                            (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc
+                                  (|
+                                    (Value.Array
+                                      [
+                                        M.read (| (mk_str "My name is ") |);
+                                        M.read (| (mk_str " and I attend ") |);
+                                        M.read (| (mk_str ". My favorite language is ") |);
+                                        M.read (| (mk_str ". My Git username is ") |)
+                                      ])
+                                  |));
+                            (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc
+                                  (|
+                                    (Value.Array
+                                      [
+                                        M.call_closure
+                                          (|
+                                            (M.get_associated_function
+                                              (|
+                                                (Ty.path "core::fmt::rt::Argument"),
+                                                "new_display",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |)),
+                                            [
+                                              M.alloc
+                                                (|
+                                                  (M.call_closure
+                                                    (|
+                                                      (M.get_trait_method
+                                                        (|
+                                                          "supertraits::Person",
+                                                          (Ty.dyn
+                                                            [
+                                                              ("supertraits::CompSciStudent::Trait",
+                                                                [])
+                                                            ]),
+                                                          [],
+                                                          "name",
+                                                          []
+                                                        |)),
+                                                      [ M.read (| student |) ]
+                                                    |))
+                                                |)
+                                            ]
+                                          |);
+                                        M.call_closure
+                                          (|
+                                            (M.get_associated_function
+                                              (|
+                                                (Ty.path "core::fmt::rt::Argument"),
+                                                "new_display",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |)),
+                                            [
+                                              M.alloc
+                                                (|
+                                                  (M.call_closure
+                                                    (|
+                                                      (M.get_trait_method
+                                                        (|
+                                                          "supertraits::Student",
+                                                          (Ty.dyn
+                                                            [
+                                                              ("supertraits::CompSciStudent::Trait",
+                                                                [])
+                                                            ]),
+                                                          [],
+                                                          "university",
+                                                          []
+                                                        |)),
+                                                      [ M.read (| student |) ]
+                                                    |))
+                                                |)
+                                            ]
+                                          |);
+                                        M.call_closure
+                                          (|
+                                            (M.get_associated_function
+                                              (|
+                                                (Ty.path "core::fmt::rt::Argument"),
+                                                "new_display",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |)),
+                                            [
+                                              M.alloc
+                                                (|
+                                                  (M.call_closure
+                                                    (|
+                                                      (M.get_trait_method
+                                                        (|
+                                                          "supertraits::Programmer",
+                                                          (Ty.dyn
+                                                            [
+                                                              ("supertraits::CompSciStudent::Trait",
+                                                                [])
+                                                            ]),
+                                                          [],
+                                                          "fav_language",
+                                                          []
+                                                        |)),
+                                                      [ M.read (| student |) ]
+                                                    |))
+                                                |)
+                                            ]
+                                          |);
+                                        M.call_closure
+                                          (|
+                                            (M.get_associated_function
+                                              (|
+                                                (Ty.path "core::fmt::rt::Argument"),
+                                                "new_display",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |)),
+                                            [
+                                              M.alloc
+                                                (|
+                                                  (M.call_closure
+                                                    (|
+                                                      (M.get_trait_method
+                                                        (|
+                                                          "supertraits::CompSciStudent",
+                                                          (Ty.dyn
+                                                            [
+                                                              ("supertraits::CompSciStudent::Trait",
+                                                                [])
+                                                            ]),
+                                                          [],
+                                                          "git_username",
+                                                          []
+                                                        |)),
+                                                      [ M.read (| student |) ]
+                                                    |))
+                                                |)
+                                            ]
+                                          |)
+                                      ])
+                                  |))
+                          ]
+                        |)
+                    ]
+                  |))
+              |) in
+          res)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -118,4 +198,4 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
 fn main() {}
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
