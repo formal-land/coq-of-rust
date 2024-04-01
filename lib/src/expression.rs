@@ -126,9 +126,6 @@ pub(crate) enum Expr {
         path: Path,
         fields: Vec<Rc<Expr>>,
     },
-    StructUnit {
-        path: Path,
-    },
     Use(Rc<Expr>),
     InternalString(String),
     InternalInteger(usize),
@@ -536,11 +533,6 @@ impl Expr {
                     coq::Expression::List {
                         exprs: fields.iter().map(|expr| expr.to_coq()).collect(),
                     },
-                ]),
-            Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
-                .apply_many(&[
-                    coq::Expression::String(path.to_string()),
-                    coq::Expression::List { exprs: vec![] },
                 ]),
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),
