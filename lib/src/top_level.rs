@@ -4,7 +4,6 @@ use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
@@ -1148,7 +1147,7 @@ impl FunDefinition {
     ) -> Vec<coq::TopLevelItem<'a>> {
         [
             match snippet {
-                Some(snippet) => snippet.to_coq(),
+                Some(snippet) => vec![snippet.to_coq()],
                 None => vec![],
             },
             match &self.signature_and_body.body {
@@ -1294,7 +1293,7 @@ impl ImplItemKind {
 
         match self {
             ImplItemKind::Const { ty, body } => vec![
-                coq::TopLevelItem::Comment(ty.to_coq()),
+                coq::TopLevelItem::Comment(vec![ty.to_coq()]),
                 match body {
                     None => coq::TopLevelItem::Definition(coq::Definition::new(
                         &definition_name,
@@ -1394,30 +1393,30 @@ impl Snippet {
         Some(Rc::new(Snippet(snippet)))
     }
 
-    fn to_coq(&self) -> Vec<coq::TopLevelItem> {
+    fn to_coq(&self) -> coq::TopLevelItem {
         let nb_quotes = self
             .0
             .iter()
             .map(|line| line.chars().filter(|c| *c == '"').count())
             .sum::<usize>();
 
-        [
-            vec![coq::TopLevelItem::Code(text("(*"))],
-            self.0
-                .iter()
-                // We do this replace to avoid messing up with the Coq comments
-                .map(|line| {
-                    coq::TopLevelItem::Code(text(line.replace("(*", "( *").replace("*)", "* )")))
-                })
-                .collect(),
-            if nb_quotes % 2 == 0 {
-                vec![]
-            } else {
-                vec![coq::TopLevelItem::Code(text("\""))]
-            },
-            vec![coq::TopLevelItem::Code(text("*)"))],
-        ]
-        .concat()
+        coq::TopLevelItem::Comment(
+            [
+                self.0
+                    .iter()
+                    // We do this replace to avoid messing up with the Coq comments
+                    .map(|line| {
+                        coq::Expression::Message(line.replace("(*", "( *").replace("*)", "* )"))
+                    })
+                    .collect(),
+                if nb_quotes % 2 == 0 {
+                    vec![]
+                } else {
+                    vec![coq::Expression::Message("\"".to_string())]
+                },
+            ]
+            .concat(),
+        )
     }
 }
 
@@ -1552,9 +1551,11 @@ impl TopLevelItem {
                     body.to_coq(),
                 ))]
             }
-            TopLevelItem::ForeignModule => vec![coq::TopLevelItem::Comment(
-                coq::Expression::Message("Unhandled foreign module here".to_string()),
-            )],
+            TopLevelItem::ForeignModule => {
+                vec![coq::TopLevelItem::Comment(vec![coq::Expression::Message(
+                    "Unhandled foreign module here".to_string(),
+                )])]
+            }
             TopLevelItem::TypeAlias {
                 name,
                 path,
@@ -1590,9 +1591,9 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 variants,
-            } => vec![
-                coq::TopLevelItem::Comment(coq::Expression::Message(format!("Enum {name}"))),
-                coq::TopLevelItem::Comment(coq::Expression::Record {
+            } => vec![coq::TopLevelItem::Comment(vec![
+                coq::Expression::Message(format!("Enum {name}")),
+                coq::Expression::Record {
                     fields: vec![
                         coq::Field {
                             name: "ty_params".to_string(),
@@ -1612,14 +1613,16 @@ impl TopLevelItem {
                             },
                         },
                     ],
-                }),
-            ],
-            TopLevelItem::TypeStructStruct(tss) => vec![coq::TopLevelItem::Comment(tss.to_coq())],
+                },
+            ])],
+            TopLevelItem::TypeStructStruct(tss) => {
+                vec![coq::TopLevelItem::Comment(vec![tss.to_coq()])]
+            }
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
                 fields,
-            } => vec![coq::TopLevelItem::Comment(
+            } => vec![coq::TopLevelItem::Comment(vec![
                 coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
                     fields: vec![
                         coq::Field {
@@ -1646,28 +1649,30 @@ impl TopLevelItem {
                         },
                     ],
                 }),
-            )],
-            TopLevelItem::TypeStructUnit { name, ty_params } => vec![coq::TopLevelItem::Comment(
-                coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
-                    fields: vec![
-                        coq::Field {
-                            name: "name".to_string(),
-                            args: vec![],
-                            body: coq::Expression::String(name.to_string()),
-                        },
-                        coq::Field {
-                            name: "ty_params".to_string(),
-                            args: vec![],
-                            body: coq::Expression::List {
-                                exprs: ty_params
-                                    .iter()
-                                    .map(|name| coq::Expression::String(name.to_string()))
-                                    .collect(),
+            ])],
+            TopLevelItem::TypeStructUnit { name, ty_params } => {
+                vec![coq::TopLevelItem::Comment(vec![
+                    coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
+                        fields: vec![
+                            coq::Field {
+                                name: "name".to_string(),
+                                args: vec![],
+                                body: coq::Expression::String(name.to_string()),
                             },
-                        },
-                    ],
-                }),
-            )],
+                            coq::Field {
+                                name: "ty_params".to_string(),
+                                args: vec![],
+                                body: coq::Expression::List {
+                                    exprs: ty_params
+                                        .iter()
+                                        .map(|name| coq::Expression::String(name.to_string()))
+                                        .collect(),
+                                },
+                            },
+                        ],
+                    }),
+                ])]
+            }
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,
@@ -1686,7 +1691,7 @@ impl TopLevelItem {
                             vec![coq::TopLevelItem::Line],
                             match snippet {
                                 None => vec![],
-                                Some(snippet) => snippet.to_coq(),
+                                Some(snippet) => vec![snippet.to_coq()],
                             },
                             kind.to_coq(name, generic_tys.clone()),
                             vec![
@@ -1779,7 +1784,7 @@ impl TopLevelItem {
                 body,
             } => {
                 vec![
-                    coq::TopLevelItem::Comment(coq::Expression::Message("Trait".to_string())),
+                    coq::TopLevelItem::Comment(vec![coq::Expression::Message("Trait".to_string())]),
                     coq::TopLevelItem::Module(coq::Module::new(
                         name,
                         coq::TopLevel::new(
@@ -1911,7 +1916,7 @@ impl TopLevelItem {
                                             [
                                                 match &item.snippet {
                                                     None => vec![],
-                                                    Some(snippet) => snippet.to_coq(),
+                                                    Some(snippet) => vec![snippet.to_coq()],
                                                 },
                                                 kind.to_coq(
                                                     item.name.as_str(),
@@ -1986,10 +1991,10 @@ impl TopLevelItem {
                     ),
                 ))]
             }
-            TopLevelItem::Error(message) => vec![coq::TopLevelItem::Comment(
+            TopLevelItem::Error(message) => vec![coq::TopLevelItem::Comment(vec![
                 coq::Expression::just_name("Error")
                     .apply(&coq::Expression::Message(message.clone())),
-            )],
+            ])],
         }
     }
 }
