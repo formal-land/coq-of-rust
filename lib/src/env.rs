@@ -12,7 +12,7 @@ pub(crate) fn emit_warning_with_note(
     env: &Env,
     span: &rustc_span::Span,
     warning_msg: &str,
-    note_msg: &Option<&str>,
+    note_msg: Option<&str>,
 ) {
     let mut warn = env
         .tcx

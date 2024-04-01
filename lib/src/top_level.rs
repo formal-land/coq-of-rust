@@ -385,7 +385,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 env,
                 &item.span,
                 "Foreign modules are not supported",
-                &Some("We will work on it! 🐣"),
+                Some("We will work on it! 🐣"),
             );
 
             vec![Rc::new(TopLevelItem::ForeignModule)]
@@ -901,7 +901,7 @@ fn compile_trait_item_body<'a>(
                 let span = &item.span;
                 let warning_msg = "Concrete value of associated types is not supported yet.";
                 let note_msg = "It will change in future versions.";
-                emit_warning_with_note(env, span, warning_msg, &Some(note_msg));
+                emit_warning_with_note(env, span, warning_msg, Some(note_msg));
             }
 
             Rc::new(TraitItem::Type())

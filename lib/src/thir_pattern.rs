@@ -145,7 +145,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 env,
                 &pat.span,
                 "This kind of constant in patterns is not yet supported.",
-                &None,
+                None,
             );
 
             Rc::new(Pattern::Wild)
@@ -155,7 +155,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 env,
                 &pat.span,
                 "Ranges in patterns are not yet supported.",
-                &None,
+                None,
             );
             Rc::new(Pattern::Wild)
         }

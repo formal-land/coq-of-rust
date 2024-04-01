@@ -88,7 +88,7 @@ impl Pattern {
                     env,
                     &pattern.span,
                     "We do not handle this kind of pattern here.",
-                    &Some("This should not happen as function parameter patterns should be exhaustive."),
+                    Some("This should not happen as function parameter patterns should be exhaustive."),
                 );
 
                 Rc::new(Pattern::Literal(Rc::new(Literal::Error)))
