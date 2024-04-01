@@ -825,7 +825,7 @@ pub(crate) fn compile_expr<'a>(
 
             if fields.is_empty() {
                 return Rc::new(Expr::StructTuple {
-                    path: path,
+                    path,
                     fields: vec![],
                 })
                 .alloc();
