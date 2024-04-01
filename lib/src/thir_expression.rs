@@ -416,7 +416,7 @@ fn compile_literal_integer(
         TyKind::Int(int_ty) => format!("{int_ty:?}"),
         TyKind::Uint(uint_ty) => format!("{uint_ty:?}"),
         _ => {
-            emit_warning_with_note(env, span, "Unknown integer type", "Please report 🙏");
+            emit_warning_with_note(env, span, "Unknown integer type", &Some("Please report 🙏"));
 
             "unknown_kind_of_integer".to_string()
         }
@@ -599,7 +599,7 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::Let { .. } => {
             let error_message = "Unexpected `if let` outside of an `if`";
 
-            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+            emit_warning_with_note(env, &expr.span, error_message, &Some("Please report!"));
 
             Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
         }
@@ -1047,7 +1047,7 @@ pub(crate) fn compile_expr<'a>(
                             env,
                             &expr.span,
                             "We do not support this kind of expression",
-                            &format!("Please report 🙏\n\nparent_kind: {parent_kind:#?}\nexpression: {expr:#?}"),
+                            &Some(format!("Please report 🙏\n\nparent_kind: {parent_kind:#?}\nexpression: {expr:#?}").as_str()),
                         );
 
                             Rc::new(Expr::Comment(
@@ -1060,7 +1060,12 @@ pub(crate) fn compile_expr<'a>(
                 _ => {
                     let error_message = "Expected a function name";
 
-                    emit_warning_with_note(env, &expr.span, error_message, "Please report 🙏");
+                    emit_warning_with_note(
+                        env,
+                        &expr.span,
+                        error_message,
+                        &Some("Please report 🙏"),
+                    );
 
                     Rc::new(Expr::Comment(error_message.to_string(), Expr::tt()))
                 }
@@ -1088,7 +1093,7 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::OffsetOf { .. } => {
             let error_message = "`OffsetOf` expression are not handled yet";
 
-            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+            emit_warning_with_note(env, &expr.span, error_message, &Some("Please report!"));
 
             Rc::new(Expr::Comment(error_message.to_string(), Expr::tt()))
         }
