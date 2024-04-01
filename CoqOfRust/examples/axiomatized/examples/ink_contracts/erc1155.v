@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +27,7 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ] [].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -130,7 +130,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+Module Impl_core_convert_From_array_u8_32_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -139,9 +139,10 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+End Impl_core_convert_From_array_u8_32_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
@@ -249,8 +250,8 @@ End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
+  (Ty.apply (Ty.path "erc1155::Result") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ] []).
 
 (* Trait *)
 (* Empty module 'Erc1155' *)
@@ -268,9 +269,9 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
     ty_params := [];
     fields :=
       [
-        ("operator", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
+        ("operator", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ] []);
+        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ] []);
+        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ] []);
         ("token_id", Ty.path "u128");
         ("value", Ty.path "u128")
       ];
@@ -339,12 +340,13 @@ End Impl_erc1155_Env.
         ("balances",
           Ty.apply
             (Ty.path "erc1155::Mapping")
-            [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ]);
+            [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ]
+            []);
         ("approvals",
           Ty.apply
             (Ty.path "erc1155::Mapping")
-            [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
-            ]);
+            [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple [] ]
+            []);
         ("token_id_nonce", Ty.path "u128")
       ];
   } *)

@@ -6,7 +6,15 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
+Definition decode_input (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
+  | [ T ], [] =>
+    let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+    let* α1 := M.read (mk_str "not implemented") in
+    let* α2 := M.call_closure α0 [ α1 ] in
+    M.never_to_any α2
+  | _, _ => M.impossible
+  end.
 
 (* StructTuple
   {
@@ -46,18 +54,27 @@ Module Impl_wildcard_selector_WildcardSelector.
             (Ty.path "core::result::Result")
             [
               Ty.tuple
-                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ];
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 4 ];
+                  Ty.path "alloc::string::String"
+                ];
               Ty.tuple []
-            ])
+            ]
+            [])
           "unwrap"
+          []
           [] in
       let* α1 :=
         M.get_function
           "wildcard_selector::decode_input"
           [
             Ty.tuple
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ]
-          ] in
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 4 ];
+                Ty.path "alloc::string::String"
+              ]
+          ]
+          [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.call_closure α0 [ α2 ] in
       let* α4 := M.alloc α3 in
@@ -72,9 +89,9 @@ Module Impl_wildcard_selector_WildcardSelector.
               let* _message := M.copy γ0_1 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                   let* α1 :=
-                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                   let* α6 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "Wildcard selector: ") in
@@ -89,13 +106,20 @@ Module Impl_wildcard_selector_WildcardSelector.
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_debug"
-                          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u8" ]
+                              [ Value.Integer Integer.Usize 4 ]
+                          ]
+                          [] in
                       let* α8 := M.call_closure α7 [ _selector ] in
                       let* α9 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_display"
-                          [ Ty.path "alloc::string::String" ] in
+                          [ Ty.path "alloc::string::String" ]
+                          [] in
                       let* α10 := M.call_closure α9 [ _message ] in
                       let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                       M.pure (M.pointer_coercion α11) in
@@ -123,8 +147,8 @@ Module Impl_wildcard_selector_WildcardSelector.
       let* _message := M.alloc _message in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Wildcard complement message: ") in
@@ -138,7 +162,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "alloc::string::String" ] in
+                  [ Ty.path "alloc::string::String" ]
+                  [] in
               let* α7 := M.call_closure α6 [ _message ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in

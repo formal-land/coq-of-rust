@@ -105,8 +105,10 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   Ty.path "returning_traits_with_dyn::Sheep";
                                   Ty.path "alloc::alloc::Global"
-                                ])
+                                ]
+                                [])
                               "new"
+                              []
                               [] in
                           let* α1 :=
                             M.call_closure
@@ -125,8 +127,10 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               Ty.path "returning_traits_with_dyn::Cow";
                               Ty.path "alloc::alloc::Global"
-                            ])
+                            ]
+                            [])
                           "new"
+                          []
                           [] in
                       let* α1 :=
                         M.call_closure
@@ -156,14 +160,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* random_number := M.copy UnsupportedLiteral in
     let* animal :=
-      let* α0 := M.get_function "returning_traits_with_dyn::random_animal" [] in
+      let* α0 := M.get_function "returning_traits_with_dyn::random_animal" [] [] in
       let* α1 := M.read random_number in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "You've randomly chosen an animal, and it says ") in
@@ -177,13 +181,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α7 :=
               M.get_trait_method
                 "returning_traits_with_dyn::Animal"
                 (Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ])
                 []
+                []
                 "noise"
+                []
                 [] in
             let* α8 := M.read animal in
             let* α9 := M.call_closure α7 [ α8 ] in

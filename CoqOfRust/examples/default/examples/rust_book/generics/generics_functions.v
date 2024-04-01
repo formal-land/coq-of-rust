@@ -83,7 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "generics_functions::reg_fn" [] in
+      let* α0 := M.get_function "generics_functions::reg_fn" [] [] in
       let* α1 :=
         M.call_closure
           α0
@@ -94,7 +94,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::gen_spec_t" [] in
+      let* α0 := M.get_function "generics_functions::gen_spec_t" [] [] in
       let* α1 :=
         M.call_closure
           α0
@@ -105,21 +105,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::gen_spec_i32" [] in
+      let* α0 := M.get_function "generics_functions::gen_spec_i32" [] [] in
       let* α1 :=
         M.call_closure
           α0
           [ Value.StructTuple "generics_functions::SGen" [ Value.Integer Integer.I32 6 ] ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] in
+      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] [] in
       let* α1 :=
         M.call_closure
           α0
           [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] in
+      let* α0 := M.get_function "generics_functions::generic" [ Ty.path "char" ] [] in
       let* α1 :=
         M.call_closure
           α0

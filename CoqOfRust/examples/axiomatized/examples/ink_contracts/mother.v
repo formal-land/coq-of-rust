@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +27,7 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ] [].
   
   Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -135,7 +135,9 @@ Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
-Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "mother::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* StructRecord
   {
@@ -158,11 +160,14 @@ Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u
               [
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                  [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                  [];
                 Ty.path "alloc::alloc::Global"
-              ];
+              ]
+              [];
             Ty.path "alloc::alloc::Global"
           ]
+          []
       ];
   } *)
 
@@ -428,13 +433,13 @@ End Impl_core_clone_Clone_for_mother_Status.
     fields :=
       [
         ("name", Ty.path "alloc::string::String");
-        ("subject", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("subject", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]);
         ("bids", Ty.path "mother::Bids");
-        ("terms", Ty.apply (Ty.path "array") [ Ty.path "u32" ]);
+        ("terms", Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ]);
         ("status", Ty.path "mother::Status");
         ("finalized", Ty.path "bool");
         ("vector",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] [])
       ];
   } *)
 
@@ -620,7 +625,7 @@ End Impl_mother_Env.
       [
         ("auction", Ty.path "mother::Auction");
         ("balances",
-          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ] [])
       ];
   } *)
 

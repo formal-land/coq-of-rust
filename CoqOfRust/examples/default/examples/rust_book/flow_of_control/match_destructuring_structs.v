@@ -55,8 +55,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* b := M.copy γ1_1 in
             let* y := M.copy γ0_1 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "First of x is 1, b = ") in
@@ -71,13 +72,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α8 := M.call_closure α7 [ b ] in
                   let* α9 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α10 := M.call_closure α9 [ y ] in
                   let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                   M.pure (M.pointer_coercion α11) in
@@ -95,8 +98,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.is_constant_or_break_match α0 (Value.Integer Integer.U32 2) in
             let* i := M.copy γ0_1 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "y is 2, i = ") in
@@ -110,7 +114,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ] in
+                      [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                      [] in
                   let* α7 := M.call_closure α6 [ i ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -123,8 +128,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_struct_record_field_or_break_match γ "match_destructuring_structs::Foo" "y" in
             let* y := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "y = ") in
@@ -138,7 +144,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ y ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in

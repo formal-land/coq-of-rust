@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +27,7 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ] [].
   
   Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -173,8 +173,8 @@ End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "trait_erc20::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "trait_erc20::Error" ]).
+  (Ty.apply (Ty.path "trait_erc20::Result") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "trait_erc20::Error" ] []).
 
 (* Trait *)
 (* Empty module 'BaseErc20' *)
@@ -189,14 +189,16 @@ Axiom Result :
         ("balances",
           Ty.apply
             (Ty.path "trait_erc20::Mapping")
-            [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ]);
+            [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ]
+            []);
         ("allowances",
           Ty.apply
             (Ty.path "trait_erc20::Mapping")
             [
               Ty.tuple [ Ty.path "trait_erc20::AccountId"; Ty.path "trait_erc20::AccountId" ];
               Ty.path "u128"
-            ])
+            ]
+            [])
       ];
   } *)
 
@@ -219,8 +221,8 @@ End Impl_core_default_Default_for_trait_erc20_Erc20.
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ] []);
+        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ] []);
         ("value", Ty.path "u128")
       ];
   } *)

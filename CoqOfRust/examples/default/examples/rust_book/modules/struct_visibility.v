@@ -18,7 +18,7 @@ Module my.
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [ T ].
+      Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [ T ] [].
     
     (*
             pub fn new(contents: T) -> ClosedBox<T> {
@@ -72,8 +72,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructRecord "struct_visibility::my::OpenBox" [ ("contents", α0) ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The open box contains: ") in
@@ -87,7 +87,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α7 :=
               M.call_closure
                 α6
@@ -104,8 +105,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "struct_visibility::my::ClosedBox")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.read (mk_str "classified information") in
       let* α2 := M.call_closure α0 [ α1 ] in

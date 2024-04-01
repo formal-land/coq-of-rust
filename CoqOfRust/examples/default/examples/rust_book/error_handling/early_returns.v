@@ -22,7 +22,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
     let* first_number :=
-      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] [] in
       let* α1 := M.read first_number_str in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -46,7 +46,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.copy α4 in
     let* second_number :=
-      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] [] in
       let* α1 := M.read second_number_str in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -97,8 +97,9 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "n is ") in
@@ -112,7 +113,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "i32" ] in
+                      [ Ty.path "i32" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ n ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -124,8 +126,9 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Error: ") in
@@ -139,7 +142,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "core::num::error::ParseIntError" ] in
+                      [ Ty.path "core::num::error::ParseIntError" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ e ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -162,16 +166,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "early_returns::print" [] in
-      let* α1 := M.get_function "early_returns::multiply" [] in
+      let* α0 := M.get_function "early_returns::print" [] [] in
+      let* α1 := M.get_function "early_returns::multiply" [] [] in
       let* α2 := M.read (mk_str "10") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call_closure α1 [ α2; α3 ] in
       let* α5 := M.call_closure α0 [ α4 ] in
       M.alloc α5 in
     let* _ :=
-      let* α0 := M.get_function "early_returns::print" [] in
-      let* α1 := M.get_function "early_returns::multiply" [] in
+      let* α0 := M.get_function "early_returns::print" [] [] in
+      let* α1 := M.get_function "early_returns::multiply" [] [] in
       let* α2 := M.read (mk_str "t") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call_closure α1 [ α2; α3 ] in

@@ -46,8 +46,8 @@ Module main.
       let* arg := M.alloc arg in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "arg = ") in
@@ -61,7 +61,8 @@ Module main.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "i32" ] in
+                  [ Ty.path "i32" ]
+                  [] in
               let* α7 := M.call_closure α6 [ arg ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in

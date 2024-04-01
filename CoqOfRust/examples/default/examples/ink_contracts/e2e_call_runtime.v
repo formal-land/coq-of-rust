@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "e2e_call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -78,7 +79,16 @@ Module Impl_e2e_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
 End Impl_e2e_call_runtime_Env.
@@ -117,7 +127,15 @@ Module Impl_e2e_call_runtime_Contract.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -130,7 +148,8 @@ Module Impl_e2e_call_runtime_Contract.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "init_env" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -159,8 +178,8 @@ Module Impl_e2e_call_runtime_Contract.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "e2e_call_runtime::Env") "balance" [] in
-      let* α1 := M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "env" [] in
+      let* α0 := M.get_associated_function (Ty.path "e2e_call_runtime::Env") "balance" [] [] in
+      let* α1 := M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "env" [] [] in
       let* α2 := M.read self in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in

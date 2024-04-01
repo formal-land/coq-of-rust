@@ -104,16 +104,19 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
-                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
-                                    ])
+                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
+                                    [])
                                   "ok"
+                                  []
                                   [] in
                               let* α1 :=
                                 M.get_trait_method
                                   "core::convert::TryFrom"
                                   (Ty.path "usize")
                                   [ Ty.path "u32" ]
+                                  []
                                   "try_from"
+                                  []
                                   [] in
                               let* α2 := M.read count in
                               let* α3 := BinOp.Panic.sub α2 (Value.Integer Integer.U32 2048) in
@@ -125,16 +128,19 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
-                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
-                                    ])
+                                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]
+                                    [])
                                   "ok"
+                                  []
                                   [] in
                               let* α1 :=
                                 M.get_trait_method
                                   "core::convert::TryFrom"
                                   (Ty.path "usize")
                                   [ Ty.path "u32" ]
+                                  []
                                   "try_from"
+                                  []
                                   [] in
                               let* α2 := M.read count in
                               let* α3 := M.call_closure α1 [ α2 ] in

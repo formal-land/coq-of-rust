@@ -12,8 +12,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -29,19 +29,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α9 := M.call_closure α8 [ mk_str "1i32 + 1 == 2i32" ] in
             let* α10 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α11 := M.call_closure α10 [ mk_str "2i32 * 2 == 4i32" ] in
             let* α12 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α13 :=
               BinOp.Panic.add (Value.Integer Integer.I32 1) (Value.Integer Integer.I32 1) in
             let* α14 :=
@@ -60,8 +63,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -77,19 +80,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α9 := M.call_closure α8 [ mk_str "true" ] in
             let* α10 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α11 := M.call_closure α10 [ mk_str "false" ] in
             let* α12 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α13 := LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
             let* α14 := M.alloc α13 in
             let* α15 := M.call_closure α12 [ α14 ] in

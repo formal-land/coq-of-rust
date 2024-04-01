@@ -45,8 +45,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "`print`: ") in
@@ -60,7 +60,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "i32" ] in
+                  [ Ty.path "i32" ]
+                  [] in
               let* α7 := M.read self in
               let* α8 :=
                 M.call_closure
@@ -98,12 +99,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Value.Integer Integer.I32 18 ]) in
     let* _ :=
       let* α0 :=
-        M.get_associated_function (Ty.path "scoping_rules_lifetimes_methods::Owner") "add_one" [] in
+        M.get_associated_function
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")
+          "add_one"
+          []
+          [] in
       let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_associated_function (Ty.path "scoping_rules_lifetimes_methods::Owner") "print" [] in
+        M.get_associated_function
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")
+          "print"
+          []
+          [] in
       let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

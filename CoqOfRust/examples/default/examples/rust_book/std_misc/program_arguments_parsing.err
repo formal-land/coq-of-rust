@@ -1,14 +1,18 @@
-warning: This kind of constant in patterns is not yet supported.
+warning: This kind of literal is not yet supported.
   --> examples/rust_book/std_misc/program_arguments_parsing.rs:49:17
    |
 49 |                 "increase" => increase(number),
    |                 ^^^^^^^^^^
+   |
+   = note: We will work on it! 🪄
 
-warning: This kind of constant in patterns is not yet supported.
+warning: This kind of literal is not yet supported.
   --> examples/rust_book/std_misc/program_arguments_parsing.rs:50:17
    |
 50 |                 "decrease" => decrease(number),
    |                 ^^^^^^^^^^
+   |
+   = note: We will work on it! 🪄
 
 warning: 2 warnings emitted
 

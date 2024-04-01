@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_transfer::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -94,7 +95,16 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
@@ -103,7 +113,18 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self; _to; _value ] =>
+      let* self := M.alloc self in
+      let* _to := M.alloc _to in
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
@@ -112,7 +133,16 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Definition transferred_value (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
@@ -132,7 +162,15 @@ Module Impl_contract_transfer_GiveMe.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -145,7 +183,7 @@ Module Impl_contract_transfer_GiveMe.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "init_env" [] in
+      let* α0 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -188,8 +226,8 @@ Module Impl_contract_transfer_GiveMe.
       let* value := M.alloc value in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "requested value: ") in
@@ -203,7 +241,8 @@ Module Impl_contract_transfer_GiveMe.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "u128" ] in
+                  [ Ty.path "u128" ]
+                  [] in
               let* α7 := M.call_closure α6 [ value ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in
@@ -213,8 +252,8 @@ Module Impl_contract_transfer_GiveMe.
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "contract balance: ") in
@@ -228,10 +267,12 @@ Module Impl_contract_transfer_GiveMe.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "u128" ] in
+                  [ Ty.path "u128" ]
+                  [] in
               let* α7 :=
-                M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] in
-              let* α8 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+                M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] [] in
+              let* α8 :=
+                M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
               let* α9 := M.read self in
               let* α10 := M.call_closure α8 [ α9 ] in
               let* α11 := M.alloc α10 in
@@ -253,9 +294,9 @@ Module Impl_contract_transfer_GiveMe.
               let* γ :=
                 let* α0 := M.read value in
                 let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] [] in
                 let* α2 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
                 let* α3 := M.read self in
                 let* α4 := M.call_closure α2 [ α3 ] in
                 let* α5 := M.alloc α4 in
@@ -268,7 +309,8 @@ Module Impl_contract_transfer_GiveMe.
               let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α1 := M.read (mk_str "insufficient funds!") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
@@ -284,20 +326,21 @@ Module Impl_contract_transfer_GiveMe.
               let* γ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.tuple [] ])
+                    (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.tuple [] ] [])
                     "is_err"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "transfer" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::Env") "transfer" [] [] in
                 let* α2 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
                 let* α3 := M.read self in
                 let* α4 := M.call_closure α2 [ α3 ] in
                 let* α5 := M.alloc α4 in
                 let* α6 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "caller" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::Env") "caller" [] [] in
                 let* α7 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
                 let* α8 := M.read self in
                 let* α9 := M.call_closure α7 [ α8 ] in
                 let* α10 := M.alloc α9 in
@@ -314,7 +357,8 @@ Module Impl_contract_transfer_GiveMe.
               let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α1 :=
                 M.read
                   (mk_str
@@ -342,8 +386,8 @@ Module Impl_contract_transfer_GiveMe.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "received payment: ") in
@@ -357,13 +401,16 @@ Module Impl_contract_transfer_GiveMe.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "u128" ] in
+                  [ Ty.path "u128" ]
+                  [] in
               let* α7 :=
                 M.get_associated_function
                   (Ty.path "contract_transfer::Env")
                   "transferred_value"
+                  []
                   [] in
-              let* α8 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+              let* α8 :=
+                M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
               let* α9 := M.read self in
               let* α10 := M.call_closure α8 [ α9 ] in
               let* α11 := M.alloc α10 in
@@ -387,9 +434,10 @@ Module Impl_contract_transfer_GiveMe.
                   M.get_associated_function
                     (Ty.path "contract_transfer::Env")
                     "transferred_value"
+                    []
                     [] in
                 let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
+                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -403,7 +451,8 @@ Module Impl_contract_transfer_GiveMe.
               let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α1 := M.read (mk_str "payment was not ten") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in

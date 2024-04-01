@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom AliasedResult :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "core::num::error::ParseIntError" ]).
+  (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "core::num::error::ParseIntError" ] []).
 
 Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
 

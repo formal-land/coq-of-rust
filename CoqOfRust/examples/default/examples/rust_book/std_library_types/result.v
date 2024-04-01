@@ -36,7 +36,7 @@ Module checked.
       | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
-        let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+        let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
         let* α1 := M.read f in
         let* α2 :=
           M.match_operator
@@ -72,7 +72,8 @@ Module checked.
     (Ty.path "result::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
+        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+        []).
   
   (*
       pub fn div(x: f64, y: f64) -> MathResult {
@@ -151,7 +152,7 @@ Module checked.
                   "core::result::Result::Err"
                   [ Value.StructTuple "result::checked::MathError::NegativeSquareRoot" [] ]);
             fun γ =>
-              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
+              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] [] in
               let* α1 := M.read x in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
@@ -192,7 +193,7 @@ Module checked.
                   "core::result::Result::Err"
                   [ Value.StructTuple "result::checked::MathError::NonPositiveLogarithm" [] ]);
             fun γ =>
-              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
+              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] [] in
               let* α1 := M.read x in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
@@ -222,7 +223,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* α0 := M.get_function "result::checked::div" [] in
+    let* α0 := M.get_function "result::checked::div" [] [] in
     let* α1 := M.read x in
     let* α2 := M.read y in
     let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -234,8 +235,8 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
-            let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+            let* α0 := M.get_function "core::panicking::panic_fmt" [] [ Value.Bool true ] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "") in
@@ -247,7 +248,8 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_debug"
-                    [ Ty.path "result::checked::MathError" ] in
+                    [ Ty.path "result::checked::MathError" ]
+                    [] in
                 let* α6 := M.call_closure α5 [ why ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 M.pure (M.pointer_coercion α7) in
@@ -258,7 +260,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* ratio := M.copy γ0_0 in
-            let* α0 := M.get_function "result::checked::ln" [] in
+            let* α0 := M.get_function "result::checked::ln" [] [] in
             let* α1 := M.read ratio in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
@@ -269,9 +271,9 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                   let* why := M.copy γ0_0 in
-                  let* α0 := M.get_function "core::panicking::panic_fmt" [] in
+                  let* α0 := M.get_function "core::panicking::panic_fmt" [] [ Value.Bool true ] in
                   let* α1 :=
-                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                   let* α4 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "") in
@@ -283,7 +285,8 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_debug"
-                          [ Ty.path "result::checked::MathError" ] in
+                          [ Ty.path "result::checked::MathError" ]
+                          [] in
                       let* α6 := M.call_closure α5 [ why ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       M.pure (M.pointer_coercion α7) in
@@ -295,7 +298,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                   let* ln := M.copy γ0_0 in
-                  let* α0 := M.get_function "result::checked::sqrt" [] in
+                  let* α0 := M.get_function "result::checked::sqrt" [] [] in
                   let* α1 := M.read ln in
                   let* α2 := M.call_closure α0 [ α1 ] in
                   let* α3 := M.alloc α2 in
@@ -306,9 +309,14 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                         let* why := M.copy γ0_0 in
-                        let* α0 := M.get_function "core::panicking::panic_fmt" [] in
+                        let* α0 :=
+                          M.get_function "core::panicking::panic_fmt" [] [ Value.Bool true ] in
                         let* α1 :=
-                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            []
+                            [] in
                         let* α4 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "") in
@@ -320,7 +328,8 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
                                 "new_debug"
-                                [ Ty.path "result::checked::MathError" ] in
+                                [ Ty.path "result::checked::MathError" ]
+                                [] in
                             let* α6 := M.call_closure α5 [ why ] in
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             M.pure (M.pointer_coercion α7) in
@@ -351,8 +360,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -366,8 +375,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "f64" ] in
-            let* α7 := M.get_function "result::op" [] in
+                [ Ty.path "f64" ]
+                [] in
+            let* α7 := M.get_function "result::op" [] [] in
             let* α8 := M.read UnsupportedLiteral in
             let* α9 := M.read UnsupportedLiteral in
             let* α10 := M.call_closure α7 [ α8; α9 ] in

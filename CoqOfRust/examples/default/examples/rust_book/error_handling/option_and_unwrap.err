@@ -1,8 +1,10 @@
-warning: This kind of constant in patterns is not yet supported.
+warning: This kind of literal is not yet supported.
  --> examples/rust_book/error_handling/option_and_unwrap.rs:6:14
   |
 6 |         Some("lemonade") => println!("Yuck! Too sugary."),
   |              ^^^^^^^^^^
+  |
+  = note: We will work on it! 🪄
 
 warning: 1 warning emitted
 

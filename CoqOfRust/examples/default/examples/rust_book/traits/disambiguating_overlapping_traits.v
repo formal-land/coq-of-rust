@@ -27,7 +27,14 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_trait_method "core::clone::Clone" (Ty.path "alloc::string::String") [] "clone" [] in
+        M.get_trait_method
+          "core::clone::Clone"
+          (Ty.path "alloc::string::String")
+          []
+          []
+          "clone"
+          []
+          [] in
       let* α1 := M.read self in
       M.call_closure
         α0
@@ -90,7 +97,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* form :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] [] "to_owned" [] [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -103,12 +111,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::UsernameWidget"
           (Ty.path "disambiguating_overlapping_traits::Form")
           []
+          []
           "get"
+          []
           [] in
       let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] [] "to_string" [] [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -132,7 +143,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::cmp::PartialEq"
                         (Ty.path "alloc::string::String")
                         [ Ty.path "alloc::string::String" ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -146,7 +159,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [ Ty.path "alloc::string::String"; Ty.path "alloc::string::String" ] in
+                      [ Ty.path "alloc::string::String"; Ty.path "alloc::string::String" ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -167,7 +181,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::AgeWidget"
           (Ty.path "disambiguating_overlapping_traits::Form")
           []
+          []
           "get"
+          []
           [] in
       let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
@@ -201,7 +217,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [ Ty.path "u8"; Ty.path "u8" ] in
+                      [ Ty.path "u8"; Ty.path "u8" ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Sheep";
     ty_params := [];
-    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ] []) ];
   } *)
 
 (* Trait *)
@@ -16,8 +16,8 @@ Module Animal.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α6 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "") in
@@ -32,8 +32,9 @@ Module Animal.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α8 := M.get_trait_method "traits::Animal" Self [] "name" [] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
+              let* α8 := M.get_trait_method "traits::Animal" Self [] [] "name" [] [] in
               let* α9 := M.read self in
               let* α10 := M.call_closure α8 [ α9 ] in
               let* α11 := M.alloc α10 in
@@ -42,8 +43,9 @@ Module Animal.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α14 := M.get_trait_method "traits::Animal" Self [] "noise" [] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
+              let* α14 := M.get_trait_method "traits::Animal" Self [] [] "noise" [] [] in
               let* α15 := M.read self in
               let* α16 := M.call_closure α14 [ α15 ] in
               let* α17 := M.alloc α16 in
@@ -136,7 +138,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           [
             fun γ =>
               let* γ :=
-                let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] in
+                let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] [] in
                 let* α1 := M.read self in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.alloc α2 in
@@ -163,8 +165,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α6 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "") in
@@ -179,7 +181,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α8 := M.read self in
               let* α9 :=
                 M.call_closure α7 [ M.get_struct_record_field α8 "traits::Sheep" "name" ] in
@@ -187,9 +190,10 @@ Module Impl_traits_Animal_for_traits_Sheep.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α11 :=
-                M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "noise" [] in
+                M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] [] "noise" [] [] in
               let* α12 := M.read self in
               let* α13 := M.call_closure α11 [ α12 ] in
               let* α14 := M.alloc α13 in
@@ -246,7 +250,7 @@ Module Impl_traits_Sheep.
           [
             fun γ =>
               let* γ :=
-                let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] in
+                let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] [] in
                 let* α1 := M.read self in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.alloc α2 in
@@ -256,9 +260,9 @@ Module Impl_traits_Sheep.
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                   let* α1 :=
-                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                   let* α5 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "") in
@@ -272,13 +276,16 @@ Module Impl_traits_Sheep.
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_display"
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                          [] in
                       let* α7 :=
                         M.get_trait_method
                           "traits::Animal"
                           (Ty.path "traits::Sheep")
                           []
+                          []
                           "name"
+                          []
                           [] in
                       let* α8 := M.read self in
                       let* α9 := M.call_closure α7 [ α8 ] in
@@ -294,9 +301,9 @@ Module Impl_traits_Sheep.
             fun γ =>
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                   let* α1 :=
-                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                   let* α5 :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "") in
@@ -310,7 +317,8 @@ Module Impl_traits_Sheep.
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_display"
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                          [] in
                       let* α7 := M.read self in
                       let* α8 :=
                         M.call_closure α6 [ M.get_struct_record_field α7 "traits::Sheep" "name" ] in
@@ -349,20 +357,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* dolly :=
-      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "new" [] in
+      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] [] "new" [] [] in
       let* α1 := M.read (mk_str "Dolly") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "talk" [] in
+      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] [] "talk" [] [] in
       let* α1 := M.call_closure α0 [ dolly ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "shear" [] in
+      let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "shear" [] [] in
       let* α1 := M.call_closure α0 [ dolly ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "talk" [] in
+      let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] [] "talk" [] [] in
       let* α1 := M.call_closure α0 [ dolly ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

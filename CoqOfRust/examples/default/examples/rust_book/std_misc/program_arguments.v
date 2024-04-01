@@ -23,20 +23,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           (Ty.path "std::env::Args")
           []
+          []
           "collect"
           [
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
-          ] in
-      let* α1 := M.get_function "std::env::args" [] in
+              []
+          ]
+          [] in
+      let* α1 := M.get_function "std::env::args" [] [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "My path is ") in
@@ -50,15 +53,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "alloc::string::String" ] in
+                [ Ty.path "alloc::string::String" ]
+                [] in
             let* α7 :=
               M.get_trait_method
                 "core::ops::index::Index"
                 (Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
+                  [])
                 [ Ty.path "usize" ]
+                []
                 "index"
+                []
                 [] in
             let* α8 := M.call_closure α7 [ args; Value.Integer Integer.Usize 0 ] in
             let* α9 := M.call_closure α6 [ α8 ] in
@@ -70,8 +77,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "I got ") in
@@ -86,13 +93,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "usize" ] in
+                [ Ty.path "usize" ]
+                [] in
             let* α8 :=
               M.get_associated_function
                 (Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
+                  [])
                 "len"
+                []
                 [] in
             let* α9 := M.call_closure α8 [ args ] in
             let* α10 := BinOp.Panic.sub α9 (Value.Integer Integer.Usize 1) in
@@ -105,16 +115,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "&")
-                    [ Ty.apply (Ty.path "slice") [ Ty.path "alloc::string::String" ] ]
-                ] in
+                    [ Ty.apply (Ty.path "slice") [ Ty.path "alloc::string::String" ] [] ]
+                    []
+                ]
+                [] in
             let* α14 :=
               M.get_trait_method
                 "core::ops::index::Index"
                 (Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
-                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
+                  [])
+                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] [] ]
+                []
                 "index"
+                []
                 [] in
             let* α15 :=
               M.call_closure

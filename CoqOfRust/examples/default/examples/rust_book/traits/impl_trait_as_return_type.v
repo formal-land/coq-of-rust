@@ -22,42 +22,55 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
           [
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              [];
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ])
+              []
+          ]
+          [])
+        []
         []
         "cycle"
+        []
         [] in
     let* α1 :=
       M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         (Ty.apply
           (Ty.path "alloc::vec::into_iter::IntoIter")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          [])
+        []
         []
         "chain"
         [
           Ty.apply
             (Ty.path "alloc::vec::into_iter::IntoIter")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-        ] in
+            []
+        ]
+        [] in
     let* α2 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α3 := M.read v in
     let* α4 := M.call_closure α2 [ α3 ] in
     let* α5 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α6 := M.read u in
     let* α7 := M.call_closure α5 [ α6 ] in
@@ -84,42 +97,55 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
           [
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              [];
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ])
+              []
+          ]
+          [])
+        []
         []
         "cycle"
+        []
         [] in
     let* α1 :=
       M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         (Ty.apply
           (Ty.path "alloc::vec::into_iter::IntoIter")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          [])
+        []
         []
         "chain"
         [
           Ty.apply
             (Ty.path "alloc::vec::into_iter::IntoIter")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-        ] in
+            []
+        ]
+        [] in
     let* α2 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α3 := M.read v in
     let* α4 := M.call_closure α2 [ α3 ] in
     let* α5 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+        (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α6 := M.read u in
     let* α7 := M.call_closure α5 [ α6 ] in
@@ -151,17 +177,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* v1 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α5 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 3 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 :=
             M.alloc
@@ -179,17 +211,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* v2 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α5 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 2 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 :=
             M.alloc (Value.Array [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ]) in
@@ -199,7 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α6 := M.call_closure α0 [ α5 ] in
       M.alloc α6 in
     let* v3 :=
-      let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" [] in
+      let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" [] [] in
       let* α1 := M.read v1 in
       let* α2 := M.read v2 in
       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -208,7 +246,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 1 ]) in
       let* α1 :=
-        M.get_trait_method "core::iter::traits::iterator::Iterator" Ty.associated [] "next" [] in
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          Ty.associated
+          []
+          []
+          "next"
+          []
+          [] in
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
@@ -229,9 +274,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -246,9 +293,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -267,7 +315,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 2 ]) in
       let* α1 :=
-        M.get_trait_method "core::iter::traits::iterator::Iterator" Ty.associated [] "next" [] in
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          Ty.associated
+          []
+          []
+          "next"
+          []
+          [] in
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
@@ -288,9 +343,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -305,9 +362,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -326,7 +384,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 3 ]) in
       let* α1 :=
-        M.get_trait_method "core::iter::traits::iterator::Iterator" Ty.associated [] "next" [] in
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          Ty.associated
+          []
+          []
+          "next"
+          []
+          [] in
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
@@ -347,9 +412,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -364,9 +431,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -385,7 +453,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 4 ]) in
       let* α1 :=
-        M.get_trait_method "core::iter::traits::iterator::Iterator" Ty.associated [] "next" [] in
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          Ty.associated
+          []
+          []
+          "next"
+          []
+          [] in
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
@@ -406,9 +481,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -423,9 +500,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -444,7 +522,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 5 ]) in
       let* α1 :=
-        M.get_trait_method "core::iter::traits::iterator::Iterator" Ty.associated [] "next" [] in
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          Ty.associated
+          []
+          []
+          "next"
+          []
+          [] in
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
@@ -465,9 +550,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -482,9 +569,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -501,8 +589,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "all done

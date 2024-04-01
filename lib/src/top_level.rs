@@ -1122,7 +1122,8 @@ impl DynNameGen {
             let ct = self.make_dyn_parm(arg);
             Rc::new(CoqType::Application {
                 func: CoqType::path(&[&name]),
-                args: vec![ct],
+                tys: vec![ct],
+                consts: vec![],
             })
         } else if let CoqType::Dyn(path) = arg.as_ref() {
             // We suppose `dyn` is only associated with one trait so we can directly extract the first element
@@ -1602,32 +1603,34 @@ impl TopLevelItem {
                 path,
                 ty,
                 ty_params,
-            } => vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                name,
-                &coq::DefinitionKind::Axiom {
-                    ty: coq::Expression::PiType {
-                        args: vec![coq::ArgDecl::of_ty_params(
-                            ty_params,
-                            coq::ArgSpecKind::Explicit,
-                        )],
-                        image: Rc::new(coq::Expression::Equality {
-                            lhs: Rc::new(
-                                CoqType::Application {
-                                    func: Rc::new(CoqType::Path {
-                                        path: Rc::new(path.clone()),
-                                    }),
-                                    args: ty_params
-                                        .iter()
-                                        .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))
-                                        .collect(),
-                                }
-                                .to_coq(),
-                            ),
-                            rhs: Rc::new(ty.to_coq()),
-                        }),
+            } => {
+                let lhs = CoqType::Application {
+                    func: Rc::new(CoqType::Path {
+                        path: Rc::new(path.clone()),
+                    }),
+                    tys: ty_params
+                        .iter()
+                        .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))
+                        .collect(),
+                    consts: vec![],
+                };
+
+                vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                    name,
+                    &coq::DefinitionKind::Axiom {
+                        ty: coq::Expression::PiType {
+                            args: vec![coq::ArgDecl::of_ty_params(
+                                ty_params,
+                                coq::ArgSpecKind::Explicit,
+                            )],
+                            image: Rc::new(coq::Expression::Equality {
+                                lhs: Rc::new(lhs.to_coq()),
+                                rhs: Rc::new(ty.to_coq()),
+                            }),
+                        },
                     },
-                },
-            ))],
+                ))]
+            }
             TopLevelItem::TypeEnum {
                 name,
                 ty_params,

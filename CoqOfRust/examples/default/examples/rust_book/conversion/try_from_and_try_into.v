@@ -20,7 +20,11 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field1_finish"
+          []
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "EvenNumber") in
       let* α5 :=
@@ -157,7 +161,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::convert::TryFrom"
           (Ty.path "try_from_and_try_into::EvenNumber")
           [ Ty.path "i32" ]
+          []
           "try_from"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       let* α2 := M.alloc α1 in
@@ -187,13 +193,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::cmp::PartialEq"
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [])
                         [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                            []
                         ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -210,11 +220,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ];
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [];
                         Ty.apply
                           (Ty.path "core::result::Result")
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ] in
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -235,7 +248,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::convert::TryFrom"
           (Ty.path "try_from_and_try_into::EvenNumber")
           [ Ty.path "i32" ]
+          []
           "try_from"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       let* α2 := M.alloc α1 in
@@ -260,13 +275,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::cmp::PartialEq"
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [])
                         [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                            []
                         ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -283,11 +302,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ];
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [];
                         Ty.apply
                           (Ty.path "core::result::Result")
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ] in
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -308,7 +330,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::convert::TryInto"
           (Ty.path "i32")
           [ Ty.path "try_from_and_try_into::EvenNumber" ]
+          []
           "try_into"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       M.alloc α1 in
@@ -339,13 +363,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::cmp::PartialEq"
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [])
                         [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                            []
                         ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -362,11 +390,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ];
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [];
                         Ty.apply
                           (Ty.path "core::result::Result")
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ] in
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -387,7 +418,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::convert::TryInto"
           (Ty.path "i32")
           [ Ty.path "try_from_and_try_into::EvenNumber" ]
+          []
           "try_into"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
@@ -413,13 +446,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::cmp::PartialEq"
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [])
                         [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                            []
                         ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -436,11 +473,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ];
+                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                          [];
                         Ty.apply
                           (Ty.path "core::result::Result")
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ] in
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

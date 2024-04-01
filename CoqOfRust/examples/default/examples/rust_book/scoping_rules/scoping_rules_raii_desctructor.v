@@ -21,8 +21,13 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "ToDrop is being dropped
@@ -58,8 +63,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc (Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Made a ToDrop!

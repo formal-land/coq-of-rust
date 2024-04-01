@@ -23,9 +23,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α1 :=
       M.call_closure
@@ -47,9 +49,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ] [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -80,12 +84,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.is_constant_or_break_match α0 (Value.Bool true) in
                             let* _ :=
                               let* _ :=
-                                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")
                                     "new_const"
-                                    [] in
+                                    []
+                                    [ Value.Bool true ] in
                                 let* α4 :=
                                   (* Unsize *)
                                     let* α2 := M.read (mk_str "fizzbuzz
@@ -114,12 +119,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.is_constant_or_break_match α0 (Value.Bool true) in
                                   let* _ :=
                                     let* _ :=
-                                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                                       let* α1 :=
                                         M.get_associated_function
                                           (Ty.path "core::fmt::Arguments")
                                           "new_const"
-                                          [] in
+                                          []
+                                          [ Value.Bool true ] in
                                       let* α4 :=
                                         (* Unsize *)
                                           let* α2 := M.read (mk_str "fizz
@@ -150,12 +156,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.is_constant_or_break_match α0 (Value.Bool true) in
                                         let* _ :=
                                           let* _ :=
-                                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                            let* α0 :=
+                                              M.get_function "std::io::stdio::_print" [] [] in
                                             let* α1 :=
                                               M.get_associated_function
                                                 (Ty.path "core::fmt::Arguments")
                                                 "new_const"
-                                                [] in
+                                                []
+                                                [ Value.Bool true ] in
                                             let* α4 :=
                                               (* Unsize *)
                                                 let* α2 := M.read (mk_str "buzz
@@ -170,11 +178,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       fun γ =>
                                         let* _ :=
                                           let* _ :=
-                                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                            let* α0 :=
+                                              M.get_function "std::io::stdio::_print" [] [] in
                                             let* α1 :=
                                               M.get_associated_function
                                                 (Ty.path "core::fmt::Arguments")
                                                 "new_v1"
+                                                []
                                                 [] in
                                             let* α5 :=
                                               (* Unsize *)
@@ -189,7 +199,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path "core::fmt::rt::Argument")
                                                     "new_display"
-                                                    [ Ty.path "i32" ] in
+                                                    [ Ty.path "i32" ]
+                                                    [] in
                                                 let* α7 := M.call_closure α6 [ n ] in
                                                 let* α8 := M.alloc (Value.Array [ α7 ]) in
                                                 M.pure (M.pointer_coercion α8) in

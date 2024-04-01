@@ -30,10 +30,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
             [
-              Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+              Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ] [];
               Ty.path "alloc::alloc::Global"
-            ])
+            ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
@@ -41,9 +43,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
-          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+          []
           []
           "into_iter"
+          []
           [] in
       let* α1 := M.get_constant "threads::NTHREADS" in
       let* α2 := M.read α1 in
@@ -67,9 +71,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+                      []
                       []
                       "next"
+                      []
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
@@ -94,15 +100,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.apply
                                 (Ty.path "alloc::vec::Vec")
                                 [
-                                  Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+                                  Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ] [];
                                   Ty.path "alloc::alloc::Global"
-                                ])
+                                ]
+                                [])
                               "push"
+                              []
                               [] in
                           let* α1 :=
                             M.get_function
                               "std::thread::spawn"
-                              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ] in
+                              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ]
+                              [] in
                           let* α2 :=
                             M.call_closure
                               α1
@@ -119,11 +128,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             let* _ :=
                                               let* _ :=
                                                 let* α0 :=
-                                                  M.get_function "std::io::stdio::_print" [] in
+                                                  M.get_function "std::io::stdio::_print" [] [] in
                                                 let* α1 :=
                                                   M.get_associated_function
                                                     (Ty.path "core::fmt::Arguments")
                                                     "new_v1"
+                                                    []
                                                     [] in
                                                 let* α5 :=
                                                   (* Unsize *)
@@ -139,7 +149,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function
                                                         (Ty.path "core::fmt::rt::Argument")
                                                         "new_display"
-                                                        [ Ty.path "u32" ] in
+                                                        [ Ty.path "u32" ]
+                                                        [] in
                                                     let* α7 := M.call_closure α6 [ i ] in
                                                     let* α8 := M.alloc (Value.Array [ α7 ]) in
                                                     M.pure (M.pointer_coercion α8) in
@@ -166,11 +177,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "alloc::vec::Vec")
           [
-            Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+            Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ] [];
             Ty.path "alloc::alloc::Global"
-          ])
+          ]
+          [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α1 := M.read children in
     let* α2 := M.call_closure α0 [ α1 ] in
@@ -189,11 +203,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
                       [
-                        Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+                        Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ] [];
                         Ty.path "alloc::alloc::Global"
-                      ])
+                      ]
+                      [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -211,8 +228,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* child := M.copy γ0_0 in
                       let* α0 :=
                         M.get_associated_function
-                          (Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ])
+                          (Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ] [])
                           "join"
+                          []
                           [] in
                       let* α1 := M.read child in
                       let* α2 := M.call_closure α0 [ α1 ] in

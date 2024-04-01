@@ -7,14 +7,14 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] [].
   
   (*
   Default
@@ -26,17 +26,21 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       M.pure
@@ -55,14 +59,25 @@ End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] [].
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -73,7 +88,18 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -84,7 +110,19 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -95,7 +133,16 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition new (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
@@ -106,7 +153,18 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -117,7 +175,18 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -128,7 +197,18 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -151,7 +231,8 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "mapping_integration_tests::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -233,7 +314,8 @@ End Impl_mapping_integration_tests_Env.
         ("balances",
           Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
       ];
   } *)
 
@@ -251,9 +333,12 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
           "core::default::Default"
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "mapping_integration_tests::Mappings" [ ("balances", α1) ])
@@ -276,7 +361,15 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -285,7 +378,15 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
@@ -304,9 +405,12 @@ Module Impl_mapping_integration_tests_Mappings.
             "core::default::Default"
             (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
-              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+              [])
+            []
             []
             "default"
+            []
             [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
@@ -331,9 +435,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -342,8 +446,10 @@ Module Impl_mapping_integration_tests_Mappings.
         M.get_associated_function
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
           "get"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 :=
@@ -371,9 +477,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* value := M.alloc value in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -382,8 +488,10 @@ Module Impl_mapping_integration_tests_Mappings.
         M.get_associated_function
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
           "insert"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read caller in
@@ -413,9 +521,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -424,8 +532,10 @@ Module Impl_mapping_integration_tests_Mappings.
         M.get_associated_function
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
           "size"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read caller in
@@ -452,9 +562,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -463,8 +573,10 @@ Module Impl_mapping_integration_tests_Mappings.
         M.get_associated_function
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
           "contains"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 :=
@@ -492,9 +604,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -504,8 +616,10 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
-              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+              [])
             "remove"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read caller in
@@ -534,9 +648,9 @@ Module Impl_mapping_integration_tests_Mappings.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
+          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -545,8 +659,10 @@ Module Impl_mapping_integration_tests_Mappings.
         M.get_associated_function
           (Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
           "take"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read caller in

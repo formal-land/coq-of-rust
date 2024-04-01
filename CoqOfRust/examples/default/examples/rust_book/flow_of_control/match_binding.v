@@ -30,8 +30,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Tell me what type of person you are
@@ -42,7 +47,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* α6 := M.call_closure α0 [ α5 ] in
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.get_function "match_binding::age" [] in
+    let* α0 := M.get_function "match_binding::age" [] [] in
     let* α1 := M.call_closure α0 [] in
     let* α2 := M.alloc α1 in
     let* α0 :=
@@ -54,9 +59,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.U32 0) in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I haven't celebrated my first birthday yet
@@ -70,8 +79,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* n := M.copy γ in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm a child of age ") in
@@ -85,7 +95,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ n ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -96,8 +107,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* n := M.copy γ in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm a teen of age ") in
@@ -111,7 +123,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ n ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -122,8 +135,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* n := M.copy γ in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm an old person of age ") in
@@ -137,7 +151,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ n ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in

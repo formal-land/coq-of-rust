@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "constructors_return_value::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -61,7 +62,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+Module Impl_core_convert_From_array_u8_32_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   (*
@@ -69,15 +70,25 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ _value ] =>
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+End Impl_core_convert_From_array_u8_32_for_constructors_return_value_AccountId.
 
 Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
@@ -103,10 +114,11 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ]) =
+  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ] []) =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [ T; Ty.path "constructors_return_value::LangError" ]).
+      [ T; Ty.path "constructors_return_value::LangError" ]
+      []).
 
 (* StructTuple
   {
@@ -125,7 +137,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "ConstructorError") in
       M.call_closure α0 [ α1; α2 ]
@@ -154,7 +166,16 @@ Module Impl_constructors_return_value_ReturnFlags.
           unimplemented!()
       }
   *)
-  Parameter new_with_reverted : (list Ty.t) -> (list Value.t) -> M.
+  Definition new_with_reverted (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ has_reverted ] =>
+      let* has_reverted := M.alloc has_reverted in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_new_with_reverted :
     M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
@@ -170,7 +191,7 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
   | [ R ], [ return_flags; return_value ] =>
     let* return_flags := M.alloc return_flags in
     let* return_value := M.alloc return_value in
-    let* α0 := M.get_function "core::panicking::panic" [] in
+    let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
     let* α1 := M.read (mk_str "not implemented") in
     M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
@@ -223,6 +244,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 M.get_associated_function
                   (Ty.path "constructors_return_value::ConstructorsReturnValue")
                   "new"
+                  []
                   [] in
               let* α1 := M.call_closure α0 [ Value.Bool true ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]);
@@ -260,19 +282,24 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 Ty.path "constructors_return_value::AccountId";
                 Ty.path "constructors_return_value::LangError"
               ]
-          ] in
+              []
+          ]
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "constructors_return_value::ReturnFlags")
           "new_with_reverted"
+          []
           [] in
       let* α2 := M.call_closure α1 [ Value.Bool true ] in
       let* α3 :=
         M.get_trait_method
           "core::convert::From"
           (Ty.path "constructors_return_value::AccountId")
-          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+          []
           "from"
+          []
           [] in
       let* α4 := M.call_closure α3 [ repeat (Value.Integer Integer.U8 0) 32 ] in
       let* α5 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α4 ]) in
@@ -316,8 +343,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   M.get_trait_method
                     "core::convert::From"
                     (Ty.path "constructors_return_value::AccountId")
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]
+                    ]
+                    []
                     "from"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ repeat (Value.Integer Integer.U8 0) 32 ] in
                 M.alloc
@@ -344,14 +374,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   [
                     Ty.path "constructors_return_value::AccountId";
                     Ty.path "constructors_return_value::ConstructorError"
-                  ];
+                  ]
+                  [];
                 Ty.path "constructors_return_value::LangError"
               ]
-          ] in
+              []
+          ]
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "constructors_return_value::ReturnFlags")
           "new_with_reverted"
+          []
           [] in
       let* α2 := M.call_closure α1 [ Value.Bool true ] in
       let* α3 := M.call_closure α0 [ α2; value ] in

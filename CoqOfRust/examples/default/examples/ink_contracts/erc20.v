@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ] [].
   
   (*
   Default
@@ -25,17 +25,21 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       M.pure (Value.StructRecord "erc20::Mapping" [ ("_key", α1); ("_value", α3) ])
@@ -52,14 +56,25 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ] [].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -70,7 +85,19 @@ Module Impl_erc20_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -93,7 +120,8 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "erc20::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -154,11 +182,12 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
       [
         ("total_supply", Ty.path "u128");
         ("balances",
-          Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
+          Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] []);
         ("allowances",
           Ty.apply
             (Ty.path "erc20::Mapping")
-            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
+            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ]
+            [])
       ];
   } *)
 
@@ -171,14 +200,17 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+          (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 :=
@@ -186,9 +218,12 @@ Module Impl_core_default_Default_for_erc20_Erc20.
           "core::default::Default"
           (Ty.apply
             (Ty.path "erc20::Mapping")
-            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
+            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α5 := M.call_closure α4 [] in
       M.pure
@@ -212,8 +247,8 @@ End Impl_core_default_Default_for_erc20_Erc20.
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ] []);
+        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ] []);
         ("value", Ty.path "u128")
       ];
   } *)
@@ -268,8 +303,8 @@ End Impl_core_default_Default_for_erc20_Erc20.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc20::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ]).
+  (Ty.apply (Ty.path "erc20::Result") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ] []).
 
 Module Impl_erc20_Env.
   Definition Self : Ty.t := Ty.path "erc20::Env".
@@ -295,7 +330,17 @@ Module Impl_erc20_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      let* self := M.alloc self in
+      let* _event := M.alloc _event in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc20_Env.
@@ -308,7 +353,15 @@ Module Impl_erc20_Erc20.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -321,7 +374,7 @@ Module Impl_erc20_Erc20.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] in
+      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -358,15 +411,17 @@ Module Impl_erc20_Erc20.
         let* α0 :=
           M.get_trait_method
             "core::default::Default"
-            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
+            []
             []
             "default"
+            []
             [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -374,16 +429,17 @@ Module Impl_erc20_Erc20.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
             "insert"
+            []
             [] in
         let* α1 := M.read caller in
         let* α2 := M.read total_supply in
         let* α3 := M.call_closure α0 [ balances; α1; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read caller in
@@ -413,9 +469,12 @@ Module Impl_erc20_Erc20.
           "core::default::Default"
           (Ty.apply
             (Ty.path "erc20::Mapping")
-            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
+            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       let* α0 :=
@@ -457,13 +516,15 @@ Module Impl_erc20_Erc20.
       let* owner := M.alloc owner in
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ])
+          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ] [])
           "unwrap_or_default"
+          []
           [] in
       let* α1 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+          (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
           "get"
+          []
           [] in
       let* α2 := M.read self in
       let* α3 := M.read owner in
@@ -485,7 +546,7 @@ Module Impl_erc20_Erc20.
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
-      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
+      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] [] in
       let* α1 := M.read self in
       M.call_closure α0 [ α1; owner ]
     | _, _ => M.impossible
@@ -506,15 +567,18 @@ Module Impl_erc20_Erc20.
       let* spender := M.alloc spender in
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ])
+          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ] [])
           "unwrap_or_default"
+          []
           [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "erc20::Mapping")
-            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
+            [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ]
+            [])
           "get"
+          []
           [] in
       let* α2 := M.read self in
       let* α3 := M.read owner in
@@ -542,7 +606,7 @@ Module Impl_erc20_Erc20.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
-      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] in
+      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] [] in
       let* α1 := M.read self in
       M.call_closure α0 [ α1; owner; spender ]
     | _, _ => M.impossible
@@ -576,7 +640,7 @@ Module Impl_erc20_Erc20.
       let* to := M.alloc to in
       let* value := M.alloc value in
       let* from_balance :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] [] in
         let* α1 := M.read self in
         let* α2 := M.read from in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -608,8 +672,9 @@ Module Impl_erc20_Erc20.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read from in
@@ -621,7 +686,7 @@ Module Impl_erc20_Erc20.
           M.call_closure α0 [ M.get_struct_record_field α1 "erc20::Erc20" "balances"; α3; α6 ] in
         M.alloc α7 in
       let* to_balance :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] [] in
         let* α1 := M.read self in
         let* α2 := M.read to in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -629,8 +694,9 @@ Module Impl_erc20_Erc20.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            (Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ] [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read to in
@@ -642,8 +708,8 @@ Module Impl_erc20_Erc20.
           M.call_closure α0 [ M.get_struct_record_field α1 "erc20::Erc20" "balances"; α3; α6 ] in
         M.alloc α7 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -691,14 +757,14 @@ Module Impl_erc20_Erc20.
       let* to := M.alloc to in
       let* value := M.alloc value in
       let* from :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
-      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "transfer_from_to" [] in
+      let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "transfer_from_to" [] [] in
       let* α1 := M.read self in
       let* α2 := M.read value in
       let* α3 := M.call_closure α0 [ α1; from; to; α2 ] in
@@ -728,8 +794,8 @@ Module Impl_erc20_Erc20.
       let* spender := M.alloc spender in
       let* value := M.alloc value in
       let* owner :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -741,8 +807,10 @@ Module Impl_erc20_Erc20.
             (Ty.apply
               (Ty.path "erc20::Mapping")
               [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128"
-              ])
+              ]
+              [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read owner in
@@ -755,8 +823,8 @@ Module Impl_erc20_Erc20.
             ] in
         M.alloc α5 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -804,15 +872,15 @@ Module Impl_erc20_Erc20.
       let* to := M.alloc to in
       let* value := M.alloc value in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       let* allowance :=
-        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] in
+        let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; from; caller ] in
         M.alloc α2 in
@@ -844,11 +912,13 @@ Module Impl_erc20_Erc20.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
-            (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.path "erc20::Error" ])
+            (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.path "erc20::Error" ] [])
+            []
             []
             "branch"
+            []
             [] in
-        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "transfer_from_to" [] in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "transfer_from_to" [] [] in
         let* α2 := M.read self in
         let* α3 := M.read value in
         let* α4 := M.call_closure α1 [ α2; from; to; α3 ] in
@@ -869,13 +939,17 @@ Module Impl_erc20_Erc20.
                   "core::ops::try_trait::FromResidual"
                   (Ty.apply
                     (Ty.path "core::result::Result")
-                    [ Ty.tuple []; Ty.path "erc20::Error" ])
+                    [ Ty.tuple []; Ty.path "erc20::Error" ]
+                    [])
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
                       [ Ty.path "core::convert::Infallible"; Ty.path "erc20::Error" ]
+                      []
                   ]
+                  []
                   "from_residual"
+                  []
                   [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
@@ -898,8 +972,10 @@ Module Impl_erc20_Erc20.
             (Ty.apply
               (Ty.path "erc20::Mapping")
               [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128"
-              ])
+              ]
+              [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read from in

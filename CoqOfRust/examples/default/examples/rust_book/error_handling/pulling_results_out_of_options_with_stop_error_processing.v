@@ -17,31 +17,42 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] ]
+            [])
           "map"
           [
             Ty.apply
               (Ty.path "core::result::Result")
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+              [];
             Ty.function
-              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ] ]
+              [
+                Ty.tuple
+                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] ]
+              ]
               (Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
-          ] in
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                [])
+          ]
+          [] in
       let* α1 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [])
           "first"
-          [] in
+          []
+          [ Value.Bool true ] in
       let* α2 :=
         M.get_trait_method
           "core::ops::deref::Deref"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] []; Ty.path "alloc::alloc::Global" ]
+            [])
+          []
           []
           "deref"
+          []
           [] in
       let* α3 := M.call_closure α2 [ vec ] in
       let* α4 := M.call_closure α1 [ α3 ] in
@@ -64,14 +75,16 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function
                             (Ty.apply
                               (Ty.path "core::result::Result")
-                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                              [])
                             "map"
                             [
                               Ty.path "i32";
                               Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                            ] in
+                            ]
+                            [] in
                         let* α1 :=
-                          M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+                          M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] [] in
                         let* α2 := M.read first in
                         let* α3 := M.read α2 in
                         let* α4 := M.call_closure α1 [ α3 ] in
@@ -108,15 +121,18 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-          ])
+              []
+          ]
+          [])
         "map_or"
         [
           Ty.apply
             (Ty.path "core::result::Result")
             [
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+              Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
               Ty.path "core::num::error::ParseIntError"
-            ];
+            ]
+            [];
           Ty.function
             [
               Ty.tuple
@@ -124,15 +140,18 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                    []
                 ]
             ]
             (Ty.apply
               (Ty.path "core::result::Result")
               [
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+                Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
                 Ty.path "core::num::error::ParseIntError"
-              ])
-        ] in
+              ]
+              [])
+        ]
+        [] in
     let* α1 := M.read opt in
     let* α2 :=
       M.call_closure
@@ -156,14 +175,16 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function
                           (Ty.apply
                             (Ty.path "core::result::Result")
-                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                            [])
                           "map"
                           [
-                            Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
                             Ty.function
                               [ Ty.path "i32" ]
-                              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                          ] in
+                              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [])
+                          ]
+                          [] in
                       let* α1 := M.read r in
                       M.call_closure
                         α0
@@ -194,9 +215,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* numbers :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α8 :=
         (* Unsize *)
           let* α1 :=
@@ -204,10 +226,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                    [ Value.Integer Integer.Usize 3 ];
                   Ty.path "alloc::alloc::Global"
-                ])
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 := M.read (mk_str "42") in
           let* α3 := M.read (mk_str "93") in
@@ -223,17 +250,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] []; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* strings :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α8 :=
         (* Unsize *)
           let* α1 :=
@@ -241,10 +271,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                    [ Value.Integer Integer.Usize 3 ];
                   Ty.path "alloc::alloc::Global"
-                ])
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 := M.read (mk_str "tofu") in
           let* α3 := M.read (mk_str "93") in
@@ -257,8 +292,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α9 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The first doubled is ") in
@@ -276,13 +311,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
                       Ty.path "core::num::error::ParseIntError"
                     ]
-                ] in
+                    []
+                ]
+                [] in
             let* α7 :=
               M.get_function
                 "pulling_results_out_of_options_with_stop_error_processing::double_first"
+                []
                 [] in
             let* α8 := M.read numbers in
             let* α9 := M.call_closure α7 [ α8 ] in
@@ -296,8 +334,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The first doubled is ") in
@@ -315,13 +353,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
                       Ty.path "core::num::error::ParseIntError"
                     ]
-                ] in
+                    []
+                ]
+                [] in
             let* α7 :=
               M.get_function
                 "pulling_results_out_of_options_with_stop_error_processing::double_first"
+                []
                 [] in
             let* α8 := M.read empty in
             let* α9 := M.call_closure α7 [ α8 ] in
@@ -335,8 +376,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "The first doubled is ") in
@@ -354,13 +395,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
+                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] [];
                       Ty.path "core::num::error::ParseIntError"
                     ]
-                ] in
+                    []
+                ]
+                [] in
             let* α7 :=
               M.get_function
                 "pulling_results_out_of_options_with_stop_error_processing::double_first"
+                []
                 [] in
             let* α8 := M.read strings in
             let* α9 := M.call_closure α7 [ α8 ] in

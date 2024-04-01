@@ -5,12 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Ref";
     ty_params := [ "T" ];
-    fields := [ Ty.apply (Ty.path "&") [ T ] ];
+    fields := [ Ty.apply (Ty.path "&") [ T ] [] ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
+    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ] [].
   
   Parameter fmt : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   

@@ -81,8 +81,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* another_borrow := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -98,7 +98,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α9 := M.read borrowed_point in
             let* α10 :=
               M.call_closure
@@ -108,7 +109,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α12 := M.read another_borrow in
             let* α13 :=
               M.call_closure
@@ -118,7 +120,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α15 :=
               M.call_closure
                 α14
@@ -131,8 +134,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -148,7 +151,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α9 := M.read borrowed_point in
             let* α10 :=
               M.call_closure
@@ -158,7 +162,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α12 := M.read another_borrow in
             let* α13 :=
               M.call_closure
@@ -168,7 +173,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α15 :=
               M.call_closure
                 α14
@@ -197,8 +203,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Value.Integer Integer.I32 1) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -214,7 +220,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α9 := M.read mutable_borrow in
             let* α10 :=
               M.call_closure
@@ -224,7 +231,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α12 := M.read mutable_borrow in
             let* α13 :=
               M.call_closure
@@ -234,7 +242,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α15 := M.read mutable_borrow in
             let* α16 :=
               M.call_closure
@@ -249,8 +258,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* new_borrowed_point := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Point now has coordinates: (") in
@@ -266,7 +275,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α9 := M.read new_borrowed_point in
             let* α10 :=
               M.call_closure
@@ -276,7 +286,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α12 := M.read new_borrowed_point in
             let* α13 :=
               M.call_closure
@@ -286,7 +297,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α15 := M.read new_borrowed_point in
             let* α16 :=
               M.call_closure

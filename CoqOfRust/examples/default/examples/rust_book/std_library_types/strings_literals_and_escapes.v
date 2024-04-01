@@ -29,8 +29,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
@@ -44,7 +44,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ byte_escape ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -56,8 +57,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Unicode character ") in
@@ -72,13 +73,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α8 := M.call_closure α7 [ unicode_codepoint ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α10 := M.call_closure α9 [ character_name ] in
             let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
             M.pure (M.pointer_coercion α11) in
@@ -94,8 +97,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         The linebreak and indentation here -><- can be escaped too!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -109,7 +112,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ long_string ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in

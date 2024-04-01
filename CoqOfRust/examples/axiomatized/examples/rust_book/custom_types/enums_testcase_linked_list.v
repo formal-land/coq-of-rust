@@ -15,6 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ]
+                []
             ];
         discriminant := None;
       };

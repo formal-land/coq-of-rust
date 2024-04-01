@@ -26,6 +26,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
           "debug_struct_field2_finish"
+          []
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Rectangle") in
@@ -100,8 +101,8 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -115,7 +116,8 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ T ] ] in
+                [ Ty.apply (Ty.path "&") [ T ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ t ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -137,7 +139,7 @@ Definition area (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
-    let* α0 := M.get_trait_method "generics_bounds::HasArea" T [] "area" [] in
+    let* α0 := M.get_trait_method "generics_bounds::HasArea" T [] [] "area" [] [] in
     let* α1 := M.read t in
     M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
@@ -177,13 +179,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructRecord "generics_bounds::Triangle" [ ("length", α0); ("height", α1) ]) in
     let* _ :=
       let* α0 :=
-        M.get_function "generics_bounds::print_debug" [ Ty.path "generics_bounds::Rectangle" ] in
+        M.get_function "generics_bounds::print_debug" [ Ty.path "generics_bounds::Rectangle" ] [] in
       let* α1 := M.call_closure α0 [ rectangle ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Area: ") in
@@ -197,13 +199,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "f64" ] in
+                [ Ty.path "f64" ]
+                [] in
             let* α7 :=
               M.get_trait_method
                 "generics_bounds::HasArea"
                 (Ty.path "generics_bounds::Rectangle")
                 []
+                []
                 "area"
+                []
                 [] in
             let* α8 := M.call_closure α7 [ rectangle ] in
             let* α9 := M.alloc α8 in

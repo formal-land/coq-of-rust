@@ -19,8 +19,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "") in
@@ -34,7 +34,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_debug"
-                  [ Ty.apply (Ty.path "core::option::Option") [ T ] ] in
+                  [ Ty.apply (Ty.path "core::option::Option") [ T ] [] ]
+                  [] in
               let* α7 := M.read self in
               let* α8 := M.alloc (Value.StructTuple "core::option::Option::Some" [ α7 ]) in
               let* α9 := M.call_closure α6 [ α8 ] in
@@ -71,17 +72,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* vec :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α5 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 3 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 :=
             M.alloc
@@ -100,9 +107,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "generics_where_clauses::PrintInOption"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
+          []
           []
           "print_in_option"
+          []
           [] in
       let* α1 := M.read vec in
       let* α2 := M.call_closure α0 [ α1 ] in

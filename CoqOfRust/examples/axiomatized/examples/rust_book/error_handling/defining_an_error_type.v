@@ -35,10 +35,11 @@ End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "defining_an_error_type::Result") [ T ]) =
+  (Ty.apply (Ty.path "defining_an_error_type::Result") [ T ] []) =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [ T; Ty.path "defining_an_error_type::DoubleError" ]).
+      [ T; Ty.path "defining_an_error_type::DoubleError" ]
+      []).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".

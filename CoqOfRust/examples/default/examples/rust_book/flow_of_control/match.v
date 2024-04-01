@@ -38,8 +38,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* number := M.alloc (Value.Integer Integer.I32 13) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Tell me about ") in
@@ -53,7 +53,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 := M.call_closure α6 [ number ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -70,9 +71,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "One!
@@ -118,9 +123,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   match γ with
                   | [] =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          []
+                          [ Value.Bool true ] in
                       let* α4 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "This is a prime
@@ -135,9 +144,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   end));
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "A teen
@@ -150,9 +163,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Ain't special
@@ -184,8 +201,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.copy α0 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -200,13 +217,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α8 := M.call_closure α7 [ boolean ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α10 := M.call_closure α9 [ binary ] in
             let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
             M.pure (M.pointer_coercion α11) in

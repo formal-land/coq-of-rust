@@ -47,7 +47,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::convert::From"
           (Ty.path "from::Number")
           [ Ty.path "i32" ]
+          []
           "from"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 30 ] in
       M.alloc α1 in

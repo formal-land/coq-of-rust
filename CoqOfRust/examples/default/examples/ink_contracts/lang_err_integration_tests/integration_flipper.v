@@ -25,7 +25,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FlipperError") in
       M.call_closure α0 [ α1; α2 ]
@@ -67,8 +67,9 @@ Module Impl_integration_flipper_Flipper.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
+      let* α0 := M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] [] in
+      let* α1 :=
+        M.get_trait_method "core::default::Default" (Ty.path "bool") [] [] "default" [] [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
@@ -100,7 +101,7 @@ Module Impl_integration_flipper_Flipper.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
-                M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] in
+                M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] [] in
               let* α1 := M.call_closure α0 [ Value.Bool true ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]);
             fun γ =>
@@ -165,7 +166,8 @@ Module Impl_integration_flipper_Flipper.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "integration_flipper::Flipper") "flip" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "integration_flipper::Flipper") "flip" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in

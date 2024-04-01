@@ -21,15 +21,19 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::try_trait::Try"
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]
+            [])
+          []
           []
           "branch"
+          []
           [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "std::fs::File")
           "open"
-          [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ] in
+          [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] [] ]
+          [] in
       let* α2 := M.read path in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -50,13 +54,17 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::ops::try_trait::FromResidual"
                   (Ty.apply
                     (Ty.path "core::result::Result")
-                    [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ])
+                    [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ]
+                    [])
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
                       [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error" ]
+                      []
                   ]
+                  []
                   "from_residual"
+                  []
                   [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
@@ -75,11 +83,11 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.copy α6 in
     let* s :=
-      let* α0 := M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
+      let* α0 := M.get_associated_function (Ty.path "alloc::string::String") "new" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 :=
-      M.get_trait_method "std::io::Read" (Ty.path "std::fs::File") [] "read_to_string" [] in
+      M.get_trait_method "std::io::Read" (Ty.path "std::fs::File") [] [] "read_to_string" [] [] in
     let* α1 := M.call_closure α0 [ f; s ] in
     let* α2 := M.alloc α1 in
     let* α0 :=
@@ -118,15 +126,19 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::try_trait::Try"
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]
+            [])
+          []
           []
           "branch"
+          []
           [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "std::fs::File")
           "create"
-          [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ] in
+          [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] [] ]
+          [] in
       let* α2 := M.read path in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -147,13 +159,17 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::ops::try_trait::FromResidual"
                   (Ty.apply
                     (Ty.path "core::result::Result")
-                    [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+                    [])
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
                       [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error" ]
+                      []
                   ]
+                  []
                   "from_residual"
+                  []
                   [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
@@ -171,8 +187,9 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
               M.pure val
           ] in
       M.copy α6 in
-    let* α0 := M.get_trait_method "std::io::Write" (Ty.path "std::fs::File") [] "write_all" [] in
-    let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
+    let* α0 :=
+      M.get_trait_method "std::io::Write" (Ty.path "std::fs::File") [] [] "write_all" [] [] in
+    let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" [] [ Value.Bool true ] in
     let* α2 := M.read s in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.call_closure α0 [ f; α3 ] in
@@ -197,10 +214,11 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
       M.get_associated_function
         (Ty.path "std::fs::OpenOptions")
         "open"
-        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ] in
-    let* α1 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "write" [] in
-    let* α2 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" [] in
-    let* α3 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] in
+        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] [] ]
+        [] in
+    let* α1 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "write" [] [] in
+    let* α2 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" [] [] in
+    let* α3 := M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" [] [] in
     let* α4 := M.call_closure α3 [] in
     let* α5 := M.alloc α4 in
     let* α6 := M.call_closure α2 [ α5; Value.Bool true ] in
@@ -294,8 +312,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`mkdir a`
@@ -308,7 +331,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 :=
-        M.get_function "std::fs::create_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        M.get_function "std::fs::create_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] in
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -319,8 +342,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "! ") in
@@ -334,9 +358,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "std::io::error::ErrorKind" ] in
+                      [ Ty.path "std::io::error::ErrorKind" ]
+                      [] in
                   let* α7 :=
-                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] in
+                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] [] in
                   let* α8 := M.call_closure α7 [ why ] in
                   let* α9 := M.alloc α8 in
                   let* α10 := M.call_closure α6 [ α9 ] in
@@ -352,8 +377,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`echo hello > a/b.txt`
@@ -369,12 +399,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+            [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap_or_else"
-          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
-      let* α1 := M.get_function "filesystem_operations::echo" [] in
+          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+          [] in
+      let* α1 := M.get_function "filesystem_operations::echo" [] [] in
       let* α2 := M.read (mk_str "hello") in
-      let* α3 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
+      let* α3 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] [] in
       let* α4 := M.read (mk_str "a/b.txt") in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.call_closure α1 [ α2; α5 ] in
@@ -395,11 +427,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* why := M.copy γ in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -414,11 +447,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_debug"
-                                    [ Ty.path "std::io::error::ErrorKind" ] in
+                                    [ Ty.path "std::io::error::ErrorKind" ]
+                                    [] in
                                 let* α7 :=
                                   M.get_associated_function
                                     (Ty.path "std::io::error::Error")
                                     "kind"
+                                    []
                                     [] in
                                 let* α8 := M.call_closure α7 [ why ] in
                                 let* α9 := M.alloc α8 in
@@ -438,8 +473,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α7 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`mkdir -p a/c/d`
@@ -455,11 +495,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+            [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap_or_else"
-          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
+          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+          [] in
       let* α1 :=
-        M.get_function "std::fs::create_dir_all" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        M.get_function
+          "std::fs::create_dir_all"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+          [] in
       let* α2 := M.read (mk_str "a/c/d") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 :=
@@ -479,11 +524,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* why := M.copy γ in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -498,11 +544,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_debug"
-                                    [ Ty.path "std::io::error::ErrorKind" ] in
+                                    [ Ty.path "std::io::error::ErrorKind" ]
+                                    [] in
                                 let* α7 :=
                                   M.get_associated_function
                                     (Ty.path "std::io::error::Error")
                                     "kind"
+                                    []
                                     [] in
                                 let* α8 := M.call_closure α7 [ why ] in
                                 let* α9 := M.alloc α8 in
@@ -522,8 +570,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`touch a/c/e.txt`
@@ -539,11 +592,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+            [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap_or_else"
-          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
-      let* α1 := M.get_function "filesystem_operations::touch" [] in
-      let* α2 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
+          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+          [] in
+      let* α1 := M.get_function "filesystem_operations::touch" [] [] in
+      let* α2 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] [] in
       let* α3 := M.read (mk_str "a/c/e.txt") in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.call_closure α1 [ α4 ] in
@@ -564,11 +619,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* why := M.copy γ in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -583,11 +639,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_debug"
-                                    [ Ty.path "std::io::error::ErrorKind" ] in
+                                    [ Ty.path "std::io::error::ErrorKind" ]
+                                    [] in
                                 let* α7 :=
                                   M.get_associated_function
                                     (Ty.path "std::io::error::Error")
                                     "kind"
+                                    []
                                     [] in
                                 let* α8 := M.call_closure α7 [ why ] in
                                 let* α9 := M.alloc α8 in
@@ -607,8 +665,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α6 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`ln -s ../b.txt a/c/b.txt`
@@ -636,16 +699,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.apply
                     (Ty.path "core::result::Result")
-                    [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+                    [])
                   "unwrap_or_else"
-                  [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
+                  [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+                  [] in
               let* α1 :=
                 M.get_function
                   "std::os::unix::fs::symlink"
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                  ] in
+                    Ty.apply (Ty.path "&") [ Ty.path "str" ] [];
+                    Ty.apply (Ty.path "&") [ Ty.path "str" ] []
+                  ]
+                  [] in
               let* α2 := M.read (mk_str "../b.txt") in
               let* α3 := M.read (mk_str "a/c/b.txt") in
               let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -666,11 +732,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 let* why := M.copy γ in
                                 let* _ :=
                                   let* _ :=
-                                    let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                    let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                                     let* α1 :=
                                       M.get_associated_function
                                         (Ty.path "core::fmt::Arguments")
                                         "new_v1"
+                                        []
                                         [] in
                                     let* α5 :=
                                       (* Unsize *)
@@ -685,11 +752,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function
                                             (Ty.path "core::fmt::rt::Argument")
                                             "new_debug"
-                                            [ Ty.path "std::io::error::ErrorKind" ] in
+                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                            [] in
                                         let* α7 :=
                                           M.get_associated_function
                                             (Ty.path "std::io::error::Error")
                                             "kind"
+                                            []
                                             [] in
                                         let* α8 := M.call_closure α7 [ why ] in
                                         let* α9 := M.alloc α8 in
@@ -712,8 +781,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`cat a/c/b.txt`
@@ -725,8 +799,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "filesystem_operations::cat" [] in
-      let* α1 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
+      let* α0 := M.get_function "filesystem_operations::cat" [] [] in
+      let* α1 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] [] in
       let* α2 := M.read (mk_str "a/c/b.txt") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -738,8 +812,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "! ") in
@@ -753,9 +828,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "std::io::error::ErrorKind" ] in
+                      [ Ty.path "std::io::error::ErrorKind" ]
+                      [] in
                   let* α7 :=
-                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] in
+                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] [] in
                   let* α8 := M.call_closure α7 [ why ] in
                   let* α9 := M.alloc α8 in
                   let* α10 := M.call_closure α6 [ α9 ] in
@@ -769,8 +845,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* s := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "> ") in
@@ -784,7 +861,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "alloc::string::String" ] in
+                      [ Ty.path "alloc::string::String" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ s ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -795,8 +873,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`ls a`
@@ -808,7 +891,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "std::fs::read_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α0 :=
+        M.get_function "std::fs::read_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] in
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -819,8 +903,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "! ") in
@@ -834,9 +919,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug"
-                      [ Ty.path "std::io::error::ErrorKind" ] in
+                      [ Ty.path "std::io::error::ErrorKind" ]
+                      [] in
                   let* α7 :=
-                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] in
+                    M.get_associated_function (Ty.path "std::io::error::Error") "kind" [] [] in
                   let* α8 := M.call_closure α7 [ why ] in
                   let* α9 := M.alloc α8 in
                   let* α10 := M.call_closure α6 [ α9 ] in
@@ -854,7 +940,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::collect::IntoIterator"
                 (Ty.path "std::fs::ReadDir")
                 []
+                []
                 "into_iter"
+                []
                 [] in
             let* α1 := M.read paths in
             let* α2 := M.call_closure α0 [ α1 ] in
@@ -872,7 +960,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::iter::traits::iterator::Iterator"
                             (Ty.path "std::fs::ReadDir")
                             []
+                            []
                             "next"
+                            []
                             [] in
                         let* α1 := M.call_closure α0 [ iter ] in
                         let* α2 := M.alloc α1 in
@@ -893,11 +983,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* path := M.copy γ0_0 in
                               let* _ :=
                                 let* _ :=
-                                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                                  let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::Arguments")
                                       "new_v1"
+                                      []
                                       [] in
                                   let* α5 :=
                                     (* Unsize *)
@@ -912,11 +1003,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function
                                           (Ty.path "core::fmt::rt::Argument")
                                           "new_debug"
-                                          [ Ty.path "std::path::PathBuf" ] in
+                                          [ Ty.path "std::path::PathBuf" ]
+                                          [] in
                                       let* α7 :=
                                         M.get_associated_function
                                           (Ty.path "std::fs::DirEntry")
                                           "path"
+                                          []
                                           [] in
                                       let* α8 :=
                                         M.get_associated_function
@@ -925,8 +1018,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             [
                                               Ty.path "std::fs::DirEntry";
                                               Ty.path "std::io::error::Error"
-                                            ])
+                                            ]
+                                            [])
                                           "unwrap"
+                                          []
                                           [] in
                                       let* α9 := M.read path in
                                       let* α10 := M.call_closure α8 [ α9 ] in
@@ -948,8 +1043,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`rm a/c/e.txt`
@@ -965,11 +1065,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+            [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap_or_else"
-          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
+          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+          [] in
       let* α1 :=
-        M.get_function "std::fs::remove_file" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        M.get_function "std::fs::remove_file" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] in
       let* α2 := M.read (mk_str "a/c/e.txt") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 :=
@@ -989,11 +1091,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* why := M.copy γ in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -1008,11 +1111,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_debug"
-                                    [ Ty.path "std::io::error::ErrorKind" ] in
+                                    [ Ty.path "std::io::error::ErrorKind" ]
+                                    [] in
                                 let* α7 :=
                                   M.get_associated_function
                                     (Ty.path "std::io::error::Error")
                                     "kind"
+                                    []
                                     [] in
                                 let* α8 := M.call_closure α7 [ why ] in
                                 let* α9 := M.alloc α8 in
@@ -1032,8 +1137,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`rmdir a/c/d`
@@ -1049,11 +1159,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+            [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap_or_else"
-          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ] in
+          [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+          [] in
       let* α1 :=
-        M.get_function "std::fs::remove_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        M.get_function "std::fs::remove_dir" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ] [] in
       let* α2 := M.read (mk_str "a/c/d") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 :=
@@ -1073,11 +1185,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* why := M.copy γ in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -1092,11 +1205,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_debug"
-                                    [ Ty.path "std::io::error::ErrorKind" ] in
+                                    [ Ty.path "std::io::error::ErrorKind" ]
+                                    [] in
                                 let* α7 :=
                                   M.get_associated_function
                                     (Ty.path "std::io::error::Error")
                                     "kind"
+                                    []
                                     [] in
                                 let* α8 := M.call_closure α7 [ why ] in
                                 let* α9 := M.alloc α8 in

@@ -86,8 +86,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "What color is it?
@@ -104,9 +109,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Red!
@@ -119,9 +128,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Blue!
@@ -134,9 +147,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Green!
@@ -158,8 +175,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* g := M.copy γ0_1 in
             let* b := M.copy γ0_2 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Red: ") in
@@ -175,19 +193,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α9 := M.call_closure α8 [ r ] in
                   let* α10 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α11 := M.call_closure α10 [ g ] in
                   let* α12 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α13 := M.call_closure α12 [ b ] in
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
@@ -206,8 +227,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* s := M.copy γ0_1 in
             let* v := M.copy γ0_2 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Hue: ") in
@@ -223,19 +245,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α9 := M.call_closure α8 [ h ] in
                   let* α10 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α11 := M.call_closure α10 [ s ] in
                   let* α12 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α13 := M.call_closure α12 [ v ] in
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
@@ -254,8 +279,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* s := M.copy γ0_1 in
             let* l := M.copy γ0_2 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Hue: ") in
@@ -271,19 +297,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α9 := M.call_closure α8 [ h ] in
                   let* α10 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α11 := M.call_closure α10 [ s ] in
                   let* α12 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α13 := M.call_closure α12 [ l ] in
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
@@ -302,8 +331,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* m := M.copy γ0_1 in
             let* y := M.copy γ0_2 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Cyan: ") in
@@ -319,19 +349,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α9 := M.call_closure α8 [ c ] in
                   let* α10 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α11 := M.call_closure α10 [ m ] in
                   let* α12 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α13 := M.call_closure α12 [ y ] in
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
@@ -365,8 +398,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* y := M.copy γ0_2 in
             let* k := M.copy γ0_3 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α8 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Cyan: ") in
@@ -383,25 +417,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α10 := M.call_closure α9 [ c ] in
                   let* α11 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α12 := M.call_closure α11 [ m ] in
                   let* α13 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α14 := M.call_closure α13 [ y ] in
                   let* α15 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "u32" ] in
+                      [ Ty.path "u32" ]
+                      [] in
                   let* α16 := M.call_closure α15 [ k ] in
                   let* α17 := M.alloc (Value.Array [ α10; α12; α14; α16 ]) in
                   M.pure (M.pointer_coercion α17) in

@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -63,7 +64,9 @@ End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "call_builder::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* Enum LangError *)
 (* {
@@ -97,7 +100,16 @@ Module Impl_call_builder_Selector.
           unimplemented!()
       }
   *)
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ bytes ] =>
+      let* bytes := M.alloc bytes in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_call_builder_Selector.
@@ -144,7 +156,9 @@ Module Impl_call_builder_CallBuilderTest.
           "core::default::Default"
           (Ty.path "call_builder::CallBuilderTest")
           []
+          []
           "default"
+          []
           [] in
       M.call_closure α0 []
     | _, _ => M.impossible
@@ -178,7 +192,7 @@ Module Impl_call_builder_CallBuilderTest.
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       let* result :=
-        let* α0 := M.get_function "core::panicking::panic" [] in
+        let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -199,8 +213,9 @@ Module Impl_call_builder_CallBuilderTest.
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-              let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "core::panicking::panic_fmt" [] [ Value.Bool true ] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 :=
@@ -212,7 +227,7 @@ Module Impl_call_builder_CallBuilderTest.
               let* α8 :=
                 (* Unsize *)
                   let* α5 :=
-                    M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] in
+                    M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] [] in
                   let* α6 := M.call_closure α5 [] in
                   let* α7 := M.alloc α6 in
                   M.pure (M.pointer_coercion α7) in

@@ -12,7 +12,7 @@ Definition cos (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ z ] =>
     let* z := M.alloc z in
-    let* α0 := M.get_function "foreign_function_interface::ccosf" [] in
+    let* α0 := M.get_function "foreign_function_interface::ccosf" [] [] in
     let* α1 := M.read z in
     M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
@@ -41,14 +41,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructRecord "foreign_function_interface::Complex" [ ("re", α0); ("im", α1) ]) in
     let* z_sqrt :=
-      let* α0 := M.get_function "foreign_function_interface::csqrtf" [] in
+      let* α0 := M.get_function "foreign_function_interface::csqrtf" [] [] in
       let* α1 := M.read z in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "the square root of ") in
@@ -63,13 +63,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "foreign_function_interface::Complex" ] in
+                [ Ty.path "foreign_function_interface::Complex" ]
+                [] in
             let* α8 := M.call_closure α7 [ z ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "foreign_function_interface::Complex" ] in
+                [ Ty.path "foreign_function_interface::Complex" ]
+                [] in
             let* α10 := M.call_closure α9 [ z_sqrt ] in
             let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
             M.pure (M.pointer_coercion α11) in
@@ -79,8 +81,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "cos(") in
@@ -95,14 +97,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "foreign_function_interface::Complex" ] in
+                [ Ty.path "foreign_function_interface::Complex" ]
+                [] in
             let* α8 := M.call_closure α7 [ z ] in
             let* α9 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "foreign_function_interface::Complex" ] in
-            let* α10 := M.get_function "foreign_function_interface::cos" [] in
+                [ Ty.path "foreign_function_interface::Complex" ]
+                [] in
+            let* α10 := M.get_function "foreign_function_interface::cos" [] [] in
             let* α11 := M.read z in
             let* α12 := M.call_closure α10 [ α11 ] in
             let* α13 := M.alloc α12 in
@@ -190,9 +194,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
-                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] [] in
               let* α1 := M.read f in
-              let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α2 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "") in
@@ -206,7 +211,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "f32" ] in
+                      [ Ty.path "f32" ]
+                      [] in
                   let* α9 := M.read self in
                   let* α10 :=
                     M.call_closure
@@ -216,7 +222,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "f32" ] in
+                      [ Ty.path "f32" ]
+                      [] in
                   let* α12 := M.read self in
                   let* α13 :=
                     M.read
@@ -231,9 +238,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               M.alloc α20;
             fun γ =>
               let* α0 :=
-                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] [] in
               let* α1 := M.read f in
-              let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α2 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α7 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "") in
@@ -247,7 +255,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "f32" ] in
+                      [ Ty.path "f32" ]
+                      [] in
                   let* α9 := M.read self in
                   let* α10 :=
                     M.call_closure
@@ -257,7 +266,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "f32" ] in
+                      [ Ty.path "f32" ]
+                      [] in
                   let* α12 := M.read self in
                   let* α13 :=
                     M.call_closure

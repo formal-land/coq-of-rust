@@ -30,8 +30,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* borrow1 := M.alloc i in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "borrow1: ") in
@@ -45,7 +45,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                  [] in
               let* α7 := M.call_closure α6 [ borrow1 ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in
@@ -57,8 +58,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* borrow2 := M.alloc i in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "borrow2: ") in
@@ -72,7 +73,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ borrow2 ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in

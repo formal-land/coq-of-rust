@@ -71,7 +71,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "trait_incrementer::Incrementer") "inc_by" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "trait_incrementer::Incrementer") "inc_by" [] [] in
       let* α1 := M.read self in
       M.call_closure α0 [ α1; Value.Integer Integer.U64 1 ]
     | _, _ => M.impossible

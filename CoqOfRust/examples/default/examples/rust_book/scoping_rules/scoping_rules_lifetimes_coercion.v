@@ -14,9 +14,11 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::ops::arith::Mul"
-        (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
-        [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+        (Ty.apply (Ty.path "&") [ Ty.path "i32" ] [])
+        [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+        []
         "mul"
+        []
         [] in
     let* α1 := M.read first in
     let* α2 := M.read second in
@@ -58,8 +60,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* second := M.alloc (Value.Integer Integer.I32 3) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "The product is ") in
@@ -73,8 +75,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "i32" ] in
-              let* α7 := M.get_function "scoping_rules_lifetimes_coercion::multiply" [] in
+                  [ Ty.path "i32" ]
+                  [] in
+              let* α7 := M.get_function "scoping_rules_lifetimes_coercion::multiply" [] [] in
               let* α8 := M.call_closure α7 [ first; second ] in
               let* α9 := M.alloc α8 in
               let* α10 := M.call_closure α6 [ α9 ] in
@@ -86,8 +89,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "") in
@@ -101,8 +104,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
-              let* α7 := M.get_function "scoping_rules_lifetimes_coercion::choose_first" [] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                  [] in
+              let* α7 := M.get_function "scoping_rules_lifetimes_coercion::choose_first" [] [] in
               let* α8 := M.call_closure α7 [ first; second ] in
               let* α9 := M.alloc α8 in
               let* α10 := M.call_closure α6 [ α9 ] in

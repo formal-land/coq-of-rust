@@ -1,5 +1,6 @@
 use crate::env::*;
 use crate::path::*;
+use crate::thir_expression::compile_const;
 use crate::ty::*;
 use rustc_middle::ty::GenericArgKind;
 use rustc_span::def_id::DefId;
@@ -45,31 +46,46 @@ pub(crate) fn compile_type<'a>(
         }
         TyKind::Adt(adt_def, substs) => {
             let path = compile_def_id(env, adt_def.did());
-            let args = substs
+            let tys = substs
                 .iter()
                 .filter_map(|subst| match &subst.unpack() {
                     GenericArgKind::Type(ty) => Some(compile_type(env, generics, ty)),
                     _ => None,
                 })
                 .collect();
+            let consts = substs
+                .iter()
+                .filter_map(|subst| match &subst.unpack() {
+                    GenericArgKind::Const(constant) => Some(crate::thir_expression::compile_const(
+                        env,
+                        &rustc_span::DUMMY_SP,
+                        constant,
+                    )),
+                    _ => None,
+                })
+                .collect();
+
             Rc::new(CoqType::Application {
                 func: Rc::new(CoqType::Path {
                     path: Rc::new(path),
                 }),
-                args,
+                tys,
+                consts,
             })
         }
         TyKind::Foreign(def_id) => Rc::new(CoqType::Path {
             path: Rc::new(compile_def_id(env, *def_id)),
         }),
         TyKind::Str => CoqType::path(&["str"]),
-        TyKind::Array(ty, _) => Rc::new(CoqType::Application {
+        TyKind::Array(ty, length) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
-            args: vec![compile_type(env, generics, ty)],
+            tys: vec![compile_type(env, generics, ty)],
+            consts: vec![compile_const(env, &rustc_span::DUMMY_SP, length)],
         }),
         TyKind::Slice(ty) => Rc::new(CoqType::Application {
             func: CoqType::path(&["slice"]),
-            args: vec![compile_type(env, generics, ty)],
+            tys: vec![compile_type(env, generics, ty)],
+            consts: vec![],
         }),
         TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) => {
             let ptr_name = match mutbl {
@@ -79,7 +95,8 @@ pub(crate) fn compile_type<'a>(
 
             Rc::new(CoqType::Application {
                 func: CoqType::path(&[ptr_name]),
-                args: vec![compile_type(env, generics, ty)],
+                tys: vec![compile_type(env, generics, ty)],
+                consts: vec![],
             })
         }
         TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, generics, ty)),

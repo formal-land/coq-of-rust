@@ -129,12 +129,12 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
   {
     name := "Length";
     ty_params := [ "Unit" ];
-    fields := [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ] ];
+    fields := [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ] [] ];
   } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ] [].
   
   (*
   Debug
@@ -146,7 +146,11 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field2_finish" [] in
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field2_finish"
+          []
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Length") in
       let* α4 :=
@@ -183,7 +187,7 @@ End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_L
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ] [].
   
   (*
   Clone
@@ -193,7 +197,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "f64") [] "clone" [] in
+      let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "f64") [] [] "clone" [] [] in
       let* α1 := M.read self in
       let* α2 :=
         M.call_closure
@@ -207,9 +211,11 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       let* α3 :=
         M.get_trait_method
           "core::clone::Clone"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ] [])
+          []
           []
           "clone"
+          []
           [] in
       let* α4 := M.read self in
       let* α5 :=
@@ -237,7 +243,7 @@ End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ] [].
   
   Axiom Implements :
     forall (Unit : Ty.t),
@@ -250,13 +256,13 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ] [].
   
   (*
       type Output = Length<Unit>;
   *)
   Definition _Output (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ] [].
   
   (*
       fn add(self, rhs: Length<Unit>) -> Length<Unit> {
@@ -344,13 +350,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::arith::Add"
           (Ty.apply
             (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ])
+            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+            [])
           [
             Ty.apply
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+              []
           ]
+          []
           "add"
+          []
           [] in
       let* α1 := M.read one_foot in
       let* α2 := M.read one_foot in
@@ -362,13 +372,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::arith::Add"
           (Ty.apply
             (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ])
+            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+            [])
           [
             Ty.apply
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+              []
           ]
+          []
           "add"
+          []
           [] in
       let* α1 := M.read one_meter in
       let* α2 := M.read one_meter in
@@ -376,8 +390,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α3 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "one foot + one_foot = ") in
@@ -391,7 +405,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "f64" ] in
+                [ Ty.path "f64" ]
+                [] in
             let* α7 :=
               M.call_closure
                 α6
@@ -409,8 +424,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "one meter + one_meter = ") in
@@ -424,7 +439,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "f64" ] in
+                [ Ty.path "f64" ]
+                [] in
             let* α7 :=
               M.call_closure
                 α6

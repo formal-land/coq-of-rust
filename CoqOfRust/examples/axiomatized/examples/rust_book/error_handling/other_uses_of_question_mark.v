@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "other_uses_of_question_mark::Result") [ T ]) =
+  (Ty.apply (Ty.path "other_uses_of_question_mark::Result") [ T ] []) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [
@@ -11,7 +11,9 @@ Axiom Result :
         Ty.apply
           (Ty.path "alloc::boxed::Box")
           [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
-      ]).
+          []
+      ]
+      []).
 
 (* StructTuple
   {

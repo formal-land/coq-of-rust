@@ -22,7 +22,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
       let* self := M.alloc self in
       let* state := M.alloc state in
       let* _ :=
-        let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u32") [] "hash" [ __H ] in
+        let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u32") [] [] "hash" [ __H ] [] in
         let* α1 := M.read self in
         let* α2 := M.read state in
         let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "id"; α2 ] in
@@ -33,13 +33,15 @@ Module Impl_core_hash_Hash_for_hash_Person.
             "core::hash::Hash"
             (Ty.path "alloc::string::String")
             []
+            []
             "hash"
-            [ __H ] in
+            [ __H ]
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read state in
         let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "name"; α2 ] in
         M.alloc α3 in
-      let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u64") [] "hash" [ __H ] in
+      let* α0 := M.get_trait_method "core::hash::Hash" (Ty.path "u64") [] [] "hash" [ __H ] [] in
       let* α1 := M.read self in
       let* α2 := M.read state in
       let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "phone"; α2 ] in
@@ -68,7 +70,8 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* s :=
-      let* α0 := M.get_associated_function (Ty.path "std::hash::random::DefaultHasher") "new" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "std::hash::random::DefaultHasher") "new" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
@@ -77,8 +80,10 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
           "core::hash::Hash"
           T
           []
+          []
           "hash"
-          [ Ty.path "std::hash::random::DefaultHasher" ] in
+          [ Ty.path "std::hash::random::DefaultHasher" ]
+          [] in
       let* α1 := M.read t in
       let* α2 := M.call_closure α0 [ α1; s ] in
       M.alloc α2 in
@@ -87,7 +92,9 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
         "core::hash::Hasher"
         (Ty.path "std::hash::random::DefaultHasher")
         []
+        []
         "finish"
+        []
         [] in
     let* α1 := M.call_closure α0 [ s ] in
     let* α0 := M.alloc α1 in
@@ -115,7 +122,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* person1 :=
-      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] [] "to_string" [] [] in
       let* α1 := M.read (mk_str "Janet") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -127,7 +135,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* person2 :=
-      let* α0 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] [] "to_string" [] [] in
       let* α1 := M.read (mk_str "Bob") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -145,16 +154,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let* γ :=
-              let* α0 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
+              let* α0 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] [] in
               let* α1 := M.call_closure α0 [ person1 ] in
-              let* α2 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
+              let* α2 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] [] in
               let* α3 := M.call_closure α2 [ person2 ] in
               let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
               M.pure (M.use α4) in
             let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
             let* α1 :=
               M.read
                 (mk_str "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in

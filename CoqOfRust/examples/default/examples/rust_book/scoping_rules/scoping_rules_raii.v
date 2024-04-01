@@ -15,8 +15,12 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
     let* _box1 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
       M.alloc α1 in
@@ -53,8 +57,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _box2 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
@@ -64,8 +72,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              [])
             "new"
+            []
             [] in
         let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 4 ] in
         M.alloc α1 in
@@ -73,9 +83,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α1 :=
       M.call_closure
@@ -97,9 +109,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -115,7 +129,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* _ :=
-                        let* α0 := M.get_function "scoping_rules_raii::create_box" [] in
+                        let* α0 := M.get_function "scoping_rules_raii::create_box" [] [] in
                         let* α1 := M.call_closure α0 [] in
                         M.alloc α1 in
                       M.alloc (Value.Tuple [])

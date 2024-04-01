@@ -36,7 +36,7 @@ Module checked.
       | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
-        let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+        let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
         let* α1 := M.read f in
         let* α2 :=
           M.match_operator
@@ -72,7 +72,8 @@ Module checked.
     (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]).
+        [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]
+        []).
   
   (*
       fn div(x: f64, y: f64) -> MathResult {
@@ -156,7 +157,7 @@ Module checked.
                       []
                   ]);
             fun γ =>
-              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
+              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] [] in
               let* α1 := M.read x in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
@@ -201,7 +202,7 @@ Module checked.
                       []
                   ]);
             fun γ =>
-              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
+              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] [] in
               let* α1 := M.read x in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
@@ -232,11 +233,14 @@ Module checked.
             "core::ops::try_trait::Try"
             (Ty.apply
               (Ty.path "core::result::Result")
-              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ])
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]
+              [])
+            []
             []
             "branch"
+            []
             [] in
-        let* α1 := M.get_function "result_chaining_with_question_mark::checked::div" [] in
+        let* α1 := M.get_function "result_chaining_with_question_mark::checked::div" [] [] in
         let* α2 := M.read x in
         let* α3 := M.read y in
         let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -261,7 +265,8 @@ Module checked.
                       [
                         Ty.path "f64";
                         Ty.path "result_chaining_with_question_mark::checked::MathError"
-                      ])
+                      ]
+                      [])
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -269,8 +274,11 @@ Module checked.
                           Ty.path "core::convert::Infallible";
                           Ty.path "result_chaining_with_question_mark::checked::MathError"
                         ]
+                        []
                     ]
+                    []
                     "from_residual"
+                    []
                     [] in
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
@@ -294,11 +302,14 @@ Module checked.
             "core::ops::try_trait::Try"
             (Ty.apply
               (Ty.path "core::result::Result")
-              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ])
+              [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]
+              [])
+            []
             []
             "branch"
+            []
             [] in
-        let* α1 := M.get_function "result_chaining_with_question_mark::checked::ln" [] in
+        let* α1 := M.get_function "result_chaining_with_question_mark::checked::ln" [] [] in
         let* α2 := M.read ratio in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -322,7 +333,8 @@ Module checked.
                       [
                         Ty.path "f64";
                         Ty.path "result_chaining_with_question_mark::checked::MathError"
-                      ])
+                      ]
+                      [])
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -330,8 +342,11 @@ Module checked.
                           Ty.path "core::convert::Infallible";
                           Ty.path "result_chaining_with_question_mark::checked::MathError"
                         ]
+                        []
                     ]
+                    []
                     "from_residual"
+                    []
                     [] in
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
@@ -349,7 +364,7 @@ Module checked.
                 M.pure val
             ] in
         M.copy α6 in
-      let* α0 := M.get_function "result_chaining_with_question_mark::checked::sqrt" [] in
+      let* α0 := M.get_function "result_chaining_with_question_mark::checked::sqrt" [] [] in
       let* α1 := M.read ln in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α0 := M.alloc α2 in
@@ -377,7 +392,7 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.get_function "result_chaining_with_question_mark::checked::op_" [] in
+      let* α0 := M.get_function "result_chaining_with_question_mark::checked::op_" [] [] in
       let* α1 := M.read x in
       let* α2 := M.read y in
       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -393,7 +408,8 @@ Module checked.
               let* α0 :=
                 M.get_function
                   "core::panicking::panic_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [ Value.Bool true ] in
               let* α1 :=
                 M.match_operator
                   why
@@ -413,8 +429,9 @@ Module checked.
               let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* value := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "") in
@@ -428,7 +445,8 @@ Module checked.
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "f64" ] in
+                        [ Ty.path "f64" ]
+                        [] in
                     let* α7 := M.call_closure α6 [ value ] in
                     let* α8 := M.alloc (Value.Array [ α7 ]) in
                     M.pure (M.pointer_coercion α8) in
@@ -451,7 +469,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "result_chaining_with_question_mark::checked::op" [] in
+      let* α0 := M.get_function "result_chaining_with_question_mark::checked::op" [] [] in
       let* α1 := M.read UnsupportedLiteral in
       let* α2 := M.read UnsupportedLiteral in
       let* α3 := M.call_closure α0 [ α1; α2 ] in

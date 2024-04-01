@@ -12,7 +12,8 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] [] "to_owned" [] [] in
       let* α1 := M.read (mk_str "Fn") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -28,9 +29,9 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "This is a: ") in
@@ -44,7 +45,8 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display"
-                              [ Ty.path "alloc::string::String" ] in
+                              [ Ty.path "alloc::string::String" ]
+                              [] in
                           let* α7 := M.call_closure α6 [ text ] in
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
@@ -75,7 +77,8 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] [] "to_owned" [] [] in
       let* α1 := M.read (mk_str "FnMut") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -91,9 +94,9 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "This is a: ") in
@@ -107,7 +110,8 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display"
-                              [ Ty.path "alloc::string::String" ] in
+                              [ Ty.path "alloc::string::String" ]
+                              [] in
                           let* α7 := M.call_closure α6 [ text ] in
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
@@ -138,7 +142,8 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* text :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] [] "to_owned" [] [] in
       let* α1 := M.read (mk_str "FnOnce") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -154,9 +159,9 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "This is a: ") in
@@ -170,7 +175,8 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display"
-                              [ Ty.path "alloc::string::String" ] in
+                              [ Ty.path "alloc::string::String" ]
+                              [] in
                           let* α7 := M.call_closure α6 [ text ] in
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
@@ -205,20 +211,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* fn_plain :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fn" [] in
+      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fn" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* fn_mut :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnmut" [] in
+      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnmut" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* fn_once :=
-      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnonce" [] in
+      let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnonce" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_trait_method "core::ops::function::Fn" Ty.associated [ Ty.tuple [] ] "call" [] in
+        M.get_trait_method
+          "core::ops::function::Fn"
+          Ty.associated
+          [ Ty.tuple [] ]
+          []
+          "call"
+          []
+          [] in
       let* α1 := M.call_closure α0 [ fn_plain; Value.Tuple [] ] in
       M.alloc α1 in
     let* _ :=
@@ -227,7 +240,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::FnMut"
           Ty.associated
           [ Ty.tuple [] ]
+          []
           "call_mut"
+          []
           [] in
       let* α1 := M.call_closure α0 [ fn_mut; Value.Tuple [] ] in
       M.alloc α1 in
@@ -237,7 +252,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::FnOnce"
           Ty.associated
           [ Ty.tuple [] ]
+          []
           "call_once"
+          []
           [] in
       let* α1 := M.read fn_once in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in

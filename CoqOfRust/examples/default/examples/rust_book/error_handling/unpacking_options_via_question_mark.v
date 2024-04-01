@@ -7,7 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] []);
         ("number", Ty.path "u32")
       ];
   } *)
@@ -54,7 +54,8 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
         ("phone_number",
           Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
+            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
+            [])
       ];
   } *)
 
@@ -97,7 +98,8 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
         ("job",
           Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::Job" ])
+            [ Ty.path "unpacking_options_via_question_mark::Job" ]
+            [])
       ];
   } *)
 
@@ -121,18 +123,24 @@ Module Impl_unpacking_options_via_question_mark_Person.
           "core::ops::try_trait::Try"
           (Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
+            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
+            [])
+          []
           []
           "branch"
+          []
           [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
           (Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::Job" ])
+            [ Ty.path "unpacking_options_via_question_mark::Job" ]
+            [])
+          []
           []
           "branch"
+          []
           [] in
       let* α2 := M.read self in
       let* α3 :=
@@ -153,13 +161,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] [])
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
                       [ Ty.path "core::convert::Infallible" ]
+                      []
                   ]
+                  []
                   "from_residual"
+                  []
                   [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
@@ -198,13 +209,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] [])
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
                       [ Ty.path "core::convert::Infallible" ]
+                      []
                   ]
+                  []
                   "from_residual"
+                  []
                   [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
@@ -284,6 +298,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "unpacking_options_via_question_mark::Person")
           "work_phone_area_code"
+          []
           [] in
       let* α1 := M.call_closure α0 [ p ] in
       let* α2 := M.alloc α1 in
@@ -307,9 +322,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] [])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] [] ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -324,9 +341,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
-                      ] in
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] [];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

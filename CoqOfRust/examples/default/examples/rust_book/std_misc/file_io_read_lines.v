@@ -18,14 +18,17 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]
+            [])
           "unwrap"
+          []
           [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "std::fs::File")
           "open"
-          [ Ty.path "alloc::string::String" ] in
+          [ Ty.path "alloc::string::String" ]
+          [] in
       let* α2 := M.read filename in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -33,14 +36,23 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "std::io::BufRead"
-        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
+        (Ty.apply
+          (Ty.path "std::io::buffered::bufreader::BufReader")
+          [ Ty.path "std::fs::File" ]
+          [])
+        []
         []
         "lines"
+        []
         [] in
     let* α1 :=
       M.get_associated_function
-        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
+        (Ty.apply
+          (Ty.path "std::io::buffered::bufreader::BufReader")
+          [ Ty.path "std::fs::File" ]
+          [])
         "new"
+        []
         [] in
     let* α2 := M.read file in
     let* α3 := M.call_closure α1 [ α2 ] in
@@ -65,8 +77,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* lines :=
-      let* α0 := M.get_function "file_io_read_lines::read_lines" [] in
-      let* α1 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+      let* α0 := M.get_function "file_io_read_lines::read_lines" [] [] in
+      let* α1 :=
+        M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] [] "to_string" [] [] in
       let* α2 := M.read (mk_str "./hosts") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -76,10 +89,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         "core::iter::traits::collect::IntoIterator"
         (Ty.apply
           (Ty.path "std::io::Lines")
-          [ Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ]
-          ])
+          [
+            Ty.apply
+              (Ty.path "std::io::buffered::bufreader::BufReader")
+              [ Ty.path "std::fs::File" ]
+              []
+          ]
+          [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α1 := M.read lines in
     let* α2 := M.call_closure α0 [ α1 ] in
@@ -101,9 +121,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply
                           (Ty.path "std::io::buffered::bufreader::BufReader")
                           [ Ty.path "std::fs::File" ]
-                      ])
+                          []
+                      ]
+                      [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -121,11 +145,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* line := M.copy γ0_0 in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" [] in
+                          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
                               "new_v1"
+                              []
                               [] in
                           let* α5 :=
                             (* Unsize *)
@@ -140,7 +165,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::rt::Argument")
                                   "new_display"
-                                  [ Ty.path "alloc::string::String" ] in
+                                  [ Ty.path "alloc::string::String" ]
+                                  [] in
                               let* α7 :=
                                 M.get_associated_function
                                   (Ty.apply
@@ -148,8 +174,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.path "alloc::string::String";
                                       Ty.path "std::io::error::Error"
-                                    ])
+                                    ]
+                                    [])
                                   "unwrap"
+                                  []
                                   [] in
                               let* α8 := M.read line in
                               let* α9 := M.call_closure α7 [ α8 ] in

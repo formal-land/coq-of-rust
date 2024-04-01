@@ -24,7 +24,8 @@ Module Impl_generics_implementation_Val.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "generics_implementation::GenVal") [ T ].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_implementation::GenVal") [ T ] [].
   
   Parameter value : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
