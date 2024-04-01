@@ -22,49 +22,39 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
       let func2 := M.alloc (| func2 |) in
       let foo := M.alloc (| foo |) in
       M.read (|
-          let x := M.copy (| func |) in
-          let _ :=
-            M.assign (|
-                x,
-                M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", impl_Default, [], "default", []
-                      |),
-                    []
-                  |)
-              |) in
-          let y := M.copy (| func2 |) in
-          let _ :=
-            M.assign (|
-                y,
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::default::Default",
-                        impl_Default'1,
-                        [],
-                        "default",
-                        []
-                      |),
-                    []
-                  |)
-              |) in
-          let z := M.copy (| foo |) in
-          let b :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [
-                            Ty.tuple [ impl_Default; impl_Default'1; A ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        []
-                      |),
-                    [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let x := M.copy (| func |) in
+        let _ :=
+          M.assign (|
+            x,
+            M.call_closure (|
+              M.get_trait_method (| "core::default::Default", impl_Default, [], "default", [] |),
+              []
+            |)
+          |) in
+        let y := M.copy (| func2 |) in
+        let _ :=
+          M.assign (|
+            y,
+            M.call_closure (|
+              M.get_trait_method (| "core::default::Default", impl_Default'1, [], "default", [] |),
+              []
+            |)
+          |) in
+        let z := M.copy (| foo |) in
+        let b :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

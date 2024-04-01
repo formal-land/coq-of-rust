@@ -21,25 +21,25 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (|
-                Ty.path "core::fmt::Formatter",
-                "debug_struct_field1_finish",
-                []
-              |),
-            [
-              M.read (| f |);
-              M.read (| mk_str "Borrowed" |);
-              M.read (| mk_str "x" |);
-              (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "scoping_rules_lifetimes_traits::Borrowed"
-                        "x"
-                    |))
-            ]
-          |)))
+          M.get_associated_function (|
+            Ty.path "core::fmt::Formatter",
+            "debug_struct_field1_finish",
+            []
+          |),
+          [
+            M.read (| f |);
+            M.read (| mk_str "Borrowed" |);
+            M.read (| mk_str "x" |);
+            (* Unsize *)
+            M.pointer_coercion
+              (M.alloc (|
+                M.get_struct_record_field
+                  (M.read (| self |))
+                  "scoping_rules_lifetimes_traits::Borrowed"
+                  "x"
+              |))
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -88,64 +88,56 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let b :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "scoping_rules_lifetimes_traits::Borrowed",
-                        [],
-                        "default",
-                        []
-                      |),
-                    []
-                  |)
-              |) in
+        let b :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "scoping_rules_lifetimes_traits::Borrowed",
+                [],
+                "default",
+                []
+              |),
+              []
+            |)
+          |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "b is " |); M.read (| mk_str "
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "b is " |); M.read (| mk_str "
 " |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.path
-                                                      "scoping_rules_lifetimes_traits::Borrowed"
-                                                  ]
-                                                |),
-                                              [ b ]
-                                            |)
-                                        ]
-                                    |))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
+                                |),
+                                [ b ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

@@ -88,50 +88,50 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "generics_functions::reg_fn", [] |),
-                    [
-                      Value.StructTuple
-                        "generics_functions::S"
-                        [ Value.StructTuple "generics_functions::A" [] ]
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "generics_functions::gen_spec_t", [] |),
-                    [
-                      Value.StructTuple
-                        "generics_functions::SGen"
-                        [ Value.StructTuple "generics_functions::A" [] ]
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "generics_functions::gen_spec_i32", [] |),
-                    [ Value.StructTuple "generics_functions::SGen" [ Value.Integer Integer.I32 6 ] ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
-                    [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
-                    [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "generics_functions::reg_fn", [] |),
+              [
+                Value.StructTuple
+                  "generics_functions::S"
+                  [ Value.StructTuple "generics_functions::A" [] ]
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "generics_functions::gen_spec_t", [] |),
+              [
+                Value.StructTuple
+                  "generics_functions::SGen"
+                  [ Value.StructTuple "generics_functions::A" [] ]
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "generics_functions::gen_spec_i32", [] |),
+              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer Integer.I32 6 ] ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
+              [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "generics_functions::generic", [ Ty.path "char" ] |),
+              [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

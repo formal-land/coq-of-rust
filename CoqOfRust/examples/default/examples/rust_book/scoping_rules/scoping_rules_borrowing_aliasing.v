@@ -70,353 +70,337 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let point :=
+        let point :=
+          M.alloc (|
+            Value.StructRecord
+              "scoping_rules_borrowing_aliasing::Point"
+              [
+                ("x", Value.Integer Integer.I32 0);
+                ("y", Value.Integer Integer.I32 0);
+                ("z", Value.Integer Integer.I32 0)
+              ]
+          |) in
+        let borrowed_point := M.alloc (| point |) in
+        let another_borrow := M.alloc (| point |) in
+        let _ :=
+          let _ :=
             M.alloc (|
-                Value.StructRecord
-                  "scoping_rules_borrowing_aliasing::Point"
-                  [
-                    ("x", Value.Integer Integer.I32 0);
-                    ("y", Value.Integer Integer.I32 0);
-                    ("z", Value.Integer Integer.I32 0)
-                  ]
-              |) in
-          let borrowed_point := M.alloc (| point |) in
-          let another_borrow := M.alloc (| point |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Point has coordinates: (" |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ")
+                              M.read (| mk_str "Point has coordinates: (" |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ")
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| borrowed_point |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "x"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| another_borrow |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "y"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  point
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "z"
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| borrowed_point |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "x"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| another_borrow |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "y"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    point
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "z"
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Point has coordinates: (" |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ")
+                              M.read (| mk_str "Point has coordinates: (" |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ")
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| borrowed_point |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "x"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| another_borrow |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "y"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  point
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "z"
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let mutable_borrow := M.alloc (| point |) in
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| borrowed_point |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "x"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| another_borrow |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "y"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    point
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "z"
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let mutable_borrow := M.alloc (| point |) in
+        let _ :=
+          M.assign (|
+            M.get_struct_record_field
+              (M.read (| mutable_borrow |))
+              "scoping_rules_borrowing_aliasing::Point"
+              "x",
+            Value.Integer Integer.I32 5
+          |) in
+        let _ :=
+          M.assign (|
+            M.get_struct_record_field
+              (M.read (| mutable_borrow |))
+              "scoping_rules_borrowing_aliasing::Point"
+              "y",
+            Value.Integer Integer.I32 2
+          |) in
+        let _ :=
+          M.assign (|
+            M.get_struct_record_field
+              (M.read (| mutable_borrow |))
+              "scoping_rules_borrowing_aliasing::Point"
+              "z",
+            Value.Integer Integer.I32 1
+          |) in
+        let _ :=
           let _ :=
-            M.assign (|
-                M.get_struct_record_field
-                  (M.read (| mutable_borrow |))
-                  "scoping_rules_borrowing_aliasing::Point"
-                  "x",
-                Value.Integer Integer.I32 5
-              |) in
-          let _ :=
-            M.assign (|
-                M.get_struct_record_field
-                  (M.read (| mutable_borrow |))
-                  "scoping_rules_borrowing_aliasing::Point"
-                  "y",
-                Value.Integer Integer.I32 2
-              |) in
-          let _ :=
-            M.assign (|
-                M.get_struct_record_field
-                  (M.read (| mutable_borrow |))
-                  "scoping_rules_borrowing_aliasing::Point"
-                  "z",
-                Value.Integer Integer.I32 1
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Point has coordinates: (" |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ")
+                              M.read (| mk_str "Point has coordinates: (" |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ")
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| mutable_borrow |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "x"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| mutable_borrow |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "y"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| mutable_borrow |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "z"
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let new_borrowed_point := M.alloc (| point |) in
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| mutable_borrow |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "x"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| mutable_borrow |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "y"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| mutable_borrow |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "z"
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let new_borrowed_point := M.alloc (| point |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Point now has coordinates: (" |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str ")
+                              M.read (| mk_str "Point now has coordinates: (" |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str ")
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| new_borrowed_point |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "x"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| new_borrowed_point |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "y"
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.get_struct_record_field
-                                                  (M.read (| new_borrowed_point |))
-                                                  "scoping_rules_borrowing_aliasing::Point"
-                                                  "z"
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| new_borrowed_point |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "x"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| new_borrowed_point |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "y"
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| new_borrowed_point |))
+                                    "scoping_rules_borrowing_aliasing::Point"
+                                    "z"
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

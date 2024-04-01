@@ -33,216 +33,207 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let person :=
-            M.alloc (|
-                Value.StructRecord
-                  "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-                  [
-                    ("name",
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::convert::From",
-                              Ty.path "alloc::string::String",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                              "from",
-                              []
-                            |),
-                          [ M.read (| mk_str "Alice" |) ]
-                        |));
-                    ("age",
-                      M.call_closure (|
-                          M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              "new",
-                              []
-                            |),
-                          [ Value.Integer Integer.U8 20 ]
-                        |))
-                  ]
-              |) in
-          M.match_operator (|
-              person,
+        let person :=
+          M.alloc (|
+            Value.StructRecord
+              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
-                          γ,
-                          "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                          "name"
-                        |) in
-                    let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
-                          γ,
-                          "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                          "age"
-                        |) in
-                    let name := M.copy (| γ0_0 |) in
-                    let age := M.alloc (| γ0_1 |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "The person's age is " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "alloc::boxed::Box")
-                                                                    [
-                                                                      Ty.path "u8";
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                          |),
-                                                        [ age ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "The person's name is " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [ Ty.path "alloc::string::String" ]
-                                                          |),
-                                                        [ name ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                        mk_str
-                                                          "The person's age from person struct is "
-                                                      |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                [
-                                                                  Ty.path "u8";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                          |),
-                                                        [
-                                                          M.get_struct_record_field
-                                                            person
-                                                            "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-                                                            "age"
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    M.alloc (| Value.Tuple [] |)))
+                ("name",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "alloc::string::String",
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                      "from",
+                      []
+                    |),
+                    [ M.read (| mk_str "Alice" |) ]
+                  |));
+                ("age",
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                      "new",
+                      []
+                    |),
+                    [ Value.Integer Integer.U8 20 ]
+                  |))
               ]
-            |)
-        |)))
+          |) in
+        M.match_operator (|
+          person,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_record_field_or_break_match (|
+                    γ,
+                    "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                    "name"
+                  |) in
+                let γ0_1 :=
+                  M.get_struct_record_field_or_break_match (|
+                    γ,
+                    "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                    "age"
+                  |) in
+                let name := M.copy (| γ0_0 |) in
+                let age := M.alloc (| γ0_1 |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| mk_str "The person's age is " |);
+                                      M.read (| mk_str "
+" |)
+                                    ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                          ]
+                                        |),
+                                        [ age ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| mk_str "The person's name is " |);
+                                      M.read (| mk_str "
+" |)
+                                    ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [ name ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| mk_str "The person's age from person struct is " |);
+                                      M.read (| mk_str "
+" |)
+                                    ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ]
+                                        |),
+                                        [
+                                          M.get_struct_record_field
+                                            person
+                                            "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                                            "age"
+                                        ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -273,32 +264,32 @@ Module main.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-              M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_struct_field2_finish",
-                  []
-                |),
-              [
-                M.read (| f |);
-                M.read (| mk_str "Person" |);
-                M.read (| mk_str "name" |);
-                (* Unsize *)
-                  M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-                      "name");
-                M.read (| mk_str "age" |);
-                (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-                          "age"
-                      |))
-              ]
-            |)))
+            M.get_associated_function (|
+              Ty.path "core::fmt::Formatter",
+              "debug_struct_field2_finish",
+              []
+            |),
+            [
+              M.read (| f |);
+              M.read (| mk_str "Person" |);
+              M.read (| mk_str "name" |);
+              (* Unsize *)
+              M.pointer_coercion
+                (M.get_struct_record_field
+                  (M.read (| self |))
+                  "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                  "name");
+              M.read (| mk_str "age" |);
+              (* Unsize *)
+              M.pointer_coercion
+                (M.alloc (|
+                  M.get_struct_record_field
+                    (M.read (| self |))
+                    "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                    "age"
+                |))
+            ]
+          |)))
       | _, _ => M.impossible
       end.
     

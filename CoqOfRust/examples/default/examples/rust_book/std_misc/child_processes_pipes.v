@@ -45,388 +45,363 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let process :=
-            M.copy (|
-                M.match_operator (|
-                    M.alloc (|
+        let process :=
+          M.copy (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "std::process::Command",
+                        "stdout",
+                        [ Ty.path "std::process::Stdio" ]
+                      |),
+                      [
                         M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "std::process::Command",
-                                "spawn",
+                          M.get_associated_function (|
+                            Ty.path "std::process::Command",
+                            "stdin",
+                            [ Ty.path "std::process::Stdio" ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "std::process::Command",
+                                  "new",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ M.read (| mk_str "wc" |) ]
+                              |)
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "std::process::Stdio",
+                                "piped",
                                 []
                               |),
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "std::process::Command",
-                                      "stdout",
-                                      [ Ty.path "std::process::Stdio" ]
-                                    |),
-                                  [
-                                    M.call_closure (|
-                                        M.get_associated_function (|
-                                            Ty.path "std::process::Command",
-                                            "stdin",
-                                            [ Ty.path "std::process::Stdio" ]
-                                          |),
-                                        [
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_associated_function (|
-                                                      Ty.path "std::process::Command",
-                                                      "new",
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                    |),
-                                                  [ M.read (| mk_str "wc" |) ]
-                                                |)
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "std::process::Stdio",
-                                                  "piped",
-                                                  []
-                                                |),
-                                              []
-                                            |)
-                                        ]
-                                      |);
-                                    M.call_closure (|
-                                        M.get_associated_function (|
-                                            Ty.path "std::process::Stdio",
-                                            "piped",
-                                            []
-                                          |),
-                                        []
-                                      |)
-                                  ]
-                                |)
-                            ]
-                          |)
-                      |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                          let why := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                              M.never_to_any (|
-                                  M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
-                                      [
-                                        M.call_closure (|
-                                            M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                []
-                                              |),
-                                            [
-                                              (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| mk_str "couldn't spawn wc: " |)
-                                                        ]
-                                                    |));
-                                              (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [ Ty.path "std::io::error::Error"
-                                                                  ]
-                                                                |),
-                                                              [ why ]
-                                                            |)
-                                                        ]
-                                                    |))
-                                            ]
-                                          |)
-                                      ]
-                                    |)
-                                |)
-                            |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                          let process := M.copy (| γ0_0 |) in
-                          process))
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_trait_method (|
-                            "std::io::Write",
-                            Ty.path "std::process::ChildStdin",
-                            [],
-                            "write_all",
+                              []
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "std::process::Stdio",
+                            "piped",
                             []
                           |),
-                        [
-                          M.alloc (|
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        [ Ty.path "std::process::ChildStdin" ],
-                                      "unwrap",
-                                      []
-                                    |),
-                                  [
-                                    M.read (|
-                                        M.get_struct_record_field
-                                          process
-                                          "std::process::Child"
-                                          "stdin"
-                                      |)
-                                  ]
-                                |)
-                            |);
-                          M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                              [
-                                M.read (|
-                                    M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |)
-                                      |)
-                                  |)
-                              ]
-                            |)
-                        ]
-                      |)
-                  |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                          |) in
-                      let why := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                          M.never_to_any (|
-                              M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
-                                  [
-                                    M.call_closure (|
-                                        M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            []
-                                          |),
-                                        [
-                                          (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                          mk_str "couldn't write to wc stdin: "
-                                                        |)
-                                                    ]
-                                                |));
-                                          (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                          M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "std::io::error::Error" ]
-                                                            |),
-                                                          [ why ]
-                                                        |)
-                                                    ]
-                                                |))
-                                        ]
-                                      |)
-                                  ]
-                                |)
-                            |)
-                        |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| mk_str "sent pangram to wc
-" |) ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          let s :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
-                    []
-                  |)
-              |) in
-          M.match_operator (|
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_trait_method (|
-                          "std::io::Read",
-                          Ty.path "std::process::ChildStdout",
-                          [],
-                          "read_to_string",
                           []
-                        |),
-                      [
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      [ Ty.path "std::process::ChildStdout" ],
-                                    "unwrap",
-                                    []
-                                  |),
-                                [
-                                  M.read (|
-                                      M.get_struct_record_field
-                                        process
-                                        "std::process::Child"
-                                        "stdout"
-                                    |)
-                                ]
-                              |)
-                          |);
-                        s
+                        |)
                       ]
                     |)
-                |),
+                  ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                        |) in
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::result::Result::Err",
+                        0
+                      |) in
                     let why := M.copy (| γ0_0 |) in
                     M.alloc (|
-                        M.never_to_any (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          [
                             M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                    Value.Array [ M.read (| mk_str "couldn't spawn wc: " |) ]
+                                  |));
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                    Value.Array
                                       [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| mk_str "couldn't read wc stdout: " |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [ Ty.path "std::io::error::Error" ]
-                                                          |),
-                                                        [ why ]
-                                                      |)
-                                                  ]
-                                              |))
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "std::io::error::Error" ]
+                                          |),
+                                          [ why ]
+                                        |)
                                       ]
-                                    |)
-                                ]
-                              |)
-                          |)
-                      |)));
+                                  |))
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                        |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [ M.read (| mk_str "wc responded with:
-" |) ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                      [ s ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let process := M.copy (| γ0_0 |) in
+                    process))
               ]
             |)
-        |)))
+          |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "std::io::Write",
+                  Ty.path "std::process::ChildStdin",
+                  [],
+                  "write_all",
+                  []
+                |),
+                [
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "std::process::ChildStdin" ],
+                        "unwrap",
+                        []
+                      |),
+                      [ M.read (| M.get_struct_record_field process "std::process::Child" "stdin" |)
+                      ]
+                    |)
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    [
+                      M.read (|
+                        M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |) |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let why := M.copy (| γ0_0 |) in
+                  M.alloc (|
+                    M.never_to_any (|
+                      M.call_closure (|
+                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "couldn't write to wc stdin: " |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "std::io::error::Error" ]
+                                        |),
+                                        [ why ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "sent pangram to wc
+" |) ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        let s :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              []
+            |)
+          |) in
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "std::io::Read",
+                Ty.path "std::process::ChildStdout",
+                [],
+                "read_to_string",
+                []
+              |),
+              [
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [ Ty.path "std::process::ChildStdout" ],
+                      "unwrap",
+                      []
+                    |),
+                    [ M.read (| M.get_struct_record_field process "std::process::Child" "stdout" |)
+                    ]
+                  |)
+                |);
+                s
+              ]
+            |)
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
+                let why := M.copy (| γ0_0 |) in
+                M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array [ M.read (| mk_str "couldn't read wc stdout: " |) ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "std::io::error::Error" ]
+                                      |),
+                                      [ why ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array [ M.read (| mk_str "wc responded with:
+" |) ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.

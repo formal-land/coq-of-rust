@@ -47,38 +47,38 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [
-              M.read (| f |);
-              M.read (|
-                  M.match_operator (|
-                      self,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            M.alloc (| M.read (| mk_str "Apple" |) |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            M.alloc (| M.read (| mk_str "Orange" |) |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            M.alloc (| M.read (| mk_str "Banana" |) |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            M.alloc (| M.read (| mk_str "Kiwi" |) |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            M.alloc (| M.read (| mk_str "Lemon" |) |)))
-                      ]
-                    |)
-                |)
-            ]
-          |)))
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          [
+            M.read (| f |);
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| M.read (| mk_str "Apple" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| M.read (| mk_str "Orange" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| M.read (| mk_str "Banana" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| M.read (| mk_str "Kiwi" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| M.read (| mk_str "Lemon" |) |)))
+                ]
+              |)
+            |)
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -116,221 +116,210 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let apple :=
-            M.alloc (|
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [ Value.StructTuple "unpacking_options_and_defaults_via_or_else::Fruit::Apple" []
-                  ]
-              |) in
-          let no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-          let get_kiwi_as_fallback :=
-            M.alloc (|
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.read (|
-                                      let _ :=
-                                        let _ :=
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_const",
-                                                            []
-                                                          |),
-                                                        [
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                          mk_str
-                                                                            "Providing kiwi as fallback
-"
-                                                                        |)
-                                                                    ]
-                                                                |))
-                                                        ]
-                                                      |)
-                                                  ]
-                                                |)
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |) in
-                                      M.alloc (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [
-                                              Value.StructTuple
-                                                "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
-                                                []
-                                            ]
-                                        |)
-                                    |)))
-                            ]
-                          |)
-                      | _ => M.impossible (||)
-                      end))
-              |) in
-          let get_lemon_as_fallback :=
-            M.alloc (|
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.read (|
-                                      let _ :=
-                                        let _ :=
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_const",
-                                                            []
-                                                          |),
-                                                        [
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                          mk_str
-                                                                            "Providing lemon as fallback
-"
-                                                                        |)
-                                                                    ]
-                                                                |))
-                                                        ]
-                                                      |)
-                                                  ]
-                                                |)
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |) in
-                                      M.alloc (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [
-                                              Value.StructTuple
-                                                "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
-                                                []
-                                            ]
-                                        |)
-                                    |)))
-                            ]
-                          |)
-                      | _ => M.impossible (||)
-                      end))
-              |) in
-          let first_available_fruit :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-                        "or_else",
-                        [
-                          Ty.function
-                            [ Ty.tuple [] ]
-                            (Ty.apply
-                              (Ty.path "core::option::Option")
-                              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                        ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
-                              "or_else",
-                              [
-                                Ty.function
-                                  [ Ty.tuple [] ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-                              ]
-                            |),
-                          [ M.read (| no_fruit |); M.read (| get_kiwi_as_fallback |) ]
-                        |);
-                      M.read (| get_lemon_as_fallback |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+        let apple :=
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              [ Value.StructTuple "unpacking_options_and_defaults_via_or_else::Fruit::Apple" [] ]
+          |) in
+        let no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let get_kiwi_as_fallback :=
+          M.alloc (|
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    M.match_operator (|
+                      M.alloc (| α0 |),
                       [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "first_available_fruit: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let _ :=
+                                let _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "std::io::stdio::_print", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            []
+                                          |),
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [
-                                                        Ty.path
-                                                          "unpacking_options_and_defaults_via_or_else::Fruit"
-                                                      ]
+                                                    M.read (|
+                                                      mk_str "Providing kiwi as fallback
+"
+                                                    |)
                                                   ]
-                                                |),
-                                              [ first_available_fruit ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
+                                              |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    Value.StructTuple
+                                      "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
+                                      []
+                                  ]
+                              |)
+                            |)))
                       ]
                     |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                  | _ => M.impossible (||)
+                  end))
+          |) in
+        let get_lemon_as_fallback :=
+          M.alloc (|
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let _ :=
+                                let _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "std::io::stdio::_print", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            []
+                                          |),
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      mk_str "Providing lemon as fallback
+"
+                                                    |)
+                                                  ]
+                                              |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |) in
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    Value.StructTuple
+                                      "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
+                                      []
+                                  ]
+                              |)
+                            |)))
+                      ]
+                    |)
+                  | _ => M.impossible (||)
+                  end))
+          |) in
+        let first_available_fruit :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+                "or_else",
+                [
+                  Ty.function
+                    [ Ty.tuple [] ]
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
+                ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
+                    "or_else",
+                    [
+                      Ty.function
+                        [ Ty.tuple [] ]
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
+                    ]
+                  |),
+                  [ M.read (| no_fruit |); M.read (| get_kiwi_as_fallback |) ]
+                |);
+                M.read (| get_lemon_as_fallback |)
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "first_available_fruit: " |); M.read (| mk_str "
+" |)
+                            ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit"
+                                      ]
+                                  ]
+                                |),
+                                [ first_available_fruit ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

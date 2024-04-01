@@ -22,12 +22,12 @@ Module main.
     | [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-            M.get_function (|
-                "std::panicking::begin_panic",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-              |),
-            [ M.read (| mk_str "This call never returns." |) ]
-          |)))
+          M.get_function (|
+            "std::panicking::begin_panic",
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+          |),
+          [ M.read (| mk_str "This call never returns." |) ]
+        |)))
     | _, _ => M.impossible
     end.
 End main.

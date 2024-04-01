@@ -22,10 +22,9 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
           "constructors_return_value::AccountId"
           [
             M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
-                  |),
-                []
-              |)
+              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              []
+            |)
           ]))
     | _, _ => M.impossible
     end.
@@ -50,11 +49,11 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |)
-          |)))
+          M.match_operator (|
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -139,9 +138,9 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| mk_str "ConstructorError" |) ]
-          |)))
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          [ M.read (| f |); M.read (| mk_str "ConstructorError" |) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -185,9 +184,9 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
       (let return_flags := M.alloc (| return_flags |) in
       let return_value := M.alloc (| return_value |) in
       M.call_closure (|
-          M.get_function (| "core::panicking::panic", [] |),
-          [ M.read (| mk_str "not implemented" |) ]
-        |)))
+        M.get_function (| "core::panicking::panic", [] |),
+        [ M.read (| mk_str "not implemented" |) ]
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -227,37 +226,37 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let succeed := M.alloc (| succeed |) in
         M.read (|
-            M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use succeed in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "constructors_return_value::ConstructorsReturnValue",
-                                      "new",
-                                      []
-                                    |),
-                                  [ Value.Bool true ]
-                                |)
-                            ]
-                        |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [ Value.StructTuple "constructors_return_value::ConstructorError" [] ]
-                        |)))
-                ]
-              |)
-          |)))
+          M.match_operator (|
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.use succeed in
+                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "constructors_return_value::ConstructorsReturnValue",
+                            "new",
+                            []
+                          |),
+                          [ Value.Bool true ]
+                        |)
+                      ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      [ Value.StructTuple "constructors_return_value::ConstructorError" [] ]
+                  |)))
+            ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -277,46 +276,46 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let _init_value := M.alloc (| _init_value |) in
         M.never_to_any (|
-            M.call_closure (|
-                M.get_function (|
-                    "constructors_return_value::return_value",
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "constructors_return_value::AccountId";
-                          Ty.path "constructors_return_value::LangError"
-                        ]
-                    ]
-                  |),
-                [
-                  M.call_closure (|
-                      M.get_associated_function (|
-                          Ty.path "constructors_return_value::ReturnFlags",
-                          "new_with_reverted",
-                          []
-                        |),
-                      [ Value.Bool true ]
-                    |);
-                  M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                              M.get_trait_method (|
-                                  "core::convert::From",
-                                  Ty.path "constructors_return_value::AccountId",
-                                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                                  "from",
-                                  []
-                                |),
-                              [ repeat (Value.Integer Integer.U8 0) 32 ]
-                            |)
-                        ]
+          M.call_closure (|
+            M.get_function (|
+              "constructors_return_value::return_value",
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [
+                    Ty.path "constructors_return_value::AccountId";
+                    Ty.path "constructors_return_value::LangError"
+                  ]
+              ]
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "constructors_return_value::ReturnFlags",
+                  "new_with_reverted",
+                  []
+                |),
+                [ Value.Bool true ]
+              |);
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "constructors_return_value::AccountId",
+                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                        "from",
+                        []
+                      |),
+                      [ repeat (Value.Integer Integer.U8 0) 32 ]
                     |)
-                ]
+                  ]
               |)
-          |)))
+            ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -342,84 +341,83 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         M.read (|
-            let value :=
-              M.copy (|
-                  M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.use init_value in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                                Value.StructTuple
-                                  "core::result::Result::Ok"
-                                  [
-                                    Value.StructTuple
-                                      "core::result::Result::Ok"
-                                      [
-                                        M.call_closure (|
-                                            M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "constructors_return_value::AccountId",
-                                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                                                "from",
-                                                []
-                                              |),
-                                            [ repeat (Value.Integer Integer.U8 0) 32 ]
-                                          |)
-                                      ]
-                                  ]
-                              |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    Value.StructTuple
-                                      "constructors_return_value::LangError::CouldNotReadInput"
-                                      []
-                                  ]
-                              |)))
-                      ]
-                    |)
-                |) in
-            M.alloc (|
-                M.never_to_any (|
-                    M.call_closure (|
-                        M.get_function (|
-                            "constructors_return_value::return_value",
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "constructors_return_value::AccountId";
-                                      Ty.path "constructors_return_value::ConstructorError"
-                                    ];
-                                  Ty.path "constructors_return_value::LangError"
-                                ]
-                            ]
-                          |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "constructors_return_value::ReturnFlags",
-                                  "new_with_reverted",
-                                  []
-                                |),
-                              [ Value.Bool true ]
-                            |);
-                          value
-                        ]
-                      |)
-                  |)
+          let value :=
+            M.copy (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use init_value in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    Ty.path "constructors_return_value::AccountId",
+                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                    "from",
+                                    []
+                                  |),
+                                  [ repeat (Value.Integer Integer.U8 0) 32 ]
+                                |)
+                              ]
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            Value.StructTuple
+                              "constructors_return_value::LangError::CouldNotReadInput"
+                              []
+                          ]
+                      |)))
+                ]
               |)
-          |)))
+            |) in
+          M.alloc (|
+            M.never_to_any (|
+              M.call_closure (|
+                M.get_function (|
+                  "constructors_return_value::return_value",
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "constructors_return_value::AccountId";
+                            Ty.path "constructors_return_value::ConstructorError"
+                          ];
+                        Ty.path "constructors_return_value::LangError"
+                      ]
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "constructors_return_value::ReturnFlags",
+                      "new_with_reverted",
+                      []
+                    |),
+                    [ Value.Bool true ]
+                  |);
+                  value
+                ]
+              |)
+            |)
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -437,11 +435,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.get_struct_record_field
-              (M.read (| self |))
-              "constructors_return_value::ConstructorsReturnValue"
-              "value"
-          |)))
+          M.get_struct_record_field
+            (M.read (| self |))
+            "constructors_return_value::ConstructorsReturnValue"
+            "value"
+        |)))
     | _, _ => M.impossible
     end.
   

@@ -12,59 +12,52 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let boxed_i32 := M.alloc (| boxed_i32 |) in
       M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Destroying box that contains " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "Destroying box that contains " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      [
-                                                        Ty.path "i32";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ boxed_i32 ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                                  ]
+                                |),
+                                [ boxed_i32 ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -79,52 +72,45 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let borrowed_i32 := M.alloc (| borrowed_i32 |) in
       M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "This int is: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "This int is: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |),
-                                              [ borrowed_i32 ]
-                                            |)
-                                        ]
-                                    |))
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                |),
+                                [ borrowed_i32 ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -162,52 +148,52 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let boxed_i32 :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        "new",
-                        []
-                      |),
-                    [ Value.Integer Integer.I32 5 ]
-                  |)
-              |) in
-          let stacked_i32 := M.alloc (| Value.Integer Integer.I32 6 |) in
+        let boxed_i32 :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              [ Value.Integer Integer.I32 5 ]
+            |)
+          |) in
+        let stacked_i32 := M.alloc (| Value.Integer Integer.I32 6 |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+              [ M.read (| boxed_i32 |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+              [ stacked_i32 ]
+            |)
+          |) in
+        let _ :=
+          let _ref_to_i32 := M.alloc (| M.read (| boxed_i32 |) |) in
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
-                    [ M.read (| boxed_i32 |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
-                    [ stacked_i32 ]
-                  |)
-              |) in
-          let _ :=
-            let _ref_to_i32 := M.alloc (| M.read (| boxed_i32 |) |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
-                      [ M.read (| _ref_to_i32 |) ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_borrowing::eat_box_i32", [] |),
-                    [ M.read (| boxed_i32 |) ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+              M.call_closure (|
+                M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+                [ M.read (| _ref_to_i32 |) ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_borrowing::eat_box_i32", [] |),
+              [ M.read (| boxed_i32 |) ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

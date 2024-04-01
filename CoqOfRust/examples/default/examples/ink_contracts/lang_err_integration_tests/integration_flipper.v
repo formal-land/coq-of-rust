@@ -27,9 +27,9 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| mk_str "FlipperError" |) ]
-          |)))
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          [ M.read (| f |); M.read (| mk_str "FlipperError" |) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -70,15 +70,14 @@ Module Impl_integration_flipper_Flipper.
     | [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-            M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [] |),
-            [
-              M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
-                    |),
-                  []
-                |)
-            ]
-          |)))
+          M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [] |),
+          [
+            M.call_closure (|
+              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              []
+            |)
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -99,37 +98,37 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let succeed := M.alloc (| succeed |) in
         M.read (|
-            M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use succeed in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "integration_flipper::Flipper",
-                                      "new",
-                                      []
-                                    |),
-                                  [ Value.Bool true ]
-                                |)
-                            ]
-                        |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [ Value.StructTuple "integration_flipper::FlipperError" [] ]
-                        |)))
-                ]
-              |)
-          |)))
+          M.match_operator (|
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.use succeed in
+                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "integration_flipper::Flipper",
+                            "new",
+                            []
+                          |),
+                          [ Value.Bool true ]
+                        |)
+                      ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      [ Value.StructTuple "integration_flipper::FlipperError" [] ]
+                  |)))
+            ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -146,22 +145,19 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.assign (|
+          let _ :=
+            M.assign (|
+              M.get_struct_record_field (M.read (| self |)) "integration_flipper::Flipper" "value",
+              UnOp.Pure.not
+                (M.read (|
                   M.get_struct_record_field
                     (M.read (| self |))
                     "integration_flipper::Flipper"
-                    "value",
-                  UnOp.Pure.not
-                    (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "integration_flipper::Flipper"
-                          "value"
-                      |))
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                    "value"
+                |))
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -178,8 +174,8 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.get_struct_record_field (M.read (| self |)) "integration_flipper::Flipper" "value"
-          |)))
+          M.get_struct_record_field (M.read (| self |)) "integration_flipper::Flipper" "value"
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -197,19 +193,15 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_associated_function (|
-                          Ty.path "integration_flipper::Flipper",
-                          "flip",
-                          []
-                        |),
-                      [ M.read (| self |) ]
-                    |)
-                |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
-          |)))
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "integration_flipper::Flipper", "flip", [] |),
+                [ M.read (| self |) ]
+              |)
+            |) in
+          M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+        |)))
     | _, _ => M.impossible
     end.
   

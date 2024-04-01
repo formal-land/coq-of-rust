@@ -11,33 +11,27 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "called `function()`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "called `function()`
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -52,34 +46,33 @@ Module cool.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
+          let _ :=
             let _ :=
-              let _ :=
-                M.alloc (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
                     M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                              [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [ M.read (| mk_str "called `cool::function()`
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        []
+                      |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array [ M.read (| mk_str "called `cool::function()`
 " |) ]
-                                      |))
-                              ]
-                            |)
-                        ]
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                          |))
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
 End cool.
@@ -95,34 +88,33 @@ Module my.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
+          let _ :=
             let _ :=
-              let _ :=
-                M.alloc (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
                     M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                              [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [ M.read (| mk_str "called `my::function()`
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        []
+                      |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array [ M.read (| mk_str "called `my::function()`
 " |) ]
-                                      |))
-                              ]
-                            |)
-                        ]
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                          |))
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -137,34 +129,33 @@ Module my.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
+            let _ :=
               let _ :=
-                let _ :=
-                  M.alloc (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "std::io::stdio::_print", [] |),
+                    [
                       M.call_closure (|
-                          M.get_function (| "std::io::stdio::_print", [] |),
-                          [
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.path "core::fmt::Arguments",
-                                    "new_const",
-                                    []
-                                  |),
-                                [
-                                  (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                          Value.Array
-                                            [ M.read (| mk_str "called `my::cool::function()`
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          []
+                        |),
+                        [
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.alloc (|
+                              Value.Array [ M.read (| mk_str "called `my::cool::function()`
 " |) ]
-                                        |))
-                                ]
-                              |)
-                          ]
-                        |)
-                    |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
+                            |))
+                        ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
       | _, _ => M.impossible
       end.
   End cool.
@@ -199,60 +190,54 @@ Module my.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
+          let _ :=
             let _ :=
-              let _ :=
-                M.alloc (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
                     M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                              [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| mk_str "called `my::indirect_call()`, that
-> "
-                                              |)
-                                          ]
-                                      |))
-                              ]
-                            |)
-                        ]
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
-                |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
-                |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "super_and_self::my::cool::function", [] |),
-                      []
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        []
+                      |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array
+                              [ M.read (| mk_str "called `my::indirect_call()`, that
+> " |) ]
+                          |))
+                      ]
                     |)
-                |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (| M.get_function (| "super_and_self::function", [] |), [] |)
-                |) in
-            let _ :=
-              M.alloc (|
-                  M.call_closure (| M.get_function (| "super_and_self::cool::function", [] |), [] |)
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
+            |) in
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
+            |) in
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "super_and_self::my::cool::function", [] |), [] |)
+            |) in
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "super_and_self::function", [] |), [] |)
+            |) in
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "super_and_self::cool::function", [] |), [] |)
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
 End my.
@@ -267,12 +252,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
-                M.call_closure (| M.get_function (| "super_and_self::my::indirect_call", [] |), []
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (|
+            M.call_closure (| M.get_function (| "super_and_self::my::indirect_call", [] |), [] |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

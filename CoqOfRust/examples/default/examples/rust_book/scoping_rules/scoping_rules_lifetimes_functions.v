@@ -12,52 +12,45 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "`print_one`: x is " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "`print_one`: x is " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |),
-                                              [ x ]
-                                            |)
-                                        ]
-                                    |))
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                |),
+                                [ x ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -72,11 +65,11 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-          let _ :=
-            let β := M.read (| x |) in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          let β := M.read (| x |) in
+          M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -92,61 +85,57 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
       (let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "`print_multi`: x is " |);
-                                          M.read (| mk_str ", y is " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "`print_multi`: x is " |);
+                              M.read (| mk_str ", y is " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |),
-                                              [ x ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |),
-                                              [ y ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                |),
+                                [ x ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                |),
+                                [ y ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -186,52 +175,52 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let x := M.alloc (| Value.Integer Integer.I32 7 |) in
-          let y := M.alloc (| Value.Integer Integer.I32 9 |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
-                    [ x ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [] |),
-                    [ x; y ]
-                  |)
-              |) in
-          let z :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [] |),
-                    [ x; y ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
-                    [ M.read (| z |) ]
-                  |)
-              |) in
-          let t := M.alloc (| Value.Integer Integer.I32 3 |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::add_one", [] |),
-                    [ t ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
-                    [ t ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let x := M.alloc (| Value.Integer Integer.I32 7 |) in
+        let y := M.alloc (| Value.Integer Integer.I32 9 |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              [ x ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [] |),
+              [ x; y ]
+            |)
+          |) in
+        let z :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [] |),
+              [ x; y ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              [ M.read (| z |) ]
+            |)
+          |) in
+        let t := M.alloc (| Value.Integer Integer.I32 3 |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::add_one", [] |),
+              [ t ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              [ t ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

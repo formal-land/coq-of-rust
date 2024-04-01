@@ -71,97 +71,92 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let x :=
-            M.alloc (|
-                Value.StructRecord
-                  "generics_implementation::Val"
-                  [ ("val", M.read (| UnsupportedLiteral |)) ]
-              |) in
-          let y :=
-            M.alloc (|
-                Value.StructRecord
-                  "generics_implementation::GenVal"
-                  [ ("gen_val", Value.Integer Integer.I32 3) ]
-              |) in
+        let x :=
+          M.alloc (|
+            Value.StructRecord
+              "generics_implementation::Val"
+              [ ("val", M.read (| UnsupportedLiteral |)) ]
+          |) in
+        let y :=
+          M.alloc (|
+            Value.StructRecord
+              "generics_implementation::GenVal"
+              [ ("gen_val", Value.Integer Integer.I32 3) ]
+          |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "" |);
-                                          M.read (| mk_str ", " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "" |);
+                              M.read (| mk_str ", " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "generics_implementation::Val",
-                                                            "value",
-                                                            []
-                                                          |),
-                                                        [ x ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "generics_implementation::GenVal")
-                                                              [ Ty.path "i32" ],
-                                                            "value",
-                                                            []
-                                                          |),
-                                                        [ y ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "generics_implementation::Val",
+                                        "value",
+                                        []
+                                      |),
+                                      [ x ]
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "generics_implementation::GenVal")
+                                          [ Ty.path "i32" ],
+                                        "value",
+                                        []
+                                      |),
+                                      [ y ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

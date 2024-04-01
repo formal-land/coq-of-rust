@@ -35,13 +35,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let x :=
-            M.alloc (|
-                Value.StructTuple
-                  "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-                  []
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let x :=
+          M.alloc (|
+            Value.StructTuple
+              "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+              []
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

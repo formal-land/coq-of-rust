@@ -45,15 +45,15 @@ Module Impl_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         let delta := M.alloc (| delta |) in
         M.read (|
-            let _ :=
-              let β :=
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "trait_incrementer::Incrementer"
-                  "value" in
-              M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            let β :=
+              M.get_struct_record_field
+                (M.read (| self |))
+                "trait_incrementer::Incrementer"
+                "value" in
+            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -74,9 +74,9 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
-            [ M.read (| self |); Value.Integer Integer.U64 1 ]
-          |)))
+          M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
+          [ M.read (| self |); Value.Integer Integer.U64 1 ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -91,8 +91,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.get_struct_record_field (M.read (| self |)) "trait_incrementer::Incrementer" "value"
-          |)))
+          M.get_struct_record_field (M.read (| self |)) "trait_incrementer::Incrementer" "value"
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -118,16 +118,16 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.assign (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "trait_incrementer::Incrementer"
-                    "value",
-                  Value.Integer Integer.U64 0
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            M.assign (|
+              M.get_struct_record_field
+                (M.read (| self |))
+                "trait_incrementer::Incrementer"
+                "value",
+              Value.Integer Integer.U64 0
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   

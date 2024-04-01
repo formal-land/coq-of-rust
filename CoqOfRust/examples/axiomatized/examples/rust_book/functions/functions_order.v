@@ -45,10 +45,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("some_trait_foo", InstanceField.Method some_trait_foo);
-          ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ].
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo);
+        ("some_trait_bar", InstanceField.Method some_trait_bar)
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -64,10 +64,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("some_trait_foo", InstanceField.Method some_trait_foo);
-          ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ].
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo);
+        ("some_trait_bar", InstanceField.Method some_trait_bar)
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Module inner_mod.

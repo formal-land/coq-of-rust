@@ -48,552 +48,509 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let pangram := M.copy (| mk_str "the quick brown fox jumps over the lazy dog" |) in
+        let pangram := M.copy (| mk_str "the quick brown fox jumps over the lazy dog" |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "Pangram: " |); M.read (| mk_str "
-" |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ pangram ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "Words in reverse
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.use
-              (M.match_operator (|
-                  M.alloc (|
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::iter::traits::collect::IntoIterator",
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::rev::Rev")
-                                [ Ty.path "core::str::iter::SplitWhitespace" ],
-                              [],
-                              "into_iter",
-                              []
-                            |),
-                          [
-                            M.call_closure (|
-                                M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Ty.path "core::str::iter::SplitWhitespace",
-                                    [],
-                                    "rev",
-                                    []
-                                  |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "str",
-                                          "split_whitespace",
-                                          []
-                                        |),
-                                      [ M.read (| pangram |) ]
-                                    |)
-                                ]
-                              |)
-                          ]
-                        |)
-                    |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                            ltac:(M.monadic
-                              (let _ :=
-                                M.match_operator (|
-                                    M.alloc (|
-                                        M.call_closure (|
-                                            M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::iter::adapters::rev::Rev")
-                                                  [ Ty.path "core::str::iter::SplitWhitespace" ],
-                                                [],
-                                                "next",
-                                                []
-                                              |),
-                                            [ iter ]
-                                          |)
-                                      |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                          let word := M.copy (| γ0_0 |) in
-                                          let _ :=
-                                            let _ :=
-                                              M.alloc (|
-                                                  M.call_closure (|
-                                                      M.get_function (| "std::io::stdio::_print", []
-                                                        |),
-                                                      [
-                                                        M.call_closure (|
-                                                            M.get_associated_function (|
-                                                                Ty.path "core::fmt::Arguments",
-                                                                "new_v1",
-                                                                []
-                                                              |),
-                                                            [
-                                                              (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (| mk_str "> " |);
-                                                                          M.read (| mk_str "
-" |)
-                                                                        ]
-                                                                    |));
-                                                              (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "str"
-                                                                                      ]
-                                                                                  ]
-                                                                                |),
-                                                                              [ word ]
-                                                                            |)
-                                                                        ]
-                                                                    |))
-                                                            ]
-                                                          |)
-                                                      ]
-                                                    |)
-                                                |) in
-                                            M.alloc (| Value.Tuple [] |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                  ]
-                |)) in
-          let chars :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.path "core::str::iter::Chars",
-                        [],
-                        "collect",
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            [ Ty.path "char"; Ty.path "alloc::alloc::Global" ]
-                        ]
-                      |),
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "chars", [] |),
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "Pangram: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ pangram ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "Words in reverse
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.use
+            (M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::collect::IntoIterator",
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::rev::Rev")
+                      [ Ty.path "core::str::iter::SplitWhitespace" ],
+                    [],
+                    "into_iter",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.path "core::str::iter::SplitWhitespace",
+                        [],
+                        "rev",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
                           [ M.read (| pangram |) ]
                         |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "char" ],
-                        "sort",
-                        []
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              "deref_mut",
-                              []
-                            |),
-                          [ chars ]
-                        |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
-                        "dedup",
-                        []
-                      |),
-                    [ chars ]
-                  |)
-              |) in
-          let string :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
-                    []
-                  |)
-              |) in
-          let _ :=
-            M.use
-              (M.match_operator (|
-                  M.alloc (|
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::iter::traits::collect::IntoIterator",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              "into_iter",
-                              []
-                            |),
-                          [ M.read (| chars |) ]
-                        |)
-                    |),
-                  [
-                    fun γ =>
+                      ]
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let iter := M.copy (| γ |) in
+                    M.loop (|
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                            ltac:(M.monadic
-                              (let _ :=
-                                M.match_operator (|
-                                    M.alloc (|
+                        (let _ :=
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::rev::Rev")
+                                    [ Ty.path "core::str::iter::SplitWhitespace" ],
+                                  [],
+                                  "next",
+                                  []
+                                |),
+                                [ iter ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.get_struct_tuple_field_or_break_match (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let word := M.copy (| γ0_0 |) in
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
                                         M.call_closure (|
-                                            M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                  [ Ty.path "char"; Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                "next",
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
                                                 []
                                               |),
-                                            [ iter ]
-                                          |)
-                                      |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                          let c := M.copy (| γ0_0 |) in
-                                          let _ :=
-                                            M.alloc (|
-                                                M.call_closure (|
-                                                    M.get_associated_function (|
-                                                        Ty.path "alloc::string::String",
-                                                        "push",
-                                                        []
-                                                      |),
-                                                    [ string; M.read (| c |) ]
-                                                  |)
-                                              |) in
-                                          let _ :=
-                                            M.alloc (|
-                                                M.call_closure (|
-                                                    M.get_associated_function (|
-                                                        Ty.path "alloc::string::String",
-                                                        "push_str",
-                                                        []
-                                                      |),
-                                                    [ string; M.read (| mk_str ", " |) ]
-                                                  |)
-                                              |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                  ]
-                |)) in
-          let chars_to_trim :=
-            M.alloc (|
-                (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |))
-              |) in
-          let trimmed_str :=
-            M.alloc (|
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "> " |);
+                                                        M.read (| mk_str "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                [ Ty.path "str" ]
+                                                            ]
+                                                          |),
+                                                          [ word ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)))
+                    |)))
+              ]
+            |)) in
+        let chars :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.path "core::str::iter::Chars",
+                [],
+                "collect",
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    [ Ty.path "char"; Ty.path "alloc::alloc::Global" ]
+                ]
+              |),
+              [
                 M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "str",
-                        "trim_matches",
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloc::string::String",
-                              [],
-                              "deref",
-                              []
+                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                  [ M.read (| pangram |) ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "slice") [ Ty.path "char" ],
+                "sort",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::DerefMut",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    "deref_mut",
+                    []
+                  |),
+                  [ chars ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
+                "dedup",
+                []
+              |),
+              [ chars ]
+            |)
+          |) in
+        let string :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              []
+            |)
+          |) in
+        let _ :=
+          M.use
+            (M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::collect::IntoIterator",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    "into_iter",
+                    []
+                  |),
+                  [ M.read (| chars |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let iter := M.copy (| γ |) in
+                    M.loop (|
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                    [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  "next",
+                                  []
+                                |),
+                                [ iter ]
+                              |)
                             |),
-                          [ string ]
-                        |);
-                      M.read (| chars_to_trim |)
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.get_struct_tuple_field_or_break_match (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let c := M.copy (| γ0_0 |) in
+                                  let _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push",
+                                          []
+                                        |),
+                                        [ string; M.read (| c |) ]
+                                      |)
+                                    |) in
+                                  let _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push_str",
+                                          []
+                                        |),
+                                        [ string; M.read (| mk_str ", " |) ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)))
+                    |)))
+              ]
+            |)) in
+        let chars_to_trim :=
+          M.alloc (|
+            (* Unsize *)
+            M.pointer_coercion
+              (M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |))
+          |) in
+        let trimmed_str :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "str",
+                "trim_matches",
+                [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.path "alloc::string::String",
+                    [],
+                    "deref",
+                    []
+                  |),
+                  [ string ]
+                |);
+                M.read (| chars_to_trim |)
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Used characters: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ trimmed_str ]
+                              |)
+                            ]
+                        |))
                     ]
                   |)
-              |) in
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let alice :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.path "alloc::string::String",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                "from",
+                []
+              |),
+              [ M.read (| mk_str "I like dogs" |) ]
+            |)
+          |) in
+        let bob :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "str",
+                "replace",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.path "alloc::string::String",
+                    [],
+                    "deref",
+                    []
+                  |),
+                  [ alice ]
+                |);
+                M.read (| mk_str "dog" |);
+                M.read (| mk_str "cat" |)
+              ]
+            |)
+          |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Used characters: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ trimmed_str ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let alice :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "alloc::string::String",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                        "from",
-                        []
-                      |),
-                    [ M.read (| mk_str "I like dogs" |) ]
-                  |)
-              |) in
-          let bob :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "str",
-                        "replace",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloc::string::String",
-                              [],
-                              "deref",
-                              []
-                            |),
-                          [ alice ]
-                        |);
-                      M.read (| mk_str "dog" |);
-                      M.read (| mk_str "cat" |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Alice says: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [ alice ]
+                              |)
+                            ]
+                        |))
                     ]
                   |)
-              |) in
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "Bob says: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Alice says: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "alloc::string::String" ]
-                                                |),
-                                              [ alice ]
-                                            |)
-                                        ]
-                                    |))
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [ bob ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "Bob says: " |); M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "alloc::string::String" ]
-                                                |),
-                                              [ bob ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

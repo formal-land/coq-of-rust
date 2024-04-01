@@ -61,5 +61,5 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("SomeType", InstanceField.Ty _SomeType); ("some_fn", InstanceField.Method some_fn) ].
+      [ ("SomeType", InstanceField.Ty _SomeType); ("some_fn", InstanceField.Method some_fn) ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

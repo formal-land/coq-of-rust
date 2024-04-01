@@ -29,16 +29,15 @@ Module Impl_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_associated_function (| Ty.path "functions_order::SomeType", "meth2", []
-                        |),
-                      [ M.read (| self |) ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "functions_order::SomeType", "meth2", [] |),
+                [ M.read (| self |) ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -72,38 +71,34 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
       (let u := M.alloc (| u |) in
       let b := M.alloc (| b |) in
       M.read (|
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "functions_order::SomeTrait",
-                        Ty.path "functions_order::OtherType",
-                        [],
-                        "some_trait_foo",
-                        []
-                      |),
-                    [
-                      M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ]
-                        |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "functions_order::SomeTrait",
-                        Ty.path "functions_order::SomeType",
-                        [],
-                        "some_trait_foo",
-                        []
-                      |),
-                    [ M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |)
-                    ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "functions_order::SomeTrait",
+                Ty.path "functions_order::OtherType",
+                [],
+                "some_trait_foo",
+                []
+              |),
+              [ M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "functions_order::SomeTrait",
+                Ty.path "functions_order::SomeType",
+                [],
+                "some_trait_foo",
+                []
+              |),
+              [ M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |) ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -124,15 +119,15 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-            M.get_trait_method (|
-                "functions_order::SomeTrait",
-                Ty.path "functions_order::SomeType",
-                [],
-                "some_trait_bar",
-                []
-              |),
-            [ M.read (| self |) ]
-          |)))
+          M.get_trait_method (|
+            "functions_order::SomeTrait",
+            Ty.path "functions_order::SomeType",
+            [],
+            "some_trait_bar",
+            []
+          |),
+          [ M.read (| self |) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -154,10 +149,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("some_trait_foo", InstanceField.Method some_trait_foo);
-          ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ].
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo);
+        ("some_trait_bar", InstanceField.Method some_trait_bar)
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -193,10 +188,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("some_trait_foo", InstanceField.Method some_trait_foo);
-          ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ].
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo);
+        ("some_trait_bar", InstanceField.Method some_trait_bar)
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Module inner_mod.
@@ -211,13 +206,12 @@ Module inner_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-            let _ :=
-              M.alloc (|
-                  M.call_closure (| M.get_function (| "functions_order::inner_mod::tar", [] |), []
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            M.alloc (|
+              M.call_closure (| M.get_function (| "functions_order::inner_mod::tar", [] |), [] |)
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -238,15 +232,15 @@ Module inner_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-              let _ :=
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (| "functions_order::inner_mod::nested_mod::tack", [] |),
-                        []
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
+            let _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "functions_order::inner_mod::nested_mod::tack", [] |),
+                  []
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -271,24 +265,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (| M.call_closure (| M.get_function (| "functions_order::foo", [] |), [] |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [] |), [] |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", []
-                      |),
-                    [ Value.StructTuple "functions_order::SomeType" [ Value.Integer Integer.U32 0 ]
-                    ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (| M.call_closure (| M.get_function (| "functions_order::foo", [] |), [] |) |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [] |), [] |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [] |),
+              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer Integer.U32 0 ] ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 

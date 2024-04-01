@@ -39,10 +39,9 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
           [
             ("value",
               M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", Ty.path "i32", [], "default", []
-                    |),
-                  []
-                |))
+                M.get_trait_method (| "core::default::Default", Ty.path "i32", [], "default", [] |),
+                []
+              |))
           ]))
     | _, _ => M.impossible
     end.

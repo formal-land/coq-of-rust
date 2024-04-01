@@ -45,330 +45,325 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let array :=
-            M.alloc (|
-                Value.Array
-                  [
-                    Value.Integer Integer.I32 1;
-                    Value.Integer Integer.I32 (-2);
-                    Value.Integer Integer.I32 6
-                  ]
-              |) in
-          M.match_operator (|
-              array,
+        let array :=
+          M.alloc (|
+            Value.Array
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 0
-                        |) in
-                    let second := M.copy (| γ0_1 |) in
-                    let third := M.copy (| γ0_2 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "array[0] = 0, array[1] = " |);
-                                                  M.read (| mk_str ", array[2] = " |);
-                                                  M.read (| mk_str "
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ second ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ third ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 1
-                        |) in
-                    let third := M.copy (| γ0_2 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "array[0] = 1, array[2] = " |);
-                                                  M.read (| mk_str " and array[1] was ignored
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ third ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.I32 (-1)
-                        |) in
-                    let second := M.copy (| γ0_1 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "array[0] = -1, array[1] = " |);
-                                                  M.read (|
-                                                      mk_str " and all the other ones were ignored
-"
-                                                    |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ second ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 3
-                        |) in
-                    let second := M.copy (| γ0_1 |) in
-                    let tail := M.copy (| γ0_rest |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "array[0] = 3, array[1] = " |);
-                                                  M.read (| mk_str " and the other elements were "
-                                                    |);
-                                                  M.read (| mk_str "
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ second ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "i32" ]
-                                                          ]
-                                                        |),
-                                                      [ tail ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_rest := M.get_slice_rest_or_break_match (| γ, 1, 1 |) in
-                    let γ0_rev0 := M.get_slice_rev_index_or_break_match (| γ, 0 |) in
-                    let first := M.copy (| γ0_0 |) in
-                    let middle := M.copy (| γ0_rest |) in
-                    let last := M.copy (| γ0_rev0 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "array[0] = " |);
-                                                  M.read (| mk_str ", middle = " |);
-                                                  M.read (| mk_str ", array[2] = " |);
-                                                  M.read (| mk_str "
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ first ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "i32" ]
-                                                          ]
-                                                        |),
-                                                      [ middle ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ last ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
+                Value.Integer Integer.I32 1;
+                Value.Integer Integer.I32 (-2);
+                Value.Integer Integer.I32 6
               ]
-            |)
-        |)))
+          |) in
+        M.match_operator (|
+          array,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 0
+                  |) in
+                let second := M.copy (| γ0_1 |) in
+                let third := M.copy (| γ0_2 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "array[0] = 0, array[1] = " |);
+                                    M.read (| mk_str ", array[2] = " |);
+                                    M.read (| mk_str "
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ second ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ third ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 1
+                  |) in
+                let third := M.copy (| γ0_2 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "array[0] = 1, array[2] = " |);
+                                    M.read (| mk_str " and array[1] was ignored
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ third ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 (-1)
+                  |) in
+                let second := M.copy (| γ0_1 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "array[0] = -1, array[1] = " |);
+                                    M.read (| mk_str " and all the other ones were ignored
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ second ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 2, 0 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 3
+                  |) in
+                let second := M.copy (| γ0_1 |) in
+                let tail := M.copy (| γ0_rest |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "array[0] = 3, array[1] = " |);
+                                    M.read (| mk_str " and the other elements were " |);
+                                    M.read (| mk_str "
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ second ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                      |),
+                                      [ tail ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                let γ0_rest := M.get_slice_rest_or_break_match (| γ, 1, 1 |) in
+                let γ0_rev0 := M.get_slice_rev_index_or_break_match (| γ, 0 |) in
+                let first := M.copy (| γ0_0 |) in
+                let middle := M.copy (| γ0_rest |) in
+                let last := M.copy (| γ0_rev0 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "array[0] = " |);
+                                    M.read (| mk_str ", middle = " |);
+                                    M.read (| mk_str ", array[2] = " |);
+                                    M.read (| mk_str "
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ first ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                      |),
+                                      [ middle ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ last ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.

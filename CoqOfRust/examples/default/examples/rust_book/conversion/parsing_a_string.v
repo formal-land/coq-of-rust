@@ -13,28 +13,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-                    [ M.read (| mk_str "12" |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
-                    [ M.read (| mk_str "true" |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
-                    [ M.read (| mk_str "unparsable" |) ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+              [ M.read (| mk_str "12" |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
+              [ M.read (| mk_str "true" |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
+              [ M.read (| mk_str "unparsable" |) ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

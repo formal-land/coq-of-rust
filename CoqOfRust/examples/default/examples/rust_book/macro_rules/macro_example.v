@@ -12,28 +12,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "std::io::stdio::_print", [] |),
+              [
                 M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
-                    [
-                      M.call_closure (|
-                          M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              []
-                            |),
-                          [
-                            (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| mk_str "Hello!
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                  [
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| Value.Array [ M.read (| mk_str "Hello!
 " |) ] |))
-                          ]
-                        |)
-                    ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                  ]
+                |)
+              ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

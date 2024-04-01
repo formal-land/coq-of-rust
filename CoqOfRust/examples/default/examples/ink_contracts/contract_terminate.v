@@ -22,10 +22,9 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
           "contract_terminate::AccountId"
           [
             M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
-                  |),
-                []
-              |)
+              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              []
+            |)
           ]))
     | _, _ => M.impossible
     end.
@@ -50,11 +49,11 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-              |)
-          |)))
+          M.match_operator (|
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -93,8 +92,9 @@ Module Impl_contract_terminate_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "contract_terminate::Env" "caller"
-          |)))
+        M.read (|
+          M.get_struct_record_field (M.read (| self |)) "contract_terminate::Env" "caller"
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -140,10 +140,13 @@ Module Impl_contract_terminate_JustTerminate.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "contract_terminate::JustTerminate", "init_env", []
-              |),
+          M.get_associated_function (|
+            Ty.path "contract_terminate::JustTerminate",
+            "init_env",
             []
-          |)))
+          |),
+          []
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -173,49 +176,45 @@ Module Impl_contract_terminate_JustTerminate.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "contract_terminate::Env",
+                  "terminate_contract",
+                  []
+                |),
+                [
+                  M.alloc (|
+                    M.call_closure (|
                       M.get_associated_function (|
-                          Ty.path "contract_terminate::Env",
-                          "terminate_contract",
-                          []
-                        |),
-                      [
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.path "contract_terminate::JustTerminate",
-                                    "env",
-                                    []
-                                  |),
-                                [ M.read (| self |) ]
-                              |)
-                          |);
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "contract_terminate::Env",
-                                "caller",
-                                []
-                              |),
-                            [
-                              M.alloc (|
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "contract_terminate::JustTerminate",
-                                          "env",
-                                          []
-                                        |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                |)
-                            ]
-                          |)
-                      ]
+                        Ty.path "contract_terminate::JustTerminate",
+                        "env",
+                        []
+                      |),
+                      [ M.read (| self |) ]
                     |)
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "contract_terminate::Env", "caller", [] |),
+                    [
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "contract_terminate::JustTerminate",
+                            "env",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   

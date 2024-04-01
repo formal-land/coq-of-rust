@@ -29,9 +29,9 @@ Module main.
       ltac:(M.monadic
         (let control := M.alloc (| control |) in
         M.read (|
-            let _ := InlineAssembly in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ := InlineAssembly in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
 End main.

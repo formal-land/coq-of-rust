@@ -20,9 +20,9 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| mk_str "Unit" |) ]
-          |)))
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          [ M.read (| f |); M.read (| mk_str "Unit" |) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -90,29 +90,29 @@ Module Impl_core_clone_Clone_for_clone_Pair.
           "clone::Pair"
           [
             M.call_closure (|
-                M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    "clone",
-                    []
-                  |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 0 ]
-              |);
+              M.get_trait_method (|
+                "core::clone::Clone",
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                [],
+                "clone",
+                []
+              |),
+              [ M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 0 ]
+            |);
             M.call_closure (|
-                M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    "clone",
-                    []
-                  |),
-                [ M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 1 ]
-              |)
+              M.get_trait_method (|
+                "core::clone::Clone",
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                [],
+                "clone",
+                []
+              |),
+              [ M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 1 ]
+            |)
           ]))
     | _, _ => M.impossible
     end.
@@ -138,21 +138,21 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (|
-                Ty.path "core::fmt::Formatter",
-                "debug_tuple_field2_finish",
-                []
-              |),
-            [
-              M.read (| f |);
-              M.read (| mk_str "Pair" |);
-              (* Unsize *)
-                M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 0);
-              (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 1 |))
-            ]
-          |)))
+          M.get_associated_function (|
+            Ty.path "core::fmt::Formatter",
+            "debug_tuple_field2_finish",
+            []
+          |),
+          [
+            M.read (| f |);
+            M.read (| mk_str "Pair" |);
+            (* Unsize *)
+            M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 0);
+            (* Unsize *)
+            M.pointer_coercion
+              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 1 |))
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -205,264 +205,231 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let unit_ := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
-          let copied_unit := M.copy (| unit_ |) in
+        let unit_ := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
+        let copied_unit := M.copy (| unit_ |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "original: " |); M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "clone::Unit" ]
-                                                |),
-                                              [ unit_ ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "copy: " |); M.read (| mk_str "
-" |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "clone::Unit" ]
-                                                |),
-                                              [ copied_unit ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let pair_ :=
             M.alloc (|
-                Value.StructTuple
-                  "clone::Pair"
-                  [
-                    M.call_closure (|
-                        M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                            "new",
-                            []
-                          |),
-                        [ Value.Integer Integer.I32 1 ]
-                      |);
-                    M.call_closure (|
-                        M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                            "new",
-                            []
-                          |),
-                        [ Value.Integer Integer.I32 2 ]
-                      |)
-                  ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "original: " |); M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "clone::Pair" ]
-                                                |),
-                                              [ pair_ ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let moved_pair := M.copy (| pair_ |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "moved: " |); M.read (| mk_str "
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "original: " |); M.read (| mk_str "
 " |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "clone::Pair" ]
-                                                |),
-                                              [ moved_pair ]
-                                            |)
-                                        ]
-                                    |))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "clone::Unit" ]
+                                |),
+                                [ unit_ ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let cloned_pair :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "clone::Pair",
-                        [],
-                        "clone",
-                        []
-                      |),
-                    [ moved_pair ]
+                        |))
+                    ]
                   |)
-              |) in
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "core::mem::drop", [ Ty.path "clone::Pair" ] |),
-                    [ M.read (| moved_pair |) ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "clone: " |); M.read (| mk_str "
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "copy: " |); M.read (| mk_str "
 " |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "clone::Pair" ]
-                                                |),
-                                              [ cloned_pair ]
-                                            |)
-                                        ]
-                                    |))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "clone::Unit" ]
+                                |),
+                                [ copied_unit ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let pair_ :=
+          M.alloc (|
+            Value.StructTuple
+              "clone::Pair"
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    "new",
+                    []
+                  |),
+                  [ Value.Integer Integer.I32 1 ]
+                |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    "new",
+                    []
+                  |),
+                  [ Value.Integer Integer.I32 2 ]
+                |)
+              ]
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "original: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "clone::Pair" ]
+                                |),
+                                [ pair_ ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let moved_pair := M.copy (| pair_ |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "moved: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "clone::Pair" ]
+                                |),
+                                [ moved_pair ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let cloned_pair :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (| "core::clone::Clone", Ty.path "clone::Pair", [], "clone", [] |),
+              [ moved_pair ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "core::mem::drop", [ Ty.path "clone::Pair" ] |),
+              [ M.read (| moved_pair |) ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "clone: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "clone::Pair" ]
+                                |),
+                                [ cloned_pair ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

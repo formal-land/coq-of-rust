@@ -43,82 +43,82 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [ Value.Integer Integer.U64 0 ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [
                 M.call_closure (|
-                    M.get_function (| "example01::id", [] |),
-                    [ Value.Integer Integer.U64 0 ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer Integer.U64 0 ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [
                 M.call_closure (|
-                    M.get_function (| "example01::id", [] |),
-                    [
-                      M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_function (| "example01::id", [] |),
+                      [ Value.Integer Integer.U64 0 ]
+                    |)
+                  ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_function (| "example01::id", [] |),
+                      [
+                        M.call_closure (|
                           M.get_function (| "example01::id", [] |),
                           [ Value.Integer Integer.U64 0 ]
                         |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
+                      ]
+                    |)
+                  ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "example01::tri", [] |),
+              [
                 M.call_closure (|
-                    M.get_function (| "example01::id", [] |),
-                    [
-                      M.call_closure (|
-                          M.get_function (| "example01::id", [] |),
-                          [
-                            M.call_closure (|
-                                M.get_function (| "example01::id", [] |),
-                                [ Value.Integer Integer.U64 0 ]
-                              |)
-                          ]
-                        |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer Integer.U64 1 ]
+                |);
                 M.call_closure (|
-                    M.get_function (| "example01::id", [] |),
-                    [
-                      M.call_closure (|
-                          M.get_function (| "example01::id", [] |),
-                          [
-                            M.call_closure (|
-                                M.get_function (| "example01::id", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_function (| "example01::id", [] |),
-                                      [ Value.Integer Integer.U64 0 ]
-                                    |)
-                                ]
-                              |)
-                          ]
-                        |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "example01::tri", [] |),
-                    [
-                      M.call_closure (|
-                          M.get_function (| "example01::id", [] |),
-                          [ Value.Integer Integer.U64 1 ]
-                        |);
-                      M.call_closure (|
-                          M.get_function (| "example01::id", [] |),
-                          [ Value.Integer Integer.U64 2 ]
-                        |);
-                      Value.Integer Integer.U64 3
-                    ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer Integer.U64 2 ]
+                |);
+                Value.Integer Integer.U64 3
+              ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

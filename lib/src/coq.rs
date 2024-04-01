@@ -410,7 +410,7 @@ impl<'a> Expression<'a> {
             ),
             Self::MonadicApplication { func, args } => paren(
                 with_paren,
-                nest([
+                group([
                     func.to_doc(false),
                     text(" "),
                     optional_insert(!args.is_empty(), text("(||)")),
@@ -418,11 +418,11 @@ impl<'a> Expression<'a> {
                         args.is_empty(),
                         concat([
                             text("(|"),
-                            nest([
+                            concat([
                                 line(),
                                 intersperse(
                                     args.iter().map(|(param, arg)| match param {
-                                        Some(param) => render::round_brackets(group([
+                                        Some(param) => render::round_brackets(nest([
                                             text(param.to_owned()),
                                             text(" := "),
                                             arg.to_doc(false),
@@ -431,7 +431,8 @@ impl<'a> Expression<'a> {
                                     }),
                                     [text(","), line()],
                                 ),
-                            ]),
+                            ])
+                            .nest(2),
                             line(),
                             text("|)"),
                         ]),
@@ -624,7 +625,7 @@ impl<'a> Expression<'a> {
                 expr.to_doc(false),
                 text(")"),
             ]),
-            Self::Comment(comment, expr) => nest([
+            Self::Comment(comment, expr) => group([
                 text(format!("(* {comment} *)")),
                 line(),
                 expr.to_doc(with_paren),

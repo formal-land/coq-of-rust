@@ -74,335 +74,319 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let color :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "alloc::string::String",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                        "from",
-                        []
-                      |),
-                    [ M.read (| mk_str "green" |) ]
-                  |)
-              |) in
-          let print :=
-            M.alloc (|
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.read (|
-                                      let _ :=
-                                        M.alloc (|
-                                            M.call_closure (|
-                                                M.get_function (| "std::io::stdio::_print", [] |),
+        let color :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.path "alloc::string::String",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                "from",
+                []
+              |),
+              [ M.read (| mk_str "green" |) ]
+            |)
+          |) in
+        let print :=
+          M.alloc (|
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "`color`: " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                            |));
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                              Value.Array
                                                 [
                                                   M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
-                                                          []
-                                                        |),
-                                                      [
-                                                        (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (| mk_str "`color`: " |);
-                                                                    M.read (| mk_str "
-" |)
-                                                                  ]
-                                                              |));
-                                                        (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
-                                                                            [
-                                                                              Ty.path
-                                                                                "alloc::string::String"
-                                                                            ]
-                                                                          |),
-                                                                        [ color ]
-                                                                      |)
-                                                                  ]
-                                                              |))
-                                                      ]
-                                                    |)
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [ color ]
+                                                  |)
                                                 ]
-                                              |)
-                                          |) in
-                                      M.alloc (| Value.Tuple [] |)
-                                    |)))
-                            ]
-                          |)
-                      | _ => M.impossible (||)
-                      end))
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::ops::function::Fn",
-                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                        [ Ty.tuple [] ],
-                        "call",
-                        []
-                      |),
-                    [ print; Value.Tuple [] ]
-                  |)
-              |) in
-          let _reborrow := M.alloc (| color |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::ops::function::Fn",
-                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                        [ Ty.tuple [] ],
-                        "call",
-                        []
-                      |),
-                    [ print; Value.Tuple [] ]
-                  |)
-              |) in
-          let _color_moved := M.copy (| color |) in
-          let count := M.alloc (| Value.Integer Integer.I32 0 |) in
-          let inc :=
-            M.alloc (|
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.read (|
-                                      let _ :=
-                                        let β := count in
-                                        M.assign (|
-                                            β,
-                                            BinOp.Panic.add (|
-                                                M.read (| β |),
-                                                Value.Integer Integer.I32 1
-                                              |)
-                                          |) in
-                                      let _ :=
-                                        let _ :=
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                            |))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)
+                  | _ => M.impossible (||)
+                  end))
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::function::Fn",
+                Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [ Ty.tuple [] ],
+                "call",
+                []
+              |),
+              [ print; Value.Tuple [] ]
+            |)
+          |) in
+        let _reborrow := M.alloc (| color |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::function::Fn",
+                Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [ Ty.tuple [] ],
+                "call",
+                []
+              |),
+              [ print; Value.Tuple [] ]
+            |)
+          |) in
+        let _color_moved := M.copy (| color |) in
+        let count := M.alloc (| Value.Integer Integer.I32 0 |) in
+        let inc :=
+          M.alloc (|
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let _ :=
+                                let β := count in
+                                M.assign (|
+                                  β,
+                                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
+                                |) in
+                              let _ :=
+                                let _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "std::io::stdio::_print", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_v1",
+                                            []
+                                          |),
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| mk_str "`count`: " |);
+                                                    M.read (| mk_str "
+" |)
+                                                  ]
+                                              |));
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
                                                   [
                                                     M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_v1",
-                                                            []
-                                                          |),
-                                                        [
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (| mk_str "`count`: "
-                                                                        |);
-                                                                      M.read (| mk_str "
-" |)
-                                                                    ]
-                                                                |));
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [ Ty.path "i32" ]
-                                                                            |),
-                                                                          [ count ]
-                                                                        |)
-                                                                    ]
-                                                                |))
-                                                        ]
-                                                      |)
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "i32" ]
+                                                      |),
+                                                      [ count ]
+                                                    |)
                                                   ]
-                                                |)
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |) in
-                                      M.alloc (| Value.Tuple [] |)
-                                    |)))
-                            ]
-                          |)
-                      | _ => M.impossible (||)
-                      end))
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::ops::function::FnMut",
-                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                        [ Ty.tuple [] ],
-                        "call_mut",
-                        []
-                      |),
-                    [ inc; Value.Tuple [] ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::ops::function::FnMut",
-                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                        [ Ty.tuple [] ],
-                        "call_mut",
-                        []
-                      |),
-                    [ inc; Value.Tuple [] ]
-                  |)
-              |) in
-          let _count_reborrowed := M.alloc (| count |) in
-          let movable :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        "new",
-                        []
-                      |),
-                    [ Value.Integer Integer.I32 3 ]
-                  |)
-              |) in
-          let consume :=
-            M.alloc (|
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.read (|
-                                      let _ :=
-                                        let _ :=
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                              |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)
+                  | _ => M.impossible (||)
+                  end))
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::function::FnMut",
+                Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [ Ty.tuple [] ],
+                "call_mut",
+                []
+              |),
+              [ inc; Value.Tuple [] ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::function::FnMut",
+                Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [ Ty.tuple [] ],
+                "call_mut",
+                []
+              |),
+              [ inc; Value.Tuple [] ]
+            |)
+          |) in
+        let _count_reborrowed := M.alloc (| count |) in
+        let movable :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              [ Value.Integer Integer.I32 3 ]
+            |)
+          |) in
+        let consume :=
+          M.alloc (|
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let _ :=
+                                let _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "std::io::stdio::_print", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_v1",
+                                            []
+                                          |),
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| mk_str "`movable`: " |);
+                                                    M.read (| mk_str "
+" |)
+                                                  ]
+                                              |));
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
                                                   [
                                                     M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_v1",
-                                                            []
-                                                          |),
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_debug",
                                                         [
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (| mk_str "`movable`: "
-                                                                        |);
-                                                                      M.read (| mk_str "
-" |)
-                                                                    ]
-                                                                |));
-                                                          (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_debug",
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloc::boxed::Box")
-                                                                                  [
-                                                                                    Ty.path "i32";
-                                                                                    Ty.path
-                                                                                      "alloc::alloc::Global"
-                                                                                  ]
-                                                                              ]
-                                                                            |),
-                                                                          [ movable ]
-                                                                        |)
-                                                                    ]
-                                                                |))
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            [
+                                                              Ty.path "i32";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
                                                         ]
-                                                      |)
+                                                      |),
+                                                      [ movable ]
+                                                    |)
                                                   ]
-                                                |)
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |) in
-                                      let _ :=
-                                        M.alloc (|
-                                            M.call_closure (|
-                                                M.get_function (|
-                                                    "core::mem::drop",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::boxed::Box")
-                                                        [
-                                                          Ty.path "i32";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
-                                                    ]
-                                                  |),
-                                                [ M.read (| movable |) ]
-                                              |)
-                                          |) in
-                                      M.alloc (| Value.Tuple [] |)
-                                    |)))
-                            ]
-                          |)
-                      | _ => M.impossible (||)
-                      end))
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::ops::function::FnOnce",
-                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                        [ Ty.tuple [] ],
-                        "call_once",
-                        []
-                      |),
-                    [ M.read (| consume |); Value.Tuple [] ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                                              |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |) in
+                              let _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::drop",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                    |),
+                                    [ M.read (| movable |) ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)
+                  | _ => M.impossible (||)
+                  end))
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::ops::function::FnOnce",
+                Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [ Ty.tuple [] ],
+                "call_once",
+                []
+              |),
+              [ M.read (| consume |); Value.Tuple [] ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

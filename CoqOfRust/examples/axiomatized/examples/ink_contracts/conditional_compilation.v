@@ -169,9 +169,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("flip", InstanceField.Method flip);
-          ("get", InstanceField.Method get);
-          ("push_foo", InstanceField.Method push_foo)
-        ].
+      [
+        ("flip", InstanceField.Method flip);
+        ("get", InstanceField.Method get);
+        ("push_foo", InstanceField.Method push_foo)
+      ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

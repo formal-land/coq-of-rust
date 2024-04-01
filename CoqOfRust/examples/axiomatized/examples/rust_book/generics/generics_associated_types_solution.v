@@ -32,14 +32,14 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("A", InstanceField.Ty _A);
-          ("B", InstanceField.Ty _B);
-          ("contains", InstanceField.Method contains);
-          ("first", InstanceField.Method first);
-          ("last", InstanceField.Method last);
-          ("a", InstanceField.Method a)
-        ].
+      [
+        ("A", InstanceField.Ty _A);
+        ("B", InstanceField.Ty _B);
+        ("contains", InstanceField.Method contains);
+        ("first", InstanceField.Method first);
+        ("last", InstanceField.Method last);
+        ("a", InstanceField.Method a)
+      ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

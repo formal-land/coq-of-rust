@@ -35,589 +35,506 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let vec1 :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
-                        "into_vec",
-                        [ Ty.path "alloc::alloc::Global" ]
-                      |),
-                    [
-                      (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        [
-                                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "new",
-                                      []
-                                    |),
-                                  [
-                                    M.alloc (|
-                                        Value.Array
-                                          [
-                                            Value.Integer Integer.I32 1;
-                                            Value.Integer Integer.I32 2;
-                                            Value.Integer Integer.I32 3
-                                          ]
-                                      |)
-                                  ]
-                                |)
-                            |))
-                    ]
-                  |)
-              |) in
-          let vec2 :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
-                        "into_vec",
-                        [ Ty.path "alloc::alloc::Global" ]
-                      |),
-                    [
-                      (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        [
-                                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "new",
-                                      []
-                                    |),
-                                  [
-                                    M.alloc (|
-                                        Value.Array
-                                          [
-                                            Value.Integer Integer.I32 4;
-                                            Value.Integer Integer.I32 5;
-                                            Value.Integer Integer.I32 6
-                                          ]
-                                      |)
-                                  ]
-                                |)
-                            |))
-                    ]
-                  |)
-              |) in
-          let iter :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
-                        "iter",
-                        []
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              "deref",
-                              []
-                            |),
-                          [ vec1 ]
-                        |)
-                    ]
-                  |)
-              |) in
-          let into_iter :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+        let vec1 :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                "into_vec",
+                [ Ty.path "alloc::alloc::Global" ]
+              |),
+              [
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        "into_iter",
+                          (Ty.path "alloc::boxed::Box")
+                          [
+                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
                         []
                       |),
-                    [ M.read (| vec2 |) ]
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Integer Integer.I32 1;
+                              Value.Integer Integer.I32 2;
+                              Value.Integer Integer.I32 3
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
+              ]
+            |)
+          |) in
+        let vec2 :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                "into_vec",
+                [ Ty.path "alloc::alloc::Global" ]
+              |),
+              [
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.read (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          [
+                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Value.Array
+                            [
+                              Value.Integer Integer.I32 4;
+                              Value.Integer Integer.I32 5;
+                              Value.Integer Integer.I32 6
+                            ]
+                        |)
+                      ]
+                    |)
+                  |))
+              ]
+            |)
+          |) in
+        let iter :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                "iter",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    "deref",
+                    []
+                  |),
+                  [ vec1 ]
+                |)
+              ]
+            |)
+          |) in
+        let into_iter :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::iter::traits::collect::IntoIterator",
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                [],
+                "into_iter",
+                []
+              |),
+              [ M.read (| vec2 |) ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Find 2 in vec1: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          [ Ty.path "i32" ],
+                                        [],
+                                        "find",
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ]
+                                      |),
+                                      [
+                                        iter;
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ := M.read (| γ |) in
+                                                        let x := M.copy (| γ |) in
+                                                        BinOp.Pure.eq
+                                                          (M.read (| x |))
+                                                          (Value.Integer Integer.I32 2)))
+                                                  ]
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
                   |)
-              |) in
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Find 2 in vec1: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                                  ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_trait_method (|
-                                                            "core::iter::traits::iterator::Iterator",
-                                                            Ty.apply
-                                                              (Ty.path "core::slice::iter::Iter")
-                                                              [ Ty.path "i32" ],
-                                                            [],
-                                                            "find",
-                                                            [
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool")
-                                                            ]
-                                                          |),
-                                                        [
-                                                          iter;
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let x :=
-                                                                              M.copy (| γ |) in
-                                                                            BinOp.Pure.eq
-                                                                              (M.read (| x |))
-                                                                              (Value.Integer
-                                                                                Integer.I32
-                                                                                2)))
-                                                                      ]
-                                                                    |)
-                                                                | _ => M.impossible (||)
-                                                                end))
-                                                        ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Find 2 in vec2: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.path "i32" ]
-                                                  ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_trait_method (|
-                                                            "core::iter::traits::iterator::Iterator",
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::vec::into_iter::IntoIter")
-                                                              [
-                                                                Ty.path "i32";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            "find",
-                                                            [
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        [ Ty.path "i32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool")
-                                                            ]
-                                                          |),
-                                                        [
-                                                          into_iter;
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let x :=
-                                                                              M.copy (| γ |) in
-                                                                            BinOp.Pure.eq
-                                                                              (M.read (| x |))
-                                                                              (Value.Integer
-                                                                                Integer.I32
-                                                                                2)))
-                                                                      ]
-                                                                    |)
-                                                                | _ => M.impossible (||)
-                                                                end))
-                                                        ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let array1 :=
             M.alloc (|
-                Value.Array
-                  [
-                    Value.Integer Integer.I32 1;
-                    Value.Integer Integer.I32 2;
-                    Value.Integer Integer.I32 3
-                  ]
-              |) in
-          let array2 :=
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Find 2 in vec2: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                        [],
+                                        "find",
+                                        [
+                                          Ty.function
+                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ]
+                                      |),
+                                      [
+                                        into_iter;
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let x := M.copy (| γ |) in
+                                                        BinOp.Pure.eq
+                                                          (M.read (| x |))
+                                                          (Value.Integer Integer.I32 2)))
+                                                  ]
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let array1 :=
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer Integer.I32 1;
+                Value.Integer Integer.I32 2;
+                Value.Integer Integer.I32 3
+              ]
+          |) in
+        let array2 :=
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer Integer.I32 4;
+                Value.Integer Integer.I32 5;
+                Value.Integer Integer.I32 6
+              ]
+          |) in
+        let _ :=
+          let _ :=
             M.alloc (|
-                Value.Array
-                  [
-                    Value.Integer Integer.I32 4;
-                    Value.Integer Integer.I32 5;
-                    Value.Integer Integer.I32 6
-                  ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Find 2 in array1: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          [ Ty.path "i32" ],
+                                        [],
+                                        "find",
                                         [
-                                          M.read (| mk_str "Find 2 in array1: " |);
-                                          M.read (| mk_str "
-" |)
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                ]
+                                            ]
+                                            (Ty.path "bool")
                                         ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
+                                      |),
+                                      [
+                                        M.alloc (|
                                           M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                              "iter",
+                                              []
+                                            |),
+                                            [ (* Unsize *) M.pointer_coercion array1 ]
+                                          |)
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ := M.read (| γ |) in
+                                                        let x := M.copy (| γ |) in
+                                                        BinOp.Pure.eq
+                                                          (M.read (| x |))
+                                                          (Value.Integer Integer.I32 2)))
                                                   ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_trait_method (|
-                                                            "core::iter::traits::iterator::Iterator",
-                                                            Ty.apply
-                                                              (Ty.path "core::slice::iter::Iter")
-                                                              [ Ty.path "i32" ],
-                                                            [],
-                                                            "find",
-                                                            [
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool")
-                                                            ]
-                                                          |),
-                                                        [
-                                                          M.alloc (|
-                                                              M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        [ Ty.path "i32" ],
-                                                                      "iter",
-                                                                      []
-                                                                    |),
-                                                                  [
-                                                                    (* Unsize *)
-                                                                      M.pointer_coercion array1
-                                                                  ]
-                                                                |)
-                                                            |);
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let x :=
-                                                                              M.copy (| γ |) in
-                                                                            BinOp.Pure.eq
-                                                                              (M.read (| x |))
-                                                                              (Value.Integer
-                                                                                Integer.I32
-                                                                                2)))
-                                                                      ]
-                                                                    |)
-                                                                | _ => M.impossible (||)
-                                                                end))
-                                                        ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Find 2 in array2: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          [ Ty.path "i32" ],
+                                        [],
+                                        "find",
                                         [
-                                          M.read (| mk_str "Find 2 in array2: " |);
-                                          M.read (| mk_str "
-" |)
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                ]
+                                            ]
+                                            (Ty.path "bool")
                                         ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
+                                      |),
+                                      [
+                                        M.alloc (|
                                           M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
+                                            M.get_trait_method (|
+                                              "core::iter::traits::collect::IntoIterator",
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ],
+                                              [],
+                                              "into_iter",
+                                              []
+                                            |),
+                                            [ array2 ]
+                                          |)
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                  M.alloc (| α0 |),
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let x := M.copy (| γ |) in
+                                                        BinOp.Pure.eq
+                                                          (M.read (| M.read (| x |) |))
+                                                          (Value.Integer Integer.I32 2)))
                                                   ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_trait_method (|
-                                                            "core::iter::traits::iterator::Iterator",
-                                                            Ty.apply
-                                                              (Ty.path "core::slice::iter::Iter")
-                                                              [ Ty.path "i32" ],
-                                                            [],
-                                                            "find",
-                                                            [
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool")
-                                                            ]
-                                                          |),
-                                                        [
-                                                          M.alloc (|
-                                                              M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                      "core::iter::traits::collect::IntoIterator",
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "array")
-                                                                            [ Ty.path "i32" ]
-                                                                        ],
-                                                                      [],
-                                                                      "into_iter",
-                                                                      []
-                                                                    |),
-                                                                  [ array2 ]
-                                                                |)
-                                                            |);
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let x :=
-                                                                              M.copy (| γ |) in
-                                                                            BinOp.Pure.eq
-                                                                              (M.read (|
-                                                                                  M.read (| x |)
-                                                                                |))
-                                                                              (Value.Integer
-                                                                                Integer.I32
-                                                                                2)))
-                                                                      ]
-                                                                    |)
-                                                                | _ => M.impossible (||)
-                                                                end))
-                                                        ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
+                                                |)
+                                              | _ => M.impossible (||)
+                                              end))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

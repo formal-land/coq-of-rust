@@ -22,15 +22,15 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              let β :=
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "scoping_rules_lifetimes_methods::Owner"
-                  0 in
-              M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            let β :=
+              M.get_struct_tuple_field
+                (M.read (| self |))
+                "scoping_rules_lifetimes_methods::Owner"
+                0 in
+            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -47,55 +47,49 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
+          let _ :=
             let _ :=
-              let _ :=
-                M.alloc (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
                     M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  []
-                                |),
+                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array [ M.read (| mk_str "`print`: " |); M.read (| mk_str "
+" |) ]
+                          |));
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array
                               [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [ M.read (| mk_str "`print`: " |); M.read (| mk_str "
-" |)
-                                          ]
-                                      |));
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                                M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "i32" ]
-                                                  |),
-                                                [
-                                                  M.get_struct_tuple_field
-                                                    (M.read (| self |))
-                                                    "scoping_rules_lifetimes_methods::Owner"
-                                                    0
-                                                ]
-                                              |)
-                                          ]
-                                      |))
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "i32" ]
+                                  |),
+                                  [
+                                    M.get_struct_tuple_field
+                                      (M.read (| self |))
+                                      "scoping_rules_lifetimes_methods::Owner"
+                                      0
+                                  ]
+                                |)
                               ]
-                            |)
-                        ]
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                          |))
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -115,35 +109,35 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let owner :=
-            M.alloc (|
-                Value.StructTuple
-                  "scoping_rules_lifetimes_methods::Owner"
-                  [ Value.Integer Integer.I32 18 ]
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "scoping_rules_lifetimes_methods::Owner",
-                        "add_one",
-                        []
-                      |),
-                    [ owner ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "scoping_rules_lifetimes_methods::Owner",
-                        "print",
-                        []
-                      |),
-                    [ owner ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let owner :=
+          M.alloc (|
+            Value.StructTuple
+              "scoping_rules_lifetimes_methods::Owner"
+              [ Value.Integer Integer.I32 18 ]
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "scoping_rules_lifetimes_methods::Owner",
+                "add_one",
+                []
+              |),
+              [ owner ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "scoping_rules_lifetimes_methods::Owner",
+                "print",
+                []
+              |),
+              [ owner ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
