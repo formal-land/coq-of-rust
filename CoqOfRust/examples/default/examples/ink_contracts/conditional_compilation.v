@@ -41,7 +41,8 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -293,7 +294,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             "init_env"
             [] in
         let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call_closure α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] in
@@ -326,7 +329,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
             ] in
         M.alloc α7 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -357,7 +361,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             "init_env"
             [] in
         let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call_closure α0 [ α3 ] in
+        M.alloc α4 in
       let* block_number :=
         let* α0 :=
           M.get_associated_function (Ty.path "conditional_compilation::Env") "block_number" [] in
@@ -367,7 +373,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             "init_env"
             [] in
         let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call_closure α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
@@ -413,7 +421,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
             ] in
         M.alloc α8 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -445,7 +454,8 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         M.assign
           (M.get_struct_record_field α0 "conditional_compilation::ConditionalCompilation" "value")
           (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -487,7 +497,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             "init_env"
             [] in
         let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call_closure α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] in
@@ -520,7 +532,8 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         M.assign
           (M.get_struct_record_field α0 "conditional_compilation::ConditionalCompilation" "value")
           α1 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   

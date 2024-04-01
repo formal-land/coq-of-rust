@@ -32,10 +32,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* path :=
       let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
-      let* α1 := M.read (mk_str ".") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+      let* α1 := M.read (mk_str ".") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
     let* _display :=
       let* α0 := M.get_associated_function (Ty.path "std::path::Path") "display" [] in
-      let* α1 := M.read path in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+      let* α1 := M.read path in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
     let* new_path :=
       let* α0 :=
         M.get_associated_function
@@ -54,7 +58,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α5 := M.call_closure α2 [ α3; α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 := M.call_closure α1 [ α6 ] in
-      let* α8 := M.read (mk_str "b") in let* α9 := M.call_closure α0 [ α7; α8 ] in M.alloc α9 in
+      let* α8 := M.read (mk_str "b") in
+      let* α9 := M.call_closure α0 [ α7; α8 ] in
+      M.alloc α9 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -62,7 +68,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "push"
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "c") in
-      let* α2 := M.call_closure α0 [ new_path; α1 ] in M.alloc α2 in
+      let* α2 := M.call_closure α0 [ new_path; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -70,7 +77,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "push"
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "myfile.tar.gz") in
-      let* α2 := M.call_closure α0 [ new_path; α1 ] in M.alloc α2 in
+      let* α2 := M.call_closure α0 [ new_path; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -78,7 +86,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "set_file_name"
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "package.tgz") in
-      let* α2 := M.call_closure α0 [ new_path; α1 ] in M.alloc α2 in
+      let* α2 := M.call_closure α0 [ new_path; α1 ] in
+      M.alloc α2 in
     let* α0 := M.get_associated_function (Ty.path "std::path::Path") "to_str" [] in
     let* α1 :=
       M.get_trait_method "core::ops::deref::Deref" (Ty.path "std::path::PathBuf") [] "deref" [] in
@@ -95,7 +104,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "std::panicking::begin_panic"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α1 := M.read (mk_str "new path is not a valid UTF-8 sequence") in
-            let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* s := M.copy γ0_0 in
@@ -107,7 +118,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "new path is ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -116,9 +128,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                   let* α7 := M.call_closure α6 [ s ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in
+                  M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in
+              M.alloc α11 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0

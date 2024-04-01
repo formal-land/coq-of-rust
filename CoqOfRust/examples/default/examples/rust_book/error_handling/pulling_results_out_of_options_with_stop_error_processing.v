@@ -172,7 +172,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               | _ => M.impossible
               end)
         ] in
-    let* α0 := M.alloc α2 in M.read α0
+    let* α0 := M.alloc α2 in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -213,8 +214,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α4 := M.read (mk_str "18") in
           let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 := M.call_closure α1 [ α5 ] in
-          let* α7 := M.read α6 in M.pure (M.pointer_coercion α7) in
-      let* α9 := M.call_closure α0 [ α8 ] in M.alloc α9 in
+          let* α7 := M.read α6 in
+          M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in
+      M.alloc α9 in
     let* empty :=
       let* α0 :=
         M.get_associated_function
@@ -223,7 +226,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
     let* strings :=
       let* α0 :=
         M.get_associated_function
@@ -247,8 +251,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α4 := M.read (mk_str "18") in
           let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 := M.call_closure α1 [ α5 ] in
-          let* α7 := M.read α6 in M.pure (M.pointer_coercion α7) in
-      let* α9 := M.call_closure α0 [ α8 ] in M.alloc α9 in
+          let* α7 := M.read α6 in
+          M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in
+      M.alloc α9 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -258,7 +264,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "The first doubled is ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α13 :=
           (* Unsize *)
             let* α6 :=
@@ -281,9 +288,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
             let* α11 := M.call_closure α6 [ α10 ] in
-            let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
+            let* α12 := M.alloc (Value.Array [ α11 ]) in
+            M.pure (M.pointer_coercion α12) in
         let* α14 := M.call_closure α1 [ α5; α13 ] in
-        let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -294,7 +303,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "The first doubled is ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α13 :=
           (* Unsize *)
             let* α6 :=
@@ -317,9 +327,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
             let* α11 := M.call_closure α6 [ α10 ] in
-            let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
+            let* α12 := M.alloc (Value.Array [ α11 ]) in
+            M.pure (M.pointer_coercion α12) in
         let* α14 := M.call_closure α1 [ α5; α13 ] in
-        let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -330,7 +342,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "The first doubled is ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α13 :=
           (* Unsize *)
             let* α6 :=
@@ -353,10 +366,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
             let* α11 := M.call_closure α6 [ α10 ] in
-            let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
+            let* α12 := M.alloc (Value.Array [ α11 ]) in
+            M.pure (M.pointer_coercion α12) in
         let* α14 := M.call_closure α1 [ α5; α13 ] in
-        let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

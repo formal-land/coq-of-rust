@@ -19,7 +19,8 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "`print_one`: x is ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -28,11 +29,14 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
             let* α7 := M.call_closure α6 [ x ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -48,8 +52,10 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* β := M.read x in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in M.assign β α1 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+      M.assign β α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -73,7 +79,8 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str ", y is ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+            M.pure (M.pointer_coercion α5) in
         let* α12 :=
           (* Unsize *)
             let* α7 :=
@@ -88,11 +95,14 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
             let* α10 := M.call_closure α9 [ y ] in
-            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
+            M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α6; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -104,7 +114,9 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
 Definition pass_x (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ x; β1 ] =>
-    let* x := M.alloc x in let* β1 := M.alloc β1 in M.match_operator β1 [ fun γ => M.read x ]
+    let* x := M.alloc x in
+    let* β1 := M.alloc β1 in
+    M.match_operator β1 [ fun γ => M.read x ]
   | _, _ => M.impossible
   end.
 
@@ -131,23 +143,31 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* y := M.alloc (Value.Integer Integer.I32 9) in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
-      let* α1 := M.call_closure α0 [ x ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ x ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::print_multi" [] in
-      let* α1 := M.call_closure α0 [ x; y ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ x; y ] in
+      M.alloc α1 in
     let* z :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::pass_x" [] in
-      let* α1 := M.call_closure α0 [ x; y ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ x; y ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
-      let* α1 := M.read z in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+      let* α1 := M.read z in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
     let* t := M.alloc (Value.Integer Integer.I32 3) in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::add_one" [] in
-      let* α1 := M.call_closure α0 [ t ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ t ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
-      let* α1 := M.call_closure α0 [ t ] in M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := M.call_closure α0 [ t ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

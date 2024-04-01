@@ -78,7 +78,8 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                   fun γ =>
                                     let* second_number := M.copy γ in
                                     let* α0 := M.read first_number in
-                                    let* α1 := M.read second_number in BinOp.Panic.mul α0 α1
+                                    let* α1 := M.read second_number in
+                                    BinOp.Panic.mul α0 α1
                                 ]
                             | _ => M.impossible
                             end)
@@ -117,7 +118,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "n is ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -126,9 +128,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.path "i32" ] in
                   let* α7 := M.call_closure α6 [ n ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in
+                  M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in
+              M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
@@ -141,7 +145,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "Error: ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -150,9 +155,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.path "core::num::error::ParseIntError" ] in
                   let* α7 := M.call_closure α6 [ e ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in
+                  M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in
+              M.alloc α11 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0
@@ -174,14 +181,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read (mk_str "10") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call_closure α1 [ α2; α3 ] in
-      let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
+      let* α5 := M.call_closure α0 [ α4 ] in
+      M.alloc α5 in
     let* _ :=
       let* α0 := M.get_function "aliases_for_result::print" [] in
       let* α1 := M.get_function "aliases_for_result::multiply" [] in
       let* α2 := M.read (mk_str "t") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call_closure α1 [ α2; α3 ] in
-      let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α5 := M.call_closure α0 [ α4 ] in
+      M.alloc α5 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

@@ -21,7 +21,8 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Destroying a box that contains ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -34,11 +35,14 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ c ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -94,7 +98,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str ", and y is ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+            M.pure (M.pointer_coercion α5) in
         let* α12 :=
           (* Unsize *)
             let* α7 :=
@@ -109,9 +114,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "u32" ] in
             let* α10 := M.call_closure α9 [ y ] in
-            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
+            M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α6; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* a :=
       let* α0 :=
@@ -119,7 +126,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
+      M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -129,7 +137,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "a contains: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -142,14 +151,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ a ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* b := M.copy a in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_ownership_and_rules::destroy_box" [] in
-      let* α1 := M.read b in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := M.read b in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

@@ -26,7 +26,9 @@ fn reg_fn(_s: S) {}
 *)
 Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [ _s ] => let* _s := M.alloc _s in M.pure (Value.Tuple [])
+  | [], [ _s ] =>
+    let* _s := M.alloc _s in
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -35,7 +37,9 @@ fn gen_spec_t(_s: SGen<A>) {}
 *)
 Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [ _s ] => let* _s := M.alloc _s in M.pure (Value.Tuple [])
+  | [], [ _s ] =>
+    let* _s := M.alloc _s in
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -44,7 +48,9 @@ fn gen_spec_i32(_s: SGen<i32>) {}
 *)
 Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [ _s ] => let* _s := M.alloc _s in M.pure (Value.Tuple [])
+  | [], [ _s ] =>
+    let* _s := M.alloc _s in
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -53,7 +59,9 @@ fn generic<T>(_s: SGen<T>) {}
 *)
 Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [ T ], [ _s ] => let* _s := M.alloc _s in M.pure (Value.Tuple [])
+  | [ T ], [ _s ] =>
+    let* _s := M.alloc _s in
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -117,6 +125,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           α0
           [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ] in
       M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

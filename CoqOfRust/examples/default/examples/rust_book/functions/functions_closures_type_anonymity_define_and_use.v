@@ -15,8 +15,10 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
     let* f := M.alloc f in
     let* _ :=
       let* α0 := M.get_trait_method "core::ops::function::Fn" F [ Ty.tuple [] ] "call" [] in
-      let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -68,8 +70,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+                      let* α11 := M.call_closure α0 [ α10 ] in
+                      M.alloc α11 in
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -78,7 +82,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_function
           "functions_closures_type_anonymity_define_and_use::apply"
           [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
-      let* α1 := M.read print in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := M.read print in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

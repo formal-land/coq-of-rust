@@ -54,11 +54,15 @@ Module main.
       let* b := M.alloc b in
       let* lo := M.copy Value.DeclaredButUndefined in
       let* hi := M.copy Value.DeclaredButUndefined in
-      let* _ := let _ := InlineAssembly in M.alloc (Value.Tuple []) in
+      let* _ :=
+        let _ := InlineAssembly in
+        M.alloc (Value.Tuple []) in
       let* α0 := M.read hi in
       let* α1 := BinOp.Panic.shl (M.rust_cast α0) (Value.Integer Integer.I32 64) in
       let* α2 := M.read lo in
-      let* α3 := BinOp.Panic.add α1 (M.rust_cast α2) in let* α0 := M.alloc α3 in M.read α0
+      let* α3 := BinOp.Panic.add α1 (M.rust_cast α2) in
+      let* α0 := M.alloc α3 in
+      M.read α0
     | _, _ => M.impossible
     end.
 End main.

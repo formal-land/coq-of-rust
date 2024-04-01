@@ -26,7 +26,9 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   *)
   Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.read (mk_str "baaaaah!")
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.read (mk_str "baaaaah!")
     | _, _ => M.impossible
     end.
   
@@ -48,7 +50,9 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   *)
   Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.read (mk_str "moooooo!")
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.read (mk_str "moooooo!")
     | _, _ => M.impossible
     end.
   
@@ -85,9 +89,11 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                   let* γ :=
                     let* α0 := M.read random_number in
                     let* α1 := M.read UnsupportedLiteral in
-                    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in M.pure (M.use α2) in
+                    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                    M.pure (M.use α2) in
                   let* _ :=
-                    let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
                   let* α3 :=
                     (* Unsize *)
                       let* α2 :=
@@ -129,7 +135,8 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pure (M.pointer_coercion α1) in
                   M.alloc α2
               ] in
-          let* α2 := M.read α1 in M.pure (M.pointer_coercion α2) in
+          let* α2 := M.read α1 in
+          M.pure (M.pointer_coercion α2) in
       M.pure (M.pointer_coercion α3)
   | _, _ => M.impossible
   end.
@@ -150,7 +157,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* random_number := M.copy UnsupportedLiteral in
     let* animal :=
       let* α0 := M.get_function "returning_traits_with_dyn::random_animal" [] in
-      let* α1 := M.read random_number in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+      let* α1 := M.read random_number in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -160,7 +169,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "You've randomly chosen an animal, and it says ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α13 :=
           (* Unsize *)
             let* α6 :=
@@ -179,10 +189,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
             let* α11 := M.call_closure α6 [ α10 ] in
-            let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
+            let* α12 := M.alloc (Value.Array [ α11 ]) in
+            M.pure (M.pointer_coercion α12) in
         let* α14 := M.call_closure α1 [ α5; α13 ] in
-        let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

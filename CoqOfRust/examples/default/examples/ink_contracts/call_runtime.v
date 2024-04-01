@@ -18,7 +18,8 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "call_runtime::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -40,7 +41,8 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -181,7 +183,8 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
-      let* α2 := M.read (mk_str "CallRuntimeFailed") in M.call_closure α0 [ α1; α2 ]
+      let* α2 := M.read (mk_str "CallRuntimeFailed") in
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -213,7 +216,9 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in let* other := M.alloc other in M.pure (Value.Bool true)
+      let* self := M.alloc self in
+      let* other := M.alloc other in
+      M.pure (Value.Bool true)
     | _, _ => M.impossible
     end.
   
@@ -244,7 +249,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.pure (Value.Tuple [])
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -301,7 +308,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                   "std::panicking::begin_panic"
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α1 := M.read (mk_str "Unexpected error from `pallet-contracts`.") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3
           ] in
       M.read α0
     | _, _ => M.impossible

@@ -92,7 +92,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* age_days :=
       let* α0 :=
         M.get_associated_function (Ty.path "generics_new_type_idiom::Years") "to_days" [] in
-      let* α1 := M.call_closure α0 [ age ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ age ] in
+      M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -102,7 +103,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Old enough ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -114,9 +116,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ age ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -127,7 +131,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Old enough ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α15 :=
           (* Unsize *)
             let* α6 :=
@@ -143,10 +148,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.call_closure α7 [ α10 ] in
             let* α12 := M.alloc α11 in
             let* α13 := M.call_closure α6 [ α12 ] in
-            let* α14 := M.alloc (Value.Array [ α13 ]) in M.pure (M.pointer_coercion α14) in
+            let* α14 := M.alloc (Value.Array [ α13 ]) in
+            M.pure (M.pointer_coercion α14) in
         let* α16 := M.call_closure α1 [ α5; α15 ] in
-        let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
+        let* α17 := M.call_closure α0 [ α16 ] in
+        M.alloc α17 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

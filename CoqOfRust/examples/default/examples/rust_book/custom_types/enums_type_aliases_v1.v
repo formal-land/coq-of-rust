@@ -38,6 +38,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Value.StructTuple
           "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
           []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

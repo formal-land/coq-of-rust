@@ -18,7 +18,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -40,7 +41,8 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -178,7 +180,9 @@ Module Impl_call_builder_CallBuilderTest.
       let* result :=
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3 in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        let* α3 := M.never_to_any α2 in
+        M.alloc α3 in
       let* α0 :=
         M.match_operator
           result
@@ -203,15 +207,19 @@ Module Impl_call_builder_CallBuilderTest.
                     M.read
                       (mk_str
                         "not implemented: No other `LangError` variants exist at the moment.") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
               let* α8 :=
                 (* Unsize *)
                   let* α5 :=
                     M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] in
                   let* α6 := M.call_closure α5 [] in
-                  let* α7 := M.alloc α6 in M.pure (M.pointer_coercion α7) in
+                  let* α7 := M.alloc α6 in
+                  M.pure (M.pointer_coercion α7) in
               let* α9 := M.call_closure α1 [ α4; α8 ] in
-              let* α10 := M.call_closure α0 [ α9 ] in let* α11 := M.never_to_any α10 in M.alloc α11
+              let* α10 := M.call_closure α0 [ α9 ] in
+              let* α11 := M.never_to_any α10 in
+              M.alloc α11
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -235,7 +243,8 @@ Module Impl_call_builder_CallBuilderTest.
     | [], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
-      let* selector := M.alloc selector in M.pure (Value.Tuple [])
+      let* selector := M.alloc selector in
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   

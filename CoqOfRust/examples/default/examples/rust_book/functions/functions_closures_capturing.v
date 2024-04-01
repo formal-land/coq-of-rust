@@ -80,7 +80,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "from"
           [] in
-      let* α1 := M.read (mk_str "green") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+      let* α1 := M.read (mk_str "green") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
     let* print :=
       M.alloc
         (M.closure
@@ -114,8 +116,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+                      let* α11 := M.call_closure α0 [ α10 ] in
+                      M.alloc α11 in
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -127,7 +131,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple [] ]
           "call"
           [] in
-      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
+      M.alloc α1 in
     let* _reborrow := M.alloc color in
     let* _ :=
       let* α0 :=
@@ -137,7 +142,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple [] ]
           "call"
           [] in
-      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
+      M.alloc α1 in
     let* _color_moved := M.copy color in
     let* count := M.alloc (Value.Integer Integer.I32 0) in
     let* inc :=
@@ -179,9 +185,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let* α8 := M.alloc (Value.Array [ α7 ]) in
                             M.pure (M.pointer_coercion α8) in
                         let* α10 := M.call_closure α1 [ α5; α9 ] in
-                        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                        let* α11 := M.call_closure α0 [ α10 ] in
+                        M.alloc α11 in
                       M.alloc (Value.Tuple []) in
-                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -193,7 +201,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple [] ]
           "call_mut"
           [] in
-      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -202,7 +211,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple [] ]
           "call_mut"
           [] in
-      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
+      M.alloc α1 in
     let* _count_reborrowed := M.alloc count in
     let* movable :=
       let* α0 :=
@@ -210,7 +220,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
+      M.alloc α1 in
     let* consume :=
       M.alloc
         (M.closure
@@ -249,7 +260,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let* α8 := M.alloc (Value.Array [ α7 ]) in
                             M.pure (M.pointer_coercion α8) in
                         let* α10 := M.call_closure α1 [ α5; α9 ] in
-                        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                        let* α11 := M.call_closure α0 [ α10 ] in
+                        M.alloc α11 in
                       M.alloc (Value.Tuple []) in
                     let* _ :=
                       let* α0 :=
@@ -261,8 +273,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                           ] in
                       let* α1 := M.read movable in
-                      let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
-                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+                      let* α2 := M.call_closure α0 [ α1 ] in
+                      M.alloc α2 in
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -275,7 +289,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "call_once"
           [] in
       let* α1 := M.read consume in
-      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

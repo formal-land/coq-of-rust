@@ -26,8 +26,12 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* nanoseconds := let* α0 := M.alloc (Value.Integer Integer.U64 5) in M.copy (M.use α0) in
-    let* inches := let* α0 := M.alloc (Value.Integer Integer.U64 2) in M.copy (M.use α0) in
+    let* nanoseconds :=
+      let* α0 := M.alloc (Value.Integer Integer.U64 5) in
+      M.copy (M.use α0) in
+    let* inches :=
+      let* α0 := M.alloc (Value.Integer Integer.U64 2) in
+      M.copy (M.use α0) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -39,7 +43,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α4 := M.read (mk_str " inches = ") in
             let* α5 := M.read (mk_str " unit?
 ") in
-            let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in M.pure (M.pointer_coercion α6) in
+            let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
+            M.pure (M.pointer_coercion α6) in
         let* α19 :=
           (* Unsize *)
             let* α8 :=
@@ -64,10 +69,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α15 := BinOp.Panic.add α13 α14 in
             let* α16 := M.alloc α15 in
             let* α17 := M.call_closure α12 [ α16 ] in
-            let* α18 := M.alloc (Value.Array [ α9; α11; α17 ]) in M.pure (M.pointer_coercion α18) in
+            let* α18 := M.alloc (Value.Array [ α9; α11; α17 ]) in
+            M.pure (M.pointer_coercion α18) in
         let* α20 := M.call_closure α1 [ α7; α19 ] in
-        let* α21 := M.call_closure α0 [ α20 ] in M.alloc α21 in
+        let* α21 := M.call_closure α0 [ α20 ] in
+        M.alloc α21 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

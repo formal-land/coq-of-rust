@@ -11,7 +11,8 @@ Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not yet implemented") in
-    let* α2 := M.call_closure α0 [ α1 ] in M.never_to_any α2
+    let* α2 := M.call_closure α0 [ α1 ] in
+    M.never_to_any α2
   | _, _ => M.impossible
   end.
 
@@ -60,12 +61,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Guess the number!
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* secret_number :=
       let* α0 := M.get_function "guessing_game::gen_range" [] in
-      let* α1 := M.call_closure α0 [] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
     let* α0 :=
       M.loop
         (let* _ :=
@@ -76,13 +81,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "Please input your guess.
 ") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                M.pure (M.pointer_coercion α3) in
             let* α5 := M.call_closure α1 [ α4 ] in
-            let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+            let* α6 := M.call_closure α0 [ α5 ] in
+            M.alloc α6 in
           M.alloc (Value.Tuple []) in
         let* guess :=
           let* α0 := M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
-          let* α1 := M.call_closure α0 [] in M.alloc α1 in
+          let* α1 := M.call_closure α0 [] in
+          M.alloc α1 in
         let* _ :=
           let* α0 :=
             M.get_associated_function
@@ -97,7 +105,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α4 := M.alloc α3 in
           let* α5 := M.call_closure α1 [ α4; guess ] in
           let* α6 := M.read (mk_str "Failed to read line") in
-          let* α7 := M.call_closure α0 [ α5; α6 ] in M.alloc α7 in
+          let* α7 := M.call_closure α0 [ α5; α6 ] in
+          M.alloc α7 in
         let* guess :=
           let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "u32" ] in
           let* α1 := M.get_associated_function (Ty.path "str") "trim" [] in
@@ -119,12 +128,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-                  let* num := M.copy γ0_0 in M.pure num;
+                  let* num := M.copy γ0_0 in
+                  M.pure num;
                 fun γ =>
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                   let* α0 := M.continue in
-                  let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2
               ] in
           M.copy α7 in
         let* _ :=
@@ -136,7 +148,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read (mk_str "You guessed: ") in
                 let* α3 := M.read (mk_str "
 ") in
-                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                M.pure (M.pointer_coercion α4) in
             let* α9 :=
               (* Unsize *)
                 let* α6 :=
@@ -145,9 +158,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new_display"
                     [ Ty.path "u32" ] in
                 let* α7 := M.call_closure α6 [ guess ] in
-                let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                let* α8 := M.alloc (Value.Array [ α7 ]) in
+                M.pure (M.pointer_coercion α8) in
             let* α10 := M.call_closure α1 [ α5; α9 ] in
-            let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+            let* α11 := M.call_closure α0 [ α10 ] in
+            M.alloc α11 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
         let* α1 := M.call_closure α0 [ guess; secret_number ] in
@@ -164,9 +179,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Too small!
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
                 let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+                let* α6 := M.call_closure α0 [ α5 ] in
+                M.alloc α6 in
               M.alloc (Value.Tuple []);
             fun γ =>
               let* _ :=
@@ -177,9 +194,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Too big!
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
                 let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+                let* α6 := M.call_closure α0 [ α5 ] in
+                M.alloc α6 in
               M.alloc (Value.Tuple []);
             fun γ =>
               let* _ :=
@@ -191,12 +210,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "You win!
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                      let* α3 := M.alloc (Value.Array [ α2 ]) in
+                      M.pure (M.pointer_coercion α3) in
                   let* α5 := M.call_closure α1 [ α4 ] in
-                  let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+                  let* α6 := M.call_closure α0 [ α5 ] in
+                  M.alloc α6 in
                 M.alloc (Value.Tuple []) in
               let* α0 := M.break in
-              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2
           ]) in
     M.read α0
   | _, _ => M.impossible

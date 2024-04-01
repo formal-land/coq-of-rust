@@ -464,7 +464,7 @@ impl<'a> Expression<'a> {
                             init.to_doc(false),
                             text(" in"),
                         ]),
-                        line(),
+                        hardline(),
                         body.to_doc(false),
                     ]),
                 )

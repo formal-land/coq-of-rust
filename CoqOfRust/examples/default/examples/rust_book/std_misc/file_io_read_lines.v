@@ -27,7 +27,9 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
           "open"
           [ Ty.path "alloc::string::String" ] in
       let* α2 := M.read filename in
-      let* α3 := M.call_closure α1 [ α2 ] in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
+      M.alloc α4 in
     let* α0 :=
       M.get_trait_method
         "std::io::BufRead"
@@ -43,7 +45,9 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.read file in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.call_closure α0 [ α3 ] in
-    let* α0 := M.return_ α4 in let* α1 := M.read α0 in M.never_to_any α1
+    let* α0 := M.return_ α4 in
+    let* α1 := M.read α0 in
+    M.never_to_any α1
   | _, _ => M.impossible
   end.
 
@@ -64,7 +68,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.get_function "file_io_read_lines::read_lines" [] in
       let* α1 := M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
       let* α2 := M.read (mk_str "./hosts") in
-      let* α3 := M.call_closure α1 [ α2 ] in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
+      M.alloc α4 in
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
@@ -106,7 +112,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       let* α0 := M.break in
-                      let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
@@ -150,7 +158,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* α12 := M.alloc (Value.Array [ α11 ]) in
                               M.pure (M.pointer_coercion α12) in
                           let* α14 := M.call_closure α1 [ α5; α13 ] in
-                          let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
+                          let* α15 := M.call_closure α0 [ α14 ] in
+                          M.alloc α15 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])
                   ] in

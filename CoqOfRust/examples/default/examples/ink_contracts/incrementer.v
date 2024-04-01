@@ -37,7 +37,8 @@ Module Impl_incrementer_Incrementer.
     | [], [] =>
       let* α0 := M.get_associated_function (Ty.path "incrementer::Incrementer") "new" [] in
       let* α1 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in M.call_closure α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in
+      M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -58,8 +59,11 @@ Module Impl_incrementer_Incrementer.
           let* α0 := M.read self in
           M.pure (M.get_struct_record_field α0 "incrementer::Incrementer" "value") in
         let* α0 := M.read β in
-        let* α1 := M.read by_ in let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+        let* α1 := M.read by_ in
+        let* α2 := BinOp.Panic.add α0 α1 in
+        M.assign β α2 in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   

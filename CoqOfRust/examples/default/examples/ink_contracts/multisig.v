@@ -138,7 +138,8 @@ Module Impl_core_default_Default_for_multisig_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "multisig::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "multisig::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -192,7 +193,8 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -404,7 +406,8 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -521,7 +524,10 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in let* α0 := M.read self in M.read α0
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.read self in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -560,7 +566,9 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in let* other := M.alloc other in M.pure (Value.Bool true)
+      let* self := M.alloc self in
+      let* other := M.alloc other in
+      M.pure (Value.Bool true)
     | _, _ => M.impossible
     end.
   
@@ -591,7 +599,9 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.pure (Value.Tuple [])
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -784,7 +794,8 @@ Module Impl_multisig_Env.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "multisig::Env" "caller")
+      let* α0 := M.read self in
+      M.read (M.get_struct_record_field α0 "multisig::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -956,24 +967,32 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
                 LogicalOp.and
                   (BinOp.Pure.lt (Value.Integer Integer.U32 0) α0)
                   (let* α0 := M.read requirement in
-                  let* α1 := M.read owners in M.pure (BinOp.Pure.le α0 α1)) in
+                  let* α1 := M.read owners in
+                  M.pure (BinOp.Pure.le α0 α1)) in
               let* α2 :=
                 LogicalOp.and
                   α1
                   (let* α0 := M.read owners in
                   let* α1 := M.get_constant "multisig::MAX_OWNERS" in
-                  let* α2 := M.read α1 in M.pure (BinOp.Pure.le α0 α2)) in
-              let* α3 := M.alloc (UnOp.Pure.not α2) in M.pure (M.use α3) in
-            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* α2 := M.read α1 in
+                  M.pure (BinOp.Pure.le α0 α2)) in
+              let* α3 := M.alloc (UnOp.Pure.not α2) in
+              M.pure (M.use α3) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* α0 := M.get_function "core::panicking::panic" [] in
             let* α1 :=
               M.read
                 (mk_str
                   "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS") in
-            let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
           fun γ => M.alloc (Value.Tuple [])
         ] in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -1035,7 +1054,8 @@ Module Impl_multisig_Multisig.
             []
             "default"
             [] in
-        let* α1 := M.call_closure α0 [] in M.alloc α1 in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1052,7 +1072,8 @@ Module Impl_multisig_Multisig.
             "deref_mut"
             [] in
         let* α2 := M.call_closure α1 [ owners ] in
-        let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
+        let* α3 := M.call_closure α0 [ α2 ] in
+        M.alloc α3 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1061,7 +1082,8 @@ Module Impl_multisig_Multisig.
               [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
             "dedup"
             [] in
-        let* α1 := M.call_closure α0 [ owners ] in M.alloc α1 in
+        let* α1 := M.call_closure α0 [ owners ] in
+        M.alloc α1 in
       let* _ :=
         let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
@@ -1073,7 +1095,8 @@ Module Impl_multisig_Multisig.
             [] in
         let* α2 := M.call_closure α1 [ owners ] in
         let* α3 := M.read requirement in
-        let* α4 := M.call_closure α0 [ M.rust_cast α2; α3 ] in M.alloc α4 in
+        let* α4 := M.call_closure α0 [ M.rust_cast α2; α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 :=
           M.get_trait_method
@@ -1114,7 +1137,9 @@ Module Impl_multisig_Multisig.
                       [
                         fun γ =>
                           let* α0 := M.break in
-                          let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                          let* α1 := M.read α0 in
+                          let* α2 := M.never_to_any α1 in
+                          M.alloc α2;
                         fun γ =>
                           let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
@@ -1217,18 +1242,24 @@ Module Impl_multisig_Multisig.
                 let* α7 := M.read self in
                 let* α8 :=
                   M.read (M.get_struct_record_field α7 "multisig::Multisig" "requirement") in
-                let* α9 := M.alloc (UnOp.Pure.not (BinOp.Pure.ge α6 α8)) in M.pure (M.use α9) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α9 := M.alloc (UnOp.Pure.not (BinOp.Pure.ge α6 α8)) in
+                M.pure (M.use α9) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 := M.get_function "core::panicking::panic" [] in
               let* α1 :=
                 M.read
                   (mk_str
                     "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
     self.requirement") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ => M.alloc (Value.Tuple [])
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1266,8 +1297,11 @@ Module Impl_multisig_Multisig.
             α1
             [ M.get_struct_record_field α2 "multisig::Multisig" "transactions"; trans_id ] in
         let* α4 := M.get_constant "multisig::WRONG_TRANSACTION_ID" in
-        let* α5 := M.read α4 in let* α6 := M.call_closure α0 [ α3; α5 ] in M.alloc α6 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+        let* α5 := M.read α4 in
+        let* α6 := M.call_closure α0 [ α3; α5 ] in
+        M.alloc α6 in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1304,14 +1338,20 @@ Module Impl_multisig_Multisig.
                   M.call_closure
                     α0
                     [ M.get_struct_record_field α1 "multisig::Multisig" "is_owner"; α2 ] in
-                let* α4 := M.alloc (UnOp.Pure.not α3) in M.pure (M.use α4) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α4 := M.alloc (UnOp.Pure.not α3) in
+                M.pure (M.use α4) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 := M.get_function "core::panicking::panic" [] in
               let* α1 := M.read (mk_str "assertion failed: self.is_owner.contains(owner)") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ => M.alloc (Value.Tuple [])
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1335,8 +1375,11 @@ Module Impl_multisig_Multisig.
         let* α5 := M.call_closure α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 := M.call_closure α2 [ α6 ] in
-        let* α8 := M.alloc α7 in let* α9 := M.call_closure α0 [ α1; α8 ] in M.alloc α9 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α0 [ α1; α8 ] in
+        M.alloc α9 in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1392,9 +1435,11 @@ Module Impl_multisig_Multisig.
                       let* α1 := M.read left_val in
                       let* α2 := M.read right_val in
                       let* α3 := M.call_closure α0 [ α1; α2 ] in
-                      let* α4 := M.alloc (UnOp.Pure.not α3) in M.pure (M.use α4) in
+                      let* α4 := M.alloc (UnOp.Pure.not α3) in
+                      M.pure (M.use α4) in
                     let* _ :=
-                      let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                      let* α0 := M.read γ in
+                      M.is_constant_or_break_match α0 (Value.Bool true) in
                     let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                     let* α0 :=
                       M.get_function
@@ -1408,11 +1453,14 @@ Module Impl_multisig_Multisig.
                         α0
                         [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                     let* α0 := M.alloc α4 in
-                    let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                    let* α1 := M.read α0 in
+                    let* α2 := M.never_to_any α1 in
+                    M.alloc α2;
                   fun γ => M.alloc (Value.Tuple [])
                 ]
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1449,14 +1497,20 @@ Module Impl_multisig_Multisig.
                   M.call_closure
                     α0
                     [ M.get_struct_record_field α1 "multisig::Multisig" "is_owner"; α2 ] in
-                let* α4 := M.alloc (UnOp.Pure.not (UnOp.Pure.not α3)) in M.pure (M.use α4) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α4 := M.alloc (UnOp.Pure.not (UnOp.Pure.not α3)) in
+                M.pure (M.use α4) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 := M.get_function "core::panicking::panic" [] in
               let* α1 := M.read (mk_str "assertion failed: !self.is_owner.contains(owner)") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ => M.alloc (Value.Tuple [])
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1482,10 +1536,14 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; new_owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; new_owner ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
@@ -1501,7 +1559,8 @@ Module Impl_multisig_Multisig.
         let* α4 := BinOp.Panic.add (M.rust_cast α3) (Value.Integer Integer.U32 1) in
         let* α5 := M.read self in
         let* α6 := M.read (M.get_struct_record_field α5 "multisig::Multisig" "requirement") in
-        let* α7 := M.call_closure α0 [ α4; α6 ] in M.alloc α7 in
+        let* α7 := M.call_closure α0 [ α4; α6 ] in
+        M.alloc α7 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1545,7 +1604,8 @@ Module Impl_multisig_Multisig.
                 [ Value.StructRecord "multisig::OwnerAddition" [ ("owner", α5) ] ]
             ] in
         M.alloc α6 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1621,7 +1681,8 @@ Module Impl_multisig_Multisig.
                             "eq"
                             [] in
                         let* α1 := M.read x in
-                        let* α2 := M.read owner in M.call_closure α0 [ α1; α2 ]
+                        let* α2 := M.read owner in
+                        M.call_closure α0 [ α1; α2 ]
                     ]
                 | _ => M.impossible
                 end)
@@ -1631,7 +1692,8 @@ Module Impl_multisig_Multisig.
           (mk_str
             "This is only called after it was already verified that the id is
                actually an owner.") in
-      let* α10 := M.call_closure α0 [ α8; α9 ] in M.pure (M.rust_cast α10)
+      let* α10 := M.call_closure α0 [ α8; α9 ] in
+      M.pure (M.rust_cast α10)
     | _, _ => M.impossible
     end.
   
@@ -1698,7 +1760,9 @@ Module Impl_multisig_Multisig.
                     [
                       fun γ =>
                         let* α0 := M.break in
-                        let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2;
                       fun γ =>
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
@@ -1710,7 +1774,8 @@ Module Impl_multisig_Multisig.
                           let* α0 := M.read trans_id in
                           let* α1 := M.read α0 in
                           let* α2 := M.read owner in
-                          let* α3 := M.read α2 in M.alloc (Value.Tuple [ α1; α3 ]) in
+                          let* α3 := M.read α2 in
+                          M.alloc (Value.Tuple [ α1; α3 ]) in
                         let* α0 := M.alloc (Value.Tuple []) in
                         M.match_operator
                           α0
@@ -1738,7 +1803,8 @@ Module Impl_multisig_Multisig.
                                         "confirmations";
                                       key
                                     ] in
-                                let* α3 := M.alloc α2 in M.pure (M.use α3) in
+                                let* α3 := M.alloc α2 in
+                                M.pure (M.use α3) in
                               let* _ :=
                                 let* α0 := M.read γ in
                                 M.is_constant_or_break_match α0 (Value.Bool true) in
@@ -1793,7 +1859,8 @@ Module Impl_multisig_Multisig.
                                     ] in
                                 let* α5 := M.alloc (Value.Integer Integer.U32 0) in
                                 let* α6 := M.read (M.use α5) in
-                                let* α7 := M.call_closure α0 [ α4; α6 ] in M.alloc α7 in
+                                let* α7 := M.call_closure α0 [ α4; α6 ] in
+                                M.alloc α7 in
                               let* _ :=
                                 let β := count in
                                 let* α0 := M.read β in
@@ -1860,10 +1927,14 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; owner ] in
+        M.alloc α2 in
       let* len :=
         let* α0 :=
           M.get_associated_function
@@ -1875,21 +1946,26 @@ Module Impl_multisig_Multisig.
         let* α1 := M.read self in
         let* α2 :=
           M.call_closure α0 [ M.get_struct_record_field α1 "multisig::Multisig" "owners" ] in
-        let* α3 := BinOp.Panic.sub (M.rust_cast α2) (Value.Integer Integer.U32 1) in M.alloc α3 in
+        let* α3 := BinOp.Panic.sub (M.rust_cast α2) (Value.Integer Integer.U32 1) in
+        M.alloc α3 in
       let* requirement :=
         let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "min" [] in
         let* α1 := M.read len in
         let* α2 := M.read self in
         let* α3 := M.read (M.get_struct_record_field α2 "multisig::Multisig" "requirement") in
-        let* α4 := M.call_closure α0 [ α1; α3 ] in M.alloc α4 in
+        let* α4 := M.call_closure α0 [ α1; α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 := M.read len in
-        let* α2 := M.read requirement in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+        let* α2 := M.read requirement in
+        let* α3 := M.call_closure α0 [ α1; α2 ] in
+        M.alloc α3 in
       let* owner_index :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] in
         let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1; owner ] in M.alloc (M.rust_cast α2) in
+        let* α2 := M.call_closure α0 [ α1; owner ] in
+        M.alloc (M.rust_cast α2) in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1921,7 +1997,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "clean_owner_confirmations" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; owner ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
         let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
@@ -1939,7 +2017,8 @@ Module Impl_multisig_Multisig.
                 [ Value.StructRecord "multisig::OwnerRemoval" [ ("owner", α5) ] ]
             ] in
         M.alloc α6 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1970,16 +2049,24 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; old_owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; old_owner ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; new_owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; new_owner ] in
+        M.alloc α2 in
       let* owner_index :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; old_owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; old_owner ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 :=
           M.get_trait_method
@@ -1996,7 +2083,8 @@ Module Impl_multisig_Multisig.
           M.call_closure
             α0
             [ M.get_struct_record_field α1 "multisig::Multisig" "owners"; M.rust_cast α2 ] in
-        let* α4 := M.read new_owner in M.assign α3 α4 in
+        let* α4 := M.read new_owner in
+        M.assign α3 α4 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -2024,7 +2112,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "clean_owner_confirmations" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; old_owner ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1; old_owner ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
         let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
@@ -2059,7 +2149,8 @@ Module Impl_multisig_Multisig.
                 [ Value.StructRecord "multisig::OwnerAddition" [ ("owner", α5) ] ]
             ] in
         M.alloc α6 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -2085,7 +2176,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
@@ -2099,7 +2192,8 @@ Module Impl_multisig_Multisig.
         let* α3 :=
           M.call_closure α1 [ M.get_struct_record_field α2 "multisig::Multisig" "owners" ] in
         let* α4 := M.read new_requirement in
-        let* α5 := M.call_closure α0 [ M.rust_cast α3; α4 ] in M.alloc α5 in
+        let* α5 := M.call_closure α0 [ M.rust_cast α3; α4 ] in
+        M.alloc α5 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read new_requirement in
@@ -2121,7 +2215,8 @@ Module Impl_multisig_Multisig.
                 [ Value.StructRecord "multisig::RequirementChange" [ ("new_requirement", α5) ] ]
             ] in
         M.alloc α6 in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -2186,10 +2281,13 @@ Module Impl_multisig_Multisig.
             [ M.get_struct_record_field α2 "multisig::Multisig" "confirmation_count"; transaction
             ] in
         let* α4 := M.alloc (Value.Integer Integer.U32 0) in
-        let* α5 := M.read (M.use α4) in let* α6 := M.call_closure α0 [ α3; α5 ] in M.alloc α6 in
+        let* α5 := M.read (M.use α4) in
+        let* α6 := M.call_closure α0 [ α3; α5 ] in
+        M.alloc α6 in
       let* key :=
         let* α0 := M.read transaction in
-        let* α1 := M.read confirmer in M.alloc (Value.Tuple [ α0; α1 ]) in
+        let* α1 := M.read confirmer in
+        M.alloc (Value.Tuple [ α0; α1 ]) in
       let* new_confirmation :=
         let* α0 :=
           M.get_associated_function
@@ -2211,11 +2309,14 @@ Module Impl_multisig_Multisig.
           [
             fun γ =>
               let γ := M.use new_confirmation in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let β := count in
                 let* α0 := M.read β in
-                let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in M.assign β α1 in
+                let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
+                M.assign β α1 in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -2265,9 +2366,11 @@ Module Impl_multisig_Multisig.
                   let* α1 := M.read self in
                   let* α2 :=
                     M.read (M.get_struct_record_field α1 "multisig::Multisig" "requirement") in
-                  let* α3 := M.alloc (BinOp.Pure.ge α0 α2) in M.pure (M.use α3) in
+                  let* α3 := M.alloc (BinOp.Pure.ge α0 α2) in
+                  M.pure (M.use α3) in
                 let* _ :=
-                  let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* α0 := M.read γ in
+                  M.is_constant_or_break_match α0 (Value.Bool true) in
                 M.alloc (Value.StructTuple "multisig::ConfirmationStatus::Confirmed" []);
               fun γ =>
                 let* α0 := M.read self in
@@ -2286,7 +2389,9 @@ Module Impl_multisig_Multisig.
           [
             fun γ =>
               let γ := M.use new_confirmation in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
                 let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
@@ -2349,7 +2454,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* trans_id :=
         let* α0 := M.read self in
         M.copy
@@ -2440,7 +2547,8 @@ Module Impl_multisig_Multisig.
       let* α8 := M.call_closure α3 [ α7 ] in
       let* α9 := M.read trans_id in
       let* α10 := M.call_closure α1 [ α2; α8; α9 ] in
-      let* α0 := M.alloc (Value.Tuple [ α0; α10 ]) in M.read α0
+      let* α0 := M.alloc (Value.Tuple [ α0; α10 ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -2499,8 +2607,11 @@ Module Impl_multisig_Multisig.
                     "is_some"
                     [] in
                 let* α1 := M.call_closure α0 [ transaction ] in
-                let* α2 := M.alloc α1 in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -2581,14 +2692,16 @@ Module Impl_multisig_Multisig.
                                       [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
                                       "eq"
                                       [] in
-                                  let* α1 := M.alloc trans_id in M.call_closure α0 [ t; α1 ]
+                                  let* α1 := M.alloc trans_id in
+                                  M.call_closure α0 [ t; α1 ]
                               ]
                           | _ => M.impossible
                           end)
                     ] in
                 let* α9 :=
                   M.read (mk_str "The transaction exists hence it must also be in the list.") in
-                let* α10 := M.call_closure α0 [ α8; α9 ] in M.alloc α10 in
+                let* α10 := M.call_closure α0 [ α8; α9 ] in
+                M.alloc α10 in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -2665,7 +2778,8 @@ Module Impl_multisig_Multisig.
                                 fun γ =>
                                   let* α0 := M.break in
                                   let* α1 := M.read α0 in
-                                  let* α2 := M.never_to_any α1 in M.alloc α2;
+                                  let* α2 := M.never_to_any α1 in
+                                  M.alloc α2;
                                 fun γ =>
                                   let* γ0_0 :=
                                     M.get_struct_tuple_field_or_break_match
@@ -2747,7 +2861,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.alloc (Value.Tuple []) in
       let* α0 :=
         M.match_operator
@@ -2766,8 +2882,12 @@ Module Impl_multisig_Multisig.
                 let* α3 := M.read trans_id in
                 let* α4 := M.call_closure α1 [ α2; α3 ] in
                 let* α5 := M.alloc α4 in
-                let* α6 := M.call_closure α0 [ α5 ] in let* α7 := M.alloc α6 in M.pure (M.use α7) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α6 := M.call_closure α0 [ α5 ] in
+                let* α7 := M.alloc α6 in
+                M.pure (M.use α7) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
                 let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
@@ -2810,12 +2930,16 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_transaction_exists" [] in
         let* α1 := M.read self in
-        let* α2 := M.read trans_id in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+        let* α2 := M.read trans_id in
+        let* α3 := M.call_closure α0 [ α1; α2 ] in
+        M.alloc α3 in
       let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "confirm_by_caller" [] in
       let* α1 := M.read self in
       let* α2 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
@@ -2825,7 +2949,9 @@ Module Impl_multisig_Multisig.
       let* α6 := M.alloc α5 in
       let* α7 := M.call_closure α2 [ α6 ] in
       let* α8 := M.read trans_id in
-      let* α9 := M.call_closure α0 [ α1; α7; α8 ] in let* α0 := M.alloc α9 in M.read α0
+      let* α9 := M.call_closure α0 [ α1; α7; α8 ] in
+      let* α0 := M.alloc α9 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -2860,13 +2986,17 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* caller :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
         let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
       let* α0 := M.alloc (Value.Tuple []) in
       let* α0 :=
         M.match_operator
@@ -2889,8 +3019,11 @@ Module Impl_multisig_Multisig.
                   M.call_closure
                     α0
                     [ M.get_struct_record_field α1 "multisig::Multisig" "confirmations"; α4 ] in
-                let* α6 := M.alloc α5 in M.pure (M.use α6) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α6 := M.alloc α5 in
+                M.pure (M.use α6) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -2932,11 +3065,13 @@ Module Impl_multisig_Multisig.
                 let* α4 :=
                   M.read
                     (mk_str "There is a entry in `self.confirmations`. Hence a count must exit.") in
-                let* α5 := M.call_closure α0 [ α3; α4 ] in M.alloc α5 in
+                let* α5 := M.call_closure α0 [ α3; α4 ] in
+                M.alloc α5 in
               let* _ :=
                 let β := confirmation_count in
                 let* α0 := M.read β in
-                let* α1 := BinOp.Panic.sub α0 (Value.Integer Integer.U32 1) in M.assign β α1 in
+                let* α1 := BinOp.Panic.sub α0 (Value.Integer Integer.U32 1) in
+                M.assign β α1 in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -3019,7 +3154,9 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_confirmed" [] in
         let* α1 := M.read self in
-        let* α2 := M.read trans_id in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+        let* α2 := M.read trans_id in
+        let* α3 := M.call_closure α0 [ α1; α2 ] in
+        M.alloc α3 in
       let* t :=
         let* α0 :=
           M.get_associated_function
@@ -3031,7 +3168,9 @@ Module Impl_multisig_Multisig.
         let* α3 := M.read trans_id in
         let* α4 := M.call_closure α1 [ α2; α3 ] in
         let* α5 := M.get_constant "multisig::WRONG_TRANSACTION_ID" in
-        let* α6 := M.read α5 in let* α7 := M.call_closure α0 [ α4; α6 ] in M.alloc α7 in
+        let* α6 := M.read α5 in
+        let* α7 := M.call_closure α0 [ α4; α6 ] in
+        M.alloc α7 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -3049,20 +3188,27 @@ Module Impl_multisig_Multisig.
                 let* α6 :=
                   M.read
                     (M.get_struct_record_field t "multisig::Transaction" "transferred_value") in
-                let* α7 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α5 α6)) in M.pure (M.use α7) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α7 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α5 α6)) in
+                M.pure (M.use α7) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 := M.get_function "core::panicking::panic" [] in
               let* α1 :=
                 M.read
                   (mk_str
                     "assertion failed: self.env().transferred_value() == t.transferred_value") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* result :=
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3 in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        let* α3 := M.never_to_any α2 in
+        M.alloc α3 in
       let* result :=
         let* α0 :=
           M.match_operator

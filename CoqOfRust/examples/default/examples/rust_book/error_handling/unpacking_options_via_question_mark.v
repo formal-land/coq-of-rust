@@ -68,7 +68,8 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -163,14 +164,17 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
-              let* val := M.copy γ0_0 in M.pure val
+              let* val := M.copy γ0_0 in
+              M.pure val
           ] in
       let* α7 :=
         M.read
@@ -205,14 +209,17 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
-              let* val := M.copy γ0_0 in M.pure val
+              let* val := M.copy γ0_0 in
+              M.pure val
           ] in
       M.read
         (M.get_struct_record_field
@@ -307,9 +314,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
                     let* α3 := M.call_closure α0 [ α1; α2 ] in
-                    let* α4 := M.alloc (UnOp.Pure.not α3) in M.pure (M.use α4) in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
                   let* _ :=
-                    let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
                   let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
@@ -326,10 +335,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       α0
                       [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
-                  let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
                 fun γ => M.alloc (Value.Tuple [])
               ]
         ] in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

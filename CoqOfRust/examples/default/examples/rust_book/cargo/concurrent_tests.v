@@ -28,9 +28,11 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "some
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -41,9 +43,11 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "nothing
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0
@@ -93,7 +97,8 @@ Module tests.
         let* α9 := M.read (mk_str "ferris.txt") in
         let* α10 := M.call_closure α1 [ α8; α9 ] in
         let* α11 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α12 := M.call_closure α0 [ α10; α11 ] in M.alloc α12 in
+        let* α12 := M.call_closure α0 [ α10; α11 ] in
+        M.alloc α12 in
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
@@ -132,7 +137,9 @@ Module tests.
                     [
                       fun γ =>
                         let* α0 := M.break in
-                        let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2;
                       fun γ =>
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
@@ -160,7 +167,8 @@ Module tests.
                           let* α4 := M.call_closure α2 [ α3 ] in
                           let* α5 := M.call_closure α1 [ file; α4 ] in
                           let* α6 := M.read (mk_str "Could not write to ferris.txt") in
-                          let* α7 := M.call_closure α0 [ α5; α6 ] in M.alloc α7 in
+                          let* α7 := M.call_closure α0 [ α5; α6 ] in
+                          M.alloc α7 in
                         M.alloc (Value.Tuple [])
                     ] in
                 M.alloc (Value.Tuple []))
@@ -211,7 +219,8 @@ Module tests.
         let* α9 := M.read (mk_str "ferris.txt") in
         let* α10 := M.call_closure α1 [ α8; α9 ] in
         let* α11 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α12 := M.call_closure α0 [ α10; α11 ] in M.alloc α12 in
+        let* α12 := M.call_closure α0 [ α10; α11 ] in
+        M.alloc α12 in
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
@@ -250,7 +259,9 @@ Module tests.
                     [
                       fun γ =>
                         let* α0 := M.break in
-                        let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2;
                       fun γ =>
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
@@ -278,7 +289,8 @@ Module tests.
                           let* α4 := M.call_closure α2 [ α3 ] in
                           let* α5 := M.call_closure α1 [ file; α4 ] in
                           let* α6 := M.read (mk_str "Could not write to ferris.txt") in
-                          let* α7 := M.call_closure α0 [ α5; α6 ] in M.alloc α7 in
+                          let* α7 := M.call_closure α0 [ α5; α6 ] in
+                          M.alloc α7 in
                         M.alloc (Value.Tuple [])
                     ] in
                 M.alloc (Value.Tuple []))

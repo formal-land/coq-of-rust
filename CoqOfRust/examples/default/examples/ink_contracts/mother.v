@@ -94,7 +94,8 @@ Module Impl_core_default_Default_for_mother_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "mother::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "mother::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -116,7 +117,8 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -272,7 +274,8 @@ Module Impl_core_default_Default_for_mother_Bids.
           []
           "default"
           [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "mother::Bids" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "mother::Bids" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -483,13 +486,19 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
       let* __self_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
-        let* α1 := M.read other in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read other in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in M.read α0
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -520,7 +529,9 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.pure (Value.Tuple [])
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -548,7 +559,8 @@ Module Impl_core_clone_Clone_for_mother_Outline.
           self
           [
             fun γ =>
-              let* γ := M.read γ in M.alloc (Value.StructTuple "mother::Outline::NoWinner" []);
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Outline::NoWinner" []);
             fun γ =>
               let* γ := M.read γ in
               M.alloc (Value.StructTuple "mother::Outline::WinnerDetected" []);
@@ -626,11 +638,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* __self_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
-        let* α1 := M.read other in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read other in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
       let* α2 :=
@@ -657,7 +673,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read __self_0 in
                   let* α1 := M.read α0 in
                   let* α2 := M.read __arg1_0 in
-                  let* α3 := M.read α2 in M.alloc (BinOp.Pure.eq α1 α3);
+                  let* α3 := M.read α2 in
+                  M.alloc (BinOp.Pure.eq α1 α3);
                 fun γ =>
                   let γ0_0 := M.get_tuple_field γ 0 in
                   let γ0_1 := M.get_tuple_field γ 1 in
@@ -678,7 +695,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                       [] in
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
-                  let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3;
+                  let* α3 := M.call_closure α0 [ α1; α2 ] in
+                  M.alloc α3;
                 fun γ =>
                   let γ0_0 := M.get_tuple_field γ 0 in
                   let γ0_1 := M.get_tuple_field γ 1 in
@@ -693,11 +711,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read __self_0 in
                   let* α1 := M.read α0 in
                   let* α2 := M.read __arg1_0 in
-                  let* α3 := M.read α2 in M.alloc (BinOp.Pure.eq α1 α3);
+                  let* α3 := M.read α2 in
+                  M.alloc (BinOp.Pure.eq α1 α3);
                 fun γ => M.alloc (Value.Bool true)
               ] in
           M.read α3) in
-      let* α0 := M.alloc α2 in M.read α0
+      let* α0 := M.alloc α2 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -765,9 +785,11 @@ Module Impl_core_clone_Clone_for_mother_Status.
           self
           [
             fun γ =>
-              let* γ := M.read γ in M.alloc (Value.StructTuple "mother::Status::NotStarted" []);
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Status::NotStarted" []);
             fun γ =>
-              let* γ := M.read γ in M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" []);
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" []);
             fun γ =>
               let* γ := M.read γ in
               let* γ1_0 :=
@@ -1234,11 +1256,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* __self_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
           M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
-        let* α1 := M.read other in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read other in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
       let* α2 :=
@@ -1271,11 +1297,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                       [] in
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
-                  let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3;
+                  let* α3 := M.call_closure α0 [ α1; α2 ] in
+                  M.alloc α3;
                 fun γ => M.alloc (Value.Bool true)
               ] in
           M.read α3) in
-      let* α0 := M.alloc α2 in M.read α0
+      let* α0 := M.alloc α2 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -1355,7 +1383,8 @@ Module Impl_mother_Env.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "mother::Env" "caller")
+      let* α0 := M.read self in
+      M.read (M.get_struct_record_field α0 "mother::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -1506,7 +1535,9 @@ Module Impl_mother_Mother.
           [
             fun γ =>
               let γ := M.use fail in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
               let* α1 := M.read (mk_str "Reverting instantiation") in
@@ -1613,7 +1644,9 @@ Module Impl_mother_Mother.
                   "std::panicking::begin_panic"
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α1 := M.read (mk_str "Trapping on user demand!") in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ => M.alloc (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
           ] in
       M.read α0
@@ -1642,7 +1675,8 @@ Module Impl_mother_Mother.
               let* α2 := M.read (mk_str "debug_log: ") in
               let* α3 := M.read (mk_str "
 ") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
           let* α9 :=
             (* Unsize *)
               let* α6 :=
@@ -1651,11 +1685,14 @@ Module Impl_mother_Mother.
                   "new_display"
                   [ Ty.path "alloc::string::String" ] in
               let* α7 := M.call_closure α6 [ _message ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
+              M.pure (M.pointer_coercion α8) in
           let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+          let* α11 := M.call_closure α0 [ α10 ] in
+          M.alloc α11 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   

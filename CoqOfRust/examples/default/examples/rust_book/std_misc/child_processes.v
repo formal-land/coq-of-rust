@@ -85,7 +85,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             M.pure (M.pointer_coercion α7) in
                         let* α9 := M.call_closure α1 [ α4; α8 ] in
-                        let* α10 := M.call_closure α0 [ α9 ] in M.never_to_any α10
+                        let* α10 := M.call_closure α0 [ α9 ] in
+                        M.never_to_any α10
                     ]
                 | _ => M.impossible
                 end)
@@ -104,8 +105,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure
                   α0
                   [ M.get_struct_record_field output "std::process::Output" "status" ] in
-              let* α2 := M.alloc α1 in M.pure (M.use α2) in
-            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α2 := M.alloc α1 in
+              M.pure (M.use α2) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* s :=
               let* α0 :=
                 M.get_associated_function (Ty.path "alloc::string::String") "from_utf8_lossy" [] in
@@ -122,7 +126,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure
                   α1
                   [ M.get_struct_record_field output "std::process::Output" "stdout" ] in
-              let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
+              let* α3 := M.call_closure α0 [ α2 ] in
+              M.alloc α3 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -131,7 +136,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "rustc succeeded and stdout was:
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
                 let* α8 :=
                   (* Unsize *)
                     let* α5 :=
@@ -140,9 +146,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_display"
                         [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
                     let* α6 := M.call_closure α5 [ s ] in
-                    let* α7 := M.alloc (Value.Array [ α6 ]) in M.pure (M.pointer_coercion α7) in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    M.pure (M.pointer_coercion α7) in
                 let* α9 := M.call_closure α1 [ α4; α8 ] in
-                let* α10 := M.call_closure α0 [ α9 ] in M.alloc α10 in
+                let* α10 := M.call_closure α0 [ α9 ] in
+                M.alloc α10 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -162,7 +170,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure
                   α1
                   [ M.get_struct_record_field output "std::process::Output" "stderr" ] in
-              let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
+              let* α3 := M.call_closure α0 [ α2 ] in
+              M.alloc α3 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -171,7 +180,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "rustc failed and stderr was:
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
                 let* α8 :=
                   (* Unsize *)
                     let* α5 :=
@@ -180,9 +190,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_display"
                         [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
                     let* α6 := M.call_closure α5 [ s ] in
-                    let* α7 := M.alloc (Value.Array [ α6 ]) in M.pure (M.pointer_coercion α7) in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    M.pure (M.pointer_coercion α7) in
                 let* α9 := M.call_closure α1 [ α4; α8 ] in
-                let* α10 := M.call_closure α0 [ α9 ] in M.alloc α10 in
+                let* α10 := M.call_closure α0 [ α9 ] in
+                M.alloc α10 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
         ] in

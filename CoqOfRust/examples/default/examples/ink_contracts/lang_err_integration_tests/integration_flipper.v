@@ -27,7 +27,8 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
-      let* α2 := M.read (mk_str "FlipperError") in M.call_closure α0 [ α1; α2 ]
+      let* α2 := M.read (mk_str "FlipperError") in
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -68,7 +69,8 @@ Module Impl_integration_flipper_Flipper.
     | [], [] =>
       let* α0 := M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] in
       let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in M.call_closure α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in
+      M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -94,7 +96,9 @@ Module Impl_integration_flipper_Flipper.
           [
             fun γ =>
               let γ := M.use succeed in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.get_associated_function (Ty.path "integration_flipper::Flipper") "new" [] in
               let* α1 := M.call_closure α0 [ Value.Bool true ] in
@@ -127,7 +131,8 @@ Module Impl_integration_flipper_Flipper.
         M.assign
           (M.get_struct_record_field α0 "integration_flipper::Flipper" "value")
           (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -161,7 +166,9 @@ Module Impl_integration_flipper_Flipper.
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "integration_flipper::Flipper") "flip" [] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.alloc (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]) in
       M.read α0
     | _, _ => M.impossible

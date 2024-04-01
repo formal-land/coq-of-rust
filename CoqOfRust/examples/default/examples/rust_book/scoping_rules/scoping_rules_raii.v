@@ -18,8 +18,10 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -54,7 +56,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
+      M.alloc α1 in
     let* _ :=
       let* _box3 :=
         let* α0 :=
@@ -64,7 +67,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
             "new"
             [] in
-        let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 4 ] in M.alloc α1 in
+        let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 4 ] in
+        M.alloc α1 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
       M.get_trait_method
@@ -104,13 +108,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       let* α0 := M.break in
-                      let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* _ :=
                         let* α0 := M.get_function "scoping_rules_raii::create_box" [] in
-                        let* α1 := M.call_closure α0 [] in M.alloc α1 in
+                        let* α1 := M.call_closure α0 [] in
+                        M.alloc α1 in
                       M.alloc (Value.Tuple [])
                   ] in
               M.alloc (Value.Tuple []))

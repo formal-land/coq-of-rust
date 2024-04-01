@@ -53,7 +53,8 @@ Module main.
               let* α2 := M.read (mk_str "arg = ") in
               let* α3 := M.read (mk_str "
 ") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
           let* α9 :=
             (* Unsize *)
               let* α6 :=
@@ -62,13 +63,16 @@ Module main.
                   "new_display"
                   [ Ty.path "i32" ] in
               let* α7 := M.call_closure α6 [ arg ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
+              M.pure (M.pointer_coercion α8) in
           let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+          let* α11 := M.call_closure α0 [ α10 ] in
+          M.alloc α11 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.read arg in
       let* α1 := BinOp.Panic.mul α0 (Value.Integer Integer.I32 2) in
-      let* α0 := M.alloc α1 in M.read α0
+      let* α0 := M.alloc α1 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -96,7 +100,9 @@ Module main.
     match τ, α with
     | [], [ arg ] =>
       let* arg := M.alloc arg in
-      let* result := M.copy Value.DeclaredButUndefined in let _ := InlineAssembly in M.read result
+      let* result := M.copy Value.DeclaredButUndefined in
+      let _ := InlineAssembly in
+      M.read result
     | _, _ => M.impossible
     end.
 End main.

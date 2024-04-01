@@ -22,7 +22,8 @@ Module main.
     | [], [] =>
       let* α0 :=
         M.get_function "std::panicking::begin_panic" [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-      let* α1 := M.read (mk_str "This call never returns.") in M.call_closure α0 [ α1 ]
+      let* α1 := M.read (mk_str "This call never returns.") in
+      M.call_closure α0 [ α1 ]
     | _, _ => M.impossible
     end.
 End main.

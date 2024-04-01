@@ -114,7 +114,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
-      let* selector := M.alloc selector in M.pure (Value.Integer Integer.I32 0)
+      let* selector := M.alloc selector in
+      M.pure (Value.Integer Integer.I32 0)
     | _, _ => M.impossible
     end.
   

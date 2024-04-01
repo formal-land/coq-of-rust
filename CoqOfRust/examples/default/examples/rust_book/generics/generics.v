@@ -48,6 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _i32 :=
       M.alloc (Value.StructTuple "generics::SingleGen" [ Value.Integer Integer.I32 6 ]) in
     let* _char := M.alloc (Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ]) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

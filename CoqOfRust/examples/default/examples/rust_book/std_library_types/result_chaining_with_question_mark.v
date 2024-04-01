@@ -43,14 +43,20 @@ Module checked.
             self
             [
               fun γ =>
-                let* γ := M.read γ in let* α0 := M.read (mk_str "DivisionByZero") in M.alloc α0;
+                let* γ := M.read γ in
+                let* α0 := M.read (mk_str "DivisionByZero") in
+                M.alloc α0;
               fun γ =>
                 let* γ := M.read γ in
-                let* α0 := M.read (mk_str "NonPositiveLogarithm") in M.alloc α0;
+                let* α0 := M.read (mk_str "NonPositiveLogarithm") in
+                M.alloc α0;
               fun γ =>
-                let* γ := M.read γ in let* α0 := M.read (mk_str "NegativeSquareRoot") in M.alloc α0
+                let* γ := M.read γ in
+                let* α0 := M.read (mk_str "NegativeSquareRoot") in
+                M.alloc α0
             ] in
-        let* α3 := M.read α2 in M.call_closure α0 [ α1; α3 ]
+        let* α3 := M.read α2 in
+        M.call_closure α0 [ α1; α3 ]
       | _, _ => M.impossible
       end.
     
@@ -91,8 +97,11 @@ Module checked.
               let* γ :=
                 let* α0 := M.read y in
                 let* α1 := M.read UnsupportedLiteral in
-                let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
@@ -133,8 +142,11 @@ Module checked.
               let* γ :=
                 let* α0 := M.read x in
                 let* α1 := M.read UnsupportedLiteral in
-                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
@@ -175,8 +187,11 @@ Module checked.
               let* γ :=
                 let* α0 := M.read x in
                 let* α1 := M.read UnsupportedLiteral in
-                let* α2 := M.alloc (BinOp.Pure.le α0 α1) in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
@@ -260,14 +275,17 @@ Module checked.
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
-                let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
+                let* α4 := M.read α3 in
+                let* α5 := M.never_to_any α4 in
+                M.alloc α5;
               fun γ =>
                 let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Continue"
                     0 in
-                let* val := M.copy γ0_0 in M.pure val
+                let* val := M.copy γ0_0 in
+                M.pure val
             ] in
         M.copy α7 in
       let* ln :=
@@ -318,19 +336,24 @@ Module checked.
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
-                let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
+                let* α4 := M.read α3 in
+                let* α5 := M.never_to_any α4 in
+                M.alloc α5;
               fun γ =>
                 let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Continue"
                     0 in
-                let* val := M.copy γ0_0 in M.pure val
+                let* val := M.copy γ0_0 in
+                M.pure val
             ] in
         M.copy α6 in
       let* α0 := M.get_function "result_chaining_with_question_mark::checked::sqrt" [] in
       let* α1 := M.read ln in
-      let* α2 := M.call_closure α0 [ α1 ] in let* α0 := M.alloc α2 in M.read α0
+      let* α2 := M.call_closure α0 [ α1 ] in
+      let* α0 := M.alloc α2 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -376,11 +399,16 @@ Module checked.
                   why
                   [
                     fun γ => M.pure (mk_str "logarithm of non-positive number");
-                    fun γ => let* α0 := M.read (mk_str "division by zero") in M.alloc α0;
                     fun γ =>
-                      let* α0 := M.read (mk_str "square root of negative number") in M.alloc α0
+                      let* α0 := M.read (mk_str "division by zero") in
+                      M.alloc α0;
+                    fun γ =>
+                      let* α0 := M.read (mk_str "square root of negative number") in
+                      M.alloc α0
                   ] in
-              let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3;
             fun γ =>
               let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* value := M.copy γ0_0 in
@@ -392,7 +420,8 @@ Module checked.
                     let* α2 := M.read (mk_str "") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -401,9 +430,11 @@ Module checked.
                         "new_display"
                         [ Ty.path "f64" ] in
                     let* α7 := M.call_closure α6 [ value ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                    M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc (Value.Tuple [])
           ] in
       M.read α5
@@ -423,7 +454,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.get_function "result_chaining_with_question_mark::checked::op" [] in
       let* α1 := M.read UnsupportedLiteral in
       let* α2 := M.read UnsupportedLiteral in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
+      M.alloc α3 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

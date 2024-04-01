@@ -149,7 +149,8 @@ Module Impl_core_default_Default_for_dns_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "dns::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in
+      M.pure (Value.StructTuple "dns::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -171,7 +172,8 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -326,7 +328,8 @@ Module Impl_dns_Env.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "dns::Env" "caller")
+      let* α0 := M.read self in
+      M.read (M.get_struct_record_field α0 "dns::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -407,7 +410,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ])
             "new"
             [] in
-        let* α1 := M.call_closure α0 [] in M.alloc α1 in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -426,7 +430,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.get_function "dns::zero_address" [] in
         let* α4 := M.call_closure α3 [] in
-        let* α5 := M.call_closure α0 [ name_to_address; α2; α4 ] in M.alloc α5 in
+        let* α5 := M.call_closure α0 [ name_to_address; α2; α4 ] in
+        M.alloc α5 in
       let* name_to_owner :=
         let* α0 :=
           M.get_associated_function
@@ -435,7 +440,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ])
             "new"
             [] in
-        let* α1 := M.call_closure α0 [] in M.alloc α1 in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -454,7 +460,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.get_function "dns::zero_address" [] in
         let* α4 := M.call_closure α3 [] in
-        let* α5 := M.call_closure α0 [ name_to_owner; α2; α4 ] in M.alloc α5 in
+        let* α5 := M.call_closure α0 [ name_to_owner; α2; α4 ] in
+        M.alloc α5 in
       let* α0 := M.read name_to_address in
       let* α1 := M.read name_to_owner in
       let* α2 := M.get_function "dns::zero_address" [] in
@@ -518,12 +525,18 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 := M.get_function "core::intrinsics::discriminant_value" [ Ty.path "dns::Error" ] in
-        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read self in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
         let* α0 := M.get_function "core::intrinsics::discriminant_value" [ Ty.path "dns::Error" ] in
-        let* α1 := M.read other in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+        let* α1 := M.read other in
+        let* α2 := M.call_closure α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in M.read α0
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -554,7 +567,9 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] => let* self := M.alloc self in M.pure (Value.Tuple [])
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -645,7 +660,9 @@ Module Impl_dns_DomainNameService.
         let* α1 := M.get_associated_function (Ty.path "dns::DomainNameService") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -666,14 +683,19 @@ Module Impl_dns_DomainNameService.
                     α0
                     [ M.get_struct_record_field α1 "dns::DomainNameService" "name_to_owner"; name
                     ] in
-                let* α3 := M.alloc α2 in M.pure (M.use α3) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α3 := M.alloc α2 in
+                M.pure (M.use α3) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.return_
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]) in
-              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* _ :=
@@ -786,12 +808,16 @@ Module Impl_dns_DomainNameService.
         let* α1 := M.get_associated_function (Ty.path "dns::DomainNameService") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
       let* owner :=
         let* α0 :=
           M.get_associated_function (Ty.path "dns::DomainNameService") "get_owner_or_default" [] in
         let* α1 := M.read self in
-        let* α2 := M.read name in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+        let* α2 := M.read name in
+        let* α3 := M.call_closure α0 [ α1; α2 ] in
+        M.alloc α3 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -807,14 +833,19 @@ Module Impl_dns_DomainNameService.
                     "ne"
                     [] in
                 let* α1 := M.call_closure α0 [ caller; owner ] in
-                let* α2 := M.alloc α1 in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.return_
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
-              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* old_address :=
@@ -910,12 +941,16 @@ Module Impl_dns_DomainNameService.
         let* α1 := M.get_associated_function (Ty.path "dns::DomainNameService") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
       let* owner :=
         let* α0 :=
           M.get_associated_function (Ty.path "dns::DomainNameService") "get_owner_or_default" [] in
         let* α1 := M.read self in
-        let* α2 := M.read name in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+        let* α2 := M.read name in
+        let* α3 := M.call_closure α0 [ α1; α2 ] in
+        M.alloc α3 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -931,14 +966,19 @@ Module Impl_dns_DomainNameService.
                     "ne"
                     [] in
                 let* α1 := M.call_closure α0 [ caller; owner ] in
-                let* α2 := M.alloc α1 in M.pure (M.use α2) in
-              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.return_
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
-              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* old_owner :=
@@ -1052,7 +1092,9 @@ Module Impl_dns_DomainNameService.
       let* name := M.alloc name in
       let* α0 :=
         M.get_associated_function (Ty.path "dns::DomainNameService") "get_address_or_default" [] in
-      let* α1 := M.read self in let* α2 := M.read name in M.call_closure α0 [ α1; α2 ]
+      let* α1 := M.read self in
+      let* α2 := M.read name in
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -1070,7 +1112,9 @@ Module Impl_dns_DomainNameService.
       let* name := M.alloc name in
       let* α0 :=
         M.get_associated_function (Ty.path "dns::DomainNameService") "get_owner_or_default" [] in
-      let* α1 := M.read self in let* α2 := M.read name in M.call_closure α0 [ α1; α2 ]
+      let* α1 := M.read self in
+      let* α2 := M.read name in
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   

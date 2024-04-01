@@ -202,6 +202,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ("first", Value.UnicodeChar 81);
             ("phantom", Value.StructTuple "core::marker::PhantomData" [])
           ]) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

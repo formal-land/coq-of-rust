@@ -26,16 +26,22 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read divisor in
               let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
               M.pure (M.use α1) in
-            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* α0 :=
               M.get_function
                 "std::panicking::begin_panic"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α1 := M.read (mk_str "division by zero") in
-            let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
           fun γ =>
             let* α0 := M.read dividend in
-            let* α1 := M.read divisor in let* α2 := BinOp.Panic.div α0 α1 in M.alloc α2
+            let* α1 := M.read divisor in
+            let* α2 := BinOp.Panic.div α0 α1 in
+            M.alloc α2
         ] in
     M.read α1
   | _, _ => M.impossible
@@ -63,7 +69,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 0 ] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 0 ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "panic::division" [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ] in
@@ -76,9 +83,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "This point won't be reached!
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

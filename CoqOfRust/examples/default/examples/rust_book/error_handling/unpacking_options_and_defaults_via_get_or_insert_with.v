@@ -51,13 +51,29 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
         M.match_operator
           self
           [
-            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Apple") in M.alloc α0;
-            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Orange") in M.alloc α0;
-            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Banana") in M.alloc α0;
-            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Kiwi") in M.alloc α0;
-            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Lemon") in M.alloc α0
+            fun γ =>
+              let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Apple") in
+              M.alloc α0;
+            fun γ =>
+              let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Orange") in
+              M.alloc α0;
+            fun γ =>
+              let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Banana") in
+              M.alloc α0;
+            fun γ =>
+              let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Kiwi") in
+              M.alloc α0;
+            fun γ =>
+              let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Lemon") in
+              M.alloc α0
           ] in
-      let* α3 := M.read α2 in M.call_closure α0 [ α1; α3 ]
+      let* α3 := M.read α2 in
+      M.call_closure α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -123,7 +139,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let* α3 := M.alloc (Value.Array [ α2 ]) in
                             M.pure (M.pointer_coercion α3) in
                         let* α5 := M.call_closure α1 [ α4 ] in
-                        let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+                        let* α6 := M.call_closure α0 [ α5 ] in
+                        M.alloc α6 in
                       M.alloc (Value.Tuple []) in
                     let* α0 :=
                       M.alloc
@@ -147,7 +164,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
           ] in
       let* α1 := M.read get_lemon_as_fallback in
-      let* α2 := M.call_closure α0 [ my_fruit; α1 ] in M.alloc α2 in
+      let* α2 := M.call_closure α0 [ my_fruit; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -157,7 +175,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "my_fruit is: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -170,9 +189,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ first_available_fruit ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -183,7 +204,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "first_available_fruit is: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -196,9 +218,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ first_available_fruit ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* my_apple :=
       M.alloc
@@ -222,7 +246,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
           ] in
       let* α1 := M.read get_lemon_as_fallback in
-      let* α2 := M.call_closure α0 [ my_apple; α1 ] in M.alloc α2 in
+      let* α2 := M.call_closure α0 [ my_apple; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -232,7 +257,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "should_be_apple is: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -245,9 +271,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ should_be_apple ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -258,7 +286,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "my_apple is unchanged: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -271,10 +300,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ]
                 ] in
             let* α7 := M.call_closure α6 [ my_apple ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

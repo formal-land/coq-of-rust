@@ -18,7 +18,9 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
           let γ0_1 := M.get_tuple_field γ 1 in
           let* x := M.copy γ0_0 in
           let* y := M.copy γ0_1 in
-          let* α0 := M.read x in let* α1 := M.read y in BinOp.Panic.add α0 α1
+          let* α0 := M.read x in
+          let* α1 := M.read y in
+          BinOp.Panic.add α0 α1
       ]
   | _, _ => M.impossible
   end.
@@ -56,8 +58,12 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 let* γ := M.read γ in
                 let* end_ := M.copy γ in
-                let* start := let* α0 := M.read start in M.alloc (M.rust_cast α0) in
-                let* end_ := let* α0 := M.read end_ in M.alloc (M.rust_cast α0) in
+                let* start :=
+                  let* α0 := M.read start in
+                  M.alloc (M.rust_cast α0) in
+                let* end_ :=
+                  let* α0 := M.read end_ in
+                  M.alloc (M.rust_cast α0) in
                 let* α0 := M.alloc (Value.Tuple []) in
                 let* α0 :=
                   M.match_operator
@@ -67,14 +73,16 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                         let* γ :=
                           let* α0 := M.read start in
                           let* α1 := M.read end_ in
-                          let* α2 := M.alloc (BinOp.Pure.le α0 α1) in M.pure (M.use α2) in
+                          let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+                          M.pure (M.use α2) in
                         let* _ :=
                           let* α0 := M.read γ in
                           M.is_constant_or_break_match α0 (Value.Bool true) in
                         let* count :=
                           let* α0 := M.read end_ in
                           let* α1 := M.read start in
-                          let* α2 := BinOp.Panic.sub α0 α1 in M.alloc α2 in
+                          let* α2 := BinOp.Panic.sub α0 α1 in
+                          M.alloc α2 in
                         let* α0 := M.alloc (Value.Tuple []) in
                         M.match_operator
                           α0
@@ -87,7 +95,8 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                     (BinOp.Pure.lt α0 (Value.Integer Integer.U32 55296))
                                     (let* α0 := M.read end_ in
                                     M.pure (BinOp.Pure.le (Value.Integer Integer.U32 57344) α0)) in
-                                let* α2 := M.alloc α1 in M.pure (M.use α2) in
+                                let* α2 := M.alloc α1 in
+                                M.pure (M.use α2) in
                               let* _ :=
                                 let* α0 := M.read γ in
                                 M.is_constant_or_break_match α0 (Value.Bool true) in
@@ -109,7 +118,8 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                               let* α2 := M.read count in
                               let* α3 := BinOp.Panic.sub α2 (Value.Integer Integer.U32 2048) in
                               let* α4 := M.call_closure α1 [ α3 ] in
-                              let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5;
+                              let* α5 := M.call_closure α0 [ α4 ] in
+                              M.alloc α5;
                             fun γ =>
                               let* α0 :=
                                 M.get_associated_function
@@ -128,7 +138,8 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                   [] in
                               let* α2 := M.read count in
                               let* α3 := M.call_closure α1 [ α2 ] in
-                              let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4
+                              let* α4 := M.call_closure α0 [ α3 ] in
+                              M.alloc α4
                           ];
                       fun γ => M.alloc (Value.StructTuple "core::option::Option::None" [])
                     ] in

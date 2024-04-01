@@ -38,7 +38,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -53,11 +54,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ Value.Integer Integer.U32 9 ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
 
@@ -126,7 +130,9 @@ Module main.
                       [
                         fun γ =>
                           let* α0 := M.break in
-                          let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
+                          let* α1 := M.read α0 in
+                          let* α2 := M.never_to_any α1 in
+                          M.alloc α2;
                         fun γ =>
                           let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
@@ -153,14 +159,16 @@ Module main.
                                       M.is_constant_or_break_match α0 (Value.Bool false) in
                                     let* α0 := M.continue in
                                     let* α1 := M.read α0 in
-                                    let* α2 := M.never_to_any α1 in M.alloc α2
+                                    let* α2 := M.never_to_any α1 in
+                                    M.alloc α2
                                 ] in
                             M.copy α3 in
                           let* _ :=
                             let β := acc in
                             let* α0 := M.read β in
                             let* α1 := M.read addition in
-                            let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
+                            let* α2 := BinOp.Panic.add α0 α1 in
+                            M.assign β α2 in
                           M.alloc (Value.Tuple [])
                       ] in
                   M.alloc (Value.Tuple []))

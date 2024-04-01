@@ -77,7 +77,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "The person's age is ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -94,9 +95,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                         ] in
                     let* α7 := M.call_closure α6 [ age ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                    M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -107,7 +110,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "The person's name is ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -116,9 +120,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_display"
                         [ Ty.path "alloc::string::String" ] in
                     let* α7 := M.call_closure α6 [ name ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                    M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -129,7 +135,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "The person's age from person struct is ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -150,9 +157,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "scoping_rules_ownership_and_rules_partial_moves::main::Person"
                             "age"
                         ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                    M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
         ] in

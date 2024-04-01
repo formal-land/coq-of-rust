@@ -42,8 +42,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α6 := M.read (mk_str "18") in
           let* α7 := M.alloc (Value.Array [ α2; α3; α4; α5; α6 ]) in
           let* α8 := M.call_closure α1 [ α7 ] in
-          let* α9 := M.read α8 in M.pure (M.pointer_coercion α9) in
-      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+          let* α9 := M.read α8 in
+          M.pure (M.pointer_coercion α9) in
+      let* α11 := M.call_closure α0 [ α10 ] in
+      M.alloc α11 in
     let* errors :=
       let* α0 :=
         M.get_associated_function
@@ -52,7 +54,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "core::num::error::ParseIntError"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [] in M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
     let* numbers :=
       let* α0 :=
         M.get_trait_method
@@ -163,7 +166,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         let* s := M.copy γ in
                         let* α0 :=
                           M.get_associated_function (Ty.path "str") "parse" [ Ty.path "u8" ] in
-                        let* α1 := M.read s in M.call_closure α0 [ α1 ]
+                        let* α1 := M.read s in
+                        M.call_closure α0 [ α1 ]
                     ]
                 | _ => M.impossible
                 end)
@@ -228,7 +232,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 ])
                                               "push"
                                               [] in
-                                          let* α1 := M.read e in M.call_closure α0 [ errors; α1 ]
+                                          let* α1 := M.read e in
+                                          M.call_closure α0 [ errors; α1 ]
                                       ]
                                   | _ => M.impossible
                                   end)
@@ -238,7 +243,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 | _ => M.impossible
                 end)
           ] in
-      let* α8 := M.call_closure α0 [ α7 ] in M.alloc α8 in
+      let* α8 := M.call_closure α0 [ α7 ] in
+      M.alloc α8 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -248,7 +254,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Numbers: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -261,9 +268,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ numbers ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -274,7 +283,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Errors: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -287,10 +297,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "core::num::error::ParseIntError"; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ errors ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.

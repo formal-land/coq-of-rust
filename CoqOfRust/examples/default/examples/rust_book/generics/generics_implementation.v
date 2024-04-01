@@ -87,7 +87,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str ", ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+            M.pure (M.pointer_coercion α5) in
         let* α18 :=
           (* Unsize *)
             let* α7 :=
@@ -113,10 +114,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α14 := M.call_closure α13 [ y ] in
             let* α15 := M.alloc α14 in
             let* α16 := M.call_closure α12 [ α15 ] in
-            let* α17 := M.alloc (Value.Array [ α11; α16 ]) in M.pure (M.pointer_coercion α17) in
+            let* α17 := M.alloc (Value.Array [ α11; α16 ]) in
+            M.pure (M.pointer_coercion α17) in
         let* α19 := M.call_closure α1 [ α6; α18 ] in
-        let* α20 := M.call_closure α0 [ α19 ] in M.alloc α20 in
+        let* α20 := M.call_closure α0 [ α19 ] in
+        M.alloc α20 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
   | _, _ => M.impossible
   end.
