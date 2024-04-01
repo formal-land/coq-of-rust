@@ -42,339 +42,317 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let bytestring := M.alloc (| M.read (| UnsupportedLiteral |) |) in
+        let bytestring := M.alloc (| M.read (| UnsupportedLiteral |) |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "A byte string: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ bytestring ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let escaped := M.copy (| UnsupportedLiteral |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Some escaped bytes: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ escaped ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let raw_bytestring := M.copy (| UnsupportedLiteral |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "A byte string: " |); M.read (| mk_str "
 " |) ]
-                                    |));
-                              (* Unsize *)
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                  ]
+                                |),
+                                [ bytestring ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let escaped := M.copy (| UnsupportedLiteral |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Some escaped bytes: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                  ]
+                                |),
+                                [ escaped ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let raw_bytestring := M.copy (| UnsupportedLiteral |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                  ]
+                                |),
+                                [ raw_bytestring ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "core::str::converts::from_utf8", [] |),
+                        [ (* Unsize *) M.pointer_coercion (M.read (| raw_bytestring |)) ]
+                      |)
+                    |) in
+                  let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  let my_str := M.copy (| γ0_0 |) in
+                  let _ :=
+                    let _ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (| "std::io::stdio::_print", [] |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                              [
+                                (* Unsize *)
                                 M.pointer_coercion
                                   (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ raw_bytestring ]
-                                            |)
-                                        ]
-                                    |))
+                                    Value.Array
+                                      [
+                                        M.read (| mk_str "And the same as text: '" |);
+                                        M.read (| mk_str "'
+" |)
+                                      ]
+                                  |));
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          |),
+                                          [ my_str ]
+                                        |)
+                                      ]
+                                  |))
+                              ]
+                            |)
+                          ]
+                        |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        let _quotes := M.copy (| UnsupportedLiteral |) in
+        let shift_jis := M.copy (| UnsupportedLiteral |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "core::str::converts::from_utf8", [] |),
+                [ (* Unsize *) M.pointer_coercion (M.read (| shift_jis |)) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  let my_str := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| mk_str "Conversion successful: '" |);
+                                      M.read (| mk_str "'
+" |)
+                                    ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [ my_str ]
+                                      |)
+                                    ]
+                                |))
                             ]
                           |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "core::str::converts::from_utf8", [] |),
-                                [ (* Unsize *) M.pointer_coercion (M.read (| raw_bytestring |)) ]
-                              |)
-                          |) in
-                      let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      let my_str := M.copy (| γ0_0 |) in
-                      let _ :=
-                        let _ :=
-                          M.alloc (|
-                              M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                        M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            []
-                                          |),
-                                        [
-                                          (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| mk_str "And the same as text: '" |);
-                                                      M.read (| mk_str "'
-" |)
-                                                    ]
-                                                |));
-                                          (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                          M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  [ Ty.path "str" ]
-                                                              ]
-                                                            |),
-                                                          [ my_str ]
-                                                        |)
-                                                    ]
-                                                |))
-                                        ]
-                                      |)
-                                  ]
-                                |)
-                            |) in
-                        M.alloc (| Value.Tuple [] |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          let _quotes := M.copy (| UnsupportedLiteral |) in
-          let shift_jis := M.copy (| UnsupportedLiteral |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (| "core::str::converts::from_utf8", [] |),
-                        [ (* Unsize *) M.pointer_coercion (M.read (| shift_jis |)) ]
+                        ]
                       |)
-                  |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      let my_str := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "Conversion successful: '" |);
-                                                    M.read (| mk_str "'
+                    |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let e := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| mk_str "Conversion failed: " |);
+                                      M.read (| mk_str "
 " |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [ Ty.path "str" ]
-                                                            ]
-                                                          |),
-                                                        [ my_str ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                          |) in
-                      let e := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
+                                    ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "core::str::error::Utf8Error" ]
                                         |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "Conversion failed: " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "core::str::error::Utf8Error"
-                                                            ]
-                                                          |),
-                                                        [ e ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                                        [ e ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

@@ -32,32 +32,33 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       M.read (|
-          let _ :=
-            M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.eq (M.read (| b |)) (Value.Integer Integer.I32 0)
-                            |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                          M.never_to_any (|
-                              M.call_closure (|
-                                  M.get_function (|
-                                      "std::panicking::begin_panic",
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                    |),
-                                  [ M.read (| mk_str "Divide-by-zero error" |) ]
-                                |)
-                            |)
-                        |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          M.alloc (| BinOp.Panic.div (| M.read (| a |), M.read (| b |) |) |)
-        |)))
+        let _ :=
+          M.match_operator (|
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        BinOp.Pure.eq (M.read (| b |)) (Value.Integer Integer.I32 0)
+                      |)) in
+                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.never_to_any (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "std::panicking::begin_panic",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        |),
+                        [ M.read (| mk_str "Divide-by-zero error" |) ]
+                      |)
+                    |)
+                  |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        M.alloc (| BinOp.Panic.div (| M.read (| a |), M.read (| b |) |) |)
+      |)))
   | _, _ => M.impossible
   end.

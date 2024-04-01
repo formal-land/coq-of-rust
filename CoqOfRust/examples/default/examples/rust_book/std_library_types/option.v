@@ -19,28 +19,28 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
       M.read (|
-          M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                            BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
-                          |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
+        M.match_operator (|
+          M.alloc (| Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
                     (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |) ]
-                      |)))
-              ]
-            |)
-        |)))
+                      BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
+                    |)) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    [ BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |) ]
+                |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -62,138 +62,141 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
       M.read (|
-          M.match_operator (|
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "option::checked_division", [] |),
-                      [ M.read (| dividend |); M.read (| divisor |) ]
-                    |)
-                |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "" |);
-                                                  M.read (| mk_str " / " |);
-                                                  M.read (| mk_str " failed!
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ dividend ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ divisor ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
-                        |) in
-                    let quotient := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "" |);
-                                                  M.read (| mk_str " / " |);
-                                                  M.read (| mk_str " = " |);
-                                                  M.read (| mk_str "
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ dividend ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ divisor ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ quotient ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
-              ]
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "option::checked_division", [] |),
+              [ M.read (| dividend |); M.read (| divisor |) ]
             |)
-        |)))
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "" |);
+                                    M.read (| mk_str " / " |);
+                                    M.read (| mk_str " failed!
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ dividend ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ divisor ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (|
+                    γ,
+                    "core::option::Option::Some",
+                    0
+                  |) in
+                let quotient := M.copy (| γ0_0 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "" |);
+                                    M.read (| mk_str " / " |);
+                                    M.read (| mk_str " = " |);
+                                    M.read (| mk_str "
+" |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ dividend ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ divisor ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ quotient ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -224,167 +227,147 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "option::try_division", [] |),
+              [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "option::try_division", [] |),
+              [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ]
+            |)
+          |) in
+        let none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let _equivalent_none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let optional_float :=
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
+          |) in
+        let _ :=
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "option::try_division", [] |),
-                    [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "option::try_division", [] |),
-                    [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ]
-                  |)
-              |) in
-          let none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-          let _equivalent_none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-          let optional_float :=
-            M.alloc (|
-                Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "" |);
-                                          M.read (| mk_str " unwraps to " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "" |);
+                              M.read (| mk_str " unwraps to " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.path "f32" ]
-                                                  ]
-                                                |),
-                                              [ optional_float ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "f32" ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              [ Ty.path "f32" ],
-                                                            "unwrap",
-                                                            []
-                                                          |),
-                                                        [ M.read (| optional_float |) ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ] ]
+                                |),
+                                [ optional_float ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "f32" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ],
+                                        "unwrap",
+                                        []
+                                      |),
+                                      [ M.read (| optional_float |) ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "" |);
-                                          M.read (| mk_str " unwraps to " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "" |);
+                              M.read (| mk_str " unwraps to " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      [ Ty.path "i32" ]
-                                                  ]
-                                                |),
-                                              [ none ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              [ Ty.path "i32" ],
-                                                            "unwrap",
-                                                            []
-                                                          |),
-                                                        [ M.read (| none |) ]
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                |),
+                                [ none ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
+                                        "unwrap",
+                                        []
+                                      |),
+                                      [ M.read (| none |) ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

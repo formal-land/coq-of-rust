@@ -168,7 +168,7 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+      [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -319,12 +319,12 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("total_supply", InstanceField.Method total_supply);
-          ("balance_of", InstanceField.Method balance_of);
-          ("allowance", InstanceField.Method allowance);
-          ("transfer", InstanceField.Method transfer);
-          ("approve", InstanceField.Method approve);
-          ("transfer_from", InstanceField.Method transfer_from)
-        ].
+      [
+        ("total_supply", InstanceField.Method total_supply);
+        ("balance_of", InstanceField.Method balance_of);
+        ("allowance", InstanceField.Method allowance);
+        ("transfer", InstanceField.Method transfer);
+        ("approve", InstanceField.Method approve);
+        ("transfer_from", InstanceField.Method transfer_from)
+      ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

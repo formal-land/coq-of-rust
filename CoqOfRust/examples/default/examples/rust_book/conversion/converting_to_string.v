@@ -23,39 +23,39 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
-            [
-              M.read (| f |);
-              M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                  [
-                    (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Circle of radius " |) ] |));
-                    (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                    [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "converting_to_string::Circle"
-                                        "radius"
-                                    ]
-                                  |)
-                              ]
-                          |))
-                  ]
-                |)
-            ]
-          |)))
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+          [
+            M.read (| f |);
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              [
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc (| Value.Array [ M.read (| mk_str "Circle of radius " |) ] |));
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "i32" ]
+                          |),
+                          [
+                            M.get_struct_record_field
+                              (M.read (| self |))
+                              "converting_to_string::Circle"
+                              "radius"
+                          ]
+                        |)
+                      ]
+                  |))
+              ]
+            |)
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -78,26 +78,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let circle :=
-            M.alloc (|
-                Value.StructRecord
-                  "converting_to_string::Circle"
-                  [ ("radius", Value.Integer Integer.I32 6) ]
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "alloc::string::ToString",
-                        Ty.path "converting_to_string::Circle",
-                        [],
-                        "to_string",
-                        []
-                      |),
-                    [ circle ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let circle :=
+          M.alloc (|
+            Value.StructRecord
+              "converting_to_string::Circle"
+              [ ("radius", Value.Integer Integer.I32 6) ]
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "alloc::string::ToString",
+                Ty.path "converting_to_string::Circle",
+                [],
+                "to_string",
+                []
+              |),
+              [ circle ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

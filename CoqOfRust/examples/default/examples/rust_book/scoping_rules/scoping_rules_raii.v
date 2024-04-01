@@ -14,21 +14,21 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _box1 :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        "new",
-                        []
-                      |),
-                    [ Value.Integer Integer.I32 3 ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _box1 :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              [ Value.Integer Integer.I32 3 ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -59,107 +59,101 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _box2 :=
+        let _box2 :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              [ Value.Integer Integer.I32 5 ]
+            |)
+          |) in
+        let _ :=
+          let _box3 :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        "new",
-                        []
-                      |),
-                    [ Value.Integer Integer.I32 5 ]
-                  |)
-              |) in
-          let _ :=
-            let _box3 :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                          "new",
-                          []
-                        |),
-                      [ Value.Integer Integer.I32 4 ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.use
-            (M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
-                            [],
-                            "into_iter",
-                            []
-                          |),
-                        [
-                          Value.StructRecord
-                            "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.U32 0);
-                              ("end_", Value.Integer Integer.U32 1000)
-                            ]
-                        ]
-                      |)
-                  |),
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                  "new",
+                  []
+                |),
+                [ Value.Integer Integer.I32 4 ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.use
+          (M.match_operator (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::IntoIterator",
+                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                  [],
+                  "into_iter",
+                  []
+                |),
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
-                      M.loop (|
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.match_operator (|
-                                  M.alloc (|
-                                      M.call_closure (|
-                                          M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::Range")
-                                                [ Ty.path "u32" ],
-                                              [],
-                                              "next",
-                                              []
-                                            |),
-                                          [ iter ]
-                                        |)
-                                    |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                        let _ :=
-                                          M.alloc (|
-                                              M.call_closure (|
-                                                  M.get_function (|
-                                                      "scoping_rules_raii::create_box",
-                                                      []
-                                                    |),
-                                                  []
-                                                |)
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
+                  Value.StructRecord
+                    "core::ops::range::Range"
+                    [
+                      ("start", Value.Integer Integer.U32 0);
+                      ("end_", Value.Integer Integer.U32 1000)
+                    ]
                 ]
-              |))
-        |)))
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let iter := M.copy (| γ |) in
+                  M.loop (|
+                    ltac:(M.monadic
+                      (let _ :=
+                        M.match_operator (|
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::iter::traits::iterator::Iterator",
+                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                                [],
+                                "next",
+                                []
+                              |),
+                              [ iter ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (| "scoping_rules_raii::create_box", [] |),
+                                      []
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)))
+                  |)))
+            ]
+          |))
+      |)))
   | _, _ => M.impossible
   end.

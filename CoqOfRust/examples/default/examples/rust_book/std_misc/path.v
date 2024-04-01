@@ -32,172 +32,170 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let path :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ]
-                      |),
-                    [ M.read (| mk_str "." |) ]
-                  |)
-              |) in
-          let _display :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
-                    [ M.read (| path |) ]
-                  |)
-              |) in
-          let new_path :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "std::path::Path",
-                        "join",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "std::path::PathBuf",
-                              [],
-                              "deref",
-                              []
-                            |),
-                          [
-                            M.alloc (|
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "std::path::Path",
-                                        "join",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                    [ M.read (| path |); M.read (| mk_str "a" |) ]
-                                  |)
-                              |)
-                          ]
-                        |);
-                      M.read (| mk_str "b" |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "std::path::PathBuf",
-                        "push",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |),
-                    [ new_path; M.read (| mk_str "c" |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "std::path::PathBuf",
-                        "push",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |),
-                    [ new_path; M.read (| mk_str "myfile.tar.gz" |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.path "std::path::PathBuf",
-                        "set_file_name",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      |),
-                    [ new_path; M.read (| mk_str "package.tgz" |) ]
-                  |)
-              |) in
-          M.match_operator (|
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_associated_function (| Ty.path "std::path::Path", "to_str", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.path "std::path::PathBuf",
-                                [],
-                                "deref",
-                                []
-                              |),
-                            [ new_path ]
-                          |)
-                      ]
-                    |)
-                |),
+        let path :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
+              [ M.read (| mk_str "." |) ]
+            |)
+          |) in
+        let _display :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
+              [ M.read (| path |) ]
+            |)
+          |) in
+        let new_path :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "std::path::Path",
+                "join",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |),
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                        M.never_to_any (|
-                            M.call_closure (|
-                                M.get_function (|
-                                    "std::panicking::begin_panic",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                [ M.read (| mk_str "new path is not a valid UTF-8 sequence" |) ]
-                              |)
-                          |)
-                      |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
-                        |) in
-                    let s := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "new path is " |);
-                                                  M.read (| mk_str "
-" |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                                          ]
-                                                        |),
-                                                      [ s ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.path "std::path::PathBuf",
+                    [],
+                    "deref",
+                    []
+                  |),
+                  [
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "std::path::Path",
+                          "join",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        |),
+                        [ M.read (| path |); M.read (| mk_str "a" |) ]
+                      |)
+                    |)
+                  ]
+                |);
+                M.read (| mk_str "b" |)
               ]
             |)
-        |)))
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "std::path::PathBuf",
+                "push",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |),
+              [ new_path; M.read (| mk_str "c" |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "std::path::PathBuf",
+                "push",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |),
+              [ new_path; M.read (| mk_str "myfile.tar.gz" |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "std::path::PathBuf",
+                "set_file_name",
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              |),
+              [ new_path; M.read (| mk_str "package.tgz" |) ]
+            |)
+          |) in
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "std::path::Path", "to_str", [] |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.path "std::path::PathBuf",
+                    [],
+                    "deref",
+                    []
+                  |),
+                  [ new_path ]
+                |)
+              ]
+            |)
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.never_to_any (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "std::panicking::begin_panic",
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      |),
+                      [ M.read (| mk_str "new path is not a valid UTF-8 sequence" |) ]
+                    |)
+                  |)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (|
+                    γ,
+                    "core::option::Option::Some",
+                    0
+                  |) in
+                let s := M.copy (| γ0_0 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [ M.read (| mk_str "new path is " |); M.read (| mk_str "
+" |) ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.

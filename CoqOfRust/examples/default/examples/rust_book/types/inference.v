@@ -24,80 +24,74 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let elem := M.alloc (| Value.Integer Integer.U8 5 |) in
-          let vec :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        "new",
-                        []
-                      |),
-                    []
-                  |)
-              |) in
+        let elem := M.alloc (| Value.Integer Integer.U8 5 |) in
+        let vec :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                "new",
+                []
+              |),
+              []
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                "push",
+                []
+              |),
+              [ vec; M.read (| elem |) ]
+            |)
+          |) in
+        let _ :=
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        "push",
-                        []
-                      |),
-                    [ vec; M.read (| elem |) ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
 " |) ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ vec ]
-                                            |)
-                                        ]
-                                    |))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ]
+                                |),
+                                [ vec ]
+                              |)
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

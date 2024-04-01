@@ -60,22 +60,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
-          let null := M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "generics_traits::DoubleDrop",
-                        Ty.path "generics_traits::Empty",
-                        [ Ty.path "generics_traits::Null" ],
-                        "double_drop",
-                        []
-                      |),
-                    [ M.read (| empty |); M.read (| null |) ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
+        let null := M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "generics_traits::DoubleDrop",
+                Ty.path "generics_traits::Empty",
+                [ Ty.path "generics_traits::Null" ],
+                "double_drop",
+                []
+              |),
+              [ M.read (| empty |); M.read (| null |) ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

@@ -25,278 +25,264 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let triple :=
-            M.alloc (|
-                Value.Tuple
-                  [
-                    Value.Integer Integer.I32 0;
-                    Value.Integer Integer.I32 (-2);
-                    Value.Integer Integer.I32 3
-                  ]
-              |) in
+        let triple :=
+          M.alloc (|
+            Value.Tuple
+              [
+                Value.Integer Integer.I32 0;
+                Value.Integer Integer.I32 (-2);
+                Value.Integer Integer.I32 3
+              ]
+          |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Tell me about " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] ]
+                                |),
+                                [ triple ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.match_operator (|
+          triple,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_tuple_field γ 0 in
+                let γ0_1 := M.get_tuple_field γ 1 in
+                let γ0_2 := M.get_tuple_field γ 2 in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 0
+                  |) in
+                let y := M.copy (| γ0_1 |) in
+                let z := M.copy (| γ0_2 |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
                       [
                         M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Tell me about " |);
-                                          M.read (| mk_str "
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| mk_str "First is `0`, `y` is " |);
+                                    M.read (| mk_str ", and `z` is " |);
+                                    M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [
-                                                    Ty.tuple
-                                                      [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32"
-                                                      ]
-                                                  ]
-                                                |),
-                                              [ triple ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
+                                  ]
+                              |));
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ y ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ z ]
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
                       ]
                     |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.match_operator (|
-              triple,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 0
-                        |) in
-                    let y := M.copy (| γ0_1 |) in
-                    let z := M.copy (| γ0_2 |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| mk_str "First is `0`, `y` is " |);
-                                                  M.read (| mk_str ", and `z` is " |);
-                                                  M.read (| mk_str "
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_tuple_field γ 0 in
+                let γ0_1 := M.get_tuple_field γ 1 in
+                let γ0_2 := M.get_tuple_field γ 2 in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 1
+                  |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [ M.read (| mk_str "First is `1` and the rest doesn't matter
 " |)
-                                                ]
-                                            |));
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ y ]
-                                                    |);
-                                                  M.call_closure (|
-                                                      M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [ Ty.path "i32" ]
-                                                        |),
-                                                      [ z ]
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 1
-                        |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                      mk_str
-                                                        "First is `1` and the rest doesn't matter
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_tuple_field γ 0 in
+                let γ0_1 := M.get_tuple_field γ 1 in
+                let γ0_2 := M.get_tuple_field γ 2 in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_2 |),
+                    Value.Integer Integer.I32 2
+                  |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [ M.read (| mk_str "last is `2` and the rest doesn't matter
+" |) ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.get_tuple_field γ 0 in
+                let γ0_1 := M.get_tuple_field γ 1 in
+                let γ0_2 := M.get_tuple_field γ 2 in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer Integer.I32 3
+                  |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_2 |),
+                    Value.Integer Integer.I32 4
+                  |) in
+                let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      mk_str
+                                        "First is `3`, last is `4`, and the rest doesn't matter
 "
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer Integer.I32 2
-                        |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                      mk_str
-                                                        "last is `2` and the rest doesn't matter
-"
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer Integer.I32 3
-                        |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer Integer.I32 4
-                        |) in
-                    let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                      mk_str
-                                                        "First is `3`, last is `4`, and the rest doesn't matter
-"
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                      mk_str "It doesn't matter what they are
-"
-                                                    |)
-                                                ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
-              ]
-            |)
-        |)))
+                                    |)
+                                  ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (|
+                                Value.Array
+                                  [ M.read (| mk_str "It doesn't matter what they are
+" |) ]
+                              |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.

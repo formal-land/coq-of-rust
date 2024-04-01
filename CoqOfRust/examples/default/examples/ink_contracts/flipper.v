@@ -37,15 +37,14 @@ Module Impl_flipper_Flipper.
     | [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-            M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
-            [
-              M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
-                    |),
-                  []
-                |)
-            ]
-          |)))
+          M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
+          [
+            M.call_closure (|
+              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              []
+            |)
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -62,16 +61,16 @@ Module Impl_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            let _ :=
-              M.assign (|
-                  M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value",
-                  UnOp.Pure.not
-                    (M.read (|
-                        M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value"
-                      |))
-                |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+          let _ :=
+            M.assign (|
+              M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value",
+              UnOp.Pure.not
+                (M.read (|
+                  M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value"
+                |))
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   

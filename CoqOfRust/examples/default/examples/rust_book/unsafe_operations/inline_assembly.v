@@ -15,8 +15,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ := InlineAssembly in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ := InlineAssembly in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

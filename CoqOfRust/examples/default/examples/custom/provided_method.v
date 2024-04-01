@@ -9,18 +9,18 @@ Module ProvidedAndRequired.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.add (|
-            Value.Integer Integer.I32 42,
-            M.call_closure (|
-                M.get_trait_method (|
-                    "provided_method::ProvidedAndRequired",
-                    Self,
-                    [],
-                    "required",
-                    []
-                  |),
-                [ M.read (| self |) ]
-              |)
-          |)))
+          Value.Integer Integer.I32 42,
+          M.call_closure (|
+            M.get_trait_method (|
+              "provided_method::ProvidedAndRequired",
+              Self,
+              [],
+              "required",
+              []
+            |),
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -90,8 +90,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("required", InstanceField.Method required); ("provided", InstanceField.Method provided)
-        ].
+      [ ("required", InstanceField.Method required); ("provided", InstanceField.Method provided) ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (*
@@ -107,161 +106,151 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let x := M.alloc (| Value.Integer Integer.I32 5 |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    Value.Tuple
-                      [
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_trait_method (|
-                                    "provided_method::ProvidedAndRequired",
-                                    Ty.path "i32",
-                                    [],
-                                    "provided",
-                                    []
-                                  |),
-                                [ x ]
-                              |)
-                          |);
-                        M.alloc (| Value.Integer Integer.I32 47 |)
-                      ]
-                  |),
+        let x := M.alloc (| Value.Integer Integer.I32 5 |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              Value.Tuple
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.eq
-                                            (M.read (| M.read (| left_val |) |))
-                                            (M.read (| M.read (| right_val |) |)))
-                                      |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
-                                    |) in
-                                M.alloc (|
-                                    M.never_to_any (|
-                                        M.read (|
-                                            let kind :=
-                                              M.alloc (|
-                                                  Value.StructTuple
-                                                    "core::panicking::AssertKind::Eq"
-                                                    []
-                                                |) in
-                                            M.alloc (|
-                                                M.call_closure (|
-                                                    M.get_function (|
-                                                        "core::panicking::assert_failed",
-                                                        [ Ty.path "i32"; Ty.path "i32" ]
-                                                      |),
-                                                    [
-                                                      M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
-                                                    ]
-                                                  |)
-                                              |)
-                                          |)
-                                      |)
-                                  |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "provided_method::ProvidedAndRequired",
+                        Ty.path "i32",
+                        [],
+                        "provided",
+                        []
+                      |),
+                      [ x ]
+                    |)
+                  |);
+                  M.alloc (| Value.Integer Integer.I32 47 |)
                 ]
-              |) in
-          let y := M.alloc (| Value.Integer Integer.U32 5 |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    Value.Tuple
-                      [
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_trait_method (|
-                                    "provided_method::ProvidedAndRequired",
-                                    Ty.path "u32",
-                                    [],
-                                    "provided",
-                                    []
-                                  |),
-                                [ y ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.get_tuple_field γ 0 in
+                  let γ0_1 := M.get_tuple_field γ 1 in
+                  let left_val := M.copy (| γ0_0 |) in
+                  let right_val := M.copy (| γ0_1 |) in
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                UnOp.Pure.not
+                                  (BinOp.Pure.eq
+                                    (M.read (| M.read (| left_val |) |))
+                                    (M.read (| M.read (| right_val |) |)))
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let kind :=
+                                  M.alloc (|
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                  |) in
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::panicking::assert_failed",
+                                      [ Ty.path "i32"; Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.read (| kind |);
+                                      M.read (| left_val |);
+                                      M.read (| right_val |);
+                                      Value.StructTuple "core::option::Option::None" []
+                                    ]
+                                  |)
+                                |)
                               |)
-                          |);
-                        M.alloc (| Value.Integer Integer.I32 0 |)
-                      ]
-                  |),
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)))
+            ]
+          |) in
+        let y := M.alloc (| Value.Integer Integer.U32 5 |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              Value.Tuple
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.eq
-                                            (M.read (| M.read (| left_val |) |))
-                                            (M.read (| M.read (| right_val |) |)))
-                                      |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
-                                    |) in
-                                M.alloc (|
-                                    M.never_to_any (|
-                                        M.read (|
-                                            let kind :=
-                                              M.alloc (|
-                                                  Value.StructTuple
-                                                    "core::panicking::AssertKind::Eq"
-                                                    []
-                                                |) in
-                                            M.alloc (|
-                                                M.call_closure (|
-                                                    M.get_function (|
-                                                        "core::panicking::assert_failed",
-                                                        [ Ty.path "i32"; Ty.path "i32" ]
-                                                      |),
-                                                    [
-                                                      M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
-                                                    ]
-                                                  |)
-                                              |)
-                                          |)
-                                      |)
-                                  |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "provided_method::ProvidedAndRequired",
+                        Ty.path "u32",
+                        [],
+                        "provided",
+                        []
+                      |),
+                      [ y ]
+                    |)
+                  |);
+                  M.alloc (| Value.Integer Integer.I32 0 |)
                 ]
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.get_tuple_field γ 0 in
+                  let γ0_1 := M.get_tuple_field γ 1 in
+                  let left_val := M.copy (| γ0_0 |) in
+                  let right_val := M.copy (| γ0_1 |) in
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                UnOp.Pure.not
+                                  (BinOp.Pure.eq
+                                    (M.read (| M.read (| left_val |) |))
+                                    (M.read (| M.read (| right_val |) |)))
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let kind :=
+                                  M.alloc (|
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                  |) in
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::panicking::assert_failed",
+                                      [ Ty.path "i32"; Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.read (| kind |);
+                                      M.read (| left_val |);
+                                      M.read (| right_val |);
+                                      Value.StructTuple "core::option::Option::None" []
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)))
+            ]
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

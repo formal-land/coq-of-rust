@@ -30,12 +30,12 @@ fn add_one(x: u32) -> u32 {
 ```
 Running `coq-of-rust`, it translates in Coq to:
 ```coq
-Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
-    let* x := M.alloc x in
-    let* α0 := M.read x in
-    BinOp.Panic.add α0 (Value.Integer Integer.U32 1)
+    ltac:(M.monadic
+      (let x := M.alloc (| x |) in
+      BinOp.Panic.add (| M.read (| x |), Value.Integer Integer.U32 1 |)))
   | _, _ => M.impossible
   end.
 ```

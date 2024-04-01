@@ -87,7 +87,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+      [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -212,7 +212,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+      [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :

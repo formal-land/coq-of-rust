@@ -58,18 +58,18 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-            M.get_trait_method (|
-                "core::cmp::PartialOrd",
-                Ty.path "f64",
-                [ Ty.path "f64" ],
-                "partial_cmp",
-                []
-              |),
-            [
-              M.get_struct_tuple_field (M.read (| self |)) "derive::Centimeters" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "derive::Centimeters" 0
-            ]
-          |)))
+          M.get_trait_method (|
+            "core::cmp::PartialOrd",
+            Ty.path "f64",
+            [ Ty.path "f64" ],
+            "partial_cmp",
+            []
+          |),
+          [
+            M.get_struct_tuple_field (M.read (| self |)) "derive::Centimeters" 0;
+            M.get_struct_tuple_field (M.read (| other |)) "derive::Centimeters" 0
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -101,19 +101,19 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-            M.get_associated_function (|
-                Ty.path "core::fmt::Formatter",
-                "debug_tuple_field1_finish",
-                []
-              |),
-            [
-              M.read (| f |);
-              M.read (| mk_str "Inches" |);
-              (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "derive::Inches" 0 |))
-            ]
-          |)))
+          M.get_associated_function (|
+            Ty.path "core::fmt::Formatter",
+            "debug_tuple_field1_finish",
+            []
+          |),
+          [
+            M.read (| f |);
+            M.read (| mk_str "Inches" |);
+            (* Unsize *)
+            M.pointer_coercion
+              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "derive::Inches" 0 |))
+          ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -141,28 +141,28 @@ Module Impl_derive_Inches.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.match_operator (|
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "derive::Inches", 0 |) in
-                      let inches := M.copy (| γ1_0 |) in
-                      M.alloc (|
-                          Value.StructTuple
-                            "derive::Centimeters"
-                            [
-                              BinOp.Panic.mul (|
-                                  M.rust_cast (M.read (| inches |)),
-                                  M.read (| UnsupportedLiteral |)
-                                |)
-                            ]
-                        |)))
-                ]
-              |)
-          |)))
+          M.match_operator (|
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.get_struct_tuple_field_or_break_match (| γ, "derive::Inches", 0 |) in
+                  let inches := M.copy (| γ1_0 |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "derive::Centimeters"
+                      [
+                        BinOp.Panic.mul (|
+                          M.rust_cast (M.read (| inches |)),
+                          M.read (| UnsupportedLiteral |)
+                        |)
+                      ]
+                  |)))
+            ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -209,142 +209,131 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _one_second :=
-            M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ] |) in
-          let foot :=
-            M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ] |) in
+        let _one_second :=
+          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ] |) in
+        let foot :=
+          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "One foot equals " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "derive::Inches" ]
-                                                |),
-                                              [ foot ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let meter :=
-            M.alloc (| Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
-              |) in
-          let cmp :=
-            M.copy (|
-                M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                  M.call_closure (|
-                                      M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          Ty.path "derive::Centimeters",
-                                          [ Ty.path "derive::Centimeters" ],
-                                          "lt",
-                                          []
-                                        |),
-                                      [
-                                        M.alloc (|
-                                            M.call_closure (|
-                                                M.get_associated_function (|
-                                                    Ty.path "derive::Inches",
-                                                    "to_centimeters",
-                                                    []
-                                                  |),
-                                                [ foot ]
-                                              |)
-                                          |);
-                                        meter
-                                      ]
-                                    |)
-                                |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          mk_str "smaller"));
-                      fun γ => ltac:(M.monadic (M.alloc (| M.read (| mk_str "bigger" |) |)))
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "One foot equals " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "derive::Inches" ]
+                                |),
+                                [ foot ]
+                              |)
+                            ]
+                        |))
                     ]
                   |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let meter :=
+          M.alloc (|
+            Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
+          |) in
+        let cmp :=
+          M.copy (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::cmp::PartialOrd",
+                              Ty.path "derive::Centimeters",
+                              [ Ty.path "derive::Centimeters" ],
+                              "lt",
+                              []
+                            |),
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "One foot is " |);
-                                          M.read (| mk_str " than one meter.
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ cmp ]
-                                            |)
-                                        ]
-                                    |))
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "derive::Inches",
+                                    "to_centimeters",
+                                    []
+                                  |),
+                                  [ foot ]
+                                |)
+                              |);
+                              meter
                             ]
                           |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    mk_str "smaller"));
+                fun γ => ltac:(M.monadic (M.alloc (| M.read (| mk_str "bigger" |) |)))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| mk_str "One foot is " |);
+                              M.read (| mk_str " than one meter.
+" |)
+                            ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ cmp ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

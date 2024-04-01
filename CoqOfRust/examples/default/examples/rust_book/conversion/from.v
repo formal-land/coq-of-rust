@@ -43,20 +43,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "from::Number",
-                        [ Ty.path "i32" ],
-                        "from",
-                        []
-                      |),
-                    [ Value.Integer Integer.I32 30 ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.path "from::Number",
+                [ Ty.path "i32" ],
+                "from",
+                []
+              |),
+              [ Value.Integer Integer.I32 30 ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

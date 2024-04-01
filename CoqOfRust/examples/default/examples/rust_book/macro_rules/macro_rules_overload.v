@@ -12,156 +12,148 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "" |);
-                                          M.read (| mk_str " and " |);
-                                          M.read (| mk_str " is " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "" |);
+                              M.read (| mk_str " and " |);
+                              M.read (| mk_str " is " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ mk_str "1i32 + 1 == 2i32" ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ mk_str "2i32 * 2 == 4i32" ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "bool" ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    LogicalOp.and (|
-                                                        BinOp.Pure.eq
-                                                          (BinOp.Panic.add (|
-                                                              Value.Integer Integer.I32 1,
-                                                              Value.Integer Integer.I32 1
-                                                            |))
-                                                          (Value.Integer Integer.I32 2),
-                                                        ltac:(M.monadic
-                                                          (BinOp.Pure.eq
-                                                            (BinOp.Panic.mul (|
-                                                                Value.Integer Integer.I32 2,
-                                                                Value.Integer Integer.I32 2
-                                                              |))
-                                                            (Value.Integer Integer.I32 4)))
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str "1i32 + 1 == 2i32" ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str "2i32 * 2 == 4i32" ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "bool" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    LogicalOp.and (|
+                                      BinOp.Pure.eq
+                                        (BinOp.Panic.add (|
+                                          Value.Integer Integer.I32 1,
+                                          Value.Integer Integer.I32 1
+                                        |))
+                                        (Value.Integer Integer.I32 2),
+                                      ltac:(M.monadic
+                                        (BinOp.Pure.eq
+                                          (BinOp.Panic.mul (|
+                                            Value.Integer Integer.I32 2,
+                                            Value.Integer Integer.I32 2
+                                          |))
+                                          (Value.Integer Integer.I32 4)))
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "" |);
-                                          M.read (| mk_str " or " |);
-                                          M.read (| mk_str " is " |);
-                                          M.read (| mk_str "
+                              M.read (| mk_str "" |);
+                              M.read (| mk_str " or " |);
+                              M.read (| mk_str " is " |);
+                              M.read (| mk_str "
 " |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ mk_str "true" ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ mk_str "false" ]
-                                            |);
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [ Ty.path "bool" ]
-                                                |),
-                                              [
-                                                M.alloc (|
-                                                    LogicalOp.or (|
-                                                        Value.Bool true,
-                                                        ltac:(M.monadic (Value.Bool false))
-                                                      |)
-                                                  |)
-                                              ]
-                                            |)
-                                        ]
-                                    |))
                             ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str "true" ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str "false" ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.path "bool" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    LogicalOp.or (|
+                                      Value.Bool true,
+                                      ltac:(M.monadic (Value.Bool false))
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

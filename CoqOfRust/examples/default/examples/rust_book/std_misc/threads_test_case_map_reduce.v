@@ -93,10 +93,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let data :=
-            M.copy (|
-                mk_str
-                  "86967897737416471853297327050364959
+        let data :=
+          M.copy (|
+            mk_str
+              "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
 38397966707106094172783238747669219
@@ -104,601 +104,545 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668"
-              |) in
-          let children :=
-            M.alloc (|
+          |) in
+        let children :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [
+                    Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                "new",
+                []
+              |),
+              []
+            |)
+          |) in
+        let chunked_data :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
+              [ M.read (| data |) ]
+            |)
+          |) in
+        let _ :=
+          M.use
+            (M.match_operator (|
+              M.alloc (|
                 M.call_closure (|
-                    M.get_associated_function (|
+                  M.get_trait_method (|
+                    "core::iter::traits::collect::IntoIterator",
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                      [ Ty.path "core::str::iter::SplitWhitespace" ],
+                    [],
+                    "into_iter",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.path "core::str::iter::SplitWhitespace",
+                        [],
+                        "enumerate",
+                        []
+                      |),
+                      [ M.read (| chunked_data |) ]
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let iter := M.copy (| γ |) in
+                    M.loop (|
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                    [ Ty.path "core::str::iter::SplitWhitespace" ],
+                                  [],
+                                  "next",
+                                  []
+                                |),
+                                [ iter ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.get_struct_tuple_field_or_break_match (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let γ1_0 := M.get_tuple_field γ0_0 0 in
+                                  let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                  let i := M.copy (| γ1_0 |) in
+                                  let data_segment := M.copy (| γ1_1 |) in
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "data segment " |);
+                                                        M.read (| mk_str " is """ |);
+                                                        M.read (| mk_str """
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "usize" ]
+                                                          |),
+                                                          [ i ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                [ Ty.path "str" ]
+                                                            ]
+                                                          |),
+                                                          [ data_segment ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  let _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            [
+                                              Ty.apply
+                                                (Ty.path "std::thread::JoinHandle")
+                                                [ Ty.path "u32" ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "push",
+                                          []
+                                        |),
+                                        [
+                                          children;
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "std::thread::spawn",
+                                              [
+                                                Ty.function [ Ty.tuple [] ] (Ty.path "u32");
+                                                Ty.path "u32"
+                                              ]
+                                            |),
+                                            [
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      M.match_operator (|
+                                                        M.alloc (| α0 |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.read (|
+                                                                let result :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::iter::traits::iterator::Iterator",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::iter::adapters::map::Map")
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::str::iter::Chars";
+                                                                            Ty.function
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [ Ty.path "char" ]
+                                                                              ]
+                                                                              (Ty.path "u32")
+                                                                          ],
+                                                                        [],
+                                                                        "sum",
+                                                                        [ Ty.path "u32" ]
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::iter::traits::iterator::Iterator",
+                                                                            Ty.path
+                                                                              "core::str::iter::Chars",
+                                                                            [],
+                                                                            "map",
+                                                                            [
+                                                                              Ty.path "u32";
+                                                                              Ty.function
+                                                                                [
+                                                                                  Ty.tuple
+                                                                                    [ Ty.path "char"
+                                                                                    ]
+                                                                                ]
+                                                                                (Ty.path "u32")
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path "str",
+                                                                                "chars",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  data_segment
+                                                                                |)
+                                                                              ]
+                                                                            |);
+                                                                            M.closure
+                                                                              (fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  match γ with
+                                                                                  | [ α0 ] =>
+                                                                                    M.match_operator (|
+                                                                                      M.alloc (|
+                                                                                        α0
+                                                                                      |),
+                                                                                      [
+                                                                                        fun γ =>
+                                                                                          ltac:(M.monadic
+                                                                                            (let
+                                                                                                  c :=
+                                                                                              M.copy (|
+                                                                                                γ
+                                                                                              |) in
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u32"
+                                                                                                  ],
+                                                                                                "expect",
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "char",
+                                                                                                    "to_digit",
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      c
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      Integer.U32
+                                                                                                      10
+                                                                                                  ]
+                                                                                                |);
+                                                                                                M.read (|
+                                                                                                  mk_str
+                                                                                                    "should be a digit"
+                                                                                                |)
+                                                                                              ]
+                                                                                            |)))
+                                                                                      ]
+                                                                                    |)
+                                                                                  | _ =>
+                                                                                    M.impossible (||)
+                                                                                  end))
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let _ :=
+                                                                  let _ :=
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "std::io::stdio::_print",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_v1",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              (* Unsize *)
+                                                                              M.pointer_coercion
+                                                                                (M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        mk_str
+                                                                                          "processed segment "
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        mk_str
+                                                                                          ", result="
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        mk_str "
+"
+                                                                                      |)
+                                                                                    ]
+                                                                                |));
+                                                                              (* Unsize *)
+                                                                              M.pointer_coercion
+                                                                                (M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "new_display",
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
+                                                                                        |),
+                                                                                        [ i ]
+                                                                                      |);
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "new_display",
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u32"
+                                                                                          ]
+                                                                                        |),
+                                                                                        [ result ]
+                                                                                      |)
+                                                                                    ]
+                                                                                |))
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |) in
+                                                                  M.alloc (| Value.Tuple [] |) in
+                                                                result
+                                                              |)))
+                                                        ]
+                                                      |)
+                                                    | _ => M.impossible (||)
+                                                    end))
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)))
+                    |)))
+              ]
+            |)) in
+        let final_result :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      [
+                        Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.function
+                      [ Ty.tuple [ Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ] ]
+                      ]
+                      (Ty.path "u32")
+                  ],
+                [],
+                "sum",
+                [ Ty.path "u32" ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      [
+                        Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    "map",
+                    [
+                      Ty.path "u32";
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [ Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ] ]
+                        ]
+                        (Ty.path "u32")
+                    ]
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           [
                             Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
-                        "new",
+                        [],
+                        "into_iter",
                         []
                       |),
-                    []
-                  |)
-              |) in
-          let chunked_data :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
-                    [ M.read (| data |) ]
-                  |)
-              |) in
-          let _ :=
-            M.use
-              (M.match_operator (|
-                  M.alloc (|
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::iter::traits::collect::IntoIterator",
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                [ Ty.path "core::str::iter::SplitWhitespace" ],
-                              [],
-                              "into_iter",
-                              []
-                            |),
-                          [
-                            M.call_closure (|
-                                M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Ty.path "core::str::iter::SplitWhitespace",
-                                    [],
-                                    "enumerate",
-                                    []
-                                  |),
-                                [ M.read (| chunked_data |) ]
-                              |)
-                          ]
-                        |)
-                    |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                            ltac:(M.monadic
-                              (let _ :=
-                                M.match_operator (|
-                                    M.alloc (|
-                                        M.call_closure (|
-                                            M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "core::iter::adapters::enumerate::Enumerate")
-                                                  [ Ty.path "core::str::iter::SplitWhitespace" ],
-                                                [],
-                                                "next",
-                                                []
-                                              |),
-                                            [ iter ]
-                                          |)
+                      [ M.read (| children |) ]
+                    |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let c := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          [
+                                            Ty.path "u32";
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              [
+                                                Ty.dyn [ ("core::any::Any::Trait", []) ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ],
+                                        "unwrap",
+                                        []
                                       |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                          let γ1_1 := M.get_tuple_field γ0_0 1 in
-                                          let i := M.copy (| γ1_0 |) in
-                                          let data_segment := M.copy (| γ1_1 |) in
-                                          let _ :=
-                                            let _ :=
-                                              M.alloc (|
-                                                  M.call_closure (|
-                                                      M.get_function (| "std::io::stdio::_print", []
-                                                        |),
-                                                      [
-                                                        M.call_closure (|
-                                                            M.get_associated_function (|
-                                                                Ty.path "core::fmt::Arguments",
-                                                                "new_v1",
-                                                                []
-                                                              |),
-                                                            [
-                                                              (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                              mk_str "data segment "
-                                                                            |);
-                                                                          M.read (| mk_str " is """
-                                                                            |);
-                                                                          M.read (| mk_str """
-" |)
-                                                                        ]
-                                                                    |));
-                                                              (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [ Ty.path "usize"
-                                                                                  ]
-                                                                                |),
-                                                                              [ i ]
-                                                                            |);
-                                                                          M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "str"
-                                                                                      ]
-                                                                                  ]
-                                                                                |),
-                                                                              [ data_segment ]
-                                                                            |)
-                                                                        ]
-                                                                    |))
-                                                            ]
-                                                          |)
-                                                      ]
-                                                    |)
-                                                |) in
-                                            M.alloc (| Value.Tuple [] |) in
-                                          let _ :=
-                                            M.alloc (|
-                                                M.call_closure (|
-                                                    M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "std::thread::JoinHandle")
-                                                              [ Ty.path "u32" ];
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "push",
-                                                        []
-                                                      |),
-                                                    [
-                                                      children;
-                                                      M.call_closure (|
-                                                          M.get_function (|
-                                                              "std::thread::spawn",
-                                                              [
-                                                                Ty.function
-                                                                  [ Ty.tuple [] ]
-                                                                  (Ty.path "u32");
-                                                                Ty.path "u32"
-                                                              ]
-                                                            |),
-                                                          [
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [ α0 ] =>
-                                                                    M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (M.read (|
-                                                                                  let result :=
-                                                                                    M.alloc (|
-                                                                                        M.call_closure (|
-                                                                                            M.get_trait_method (|
-                                                                                                "core::iter::traits::iterator::Iterator",
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "core::iter::adapters::map::Map")
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "core::str::iter::Chars";
-                                                                                                    Ty.function
-                                                                                                      [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "char"
-                                                                                                          ]
-                                                                                                      ]
-                                                                                                      (Ty.path
-                                                                                                        "u32")
-                                                                                                  ],
-                                                                                                [],
-                                                                                                "sum",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u32"
-                                                                                                ]
-                                                                                              |),
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                  M.get_trait_method (|
-                                                                                                      "core::iter::traits::iterator::Iterator",
-                                                                                                      Ty.path
-                                                                                                        "core::str::iter::Chars",
-                                                                                                      [],
-                                                                                                      "map",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "u32";
-                                                                                                        Ty.function
-                                                                                                          [
-                                                                                                            Ty.tuple
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "char"
-                                                                                                              ]
-                                                                                                          ]
-                                                                                                          (Ty.path
-                                                                                                            "u32")
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                  [
-                                                                                                    M.call_closure (|
-                                                                                                        M.get_associated_function (|
-                                                                                                            Ty.path
-                                                                                                              "str",
-                                                                                                            "chars",
-                                                                                                            []
-                                                                                                          |),
-                                                                                                        [
-                                                                                                          M.read (|
-                                                                                                              data_segment
-                                                                                                            |)
-                                                                                                        ]
-                                                                                                      |);
-                                                                                                    M.closure
-                                                                                                      (fun
-                                                                                                          γ =>
-                                                                                                        ltac:(M.monadic
-                                                                                                          match
-                                                                                                            γ
-                                                                                                          with
-                                                                                                          | [
-                                                                                                                α0
-                                                                                                              ] =>
-                                                                                                            M.match_operator (|
-                                                                                                                M.alloc (|
-                                                                                                                    α0
-                                                                                                                  |),
-                                                                                                                [
-                                                                                                                  fun
-                                                                                                                      γ =>
-                                                                                                                    ltac:(M.monadic
-                                                                                                                      (let
-                                                                                                                            c :=
-                                                                                                                        M.copy (|
-                                                                                                                            γ
-                                                                                                                          |) in
-                                                                                                                      M.call_closure (|
-                                                                                                                          M.get_associated_function (|
-                                                                                                                              Ty.apply
-                                                                                                                                (Ty.path
-                                                                                                                                  "core::option::Option")
-                                                                                                                                [
-                                                                                                                                  Ty.path
-                                                                                                                                    "u32"
-                                                                                                                                ],
-                                                                                                                              "expect",
-                                                                                                                              []
-                                                                                                                            |),
-                                                                                                                          [
-                                                                                                                            M.call_closure (|
-                                                                                                                                M.get_associated_function (|
-                                                                                                                                    Ty.path
-                                                                                                                                      "char",
-                                                                                                                                    "to_digit",
-                                                                                                                                    []
-                                                                                                                                  |),
-                                                                                                                                [
-                                                                                                                                  M.read (|
-                                                                                                                                      c
-                                                                                                                                    |);
-                                                                                                                                  Value.Integer
-                                                                                                                                    Integer.U32
-                                                                                                                                    10
-                                                                                                                                ]
-                                                                                                                              |);
-                                                                                                                            M.read (|
-                                                                                                                                mk_str
-                                                                                                                                  "should be a digit"
-                                                                                                                              |)
-                                                                                                                          ]
-                                                                                                                        |)))
-                                                                                                                ]
-                                                                                                              |)
-                                                                                                          | _ =>
-                                                                                                            M.impossible (||)
-                                                                                                          end))
-                                                                                                  ]
-                                                                                                |)
-                                                                                            ]
-                                                                                          |)
-                                                                                      |) in
-                                                                                  let _ :=
-                                                                                    let _ :=
-                                                                                      M.alloc (|
-                                                                                          M.call_closure (|
-                                                                                              M.get_function (|
-                                                                                                  "std::io::stdio::_print",
-                                                                                                  []
-                                                                                                |),
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Arguments",
-                                                                                                        "new_v1",
-                                                                                                        []
-                                                                                                      |),
-                                                                                                    [
-                                                                                                      (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                              Value.Array
-                                                                                                                [
-                                                                                                                  M.read (|
-                                                                                                                      mk_str
-                                                                                                                        "processed segment "
-                                                                                                                    |);
-                                                                                                                  M.read (|
-                                                                                                                      mk_str
-                                                                                                                        ", result="
-                                                                                                                    |);
-                                                                                                                  M.read (|
-                                                                                                                      mk_str
-                                                                                                                        "
-"
-                                                                                                                    |)
-                                                                                                                ]
-                                                                                                            |));
-                                                                                                      (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                              Value.Array
-                                                                                                                [
-                                                                                                                  M.call_closure (|
-                                                                                                                      M.get_associated_function (|
-                                                                                                                          Ty.path
-                                                                                                                            "core::fmt::rt::Argument",
-                                                                                                                          "new_display",
-                                                                                                                          [
-                                                                                                                            Ty.path
-                                                                                                                              "usize"
-                                                                                                                          ]
-                                                                                                                        |),
-                                                                                                                      [
-                                                                                                                        i
-                                                                                                                      ]
-                                                                                                                    |);
-                                                                                                                  M.call_closure (|
-                                                                                                                      M.get_associated_function (|
-                                                                                                                          Ty.path
-                                                                                                                            "core::fmt::rt::Argument",
-                                                                                                                          "new_display",
-                                                                                                                          [
-                                                                                                                            Ty.path
-                                                                                                                              "u32"
-                                                                                                                          ]
-                                                                                                                        |),
-                                                                                                                      [
-                                                                                                                        result
-                                                                                                                      ]
-                                                                                                                    |)
-                                                                                                                ]
-                                                                                                            |))
-                                                                                                    ]
-                                                                                                  |)
-                                                                                              ]
-                                                                                            |)
-                                                                                        |) in
-                                                                                    M.alloc (|
-                                                                                        Value.Tuple
-                                                                                          []
-                                                                                      |) in
-                                                                                  result
-                                                                                |)))
-                                                                        ]
-                                                                      |)
-                                                                  | _ => M.impossible (||)
-                                                                  end))
-                                                          ]
-                                                        |)
-                                                    ]
-                                                  |)
-                                              |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                  ]
-                |)) in
-          let final_result :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::map::Map")
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::into_iter::IntoIter")
-                              [
-                                Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ] ]
-                              ]
-                              (Ty.path "u32")
-                          ],
-                        [],
-                        "sum",
-                        [ Ty.path "u32" ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_trait_method (|
-                              "core::iter::traits::iterator::Iterator",
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                [
-                                  Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              [],
-                              "map",
-                              [
-                                Ty.path "u32";
-                                Ty.function
-                                  [
-                                    Ty.tuple
                                       [
-                                        Ty.apply
-                                          (Ty.path "std::thread::JoinHandle")
-                                          [ Ty.path "u32" ]
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "std::thread::JoinHandle")
+                                              [ Ty.path "u32" ],
+                                            "join",
+                                            []
+                                          |),
+                                          [ M.read (| c |) ]
+                                        |)
                                       ]
-                                  ]
-                                  (Ty.path "u32")
+                                    |)))
                               ]
-                            |),
-                          [
-                            M.call_closure (|
-                                M.get_trait_method (|
-                                    "core::iter::traits::collect::IntoIterator",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      [
-                                        Ty.apply
-                                          (Ty.path "std::thread::JoinHandle")
-                                          [ Ty.path "u32" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    "into_iter",
-                                    []
-                                  |),
-                                [ M.read (| children |) ]
-                              |);
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let c := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                  M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        [
-                                                          Ty.path "u32";
-                                                          Ty.apply
-                                                            (Ty.path "alloc::boxed::Box")
-                                                            [
-                                                              Ty.dyn
-                                                                [ ("core::any::Any::Trait", []) ];
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ]
-                                                        ],
-                                                      "unwrap",
-                                                      []
-                                                    |),
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "std::thread::JoinHandle")
-                                                              [ Ty.path "u32" ],
-                                                            "join",
-                                                            []
-                                                          |),
-                                                        [ M.read (| c |) ]
-                                                      |)
-                                                  ]
-                                                |)))
-                                        ]
-                                      |)
-                                  | _ => M.impossible (||)
-                                  end))
-                          ]
-                        |)
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [ M.read (| mk_str "Final sum result: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u32" ]
+                                |),
+                                [ final_result ]
+                              |)
+                            ]
+                        |))
                     ]
                   |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| mk_str "Final sum result: " |);
-                                          M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u32" ]
-                                                |),
-                                              [ final_result ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

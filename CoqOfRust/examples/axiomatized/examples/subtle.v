@@ -75,7 +75,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
+      [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -104,7 +104,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
+      [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -133,7 +133,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
+      [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -370,11 +370,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -392,11 +392,11 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -414,11 +414,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -436,11 +436,11 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -458,11 +458,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -480,11 +480,11 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -502,11 +502,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -524,11 +524,11 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("conditional_select", InstanceField.Method conditional_select);
-          ("conditional_assign", InstanceField.Method conditional_assign);
-          ("conditional_swap", InstanceField.Method conditional_swap)
-        ].
+      [
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.

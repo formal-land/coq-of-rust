@@ -17,122 +17,118 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.read (|
-          let f :=
-            M.copy (|
-                M.match_operator (|
-                    M.alloc (|
-                        M.call_closure (|
-                            M.get_trait_method (|
-                                "core::ops::try_trait::Try",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                                [],
-                                "branch",
-                                []
-                              |),
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "std::fs::File",
-                                      "open",
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-                                    |),
-                                  [ M.read (| path |) ]
-                                |)
-                            ]
-                          |)
-                      |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                              M.never_to_any (|
-                                  M.read (|
-                                      M.return_ (|
-                                          M.call_closure (|
-                                              M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    [
-                                                      Ty.path "alloc::string::String";
-                                                      Ty.path "std::io::error::Error"
-                                                    ],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "std::io::error::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  []
-                                                |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                        |)
-                                    |)
-                                |)
-                            |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |)
-              |) in
-          let s :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
-                    []
-                  |)
-              |) in
-          M.match_operator (|
+        let f :=
+          M.copy (|
+            M.match_operator (|
               M.alloc (|
-                  M.call_closure (|
-                      M.get_trait_method (|
-                          "std::io::Read",
-                          Ty.path "std::fs::File",
-                          [],
-                          "read_to_string",
-                          []
-                        |),
-                      [ f; s ]
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::try_trait::Try",
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                    [],
+                    "branch",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "std::fs::File",
+                        "open",
+                        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                      |),
+                      [ M.read (| path |) ]
                     |)
-                |),
+                  ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                        |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let residual := M.copy (| γ0_0 |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error"
+                                  ],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "std::io::error::Error"
+                                    ]
+                                ],
+                                "from_residual",
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                        |) in
-                    let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let val := M.copy (| γ0_0 |) in
+                    val))
               ]
             |)
-        |)))
+          |) in
+        let s :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              []
+            |)
+          |) in
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "std::io::Read",
+                Ty.path "std::fs::File",
+                [],
+                "read_to_string",
+                []
+              |),
+              [ f; s ]
+            |)
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
+                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
+                let e := M.copy (| γ0_0 |) in
+                M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -150,102 +146,95 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
       (let s := M.alloc (| s |) in
       let path := M.alloc (| path |) in
       M.read (|
-          let f :=
-            M.copy (|
-                M.match_operator (|
-                    M.alloc (|
-                        M.call_closure (|
-                            M.get_trait_method (|
-                                "core::ops::try_trait::Try",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                                [],
-                                "branch",
-                                []
-                              |),
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "std::fs::File",
-                                      "create",
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-                                    |),
-                                  [ M.read (| path |) ]
-                                |)
-                            ]
-                          |)
-                      |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                              M.never_to_any (|
-                                  M.read (|
-                                      M.return_ (|
-                                          M.call_closure (|
-                                              M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    [ Ty.tuple []; Ty.path "std::io::error::Error"
-                                                    ],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "std::io::error::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  []
-                                                |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                        |)
-                                    |)
-                                |)
-                            |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |)
-              |) in
-          M.alloc (|
-              M.call_closure (|
+        let f :=
+          M.copy (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
                   M.get_trait_method (|
-                      "std::io::Write",
-                      Ty.path "std::fs::File",
-                      [],
-                      "write_all",
-                      []
-                    |),
+                    "core::ops::try_trait::Try",
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                    [],
+                    "branch",
+                    []
+                  |),
                   [
-                    f;
                     M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                        [ M.read (| s |) ]
-                      |)
+                      M.get_associated_function (|
+                        Ty.path "std::fs::File",
+                        "create",
+                        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                      |),
+                      [ M.read (| path |) ]
+                    |)
                   ]
                 |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let residual := M.copy (| γ0_0 |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "std::io::error::Error"
+                                    ]
+                                ],
+                                "from_residual",
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let val := M.copy (| γ0_0 |) in
+                    val))
+              ]
             |)
-        |)))
+          |) in
+        M.alloc (|
+          M.call_closure (|
+            M.get_trait_method (| "std::io::Write", Ty.path "std::fs::File", [], "write_all", [] |),
+            [
+              f;
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                [ M.read (| s |) ]
+              |)
+            ]
+          |)
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -263,63 +252,56 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.read (|
-          M.match_operator (|
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_associated_function (|
-                          Ty.path "std::fs::OpenOptions",
-                          "open",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-                        |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (| Ty.path "std::fs::OpenOptions", "write", []
-                              |),
-                            [
-                              M.call_closure (|
-                                  M.get_associated_function (|
-                                      Ty.path "std::fs::OpenOptions",
-                                      "create",
-                                      []
-                                    |),
-                                  [
-                                    M.alloc (|
-                                        M.call_closure (|
-                                            M.get_associated_function (|
-                                                Ty.path "std::fs::OpenOptions",
-                                                "new",
-                                                []
-                                              |),
-                                            []
-                                          |)
-                                      |);
-                                    Value.Bool true
-                                  ]
-                                |);
-                              Value.Bool true
-                            ]
-                          |);
-                        M.read (| path |)
-                      ]
-                    |)
-                |),
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "std::fs::OpenOptions",
+                "open",
+                [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+              |),
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                        |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                        |) in
-                    let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "std::fs::OpenOptions", "write", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "std::fs::OpenOptions", "create", [] |),
+                      [
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "std::fs::OpenOptions",
+                              "new",
+                              []
+                            |),
+                            []
+                          |)
+                        |);
+                        Value.Bool true
+                      ]
+                    |);
+                    Value.Bool true
+                  ]
+                |);
+                M.read (| path |)
               ]
             |)
-        |)))
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
+                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
+                let e := M.copy (| γ0_0 |) in
+                M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -392,1332 +374,1209 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "`mkdir a`
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`mkdir a`
 " |) ] |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (|
-                            "std::fs::create_dir",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                          |),
-                        [ M.read (| mk_str "a" |) ]
-                      |)
-                  |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                          |) in
-                      let why := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "! " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                        [
-                                                          M.alloc (|
-                                                              M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "std::io::error::Error",
-                                                                      "kind",
-                                                                      []
-                                                                    |),
-                                                                  [ why ]
-                                                                |)
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "`echo hello > a/b.txt`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.match_operator (|
             M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                        "unwrap_or_else",
-                        [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple [])
-                        ]
-                      |),
-                    [
+              M.call_closure (|
+                M.get_function (|
+                  "std::fs::create_dir",
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                |),
+                [ M.read (| mk_str "a" |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let why := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
                       M.call_closure (|
-                          M.get_function (| "filesystem_operations::echo", [] |),
-                          [
-                            M.read (| mk_str "hello" |);
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.path "std::path::Path",
-                                    "new",
-                                    [ Ty.path "str" ]
-                                  |),
-                                [ M.read (| mk_str "a/b.txt" |) ]
-                              |)
-                          ]
-                        |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let why := M.copy (| γ |) in
-                                        M.read (|
-                                            let _ :=
-                                              let _ :=
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_function (|
-                                                            "std::io::stdio::_print",
-                                                            []
-                                                          |),
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                              [
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (| mk_str "! "
-                                                                              |);
-                                                                            M.read (| mk_str "
-" |)
-                                                                          ]
-                                                                      |));
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "std::io::error::ErrorKind"
-                                                                                    ]
-                                                                                  |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "std::io::error::Error",
-                                                                                              "kind",
-                                                                                              []
-                                                                                            |),
-                                                                                          [ why ]
-                                                                                        |)
-                                                                                    |)
-                                                                                ]
-                                                                              |)
-                                                                          ]
-                                                                      |))
-                                                              ]
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  |) in
-                                              M.alloc (| Value.Tuple [] |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                  ]
-                                |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "`mkdir -p a/c/d`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                        "unwrap_or_else",
-                        [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple [])
-                        ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_function (|
-                              "std::fs::create_dir_all",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                            |),
-                          [ M.read (| mk_str "a/c/d" |) ]
-                        |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let why := M.copy (| γ |) in
-                                        M.read (|
-                                            let _ :=
-                                              let _ :=
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_function (|
-                                                            "std::io::stdio::_print",
-                                                            []
-                                                          |),
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                              [
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (| mk_str "! "
-                                                                              |);
-                                                                            M.read (| mk_str "
-" |)
-                                                                          ]
-                                                                      |));
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "std::io::error::ErrorKind"
-                                                                                    ]
-                                                                                  |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "std::io::error::Error",
-                                                                                              "kind",
-                                                                                              []
-                                                                                            |),
-                                                                                          [ why ]
-                                                                                        |)
-                                                                                    |)
-                                                                                ]
-                                                                              |)
-                                                                          ]
-                                                                      |))
-                                                              ]
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  |) in
-                                              M.alloc (| Value.Tuple [] |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                  ]
-                                |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "`touch a/c/e.txt`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                        "unwrap_or_else",
-                        [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple [])
-                        ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_function (| "filesystem_operations::touch", [] |),
-                          [
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.path "std::path::Path",
-                                    "new",
-                                    [ Ty.path "str" ]
-                                  |),
-                                [ M.read (| mk_str "a/c/e.txt" |) ]
-                              |)
-                          ]
-                        |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let why := M.copy (| γ |) in
-                                        M.read (|
-                                            let _ :=
-                                              let _ :=
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_function (|
-                                                            "std::io::stdio::_print",
-                                                            []
-                                                          |),
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                              [
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (| mk_str "! "
-                                                                              |);
-                                                                            M.read (| mk_str "
-" |)
-                                                                          ]
-                                                                      |));
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "std::io::error::ErrorKind"
-                                                                                    ]
-                                                                                  |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "std::io::error::Error",
-                                                                                              "kind",
-                                                                                              []
-                                                                                            |),
-                                                                                          [ why ]
-                                                                                        |)
-                                                                                    |)
-                                                                                ]
-                                                                              |)
-                                                                          ]
-                                                                      |))
-                                                              ]
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  |) in
-                                              M.alloc (| Value.Tuple [] |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                  ]
-                                |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "`ln -s ../b.txt a/c/b.txt`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                                    "unwrap_or_else",
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                        (Ty.tuple [])
-                                    ]
-                                  |),
-                                [
-                                  M.call_closure (|
-                                      M.get_function (|
-                                          "std::os::unix::fs::symlink",
-                                          [
-                                            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                                            Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                          ]
-                                        |),
-                                      [
-                                        M.read (| mk_str "../b.txt" |);
-                                        M.read (| mk_str "a/c/b.txt" |)
-                                      ]
-                                    |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let why := M.copy (| γ |) in
-                                                    M.read (|
-                                                        let _ :=
-                                                          let _ :=
-                                                            M.alloc (|
-                                                                M.call_closure (|
-                                                                    M.get_function (|
-                                                                        "std::io::stdio::_print",
-                                                                        []
-                                                                      |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              "new_v1",
-                                                                              []
-                                                                            |),
-                                                                          [
-                                                                            (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                            mk_str
-                                                                                              "! "
-                                                                                          |);
-                                                                                        M.read (|
-                                                                                            mk_str
-                                                                                              "
-"
-                                                                                          |)
-                                                                                      ]
-                                                                                  |));
-                                                                            (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_debug",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "std::io::error::ErrorKind"
-                                                                                                ]
-                                                                                              |),
-                                                                                            [
-                                                                                              M.alloc (|
-                                                                                                  M.call_closure (|
-                                                                                                      M.get_associated_function (|
-                                                                                                          Ty.path
-                                                                                                            "std::io::error::Error",
-                                                                                                          "kind",
-                                                                                                          []
-                                                                                                        |),
-                                                                                                      [
-                                                                                                        why
-                                                                                                      ]
-                                                                                                    |)
-                                                                                                |)
-                                                                                            ]
-                                                                                          |)
-                                                                                      ]
-                                                                                  |))
-                                                                          ]
-                                                                        |)
-                                                                    ]
-                                                                  |)
-                                                              |) in
-                                                          M.alloc (| Value.Tuple [] |) in
-                                                        M.alloc (| Value.Tuple [] |)
-                                                      |)))
-                                              ]
-                                            |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "`cat a/c/b.txt`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (| "filesystem_operations::cat", [] |),
+                        M.get_function (| "std::io::stdio::_print", [] |),
                         [
                           M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "std::path::Path",
-                                  "new",
-                                  [ Ty.path "str" ]
-                                |),
-                              [ M.read (| mk_str "a/c/b.txt" |) ]
-                            |)
-                        ]
-                      |)
-                  |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                          |) in
-                      let why := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "! " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                        [
-                                                          M.alloc (|
-                                                              M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "std::io::error::Error",
-                                                                      "kind",
-                                                                      []
-                                                                    |),
-                                                                  [ why ]
-                                                                |)
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      let s := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "> " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [ Ty.path "alloc::string::String" ]
-                                                          |),
-                                                        [ s ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
                             M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
                             [
                               (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "`ls a`
-" |) ] |))
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "std::io::error::Error",
+                                                "kind",
+                                                []
+                                              |),
+                                              [ why ]
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |))
                             ]
                           |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.match_operator (|
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (|
-                            "std::fs::read_dir",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                          |),
-                        [ M.read (| mk_str "a" |) ]
+                        ]
                       |)
-                  |),
+                    |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
                 [
-                  fun γ =>
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "`echo hello > a/b.txt`
+" |) ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (| "filesystem_operations::echo", [] |),
+                  [
+                    M.read (| mk_str "hello" |);
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "std::path::Path",
+                        "new",
+                        [ Ty.path "str" ]
+                      |),
+                      [ M.read (| mk_str "a/b.txt" |) ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
-                          |) in
-                      let why := M.copy (| γ0_0 |) in
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "! " |);
-                                                    M.read (| mk_str "
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "! " |);
+                                                        M.read (| mk_str "
 " |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
-                                                        [
-                                                          M.alloc (|
+                                                          [
+                                                            M.alloc (|
                                                               M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "std::io::error::Error",
-                                                                      "kind",
-                                                                      []
-                                                                    |),
-                                                                  [ why ]
-                                                                |)
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
                                                             |)
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`mkdir -p a/c/d`
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (|
+                    "std::fs::create_dir_all",
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  |),
+                  [ M.read (| mk_str "a/c/d" |) ]
+                |);
+                M.closure
+                  (fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
-                          |) in
-                      let paths := M.copy (| γ0_0 |) in
-                      M.use
-                        (M.match_operator (|
-                            M.alloc (|
-                                M.call_closure (|
-                                    M.get_trait_method (|
-                                        "core::iter::traits::collect::IntoIterator",
-                                        Ty.path "std::fs::ReadDir",
-                                        [],
-                                        "into_iter",
-                                        []
-                                      |),
-                                    [ M.read (| paths |) ]
-                                  |)
-                              |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.loop (|
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.match_operator (|
-                                              M.alloc (|
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "! " |);
+                                                        M.read (| mk_str "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`touch a/c/e.txt`
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (| "filesystem_operations::touch", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "std::path::Path",
+                        "new",
+                        [ Ty.path "str" ]
+                      |),
+                      [ M.read (| mk_str "a/c/e.txt" |) ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "! " |);
+                                                        M.read (| mk_str "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "`ln -s ../b.txt a/c/b.txt`
+" |) ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (| Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                          "unwrap_or_else",
+                          [
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                              (Ty.tuple [])
+                          ]
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_function (|
+                              "std::os::unix::fs::symlink",
+                              [
+                                Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                              ]
+                            |),
+                            [ M.read (| mk_str "../b.txt" |); M.read (| mk_str "a/c/b.txt" |) ]
+                          |);
+                          M.closure
+                            (fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [ α0 ] =>
+                                  M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let why := M.copy (| γ |) in
+                                          M.read (|
+                                            let _ :=
+                                              let _ :=
+                                                M.alloc (|
                                                   M.call_closure (|
-                                                      M.get_trait_method (|
-                                                          "core::iter::traits::iterator::Iterator",
-                                                          Ty.path "std::fs::ReadDir",
-                                                          [],
-                                                          "next",
+                                                    M.get_function (|
+                                                      "std::io::stdio::_print",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Arguments",
+                                                          "new_v1",
                                                           []
                                                         |),
-                                                      [ iter ]
-                                                    |)
-                                                |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (|
-                                                        M.never_to_any (| M.read (| M.break (||) |)
-                                                          |)
-                                                      |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
-                                                          γ,
-                                                          "core::option::Option::Some",
-                                                          0
-                                                        |) in
-                                                    let path := M.copy (| γ0_0 |) in
-                                                    let _ :=
-                                                      let _ :=
-                                                        M.alloc (|
-                                                            M.call_closure (|
-                                                                M.get_function (|
-                                                                    "std::io::stdio::_print",
-                                                                    []
-                                                                  |),
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (| mk_str "! " |);
+                                                                  M.read (| mk_str "
+" |)
+                                                                ]
+                                                            |));
+                                                          (* Unsize *)
+                                                          M.pointer_coercion
+                                                            (M.alloc (|
+                                                              Value.Array
                                                                 [
                                                                   M.call_closure (|
-                                                                      M.get_associated_function (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind"
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "std::io::error::Error",
+                                                                            "kind",
+                                                                            []
+                                                                          |),
+                                                                          [ why ]
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |))
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)))
+                                    ]
+                                  |)
+                                | _ => M.impossible (||)
+                                end))
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`cat a/c/b.txt`
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "filesystem_operations::cat", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "std::path::Path",
+                      "new",
+                      [ Ty.path "str" ]
+                    |),
+                    [ M.read (| mk_str "a/c/b.txt" |) ]
+                  |)
+                ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let why := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "std::io::error::Error",
+                                                "kind",
+                                                []
+                                              |),
+                                              [ why ]
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  let s := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "> " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [ s ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)))
+            ]
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`ls a`
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.match_operator (|
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "std::fs::read_dir",
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                |),
+                [ M.read (| mk_str "a" |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let why := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "std::io::error::Error",
+                                                "kind",
+                                                []
+                                              |),
+                                              [ why ]
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match (|
+                      γ,
+                      "core::result::Result::Ok",
+                      0
+                    |) in
+                  let paths := M.copy (| γ0_0 |) in
+                  M.use
+                    (M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::collect::IntoIterator",
+                            Ty.path "std::fs::ReadDir",
+                            [],
+                            "into_iter",
+                            []
+                          |),
+                          [ M.read (| paths |) ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let iter := M.copy (| γ |) in
+                            M.loop (|
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.path "std::fs::ReadDir",
+                                          [],
+                                          "next",
+                                          []
+                                        |),
+                                        [ iter ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.get_struct_tuple_field_or_break_match (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let path := M.copy (| γ0_0 |) in
+                                          let _ :=
+                                            let _ :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Arguments",
+                                                        "new_v1",
+                                                        []
+                                                      |),
+                                                      [
+                                                        (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (| mk_str "> " |);
+                                                                M.read (| mk_str "
+" |)
+                                                              ]
+                                                          |));
+                                                        (* Unsize *)
+                                                        M.pointer_coercion
+                                                          (M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_debug",
+                                                                    [ Ty.path "std::path::PathBuf" ]
+                                                                  |),
+                                                                  [
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
+                                                                            "std::fs::DirEntry",
+                                                                          "path",
                                                                           []
                                                                         |),
-                                                                      [
-                                                                        (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                                Value.Array
+                                                                        [
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
                                                                                   [
-                                                                                    M.read (|
-                                                                                        mk_str "> "
-                                                                                      |);
-                                                                                    M.read (|
-                                                                                        mk_str "
-"
-                                                                                      |)
-                                                                                  ]
-                                                                              |));
-                                                                        (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "std::path::PathBuf"
-                                                                                            ]
-                                                                                          |),
-                                                                                        [
-                                                                                          M.alloc (|
-                                                                                              M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "std::fs::DirEntry",
-                                                                                                      "path",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                  [
-                                                                                                    M.alloc (|
-                                                                                                        M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "core::result::Result")
-                                                                                                                  [
-                                                                                                                    Ty.path
-                                                                                                                      "std::fs::DirEntry";
-                                                                                                                    Ty.path
-                                                                                                                      "std::io::error::Error"
-                                                                                                                  ],
-                                                                                                                "unwrap",
-                                                                                                                []
-                                                                                                              |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                  path
-                                                                                                                |)
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                      |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                            |)
-                                                                                        ]
-                                                                                      |)
-                                                                                  ]
-                                                                              |))
-                                                                      ]
+                                                                                    Ty.path
+                                                                                      "std::fs::DirEntry";
+                                                                                    Ty.path
+                                                                                      "std::io::error::Error"
+                                                                                  ],
+                                                                                "unwrap",
+                                                                                []
+                                                                              |),
+                                                                              [ M.read (| path |) ]
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
                                                                     |)
-                                                                ]
-                                                              |)
-                                                          |) in
-                                                      M.alloc (| Value.Tuple [] |) in
-                                                    M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                    |)))
-                            ]
-                          |))))
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                          |))
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)))
+                            |)))
+                      ]
+                    |))))
+            ]
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`rm a/c/e.txt`
+" |) ] |))
+                    ]
+                  |)
                 ]
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "`rm a/c/e.txt`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            M.alloc (|
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
                 M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                        "unwrap_or_else",
-                        [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple [])
-                        ]
-                      |),
-                    [
-                      M.call_closure (|
-                          M.get_function (|
-                              "std::fs::remove_file",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                            |),
-                          [ M.read (| mk_str "a/c/e.txt" |) ]
-                        |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let why := M.copy (| γ |) in
-                                        M.read (|
-                                            let _ :=
-                                              let _ :=
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_function (|
-                                                            "std::io::stdio::_print",
-                                                            []
+                  M.get_function (|
+                    "std::fs::remove_file",
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  |),
+                  [ M.read (| mk_str "a/c/e.txt" |) ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "! " |);
+                                                        M.read (| mk_str "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
                                                                   []
                                                                 |),
-                                                              [
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (| mk_str "! "
-                                                                              |);
-                                                                            M.read (| mk_str "
-" |)
-                                                                          ]
-                                                                      |));
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "std::io::error::ErrorKind"
-                                                                                    ]
-                                                                                  |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "std::io::error::Error",
-                                                                                              "kind",
-                                                                                              []
-                                                                                            |),
-                                                                                          [ why ]
-                                                                                        |)
-                                                                                    |)
-                                                                                ]
-                                                                              |)
-                                                                          ]
-                                                                      |))
-                                                              ]
+                                                                [ why ]
+                                                              |)
                                                             |)
-                                                        ]
-                                                      |)
-                                                  |) in
-                                              M.alloc (| Value.Tuple [] |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                  ]
-                                |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "`rmdir a/c/d`
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                        "unwrap_or_else",
-                        [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple [])
-                        ]
-                      |),
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      M.call_closure (|
-                          M.get_function (|
-                              "std::fs::remove_dir",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                            |),
-                          [ M.read (| mk_str "a/c/d" |) ]
-                        |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let why := M.copy (| γ |) in
-                                        M.read (|
-                                            let _ :=
-                                              let _ :=
-                                                M.alloc (|
-                                                    M.call_closure (|
-                                                        M.get_function (|
-                                                            "std::io::stdio::_print",
-                                                            []
-                                                          |),
-                                                        [
-                                                          M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                              [
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (| mk_str "! "
-                                                                              |);
-                                                                            M.read (| mk_str "
-" |)
-                                                                          ]
-                                                                      |));
-                                                                (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "std::io::error::ErrorKind"
-                                                                                    ]
-                                                                                  |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "std::io::error::Error",
-                                                                                              "kind",
-                                                                                              []
-                                                                                            |),
-                                                                                          [ why ]
-                                                                                        |)
-                                                                                    |)
-                                                                                ]
-                                                                              |)
-                                                                          ]
-                                                                      |))
-                                                              ]
-                                                            |)
-                                                        ]
-                                                      |)
-                                                  |) in
-                                              M.alloc (| Value.Tuple [] |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                  ]
-                                |)
-                            | _ => M.impossible (||)
-                            end))
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "`rmdir a/c/d`
+" |) ] |))
                     ]
                   |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (|
+                    "std::fs::remove_dir",
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  |),
+                  [ M.read (| mk_str "a/c/d" |) ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| mk_str "! " |);
+                                                        M.read (| mk_str "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

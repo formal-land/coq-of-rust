@@ -58,7 +58,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
-        [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
+      [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

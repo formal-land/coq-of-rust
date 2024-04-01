@@ -36,46 +36,46 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         LogicalOp.and (|
-            M.call_closure (|
-                M.get_trait_method (|
-                    "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                    "eq",
-                    []
-                  |),
-                [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "hash_map_alternate_or_custom_key_types::Account"
-                    "username";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "hash_map_alternate_or_custom_key_types::Account"
-                    "username"
-                ]
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::cmp::PartialEq",
+              Ty.apply (Ty.path "&") [ Ty.path "str" ],
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+              "eq",
+              []
+            |),
+            [
+              M.get_struct_record_field
+                (M.read (| self |))
+                "hash_map_alternate_or_custom_key_types::Account"
+                "username";
+              M.get_struct_record_field
+                (M.read (| other |))
+                "hash_map_alternate_or_custom_key_types::Account"
+                "username"
+            ]
+          |),
+          ltac:(M.monadic
+            (M.call_closure (|
+              M.get_trait_method (|
+                "core::cmp::PartialEq",
+                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                "eq",
+                []
               |),
-            ltac:(M.monadic
-              (M.call_closure (|
-                  M.get_trait_method (|
-                      "core::cmp::PartialEq",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                      "eq",
-                      []
-                    |),
-                  [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "hash_map_alternate_or_custom_key_types::Account"
-                      "password";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "hash_map_alternate_or_custom_key_types::Account"
-                      "password"
-                  ]
-                |)))
-          |)))
+              [
+                M.get_struct_record_field
+                  (M.read (| self |))
+                  "hash_map_alternate_or_custom_key_types::Account"
+                  "password";
+                M.get_struct_record_field
+                  (M.read (| other |))
+                  "hash_map_alternate_or_custom_key_types::Account"
+                  "password"
+              ]
+            |)))
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -110,18 +110,18 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-            M.match_operator (|
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                          Value.DeclaredButUndefined,
-                          [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                        |)))
-                ]
-              |)
-          |)))
+          M.match_operator (|
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Value.DeclaredButUndefined,
+                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                  |)))
+            ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -131,7 +131,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+      [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -147,44 +147,44 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                          [],
-                          "hash",
-                          [ __H ]
-                        |),
-                      [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "hash_map_alternate_or_custom_key_types::Account"
-                          "username";
-                        M.read (| state |)
-                      ]
-                    |)
-                |) in
+          let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_trait_method (|
-                        "core::hash::Hash",
-                        Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                        [],
-                        "hash",
-                        [ __H ]
-                      |),
-                    [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "hash_map_alternate_or_custom_key_types::Account"
-                        "password";
-                      M.read (| state |)
-                    ]
-                  |)
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                  [],
+                  "hash",
+                  [ __H ]
+                |),
+                [
+                  M.get_struct_record_field
+                    (M.read (| self |))
+                    "hash_map_alternate_or_custom_key_types::Account"
+                    "username";
+                  M.read (| state |)
+                ]
               |)
-          |)))
+            |) in
+          M.alloc (|
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                [],
+                "hash",
+                [ __H ]
+              |),
+              [
+                M.get_struct_record_field
+                  (M.read (| self |))
+                  "hash_map_alternate_or_custom_key_types::Account"
+                  "password";
+                M.read (| state |)
+              ]
+            |)
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -243,307 +243,275 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
       let username := M.alloc (| username |) in
       let password := M.alloc (| password |) in
       M.read (|
+        let _ :=
           let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "Username: " |); M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ username ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "Password: " |); M.read (| mk_str "
-" |)
-                                        ]
-                                    |));
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                              M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                |),
-                                              [ password ]
-                                            |)
-                                        ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "Attempting logon...
-" |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          let logon :=
             M.alloc (|
-                Value.StructRecord
-                  "hash_map_alternate_or_custom_key_types::Account"
-                  [ ("username", M.read (| username |)); ("password", M.read (| password |)) ]
-              |) in
-          M.match_operator (|
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "std::collections::hash::map::HashMap")
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "Username: " |); M.read (| mk_str "
+" |) ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
                             [
-                              Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                              Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                              Ty.path "std::hash::random::RandomState"
-                            ],
-                          "get",
-                          [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ]
-                        |),
-                      [ M.read (| accounts |); logon ]
-                    |)
-                |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
-                        |) in
-                    let account_info := M.copy (| γ0_0 |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| mk_str "Successful logon!
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ username ]
+                              |)
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "Password: " |); M.read (| mk_str "
 " |) ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                                [ password ]
                               |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "Name: " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [ Ty.path "str" ]
-                                                            ]
-                                                          |),
-                                                        [
-                                                          M.get_struct_record_field
-                                                            (M.read (| account_info |))
-                                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
-                                                            "name"
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    let _ :=
-                      let _ :=
-                        M.alloc (|
-                            M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
-                                [
-                                  M.call_closure (|
-                                      M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                      [
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| mk_str "Email: " |);
-                                                    M.read (| mk_str "
-" |)
-                                                  ]
-                                              |));
-                                        (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                        M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [ Ty.path "str" ]
-                                                            ]
-                                                          |),
-                                                        [
-                                                          M.get_struct_record_field
-                                                            (M.read (| account_info |))
-                                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
-                                                            "email"
-                                                        ]
-                                                      |)
-                                                  ]
-                                              |))
-                                      ]
-                                    |)
-                                ]
-                              |)
-                          |) in
-                      M.alloc (| Value.Tuple [] |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.alloc (|
-                          M.call_closure (|
-                              M.get_function (| "std::io::stdio::_print", [] |),
-                              [
-                                M.call_closure (|
-                                    M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                    [
-                                      (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                              Value.Array [ M.read (| mk_str "Login failed!
-" |) ]
-                                            |))
-                                    ]
-                                  |)
-                              ]
-                            |)
-                        |) in
-                    M.alloc (| Value.Tuple [] |)))
-              ]
+                            ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "Attempting logon...
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let logon :=
+          M.alloc (|
+            Value.StructRecord
+              "hash_map_alternate_or_custom_key_types::Account"
+              [ ("username", M.read (| username |)); ("password", M.read (| password |)) ]
+          |) in
+        M.match_operator (|
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
+                  [
+                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                    Ty.path "std::hash::random::RandomState"
+                  ],
+                "get",
+                [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ]
+              |),
+              [ M.read (| accounts |); logon ]
             |)
-        |)))
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.get_struct_tuple_field_or_break_match (|
+                    γ,
+                    "core::option::Option::Some",
+                    0
+                  |) in
+                let account_info := M.copy (| γ0_0 |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array [ M.read (| mk_str "Successful logon!
+" |) ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [ M.read (| mk_str "Name: " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.get_struct_record_field
+                                            (M.read (| account_info |))
+                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                                            "name"
+                                        ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let _ :=
+                  let _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [ M.read (| mk_str "Email: " |); M.read (| mk_str "
+" |) ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.get_struct_record_field
+                                            (M.read (| account_info |))
+                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                                            "email"
+                                        ]
+                                      |)
+                                    ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                M.alloc (| Value.Tuple [] |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_const",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.alloc (| Value.Array [ M.read (| mk_str "Login failed!
+" |) ] |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)))
+          ]
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -573,75 +541,73 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let accounts :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "std::collections::hash::map::HashMap")
-                          [
-                            Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                            Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                            Ty.path "std::hash::random::RandomState"
-                          ],
-                        "new",
-                        []
-                      |),
-                    []
-                  |)
-              |) in
-          let account :=
-            M.alloc (|
-                Value.StructRecord
-                  "hash_map_alternate_or_custom_key_types::Account"
+        let accounts :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
                   [
-                    ("username", M.read (| mk_str "j.everyman" |));
-                    ("password", M.read (| mk_str "password123" |))
-                  ]
-              |) in
-          let account_info :=
-            M.alloc (|
-                Value.StructRecord
-                  "hash_map_alternate_or_custom_key_types::AccountInfo"
+                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                    Ty.path "std::hash::random::RandomState"
+                  ],
+                "new",
+                []
+              |),
+              []
+            |)
+          |) in
+        let account :=
+          M.alloc (|
+            Value.StructRecord
+              "hash_map_alternate_or_custom_key_types::Account"
+              [
+                ("username", M.read (| mk_str "j.everyman" |));
+                ("password", M.read (| mk_str "password123" |))
+              ]
+          |) in
+        let account_info :=
+          M.alloc (|
+            Value.StructRecord
+              "hash_map_alternate_or_custom_key_types::AccountInfo"
+              [
+                ("name", M.read (| mk_str "John Everyman" |));
+                ("email", M.read (| mk_str "j.everyman@email.com" |))
+              ]
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
                   [
-                    ("name", M.read (| mk_str "John Everyman" |));
-                    ("email", M.read (| mk_str "j.everyman@email.com" |))
-                  ]
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "std::collections::hash::map::HashMap")
-                          [
-                            Ty.path "hash_map_alternate_or_custom_key_types::Account";
-                            Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-                            Ty.path "std::hash::random::RandomState"
-                          ],
-                        "insert",
-                        []
-                      |),
-                    [ accounts; M.read (| account |); M.read (| account_info |) ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
-                    [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "psasword123" |)
-                    ]
-                  |)
-              |) in
-          let _ :=
-            M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
-                    [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "password123" |)
-                    ]
-                  |)
-              |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                    Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                    Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                    Ty.path "std::hash::random::RandomState"
+                  ],
+                "insert",
+                []
+              |),
+              [ accounts; M.read (| account |); M.read (| account_info |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
+              [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "psasword123" |) ]
+            |)
+          |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
+              [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "password123" |) ]
+            |)
+          |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.

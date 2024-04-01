@@ -22,57 +22,50 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
+          let _ :=
             let _ :=
-              let _ :=
-                M.alloc (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
                     M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  []
-                                |),
+                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array
+                              [ M.read (| mk_str "> Dropping " |); M.read (| mk_str "
+" |) ]
+                          |));
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (|
+                            Value.Array
                               [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| mk_str "> Dropping " |);
-                                            M.read (| mk_str "
-" |)
-                                          ]
-                                      |));
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                                M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                                  |),
-                                                [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "drop::Droppable"
-                                                    "name"
-                                                ]
-                                              |)
-                                          ]
-                                      |))
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  |),
+                                  [
+                                    M.get_struct_record_field
+                                      (M.read (| self |))
+                                      "drop::Droppable"
+                                      "name"
+                                  ]
+                                |)
                               ]
-                            |)
-                        ]
-                      |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
+                          |))
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -120,158 +113,143 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-          let _a :=
-            M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "a" |)) ]
-              |) in
+        let _a :=
+          M.alloc (|
+            Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "a" |)) ]
+          |) in
+        let _ :=
+          let _b :=
+            M.alloc (|
+              Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "b" |)) ]
+            |) in
           let _ :=
-            let _b :=
-              M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "b" |)) ]
-                |) in
+            let _c :=
+              M.alloc (|
+                Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "c" |)) ]
+              |) in
+            let _d :=
+              M.alloc (|
+                Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "d" |)) ]
+              |) in
             let _ :=
-              let _c :=
-                M.alloc (|
-                    Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "c" |)) ]
-                  |) in
-              let _d :=
-                M.alloc (|
-                    Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "d" |)) ]
-                  |) in
               let _ :=
-                let _ :=
-                  M.alloc (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "std::io::stdio::_print", [] |),
+                    [
                       M.call_closure (|
-                          M.get_function (| "std::io::stdio::_print", [] |),
-                          [
-                            M.call_closure (|
-                                M.get_associated_function (|
-                                    Ty.path "core::fmt::Arguments",
-                                    "new_const",
-                                    []
-                                  |),
-                                [
-                                  (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                          Value.Array [ M.read (| mk_str "Exiting block B
-" |) ]
-                                        |))
-                                ]
-                              |)
-                          ]
-                        |)
-                    |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |) in
-            let _ :=
-              let _ :=
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          []
+                        |),
                         [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                              [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array [ M.read (| mk_str "Just exited block B
-" |) ]
-                                      |))
-                              ]
-                            |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.alloc (| Value.Array [ M.read (| mk_str "Exiting block B
+" |) ] |))
                         ]
                       |)
-                  |) in
-              M.alloc (| Value.Tuple [] |) in
-            let _ :=
-              let _ :=
-                M.alloc (|
-                    M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                              M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                              [
-                                (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                        Value.Array [ M.read (| mk_str "Exiting block A
-" |) ]
-                                      |))
-                              ]
-                            |)
-                        ]
-                      |)
-                  |) in
+                    ]
+                  |)
+                |) in
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |) in
           let _ :=
             let _ :=
               M.alloc (|
-                  M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        []
+                      |),
                       [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array [ M.read (| mk_str "Just exited block A
-" |) ]
-                                    |))
-                            ]
-                          |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (| Value.Array [ M.read (| mk_str "Just exited block B
+" |) ] |))
                       ]
                     |)
-                |) in
+                  ]
+                |)
+              |) in
             M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "std::io::stdio::_print", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        []
+                      |),
+                      [
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.alloc (| Value.Array [ M.read (| mk_str "Exiting block A
+" |) ] |))
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
           let _ :=
             M.alloc (|
-                M.call_closure (|
-                    M.get_function (| "core::mem::drop", [ Ty.path "drop::Droppable" ] |),
-                    [ M.read (| _a |) ]
-                  |)
-              |) in
-          let _ :=
-            let _ :=
-              M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
                   M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
-                      [
-                        M.call_closure (|
-                            M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                            [
-                              (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| mk_str "end of the main function
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (| Value.Array [ M.read (| mk_str "Just exited block A
+" |) ] |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "core::mem::drop", [ Ty.path "drop::Droppable" ] |),
+              [ M.read (| _a |) ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| mk_str "end of the main function
 " |) ]
-                                    |))
-                            ]
-                          |)
-                      ]
-                    |)
-                |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        M.alloc (| Value.Tuple [] |)
+      |)))
   | _, _ => M.impossible
   end.
