@@ -8,9 +8,7 @@ Require Import CoqOfRust.CoqOfRust.
     fields :=
       [
         ("value",
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -23,8 +21,7 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_default :
-    M.IsAssociatedFunction Self "default" default.
+  Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   

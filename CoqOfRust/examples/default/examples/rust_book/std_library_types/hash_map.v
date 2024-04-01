@@ -178,20 +178,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* γ0_0 := M.read γ0_0 in
             let* number := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Calling Daniel: ") in
@@ -221,10 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Don't have Daniel's number.
@@ -270,20 +259,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* γ0_0 := M.read γ0_0 in
             let* number := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Calling Ashley: ") in
@@ -313,10 +294,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Don't have Ashley's number.
@@ -347,10 +325,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         "core::iter::traits::collect::IntoIterator"
         (Ty.apply
           (Ty.path "std::collections::hash::map::Iter")
-          [
-            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
         []
         "into_iter"
         [] in
@@ -400,10 +375,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::option::Option::Some"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let γ1_0 := M.get_tuple_field γ0_0 0 in
                       let γ1_1 := M.get_tuple_field γ0_0 1 in
                       let* contact := M.copy γ1_0 in
@@ -411,8 +383,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* number := M.copy γ1_1 in
                       let* _ :=
                         let* _ :=
-                          let* α0 :=
-                            M.get_function "std::io::stdio::_print" [] in
+                          let* α0 := M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -435,16 +406,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                      ]
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                   ] in
                               let* α8 := M.call_closure α7 [ contact ] in
                               let* α9 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::rt::Argument")
                                   "new_display"
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                  ] in
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                               let* α10 := M.get_function "hash_map::call" [] in
                               let* α11 := M.read number in
                               let* α12 := M.call_closure α10 [ α11 ] in

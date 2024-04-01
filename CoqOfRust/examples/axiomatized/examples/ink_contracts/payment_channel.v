@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -91,10 +87,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -106,8 +99,7 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
@@ -130,8 +122,7 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
       [
         ("sender", Ty.path "payment_channel::AccountId");
         ("recipient", Ty.path "payment_channel::AccountId");
-        ("expiration",
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
+        ("expiration", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
         ("withdrawn", Ty.path "u128");
         ("close_duration", Ty.path "u64")
       ];
@@ -221,25 +212,19 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
   forall (T : Ty.t),
   (Ty.apply (Ty.path "payment_channel::Result") [ T ]) =
-    (Ty.apply
-      (Ty.path "core::result::Result")
-      [ T; Ty.path "payment_channel::Error" ]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "payment_channel::Error" ]).
 
 (* StructRecord
   {
     name := "SenderCloseStarted";
     ty_params := [];
-    fields :=
-      [ ("expiration", Ty.path "u64"); ("close_duration", Ty.path "u64") ];
+    fields := [ ("expiration", Ty.path "u64"); ("close_duration", Ty.path "u64") ];
   } *)
 
 (* Enum Event *)
@@ -264,8 +249,7 @@ Module Impl_payment_channel_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
   Parameter terminate_contract : (list Ty.t) -> (list Value.t) -> M.
   
@@ -274,8 +258,7 @@ Module Impl_payment_channel_Env.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer.
+  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter block_timestamp : (list Ty.t) -> (list Value.t) -> M.
   
@@ -284,13 +267,11 @@ Module Impl_payment_channel_Env.
   
   Parameter balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance :
-    M.IsAssociatedFunction Self "balance" balance.
+  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
   Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_account_id :
-    M.IsAssociatedFunction Self "account_id" account_id.
+  Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_payment_channel_Env.
 
 (* Trait *)
@@ -436,8 +417,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -454,8 +434,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter close_inner : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_close_inner :
-    M.IsAssociatedFunction Self "close_inner" close_inner.
+  Axiom AssociatedFunction_close_inner : M.IsAssociatedFunction Self "close_inner" close_inner.
   
   Parameter close : (list Ty.t) -> (list Value.t) -> M.
   
@@ -473,13 +452,11 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter withdraw : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_withdraw :
-    M.IsAssociatedFunction Self "withdraw" withdraw.
+  Axiom AssociatedFunction_withdraw : M.IsAssociatedFunction Self "withdraw" withdraw.
   
   Parameter get_sender : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_sender :
-    M.IsAssociatedFunction Self "get_sender" get_sender.
+  Axiom AssociatedFunction_get_sender : M.IsAssociatedFunction Self "get_sender" get_sender.
   
   Parameter get_recipient : (list Ty.t) -> (list Value.t) -> M.
   
@@ -503,6 +480,5 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter get_balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_balance :
-    M.IsAssociatedFunction Self "get_balance" get_balance.
+  Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
 End Impl_payment_channel_PaymentChannel.

@@ -6,10 +6,7 @@ Require Import CoqOfRust.CoqOfRust.
     name := "Person";
     ty_params := [];
     fields :=
-      [
-        ("id", Ty.path "u32");
-        ("name", Ty.path "alloc::string::String");
-        ("phone", Ty.path "u64")
+      [ ("id", Ty.path "u32"); ("name", Ty.path "alloc::string::String"); ("phone", Ty.path "u64")
       ];
   } *)
 

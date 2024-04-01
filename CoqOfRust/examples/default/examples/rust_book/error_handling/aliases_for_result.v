@@ -4,9 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Axiom AliasedResult :
   forall (T : Ty.t),
   (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [ T ]) =
-    (Ty.apply
-      (Ty.path "core::result::Result")
-      [ T; Ty.path "core::num::error::ParseIntError" ]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "core::num::error::ParseIntError" ]).
 
 (*
 fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
@@ -36,8 +34,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::result::Result")
               [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
         ] in
-    let* α1 :=
-      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+    let* α1 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
     let* α2 := M.read first_number_str in
     let* α3 := M.call_closure α1 [ α2 ] in
     M.call_closure
@@ -58,22 +55,12 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.apply
                           (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                         "map"
-                        [
-                          Ty.path "i32";
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "i32" ] ]
-                            (Ty.path "i32")
+                        [ Ty.path "i32"; Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
                         ] in
                     let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "str")
-                        "parse"
-                        [ Ty.path "i32" ] in
+                      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
                     let* α2 := M.read second_number_str in
                     let* α3 := M.call_closure α1 [ α2 ] in
                     M.call_closure
@@ -121,19 +108,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "n is ") in
@@ -156,19 +135,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Error: ") in

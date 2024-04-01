@@ -37,10 +37,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
             fun γ =>
               let* γ := M.read γ in
               let* α0 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Formatter")
-                  "write_str"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "EmptyVec") in
               let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -48,10 +45,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
             fun γ =>
               let* γ := M.read γ in
               let* γ1_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "wrapping_errors::DoubleError::Parse"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "wrapping_errors::DoubleError::Parse" 0 in
               let* __self_0 := M.alloc γ1_0 in
               let* α0 :=
                 M.get_associated_function
@@ -79,9 +73,7 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 Axiom Result :
   forall (T : Ty.t),
   (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
-    (Ty.apply
-      (Ty.path "core::result::Result")
-      [ T; Ty.path "wrapping_errors::DoubleError" ]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
@@ -108,22 +100,13 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           [
             fun γ =>
               let* α0 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Formatter")
-                  "write_fmt"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
               let* α1 := M.read f in
               let* α2 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α5 :=
                 (* Unsize *)
-                  let* α3 :=
-                    M.read
-                      (mk_str
-                        "please use a vector with at least one element") in
+                  let* α3 := M.read (mk_str "please use a vector with at least one element") in
                   let* α4 := M.alloc (Value.Array [ α3 ]) in
                   M.pure (M.pointer_coercion α4) in
               let* α6 := M.call_closure α2 [ α5 ] in
@@ -131,22 +114,13 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
               M.alloc α7;
             fun γ =>
               let* α0 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Formatter")
-                  "write_fmt"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
               let* α1 := M.read f in
               let* α2 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α5 :=
                 (* Unsize *)
-                  let* α3 :=
-                    M.read
-                      (mk_str
-                        "the provided string could not be parsed as int") in
+                  let* α3 := M.read (mk_str "the provided string could not be parsed as int") in
                   let* α4 := M.alloc (Value.Array [ α3 ]) in
                   M.pure (M.pointer_coercion α4) in
               let* α6 := M.call_closure α2 [ α5 ] in
@@ -188,14 +162,10 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
         M.match_operator
           α0
           [
-            fun γ =>
-              M.alloc (Value.StructTuple "core::option::Option::None" []);
+            fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "wrapping_errors::DoubleError::Parse"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "wrapping_errors::DoubleError::Parse" 0 in
               let* e := M.alloc γ0_0 in
               let* α1 :=
                 (* Unsize *)
@@ -236,8 +206,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      (* Trait polymorphic types *) [ (* T *) Ty.path "core::num::error::ParseIntError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
@@ -262,9 +231,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::result::Result")
             [
-              Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "wrapping_errors::DoubleError"
             ])
           []
@@ -274,18 +241,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [
-              Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ])
           "ok_or"
           [ Ty.path "wrapping_errors::DoubleError" ] in
       let* α2 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "first"
           [] in
       let* α3 :=
@@ -293,20 +254,14 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::Deref"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           []
           "deref"
           [] in
       let* α4 := M.call_closure α3 [ vec ] in
       let* α5 := M.call_closure α2 [ α4 ] in
       let* α6 :=
-        M.call_closure
-          α1
-          [ α5; Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" []
-          ] in
+        M.call_closure α1 [ α5; Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" [] ] in
       let* α7 := M.call_closure α0 [ α6 ] in
       let* α8 := M.alloc α7 in
       let* α9 :=
@@ -329,9 +284,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
-                      [
-                        Ty.path "core::convert::Infallible";
-                        Ty.path "wrapping_errors::DoubleError"
+                      [ Ty.path "core::convert::Infallible"; Ty.path "wrapping_errors::DoubleError"
                       ]
                   ]
                   "from_residual"
@@ -362,8 +315,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           []
           "branch"
           [] in
-      let* α1 :=
-        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α1 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α2 := M.read first in
       let* α3 := M.read α2 in
       let* α4 := M.call_closure α1 [ α3 ] in
@@ -441,19 +393,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The first doubled is ") in
@@ -476,20 +420,12 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Error: ") in
@@ -527,19 +463,13 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.call_closure α0 [ e ] in
                     M.alloc α1 in
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::option::Option::Some"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                   let* source := M.copy γ0_0 in
                   let* _ :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "  Caused by: ") in
@@ -556,8 +486,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]
-                                  ]
+                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                               ] in
                           let* α7 := M.call_closure α6 [ source ] in
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -591,9 +520,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* numbers :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -603,9 +530,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -624,10 +549,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [] in
@@ -635,9 +557,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* strings :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -647,9 +567,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"

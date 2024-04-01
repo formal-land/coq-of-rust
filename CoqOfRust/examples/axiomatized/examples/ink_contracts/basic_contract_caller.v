@@ -38,16 +38,11 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
-  (Ty.path "basic_contract_caller::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "basic_contract_caller::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Error *)
 (* {
@@ -82,13 +77,11 @@ End Impl_basic_contract_caller_OtherContract.
   {
     name := "BasicContractCaller";
     ty_params := [];
-    fields :=
-      [ ("other_contract", Ty.path "basic_contract_caller::OtherContract") ];
+    fields := [ ("other_contract", Ty.path "basic_contract_caller::OtherContract") ];
   } *)
 
 Module Impl_basic_contract_caller_BasicContractCaller.
-  Definition Self : Ty.t :=
-    Ty.path "basic_contract_caller::BasicContractCaller".
+  Definition Self : Ty.t := Ty.path "basic_contract_caller::BasicContractCaller".
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
@@ -96,6 +89,5 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Parameter flip_and_get : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_flip_and_get :
-    M.IsAssociatedFunction Self "flip_and_get" flip_and_get.
+  Axiom AssociatedFunction_flip_and_get : M.IsAssociatedFunction Self "flip_and_get" flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller.

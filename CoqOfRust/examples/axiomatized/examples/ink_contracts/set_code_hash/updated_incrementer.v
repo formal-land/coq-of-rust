@@ -38,16 +38,10 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
-Axiom Hash :
-  (Ty.path "updated_incrementer::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "updated_incrementer::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Error *)
 (* {
@@ -83,8 +77,7 @@ Module Impl_updated_incrementer_Incrementer.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -104,6 +97,5 @@ Module Impl_updated_incrementer_Incrementer.
   
   Parameter set_code : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_set_code :
-    M.IsAssociatedFunction Self "set_code" set_code.
+  Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_updated_incrementer_Incrementer.

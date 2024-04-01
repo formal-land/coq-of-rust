@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
@@ -59,8 +55,7 @@ Module Impl_e2e_call_runtime_Env.
   
   Parameter balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance :
-    M.IsAssociatedFunction Self "balance" balance.
+  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
 End Impl_e2e_call_runtime_Env.
 
 (* StructTuple
@@ -87,8 +82,7 @@ Module Impl_e2e_call_runtime_Contract.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   

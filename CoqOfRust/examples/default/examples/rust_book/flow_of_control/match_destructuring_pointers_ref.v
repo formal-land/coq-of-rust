@@ -68,15 +68,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* val := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read (mk_str "Got a value via destructuring: ") in
+                  let* α2 := M.read (mk_str "Got a value via destructuring: ") in
                   let* α3 := M.read (mk_str "
 ") in
                   let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
@@ -105,15 +100,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* val := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read (mk_str "Got a value via dereferencing: ") in
+                  let* α2 := M.read (mk_str "Got a value via dereferencing: ") in
                   let* α3 := M.read (mk_str "
 ") in
                   let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
@@ -152,14 +142,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
-                          let* α2 :=
-                            M.read (mk_str "Got a reference to a value: ") in
+                          let* α2 := M.read (mk_str "Got a reference to a value: ") in
                           let* α3 := M.read (mk_str "
 ") in
                           let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
@@ -187,21 +173,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* β := M.read m in
                     let* α0 := M.read β in
-                    let* α1 :=
-                      BinOp.Panic.add α0 (Value.Integer Integer.I32 10) in
+                    let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 10) in
                     M.assign β α1 in
                   let* _ :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
-                          let* α2 :=
-                            M.read (mk_str "We added 10. `mut_value`: ") in
+                          let* α2 := M.read (mk_str "We added 10. `mut_value`: ") in
                           let* α3 := M.read (mk_str "
 ") in
                           let* α4 := M.alloc (Value.Array [ α2; α3 ]) in

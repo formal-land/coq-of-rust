@@ -30,12 +30,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
             fun γ =>
               M.match_operator
                 Value.DeclaredButUndefined
-                [
-                  fun γ =>
-                    M.match_operator
-                      Value.DeclaredButUndefined
-                      [ fun γ => M.read self ]
-                ]
+                [ fun γ => M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -53,11 +48,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 (*
@@ -75,11 +66,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "I immutably borrowed ") in
@@ -99,11 +86,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 :=
               M.call_closure
                 α7
-                [
-                  M.get_struct_record_field
-                    α8
-                    "scoping_rules_borrowing_mutablity::Book"
-                    "title"
+                [ M.get_struct_record_field α8 "scoping_rules_borrowing_mutablity::Book" "title"
                 ] in
             let* α10 :=
               M.get_associated_function
@@ -114,11 +97,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
             let* α12 :=
               M.call_closure
                 α10
-                [
-                  M.get_struct_record_field
-                    α11
-                    "scoping_rules_borrowing_mutablity::Book"
-                    "year"
+                [ M.get_struct_record_field α11 "scoping_rules_borrowing_mutablity::Book" "year"
                 ] in
             let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
             M.pure (M.pointer_coercion α13) in
@@ -144,19 +123,12 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.read book in
       M.assign
-        (M.get_struct_record_field
-          α0
-          "scoping_rules_borrowing_mutablity::Book"
-          "year")
+        (M.get_struct_record_field α0 "scoping_rules_borrowing_mutablity::Book" "year")
         (Value.Integer Integer.U32 2014) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "I mutably borrowed ") in
@@ -176,11 +148,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
             let* α9 :=
               M.call_closure
                 α7
-                [
-                  M.get_struct_record_field
-                    α8
-                    "scoping_rules_borrowing_mutablity::Book"
-                    "title"
+                [ M.get_struct_record_field α8 "scoping_rules_borrowing_mutablity::Book" "title"
                 ] in
             let* α10 :=
               M.get_associated_function
@@ -191,11 +159,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
             let* α12 :=
               M.call_closure
                 α10
-                [
-                  M.get_struct_record_field
-                    α11
-                    "scoping_rules_borrowing_mutablity::Book"
-                    "year"
+                [ M.get_struct_record_field α11 "scoping_rules_borrowing_mutablity::Book" "year"
                 ] in
             let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
             M.pure (M.pointer_coercion α13) in
@@ -240,30 +204,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* immutabook :=
       let* α0 := M.read (mk_str "Douglas Hofstadter") in
-      let* α1 :=
-        M.read (mk_str ("G" ++ (String.String "246" "del, Escher, Bach"))) in
+      let* α1 := M.read (mk_str ("G" ++ (String.String "246" "del, Escher, Bach"))) in
       M.alloc
         (Value.StructRecord
           "scoping_rules_borrowing_mutablity::Book"
-          [
-            ("author", α0);
-            ("title", α1);
-            ("year", Value.Integer Integer.U32 1979)
-          ]) in
+          [ ("author", α0); ("title", α1); ("year", Value.Integer Integer.U32 1979) ]) in
     let* mutabook := M.copy immutabook in
     let* _ :=
-      let* α0 :=
-        M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
       let* α1 := M.call_closure α0 [ immutabook ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
       let* α1 := M.call_closure α0 [ mutabook ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.get_function "scoping_rules_borrowing_mutablity::new_edition" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing_mutablity::new_edition" [] in
       let* α1 := M.call_closure α0 [ mutabook ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

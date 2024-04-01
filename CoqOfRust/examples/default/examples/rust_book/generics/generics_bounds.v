@@ -35,20 +35,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
           let* α4 := M.read self in
           M.pure
             (M.pointer_coercion
-              (M.get_struct_record_field
-                α4
-                "generics_bounds::Rectangle"
-                "length")) in
+              (M.get_struct_record_field α4 "generics_bounds::Rectangle" "length")) in
       let* α6 := M.read (mk_str "height") in
       let* α9 :=
         (* Unsize *)
           let* α7 := M.read self in
-          let* α8 :=
-            M.alloc
-              (M.get_struct_record_field
-                α7
-                "generics_bounds::Rectangle"
-                "height") in
+          let* α8 := M.alloc (M.get_struct_record_field α7 "generics_bounds::Rectangle" "height") in
           M.pure (M.pointer_coercion α8) in
       M.call_closure α0 [ α1; α2; α3; α5; α6; α9 ]
     | _, _ => M.impossible
@@ -82,19 +74,9 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      let* α1 :=
-        M.read
-          (M.get_struct_record_field
-            α0
-            "generics_bounds::Rectangle"
-            "length") in
+      let* α1 := M.read (M.get_struct_record_field α0 "generics_bounds::Rectangle" "length") in
       let* α2 := M.read self in
-      let* α3 :=
-        M.read
-          (M.get_struct_record_field
-            α2
-            "generics_bounds::Rectangle"
-            "height") in
+      let* α3 := M.read (M.get_struct_record_field α2 "generics_bounds::Rectangle" "height") in
       BinOp.Panic.mul α1 α3
     | _, _ => M.impossible
     end.
@@ -119,11 +101,7 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -192,31 +170,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
       M.alloc
-        (Value.StructRecord
-          "generics_bounds::Rectangle"
-          [ ("length", α0); ("height", α1) ]) in
+        (Value.StructRecord "generics_bounds::Rectangle" [ ("length", α0); ("height", α1) ]) in
     let* _triangle :=
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
-      M.alloc
-        (Value.StructRecord
-          "generics_bounds::Triangle"
-          [ ("length", α0); ("height", α1) ]) in
+      M.alloc (Value.StructRecord "generics_bounds::Triangle" [ ("length", α0); ("height", α1) ]) in
     let* _ :=
       let* α0 :=
-        M.get_function
-          "generics_bounds::print_debug"
-          [ Ty.path "generics_bounds::Rectangle" ] in
+        M.get_function "generics_bounds::print_debug" [ Ty.path "generics_bounds::Rectangle" ] in
       let* α1 := M.call_closure α0 [ rectangle ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Area: ") in

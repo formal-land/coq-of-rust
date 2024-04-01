@@ -5,11 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Sheep";
     ty_params := [];
-    fields :=
-      [
-        ("naked", Ty.path "bool");
-        ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ])
-      ];
+    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
   } *)
 
 (* Trait *)
@@ -24,8 +20,7 @@ Module Impl_traits_Sheep.
   
   Parameter is_naked : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_is_naked :
-    M.IsAssociatedFunction Self "is_naked" is_naked.
+  Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.

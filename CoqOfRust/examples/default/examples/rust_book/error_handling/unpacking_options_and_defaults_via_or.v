@@ -35,8 +35,7 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_and_defaults_via_or::Fruit".
+  Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_or::Fruit".
   
   (*
   Debug
@@ -46,11 +45,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 :=
         M.match_operator
@@ -114,22 +109,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "core::option::Option::Some"
-          [
-            Value.StructTuple
-              "unpacking_options_and_defaults_via_or::Fruit::Apple"
-              []
-          ]) in
+          [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] ]) in
     let* orange :=
       M.alloc
         (Value.StructTuple
           "core::option::Option::Some"
-          [
-            Value.StructTuple
-              "unpacking_options_and_defaults_via_or::Fruit::Orange"
-              []
-          ]) in
-    let* no_fruit :=
-      M.alloc (Value.StructTuple "core::option::Option::None" []) in
+          [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] ]) in
+    let* no_fruit := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* first_available_fruit :=
       let* α0 :=
         M.get_associated_function
@@ -154,11 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "first_available_fruit: ") in

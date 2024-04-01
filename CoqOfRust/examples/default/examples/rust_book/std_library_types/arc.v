@@ -30,10 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.read (mk_str "the same apple") in
@@ -53,10 +50,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructRecord
               "core::ops::range::Range"
-              [
-                ("start", Value.Integer Integer.I32 0);
-                ("end_", Value.Integer Integer.I32 10)
-              ]
+              [ ("start", Value.Integer Integer.I32 0); ("end_", Value.Integer Integer.I32 10) ]
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -70,9 +64,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply
-                        (Ty.path "core::ops::range::Range")
-                        [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
                       []
                       "next"
                       [] in
@@ -111,10 +103,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_function
                               "std::thread::spawn"
-                              [
-                                Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-                                Ty.tuple []
-                              ] in
+                              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ] in
                           let* α1 :=
                             M.call_closure
                               α0
@@ -131,67 +120,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             let* _ :=
                                               let* _ :=
                                                 let* α0 :=
-                                                  M.get_function
-                                                    "std::io::stdio::_print"
-                                                    [] in
+                                                  M.get_function "std::io::stdio::_print" [] in
                                                 let* α1 :=
                                                   M.get_associated_function
-                                                    (Ty.path
-                                                      "core::fmt::Arguments")
+                                                    (Ty.path "core::fmt::Arguments")
                                                     "new_v1"
                                                     [] in
                                                 let* α5 :=
                                                   (* Unsize *)
-                                                    let* α2 :=
-                                                      M.read (mk_str "") in
-                                                    let* α3 :=
-                                                      M.read (mk_str "
+                                                    let* α2 := M.read (mk_str "") in
+                                                    let* α3 := M.read (mk_str "
 ") in
-                                                    let* α4 :=
-                                                      M.alloc
-                                                        (Value.Array
-                                                          [ α2; α3 ]) in
-                                                    M.pure
-                                                      (M.pointer_coercion α4) in
+                                                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                                                    M.pure (M.pointer_coercion α4) in
                                                 let* α9 :=
                                                   (* Unsize *)
                                                     let* α6 :=
                                                       M.get_associated_function
-                                                        (Ty.path
-                                                          "core::fmt::rt::Argument")
+                                                        (Ty.path "core::fmt::rt::Argument")
                                                         "new_debug"
                                                         [
                                                           Ty.apply
-                                                            (Ty.path
-                                                              "alloc::sync::Arc")
+                                                            (Ty.path "alloc::sync::Arc")
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
-                                                                [ Ty.path "str"
-                                                                ];
-                                                              Ty.path
-                                                                "alloc::alloc::Global"
+                                                                [ Ty.path "str" ];
+                                                              Ty.path "alloc::alloc::Global"
                                                             ]
                                                         ] in
-                                                    let* α7 :=
-                                                      M.call_closure
-                                                        α6
-                                                        [ apple ] in
-                                                    let* α8 :=
-                                                      M.alloc
-                                                        (Value.Array [ α7 ]) in
-                                                    M.pure
-                                                      (M.pointer_coercion α8) in
-                                                let* α10 :=
-                                                  M.call_closure
-                                                    α1
-                                                    [ α5; α9 ] in
-                                                let* α11 :=
-                                                  M.call_closure α0 [ α10 ] in
+                                                    let* α7 := M.call_closure α6 [ apple ] in
+                                                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                                                    M.pure (M.pointer_coercion α8) in
+                                                let* α10 := M.call_closure α1 [ α5; α9 ] in
+                                                let* α11 := M.call_closure α0 [ α10 ] in
                                                 M.alloc α11 in
                                               M.alloc (Value.Tuple []) in
-                                            let* α0 :=
-                                              M.alloc (Value.Tuple []) in
+                                            let* α0 := M.alloc (Value.Tuple []) in
                                             M.read α0
                                         ]
                                     | _ => M.impossible
@@ -205,11 +170,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.pure (M.use α3) in
     let* _ :=
       let* α0 := M.get_function "std::thread::sleep" [] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.path "core::time::Duration")
-          "from_secs"
-          [] in
+      let* α1 := M.get_associated_function (Ty.path "core::time::Duration") "from_secs" [] in
       let* α2 := M.call_closure α1 [ Value.Integer Integer.U64 1 ] in
       let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in

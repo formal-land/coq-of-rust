@@ -141,21 +141,22 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                     _ => {}
                 }
             }
-            env.tcx
-                .sess
-                .struct_span_warn(
-                    pat.span,
-                    "This kind of constant in patterns is not yet supported.",
-                )
-                .emit();
+            emit_warning_with_note(
+                env,
+                &pat.span,
+                "This kind of constant in patterns is not yet supported.",
+                None,
+            );
 
             Rc::new(Pattern::Wild)
         }
         PatKind::Range(_) => {
-            env.tcx
-                .sess
-                .struct_span_warn(pat.span, "Ranges in patterns are not yet supported.")
-                .emit();
+            emit_warning_with_note(
+                env,
+                &pat.span,
+                "Ranges in patterns are not yet supported.",
+                None,
+            );
             Rc::new(Pattern::Wild)
         }
         PatKind::Slice {

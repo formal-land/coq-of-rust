@@ -14,11 +14,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Debug: `") in
@@ -43,11 +39,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Display: `") in
@@ -88,11 +80,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "t: `") in
@@ -117,11 +105,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "u: `") in
@@ -168,10 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* array :=
       M.alloc
         (Value.Array
-          [
-            Value.Integer Integer.I32 1;
-            Value.Integer Integer.I32 2;
-            Value.Integer Integer.I32 3
+          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2; Value.Integer Integer.I32 3
           ]) in
     let* vec :=
       let* α0 :=
@@ -185,10 +166,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α2 :=
@@ -217,9 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "generics_multiple_bounds::compare_types"
           [
             Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-            Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 := M.call_closure α0 [ array; vec ] in
       M.alloc α1 in

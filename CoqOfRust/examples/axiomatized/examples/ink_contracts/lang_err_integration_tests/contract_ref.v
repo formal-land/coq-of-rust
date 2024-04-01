@@ -38,18 +38,12 @@ Module Impl_core_marker_Copy_for_contract_ref_AccountId.
   Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
-Axiom Hash :
-  (Ty.path "contract_ref::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -89,8 +83,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -102,13 +95,11 @@ Module Impl_contract_ref_FlipperRef.
   
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new.
+  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
@@ -135,8 +126,7 @@ Module Impl_contract_ref_ContractRef.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new.
+  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   

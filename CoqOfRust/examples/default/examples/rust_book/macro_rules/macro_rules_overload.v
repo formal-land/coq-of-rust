@@ -13,11 +13,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -47,16 +43,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "bool" ] in
             let* α13 :=
-              BinOp.Panic.add
-                (Value.Integer Integer.I32 1)
-                (Value.Integer Integer.I32 1) in
+              BinOp.Panic.add (Value.Integer Integer.I32 1) (Value.Integer Integer.I32 1) in
             let* α14 :=
               LogicalOp.and
                 (BinOp.Pure.eq α13 (Value.Integer Integer.I32 2))
                 (let* α13 :=
-                  BinOp.Panic.mul
-                    (Value.Integer Integer.I32 2)
-                    (Value.Integer Integer.I32 2) in
+                  BinOp.Panic.mul (Value.Integer Integer.I32 2) (Value.Integer Integer.I32 2) in
                 M.pure (BinOp.Pure.eq α13 (Value.Integer Integer.I32 4))) in
             let* α15 := M.alloc α14 in
             let* α16 := M.call_closure α12 [ α15 ] in
@@ -69,11 +61,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -102,8 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
                 [ Ty.path "bool" ] in
-            let* α13 :=
-              LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
+            let* α13 := LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
             let* α14 := M.alloc α13 in
             let* α15 := M.call_closure α12 [ α14 ] in
             let* α16 := M.alloc (Value.Array [ α9; α11; α15 ]) in

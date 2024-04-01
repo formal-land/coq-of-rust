@@ -27,9 +27,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* immutable_box :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 5 ] in
@@ -37,11 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "immutable_box contains ") in
@@ -71,11 +65,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "mutable_box contains ") in
@@ -107,11 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "mutable_box now contains ") in

@@ -7,10 +7,7 @@ fn age() -> u32 {
 }
 *)
 Definition age (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Integer Integer.U32 15)
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Integer Integer.U32 15) | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -34,11 +31,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Tell me what type of person you are
@@ -63,15 +56,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
-                  let* α2 :=
-                    M.read
-                      (mk_str "I haven't celebrated my first birthday yet
+                  let* α2 := M.read (mk_str "I haven't celebrated my first birthday yet
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
@@ -83,11 +71,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* n := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm a child of age ") in
@@ -113,11 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* n := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm a teen of age ") in
@@ -143,11 +123,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* n := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "I'm an old person of age ") in

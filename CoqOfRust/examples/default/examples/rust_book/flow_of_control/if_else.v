@@ -42,8 +42,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* γ :=
               let* α0 := M.read n in
-              let* α1 :=
-                M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0)) in
+              let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0)) in
               M.pure (M.use α1) in
             let* _ :=
               let* α0 := M.read γ in
@@ -51,11 +50,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "") in
@@ -85,9 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   let* γ :=
                     let* α0 := M.read n in
-                    let* α1 :=
-                      M.alloc
-                        (BinOp.Pure.gt α0 (Value.Integer Integer.I32 0)) in
+                    let* α1 := M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 0)) in
                     M.pure (M.use α1) in
                   let* _ :=
                     let* α0 := M.read γ in
@@ -96,10 +89,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "") in
@@ -126,10 +116,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "") in
@@ -166,8 +153,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   LogicalOp.and
                     (BinOp.Pure.lt α0 (Value.Integer Integer.I32 10))
                     (let* α0 := M.read n in
-                    M.pure
-                      (BinOp.Pure.gt α0 (Value.Integer Integer.I32 (-10)))) in
+                    M.pure (BinOp.Pure.gt α0 (Value.Integer Integer.I32 (-10)))) in
                 let* α2 := M.alloc α1 in
                 M.pure (M.use α2) in
               let* _ :=
@@ -177,16 +163,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                   let* α4 :=
                     (* Unsize *)
-                      let* α2 :=
-                        M.read
-                          (mk_str
-                            ", and is a small number, increase ten-fold
+                      let* α2 := M.read (mk_str ", and is a small number, increase ten-fold
 ") in
                       let* α3 := M.alloc (Value.Array [ α2 ]) in
                       M.pure (M.pointer_coercion α3) in
@@ -202,15 +182,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
+                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                   let* α4 :=
                     (* Unsize *)
-                      let* α2 :=
-                        M.read
-                          (mk_str ", and is a big number, halve the number
+                      let* α2 := M.read (mk_str ", and is a big number, halve the number
 ") in
                       let* α3 := M.alloc (Value.Array [ α2 ]) in
                       M.pure (M.pointer_coercion α3) in
@@ -226,11 +201,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in

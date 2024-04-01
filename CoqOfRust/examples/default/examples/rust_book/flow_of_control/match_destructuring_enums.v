@@ -43,9 +43,7 @@ Require Import CoqOfRust.CoqOfRust.
       };
       {
         name := "CMYK";
-        item :=
-          StructTuple
-            [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       }
     ];
@@ -89,11 +87,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "What color is it?
@@ -112,10 +106,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Red!
@@ -130,10 +121,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Blue!
@@ -148,10 +136,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Green!
@@ -164,30 +149,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::RGB"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::RGB" 0 in
             let* γ0_1 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::RGB"
-                1 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::RGB" 1 in
             let* γ0_2 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::RGB"
-                2 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::RGB" 2 in
             let* r := M.copy γ0_0 in
             let* g := M.copy γ0_1 in
             let* b := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Red: ") in
@@ -225,30 +197,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSV"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSV" 0 in
             let* γ0_1 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSV"
-                1 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSV" 1 in
             let* γ0_2 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSV"
-                2 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSV" 2 in
             let* h := M.copy γ0_0 in
             let* s := M.copy γ0_1 in
             let* v := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Hue: ") in
@@ -286,30 +245,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSL"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSL" 0 in
             let* γ0_1 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSL"
-                1 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSL" 1 in
             let* γ0_2 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::HSL"
-                2 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::HSL" 2 in
             let* h := M.copy γ0_0 in
             let* s := M.copy γ0_1 in
             let* l := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Hue: ") in
@@ -347,30 +293,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::CMY"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::CMY" 0 in
             let* γ0_1 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::CMY"
-                1 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::CMY" 1 in
             let* γ0_2 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_destructuring_enums::Color::CMY"
-                2 in
+              M.get_struct_tuple_field_or_break_match γ "match_destructuring_enums::Color::CMY" 2 in
             let* c := M.copy γ0_0 in
             let* m := M.copy γ0_1 in
             let* y := M.copy γ0_2 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Cyan: ") in
@@ -433,11 +366,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* k := M.copy γ0_3 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α8 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Cyan: ") in

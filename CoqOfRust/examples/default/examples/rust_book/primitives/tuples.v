@@ -49,35 +49,25 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field4_finish"
-          [] in
+        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field4_finish" [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Matrix") in
       let* α4 :=
         (* Unsize *)
           let* α3 := M.read self in
-          M.pure
-            (M.pointer_coercion
-              (M.get_struct_tuple_field α3 "tuples::Matrix" 0)) in
+          M.pure (M.pointer_coercion (M.get_struct_tuple_field α3 "tuples::Matrix" 0)) in
       let* α6 :=
         (* Unsize *)
           let* α5 := M.read self in
-          M.pure
-            (M.pointer_coercion
-              (M.get_struct_tuple_field α5 "tuples::Matrix" 1)) in
+          M.pure (M.pointer_coercion (M.get_struct_tuple_field α5 "tuples::Matrix" 1)) in
       let* α8 :=
         (* Unsize *)
           let* α7 := M.read self in
-          M.pure
-            (M.pointer_coercion
-              (M.get_struct_tuple_field α7 "tuples::Matrix" 2)) in
+          M.pure (M.pointer_coercion (M.get_struct_tuple_field α7 "tuples::Matrix" 2)) in
       let* α11 :=
         (* Unsize *)
           let* α9 := M.read self in
-          let* α10 :=
-            M.alloc (M.get_struct_tuple_field α9 "tuples::Matrix" 3) in
+          let* α10 := M.alloc (M.get_struct_tuple_field α9 "tuples::Matrix" 3) in
           M.pure (M.pointer_coercion α10) in
       M.call_closure α0 [ α1; α2; α4; α6; α8; α11 ]
     | _, _ => M.impossible
@@ -160,11 +150,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "long tuple first value: ") in
@@ -189,11 +175,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "long tuple second value: ") in
@@ -220,23 +202,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Value.Tuple
           [
             Value.Tuple
-              [
-                Value.Integer Integer.U8 1;
-                Value.Integer Integer.U16 2;
-                Value.Integer Integer.U32 2
+              [ Value.Integer Integer.U8 1; Value.Integer Integer.U16 2; Value.Integer Integer.U32 2
               ];
-            Value.Tuple
-              [ Value.Integer Integer.U64 4; Value.Integer Integer.I8 (-1) ];
+            Value.Tuple [ Value.Integer Integer.U64 4; Value.Integer Integer.I8 (-1) ];
             Value.Integer Integer.I16 (-2)
           ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "tuple of tuples: ") in
@@ -265,16 +239,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* pair_ :=
-      M.alloc (Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ]) in
+    let* pair_ := M.alloc (Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "pair is ") in
@@ -299,11 +268,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "the reversed pair is ") in
@@ -332,11 +297,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "one element tuple: ") in
@@ -362,11 +323,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "just an integer: ") in
@@ -392,9 +349,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* tuple :=
       let* α0 := M.read (mk_str "hello") in
       let* α1 := M.read UnsupportedLiteral in
-      M.alloc
-        (Value.Tuple
-          [ Value.Integer Integer.I32 1; α0; α1; Value.Bool true ]) in
+      M.alloc (Value.Tuple [ Value.Integer Integer.I32 1; α0; α1; Value.Bool true ]) in
     let* α0 :=
       M.match_operator
         tuple
@@ -411,11 +366,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α8 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "") in
@@ -467,11 +418,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "") in

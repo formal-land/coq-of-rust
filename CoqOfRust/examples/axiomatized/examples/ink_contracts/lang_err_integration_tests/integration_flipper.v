@@ -36,13 +36,11 @@ Module Impl_integration_flipper_Flipper.
   
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new.
+  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
@@ -54,6 +52,5 @@ Module Impl_integration_flipper_Flipper.
   
   Parameter err_flip : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_err_flip :
-    M.IsAssociatedFunction Self "err_flip" err_flip.
+  Axiom AssociatedFunction_err_flip : M.IsAssociatedFunction Self "err_flip" err_flip.
 End Impl_integration_flipper_Flipper.

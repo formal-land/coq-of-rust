@@ -17,8 +17,7 @@ Module Impl_flipper_Flipper.
   
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   

@@ -46,6 +46,5 @@ Module Impl_set_code_hash_Incrementer.
   
   Parameter set_code : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_set_code :
-    M.IsAssociatedFunction Self "set_code" set_code.
+  Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_set_code_hash_Incrementer.

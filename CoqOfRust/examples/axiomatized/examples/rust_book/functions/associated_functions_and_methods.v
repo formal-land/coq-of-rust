@@ -32,8 +32,7 @@ End Impl_associated_functions_and_methods_Point.
   } *)
 
 Module Impl_associated_functions_and_methods_Rectangle.
-  Definition Self : Ty.t :=
-    Ty.path "associated_functions_and_methods::Rectangle".
+  Definition Self : Ty.t := Ty.path "associated_functions_and_methods::Rectangle".
   
   Parameter get_p1 : (list Ty.t) -> (list Value.t) -> M.
   
@@ -45,13 +44,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Parameter perimeter : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_perimeter :
-    M.IsAssociatedFunction Self "perimeter" perimeter.
+  Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
   
   Parameter translate : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_translate :
-    M.IsAssociatedFunction Self "translate" translate.
+  Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
 End Impl_associated_functions_and_methods_Rectangle.
 
 (* StructTuple
@@ -60,12 +57,8 @@ End Impl_associated_functions_and_methods_Rectangle.
     ty_params := [];
     fields :=
       [
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 
@@ -74,8 +67,7 @@ Module Impl_associated_functions_and_methods_Pair.
   
   Parameter destroy : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_destroy :
-    M.IsAssociatedFunction Self "destroy" destroy.
+  Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
 End Impl_associated_functions_and_methods_Pair.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

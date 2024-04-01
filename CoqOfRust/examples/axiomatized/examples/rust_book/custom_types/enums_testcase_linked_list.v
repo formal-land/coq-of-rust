@@ -14,10 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
               Ty.path "u32";
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.path "enums_testcase_linked_list::List";
-                  Ty.path "alloc::alloc::Global"
-                ]
+                [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ]
             ];
         discriminant := None;
       };
@@ -38,8 +35,7 @@ Module Impl_enums_testcase_linked_list_List.
   
   Parameter prepend : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_prepend :
-    M.IsAssociatedFunction Self "prepend" prepend.
+  Axiom AssociatedFunction_prepend : M.IsAssociatedFunction Self "prepend" prepend.
   
   Parameter len : (list Ty.t) -> (list Value.t) -> M.
   
@@ -47,8 +43,7 @@ Module Impl_enums_testcase_linked_list_List.
   
   Parameter stringify : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_stringify :
-    M.IsAssociatedFunction Self "stringify" stringify.
+  Axiom AssociatedFunction_stringify : M.IsAssociatedFunction Self "stringify" stringify.
 End Impl_enums_testcase_linked_list_List.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

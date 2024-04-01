@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
   Definition Self : Ty.t := Ty.path "contract_terminate::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
 (* StructRecord
@@ -76,8 +72,7 @@ Module Impl_contract_terminate_JustTerminate.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -89,6 +84,5 @@ Module Impl_contract_terminate_JustTerminate.
   
   Parameter terminate_me : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_terminate_me :
-    M.IsAssociatedFunction Self "terminate_me" terminate_me.
+  Axiom AssociatedFunction_terminate_me : M.IsAssociatedFunction Self "terminate_me" terminate_me.
 End Impl_contract_terminate_JustTerminate.

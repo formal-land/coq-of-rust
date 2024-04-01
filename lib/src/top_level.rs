@@ -385,7 +385,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 env,
                 &item.span,
                 "Foreign modules are not supported",
-                "We will work on it! 🐣",
+                Some("We will work on it! 🐣"),
             );
 
             vec![Rc::new(TopLevelItem::ForeignModule)]
@@ -901,7 +901,7 @@ fn compile_trait_item_body<'a>(
                 let span = &item.span;
                 let warning_msg = "Concrete value of associated types is not supported yet.";
                 let note_msg = "It will change in future versions.";
-                emit_warning_with_note(env, span, warning_msg, note_msg);
+                emit_warning_with_note(env, span, warning_msg, Some(note_msg));
             }
 
             Rc::new(TraitItem::Type())
@@ -925,7 +925,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     Rc::new(TopLevel(results))
 }
 
-const LINE_WIDTH: usize = 80;
+const LINE_WIDTH: usize = 100;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     let top_level = compile_top_level(tcx, opts);

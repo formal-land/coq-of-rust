@@ -35,22 +35,14 @@ Module Impl_flipper_Flipper.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_associated_function (Ty.path "flipper::Flipper") "new" [] in
-      let* α1 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "bool")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" [] in
+      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   (*
       pub fn flip(&mut self) {
@@ -64,11 +56,8 @@ Module Impl_flipper_Flipper.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 :=
-          M.read (M.get_struct_record_field α1 "flipper::Flipper" "value") in
-        M.assign
-          (M.get_struct_record_field α0 "flipper::Flipper" "value")
-          (UnOp.Pure.not α2) in
+        let* α2 := M.read (M.get_struct_record_field α1 "flipper::Flipper" "value") in
+        M.assign (M.get_struct_record_field α0 "flipper::Flipper" "value") (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible

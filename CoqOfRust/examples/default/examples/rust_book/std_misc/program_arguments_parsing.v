@@ -13,11 +13,7 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -59,11 +55,7 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -110,11 +102,7 @@ Definition help (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 :=
@@ -195,8 +183,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ]
+              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 := M.get_function "std::env::args" [] in
       let* α2 := M.call_closure α1 [] in
@@ -223,16 +210,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 :=
-                      M.read
-                        (mk_str
-                          "My name is 'match_args'. Try passing some arguments!
+                      M.read (mk_str "My name is 'match_args'. Try passing some arguments!
 ") in
                     let* α3 := M.alloc (Value.Array [ α2 ]) in
                     M.pure (M.pointer_coercion α3) in
@@ -245,11 +227,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 2) in
-            let* α0 :=
-              M.get_associated_function
-                (Ty.path "str")
-                "parse"
-                [ Ty.path "i32" ] in
+            let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
             let* α1 :=
               M.get_trait_method
                 "core::ops::deref::Deref"
@@ -262,15 +240,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::ops::index::Index"
                 (Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [
-                    Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"
-                  ])
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
                 [ Ty.path "usize" ]
                 "index"
                 [] in
-            let* α3 :=
-              M.call_closure α2 [ args; Value.Integer Integer.Usize 1 ] in
+            let* α3 := M.call_closure α2 [ args; Value.Integer Integer.Usize 1 ] in
             let* α4 := M.call_closure α1 [ α3 ] in
             let* α5 := M.call_closure α0 [ α4 ] in
             let* α6 := M.alloc α5 in
@@ -279,22 +253,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::result::Result::Ok"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                   let* _ :=
                     let* α0 := M.read γ0_0 in
-                    M.is_constant_or_break_match
-                      α0
-                      (Value.Integer Integer.I32 42) in
+                    M.is_constant_or_break_match α0 (Value.Integer Integer.I32 42) in
                   let* _ :=
                     let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const"
-                        [] in
+                      M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                     let* α4 :=
                       (* Unsize *)
                         let* α2 := M.read (mk_str "This is the answer!
@@ -309,10 +275,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const"
-                        [] in
+                      M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                     let* α4 :=
                       (* Unsize *)
                         let* α2 := M.read (mk_str "This is not the answer.
@@ -334,15 +297,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::ops::index::Index"
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [
-                      Ty.path "alloc::string::String";
-                      Ty.path "alloc::alloc::Global"
-                    ])
+                    [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
                   [ Ty.path "usize" ]
                   "index"
                   [] in
-              let* α1 :=
-                M.call_closure α0 [ args; Value.Integer Integer.Usize 1 ] in
+              let* α1 := M.call_closure α0 [ args; Value.Integer Integer.Usize 1 ] in
               M.alloc α1 in
             let* num :=
               let* α0 :=
@@ -350,22 +309,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::ops::index::Index"
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [
-                      Ty.path "alloc::string::String";
-                      Ty.path "alloc::alloc::Global"
-                    ])
+                    [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
                   [ Ty.path "usize" ]
                   "index"
                   [] in
-              let* α1 :=
-                M.call_closure α0 [ args; Value.Integer Integer.Usize 2 ] in
+              let* α1 := M.call_closure α0 [ args; Value.Integer Integer.Usize 2 ] in
               M.alloc α1 in
             let* number :=
-              let* α0 :=
-                M.get_associated_function
-                  (Ty.path "str")
-                  "parse"
-                  [ Ty.path "i32" ] in
+              let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
               let* α1 :=
                 M.get_trait_method
                   "core::ops::deref::Deref"
@@ -383,22 +334,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::result::Result::Ok"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
                       let* n := M.copy γ0_0 in
                       M.pure n;
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::result::Result::Err"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
                       let* _ :=
                         let* _ :=
-                          let* α0 :=
-                            M.get_function "std::io::stdio::_eprint" [] in
+                          let* α0 := M.get_function "std::io::stdio::_eprint" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -406,10 +350,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [] in
                           let* α4 :=
                             (* Unsize *)
-                              let* α2 :=
-                                M.read
-                                  (mk_str
-                                    "error: second argument not an integer
+                              let* α2 := M.read (mk_str "error: second argument not an integer
 ") in
                               let* α3 := M.alloc (Value.Array [ α2 ]) in
                               M.pure (M.pointer_coercion α3) in
@@ -418,8 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α6 in
                         M.alloc (Value.Tuple []) in
                       let* _ :=
-                        let* α0 :=
-                          M.get_function "program_arguments_parsing::help" [] in
+                        let* α0 := M.get_function "program_arguments_parsing::help" [] in
                         let* α1 := M.call_closure α0 [] in
                         M.alloc α1 in
                       let* α0 := M.return_ (Value.Tuple []) in
@@ -437,22 +377,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [] in
             let* α1 := M.read cmd in
             let* α2 :=
-              M.call_closure
-                α0
-                [ α1; Value.StructTuple "core::ops::range::RangeFull" [] ] in
+              M.call_closure α0 [ α1; Value.StructTuple "core::ops::range::RangeFull" [] ] in
             let* α3 := M.alloc α2 in
             M.match_operator
               α3
               [
                 fun γ =>
-                  let* α0 :=
-                    M.get_function "program_arguments_parsing::increase" [] in
+                  let* α0 := M.get_function "program_arguments_parsing::increase" [] in
                   let* α1 := M.read number in
                   let* α2 := M.call_closure α0 [ α1 ] in
                   M.alloc α2;
                 fun γ =>
-                  let* α0 :=
-                    M.get_function "program_arguments_parsing::decrease" [] in
+                  let* α0 := M.get_function "program_arguments_parsing::decrease" [] in
                   let* α1 := M.read number in
                   let* α2 := M.call_closure α0 [ α1 ] in
                   M.alloc α2;
@@ -461,14 +397,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_eprint" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_const"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                       let* α4 :=
                         (* Unsize *)
-                          let* α2 :=
-                            M.read (mk_str "error: invalid command
+                          let* α2 := M.read (mk_str "error: invalid command
 ") in
                           let* α3 := M.alloc (Value.Array [ α2 ]) in
                           M.pure (M.pointer_coercion α3) in
@@ -477,8 +409,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α6 in
                     M.alloc (Value.Tuple []) in
                   let* _ :=
-                    let* α0 :=
-                      M.get_function "program_arguments_parsing::help" [] in
+                    let* α0 := M.get_function "program_arguments_parsing::help" [] in
                     let* α1 := M.call_closure α0 [] in
                     M.alloc α1 in
                   M.alloc (Value.Tuple [])

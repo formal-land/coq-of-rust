@@ -44,10 +44,7 @@ Module tests.
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "unit_testing::add" [] in
-        let* α1 :=
-          M.call_closure
-            α0
-            [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
+        let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -69,17 +66,12 @@ Module tests.
                       let* α1 := M.read α0 in
                       let* α2 := M.read right_val in
                       let* α3 := M.read α2 in
-                      let* α4 :=
-                        M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
+                      let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
                       M.pure (M.use α4) in
                     let* _ :=
                       let* α0 := M.read γ in
                       M.is_constant_or_break_match α0 (Value.Bool true) in
-                    let* kind :=
-                      M.alloc
-                        (Value.StructTuple
-                          "core::panicking::AssertKind::Eq"
-                          []) in
+                    let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                     let* α0 :=
                       M.get_function
                         "core::panicking::assert_failed"
@@ -90,12 +82,7 @@ Module tests.
                     let* α4 :=
                       M.call_closure
                         α0
-                        [
-                          α1;
-                          α2;
-                          α3;
-                          Value.StructTuple "core::option::Option::None" []
-                        ] in
+                        [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                     let* α0 := M.alloc α4 in
                     let* α1 := M.read α0 in
                     let* α2 := M.never_to_any α1 in
@@ -120,10 +107,7 @@ Module tests.
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "unit_testing::bad_add" [] in
-        let* α1 :=
-          M.call_closure
-            α0
-            [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
+        let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -145,17 +129,12 @@ Module tests.
                       let* α1 := M.read α0 in
                       let* α2 := M.read right_val in
                       let* α3 := M.read α2 in
-                      let* α4 :=
-                        M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
+                      let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
                       M.pure (M.use α4) in
                     let* _ :=
                       let* α0 := M.read γ in
                       M.is_constant_or_break_match α0 (Value.Bool true) in
-                    let* kind :=
-                      M.alloc
-                        (Value.StructTuple
-                          "core::panicking::AssertKind::Eq"
-                          []) in
+                    let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                     let* α0 :=
                       M.get_function
                         "core::panicking::assert_failed"
@@ -166,12 +145,7 @@ Module tests.
                     let* α4 :=
                       M.call_closure
                         α0
-                        [
-                          α1;
-                          α2;
-                          α3;
-                          Value.StructTuple "core::option::Option::None" []
-                        ] in
+                        [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                     let* α0 := M.alloc α4 in
                     let* α1 := M.read α0 in
                     let* α2 := M.never_to_any α1 in

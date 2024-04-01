@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
   Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_transfer_AccountId.
 
 Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
@@ -63,13 +59,11 @@ Module Impl_contract_transfer_Env.
   
   Parameter balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance :
-    M.IsAssociatedFunction Self "balance" balance.
+  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer.
+  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
   
@@ -88,8 +82,7 @@ Module Impl_contract_transfer_GiveMe.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -101,11 +94,9 @@ Module Impl_contract_transfer_GiveMe.
   
   Parameter give_me : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_give_me :
-    M.IsAssociatedFunction Self "give_me" give_me.
+  Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
   
   Parameter was_it_ten : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_was_it_ten :
-    M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
+  Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
 End Impl_contract_transfer_GiveMe.

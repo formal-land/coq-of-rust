@@ -12,11 +12,14 @@ pub(crate) fn emit_warning_with_note(
     env: &Env,
     span: &rustc_span::Span,
     warning_msg: &str,
-    note_msg: &str,
+    note_msg: Option<&str>,
 ) {
-    env.tcx
+    let mut warn = env
+        .tcx
         .sess
-        .struct_span_warn(*span, warning_msg.to_string())
-        .note(note_msg.to_string())
-        .emit();
+        .struct_span_warn(*span, warning_msg.to_string());
+    match note_msg {
+        Some(note) => warn.note(note.to_string()).emit(),
+        None => warn.emit(),
+    }
 }

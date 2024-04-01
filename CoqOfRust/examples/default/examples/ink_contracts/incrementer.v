@@ -35,25 +35,14 @@ Module Impl_incrementer_Incrementer.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "incrementer::Incrementer")
-          "new"
-          [] in
-      let* α1 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "i32")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "incrementer::Incrementer") "new" [] in
+      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default.
+  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -68,8 +57,7 @@ Module Impl_incrementer_Incrementer.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure
-            (M.get_struct_record_field α0 "incrementer::Incrementer" "value") in
+          M.pure (M.get_struct_record_field α0 "incrementer::Incrementer" "value") in
         let* α0 := M.read β in
         let* α1 := M.read by_ in
         let* α2 := BinOp.Panic.add α0 α1 in

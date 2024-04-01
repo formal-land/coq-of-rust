@@ -21,9 +21,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* names :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -33,9 +31,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -61,9 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "iter_mut"
           [] in
       let* α2 :=
@@ -71,10 +65,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::DerefMut"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [
-              Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              Ty.path "alloc::alloc::Global"
-            ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           []
           "deref_mut"
           [] in
@@ -123,9 +114,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               fun γ =>
                                 let* γ := M.read γ in
-                                let* α0 :=
-                                  M.read
-                                    (mk_str "There is a rustacean among us!") in
+                                let* α0 := M.read (mk_str "There is a rustacean among us!") in
                                 M.alloc α0;
                               fun γ =>
                                 let* α0 := M.read (mk_str "Hello") in
@@ -140,11 +129,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "names: ") in
@@ -161,10 +146,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ]
                 ] in
             let* α7 := M.call_closure α6 [ names ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in

@@ -20,8 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-  Definition Self : Ty.t :=
-    Ty.path "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers".
+  Definition Self : Ty.t := Ty.path "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers".
   
   Parameter run : (list Ty.t) -> (list Value.t) -> M.
   

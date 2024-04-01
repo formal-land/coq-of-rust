@@ -15,8 +15,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
     let* first_number :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α1 := M.read first_number_str in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -25,19 +24,12 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
           α3
           [
             fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Ok"
-                  0 in
+              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* val := M.copy γ0_0 in
               M.pure val;
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* err := M.copy γ0_0 in
               let* α0 :=
                 M.get_trait_method
@@ -48,17 +40,14 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                   [] in
               let* α1 := M.read err in
               let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 :=
-                M.return_
-                  (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
+              let* α3 := M.return_ (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
               M.alloc α5
           ] in
       M.copy α4 in
     let* second_number :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α1 := M.read second_number_str in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -67,19 +56,12 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
           α3
           [
             fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Ok"
-                  0 in
+              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* val := M.copy γ0_0 in
               M.pure val;
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* err := M.copy γ0_0 in
               let* α0 :=
                 M.get_trait_method
@@ -90,9 +72,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                   [] in
               let* α1 := M.read err in
               let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 :=
-                M.return_
-                  (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
+              let* α3 := M.return_ (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
               M.alloc α5
@@ -123,19 +103,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* n := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "n is ") in
@@ -158,19 +130,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* e := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Error: ") in
@@ -208,9 +172,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::print"
-          [] in
+        M.get_function "introducing_question_mark_is_an_replacement_for_deprecated_try::print" [] in
       let* α1 :=
         M.get_function
           "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply"
@@ -222,9 +184,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc α5 in
     let* _ :=
       let* α0 :=
-        M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::print"
-          [] in
+        M.get_function "introducing_question_mark_is_an_replacement_for_deprecated_try::print" [] in
       let* α1 :=
         M.get_function
           "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply"

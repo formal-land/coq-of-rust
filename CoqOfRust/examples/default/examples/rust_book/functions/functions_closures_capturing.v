@@ -97,10 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "`color`: ") in
@@ -163,17 +160,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let β := count in
                       let* α0 := M.read β in
-                      let* α1 :=
-                        BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+                      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
                       M.assign β α1 in
                     let* _ :=
                       let* _ :=
                         let* α0 := M.get_function "std::io::stdio::_print" [] in
                         let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_v1"
-                            [] in
+                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                         let* α5 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "`count`: ") in
@@ -224,9 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* movable :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
@@ -246,10 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* _ :=
                         let* α0 := M.get_function "std::io::stdio::_print" [] in
                         let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_v1"
-                            [] in
+                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                         let* α5 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "`movable`: ") in
@@ -266,10 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
-                                    [
-                                      Ty.path "i32";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
+                                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                 ] in
                             let* α7 := M.call_closure α6 [ movable ] in
                             let* α8 := M.alloc (Value.Array [ α7 ]) in

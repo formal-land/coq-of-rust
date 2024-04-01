@@ -39,19 +39,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* temperature :=
       M.alloc
-        (Value.StructTuple
-          "match_guards::Temperature::Celsius"
-          [ Value.Integer Integer.I32 35 ]) in
+        (Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer Integer.I32 35 ]) in
     let* α0 :=
       M.match_operator
         temperature
         [
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_guards::Temperature::Celsius"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Celsius" 0 in
             let* t := M.copy γ0_0 in
             let* γ :=
               let* α0 := M.read t in
@@ -61,11 +56,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in
@@ -89,18 +80,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_guards::Temperature::Celsius"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Celsius" 0 in
             let* t := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in
@@ -124,10 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_guards::Temperature::Fahrenheit"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Fahrenheit" 0 in
             let* t := M.copy γ0_0 in
             let* γ :=
               let* α0 := M.read t in
@@ -137,11 +118,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in
@@ -165,18 +142,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "match_guards::Temperature::Fahrenheit"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Fahrenheit" 0 in
             let* t := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "") in

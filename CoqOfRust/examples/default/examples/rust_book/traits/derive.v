@@ -102,10 +102,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish"
-          [] in
+        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Inches") in
       let* α5 :=
@@ -145,8 +142,7 @@ Module Impl_derive_Inches.
           [
             fun γ =>
               let* γ := M.read γ in
-              let* γ1_0 :=
-                M.get_struct_tuple_field_or_break_match γ "derive::Inches" 0 in
+              let* γ1_0 := M.get_struct_tuple_field_or_break_match γ "derive::Inches" 0 in
               let* inches := M.copy γ1_0 in
               let* α0 := M.read inches in
               let* α1 := M.read UnsupportedLiteral in
@@ -199,19 +195,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _one_second :=
-      M.alloc
-        (Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ]) in
-    let* foot :=
-      M.alloc
-        (Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ]) in
+      M.alloc (Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ]) in
+    let* foot := M.alloc (Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "One foot equals ") in
@@ -252,10 +241,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "lt"
                     [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "derive::Inches")
-                    "to_centimeters"
-                    [] in
+                  M.get_associated_function (Ty.path "derive::Inches") "to_centimeters" [] in
                 let* α2 := M.call_closure α1 [ foot ] in
                 let* α3 := M.alloc α2 in
                 let* α4 := M.call_closure α0 [ α3; meter ] in
@@ -273,11 +259,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "One foot is ") in

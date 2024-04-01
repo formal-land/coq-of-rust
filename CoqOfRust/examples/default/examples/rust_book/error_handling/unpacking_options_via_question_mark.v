@@ -7,15 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("area_code",
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
         ("number", Ty.path "u32")
       ];
   } *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   (*
   Clone
@@ -27,12 +25,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
       let* α0 :=
         M.match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              M.match_operator
-                Value.DeclaredButUndefined
-                [ fun γ => M.read self ]
-          ] in
+          [ fun γ => M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -46,15 +39,10 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* StructRecord
@@ -80,8 +68,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -98,11 +85,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* StructRecord
@@ -119,8 +102,7 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   } *)
 
 Module Impl_unpacking_options_via_question_mark_Person.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::Person".
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Person".
   
   (*
       fn work_phone_area_code(&self) -> Option<u8> {
@@ -154,11 +136,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
           [] in
       let* α2 := M.read self in
       let* α3 :=
-        M.read
-          (M.get_struct_record_field
-            α2
-            "unpacking_options_via_question_mark::Person"
-            "job") in
+        M.read (M.get_struct_record_field α2 "unpacking_options_via_question_mark::Person" "job") in
       let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
@@ -310,10 +288,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call_closure α0 [ p ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
-        M.alloc
-          (Value.StructTuple
-            "core::option::Option::Some"
-            [ Value.Integer Integer.U8 61 ]) in
+        M.alloc (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.U8 61 ]) in
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
       M.match_operator
         α4
@@ -332,14 +307,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "u8" ])
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            [ Ty.path "u8" ]
-                        ]
+                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ]
                         "eq"
                         [] in
                     let* α1 := M.read left_val in
@@ -350,21 +319,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* _ :=
                     let* α0 := M.read γ in
                     M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind :=
-                    M.alloc
-                      (Value.StructTuple
-                        "core::panicking::AssertKind::Eq"
-                        []) in
+                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "u8" ];
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "u8" ]
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ];
+                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
                       ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
@@ -372,12 +333,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α4 :=
                     M.call_closure
                       α0
-                      [
-                        α1;
-                        α2;
-                        α3;
-                        Value.StructTuple "core::option::Option::None" []
-                      ] in
+                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in

@@ -18,8 +18,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Parameter wildcard : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_wildcard :
-    M.IsAssociatedFunction Self "wildcard" wildcard.
+  Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
   
   Parameter wildcard_complement : (list Ty.t) -> (list Value.t) -> M.
   

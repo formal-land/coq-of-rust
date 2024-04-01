@@ -30,11 +30,7 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
     let* student := M.alloc student in
     let* res :=
       let* α0 := M.get_function "alloc::fmt::format" [] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Arguments")
-          "new_v1"
-          [] in
+      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
       let* α7 :=
         (* Unsize *)
           let* α2 := M.read (mk_str "My name is ") in
@@ -122,7 +118,4 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
 fn main() {}
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.

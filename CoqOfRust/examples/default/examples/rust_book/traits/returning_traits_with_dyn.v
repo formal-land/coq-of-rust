@@ -111,11 +111,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α1 :=
                             M.call_closure
                               α0
-                              [
-                                Value.StructTuple
-                                  "returning_traits_with_dyn::Sheep"
-                                  []
-                              ] in
+                              [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ] in
                           M.pure (M.pointer_coercion α1) in
                       M.pure (M.pointer_coercion α2) in
                   M.alloc α3;
@@ -135,11 +131,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.call_closure
                           α0
-                          [
-                            Value.StructTuple
-                              "returning_traits_with_dyn::Cow"
-                              []
-                          ] in
+                          [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ] in
                       M.pure (M.pointer_coercion α1) in
                   M.alloc α2
               ] in
@@ -171,16 +163,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
-            let* α2 :=
-              M.read
-                (mk_str "You've randomly chosen an animal, and it says ") in
+            let* α2 := M.read (mk_str "You've randomly chosen an animal, and it says ") in
             let* α3 := M.read (mk_str "
 ") in
             let* α4 := M.alloc (Value.Array [ α2; α3 ]) in

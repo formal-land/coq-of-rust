@@ -14,11 +14,7 @@ Module foo.
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_const"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "foo::gre::bar
@@ -47,11 +43,7 @@ Module foo.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "foo::bar

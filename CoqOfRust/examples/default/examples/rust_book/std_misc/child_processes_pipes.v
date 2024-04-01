@@ -44,11 +44,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* process :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "std::process::Command")
-          "spawn"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "std::process::Command") "spawn" [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "std::process::Command")
@@ -67,12 +63,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α4 := M.read (mk_str "wc") in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.alloc α5 in
-      let* α7 :=
-        M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
+      let* α7 := M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
       let* α8 := M.call_closure α7 [] in
       let* α9 := M.call_closure α2 [ α6; α8 ] in
-      let* α10 :=
-        M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
+      let* α10 := M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
       let* α11 := M.call_closure α10 [] in
       let* α12 := M.call_closure α1 [ α9; α11 ] in
       let* α13 := M.call_closure α0 [ α12 ] in
@@ -83,17 +77,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* why := M.copy γ0_0 in
               let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "couldn't spawn wc: ") in
@@ -114,11 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α11 := M.never_to_any α10 in
               M.alloc α11;
             fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Ok"
-                  0 in
+              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* process := M.copy γ0_0 in
               M.pure process
           ] in
@@ -133,14 +116,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "std::process::ChildStdin" ])
+          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "std::process::ChildStdin" ])
           "unwrap"
           [] in
-      let* α2 :=
-        M.read
-          (M.get_struct_record_field process "std::process::Child" "stdin") in
+      let* α2 := M.read (M.get_struct_record_field process "std::process::Child" "stdin") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in
       let* α5 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
@@ -154,18 +133,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α11
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "couldn't write to wc stdin: ") in
@@ -186,18 +157,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.never_to_any α10 in
             M.alloc α11;
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "sent pangram to wc
@@ -210,8 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple [])
         ] in
     let* s :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
+      let* α0 := M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 :=
@@ -223,14 +186,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         [] in
     let* α1 :=
       M.get_associated_function
-        (Ty.apply
-          (Ty.path "core::option::Option")
-          [ Ty.path "std::process::ChildStdout" ])
+        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "std::process::ChildStdout" ])
         "unwrap"
         [] in
-    let* α2 :=
-      M.read
-        (M.get_struct_record_field process "std::process::Child" "stdout") in
+    let* α2 := M.read (M.get_struct_record_field process "std::process::Child" "stdout") in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 := M.call_closure α0 [ α4; s ] in
@@ -240,18 +199,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α6
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "couldn't read wc stdout: ") in
@@ -272,18 +223,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.never_to_any α10 in
             M.alloc α11;
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "wc responded with:

@@ -24,8 +24,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
           []
           "branch"
           [] in
-      let* α1 :=
-        M.get_associated_function (Ty.path "std::fs::File") "open" [ P ] in
+      let* α1 := M.get_associated_function (Ty.path "std::fs::File") "open" [ P ] in
       let* α2 := M.read filename in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -59,10 +58,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
-                      [
-                        Ty.path "core::convert::Infallible";
-                        Ty.path "std::io::error::Error"
-                      ]
+                      [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error" ]
                   ]
                   "from_residual"
                   [] in
@@ -85,17 +81,13 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "std::io::BufRead"
-        (Ty.apply
-          (Ty.path "std::io::buffered::bufreader::BufReader")
-          [ Ty.path "std::fs::File" ])
+        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
         []
         "lines"
         [] in
     let* α1 :=
       M.get_associated_function
-        (Ty.apply
-          (Ty.path "std::io::buffered::bufreader::BufReader")
-          [ Ty.path "std::fs::File" ])
+        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
         "new"
         [] in
     let* α2 := M.read file in
@@ -136,11 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.read (mk_str "./hosts") in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc α2 in
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* lines := M.copy γ0_0 in
             let* α0 :=
               M.get_trait_method
@@ -173,8 +161,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "std::io::Lines")
                               [
                                 Ty.apply
-                                  (Ty.path
-                                    "std::io::buffered::bufreader::BufReader")
+                                  (Ty.path "std::io::buffered::bufreader::BufReader")
                                   [ Ty.path "std::fs::File" ]
                               ])
                             []
@@ -211,10 +198,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     let* ip := M.copy γ0_0 in
                                     let* _ :=
                                       let* _ :=
-                                        let* α0 :=
-                                          M.get_function
-                                            "std::io::stdio::_print"
-                                            [] in
+                                        let* α0 := M.get_function "std::io::stdio::_print" [] in
                                         let* α1 :=
                                           M.get_associated_function
                                             (Ty.path "core::fmt::Arguments")
@@ -225,28 +209,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             let* α2 := M.read (mk_str "") in
                                             let* α3 := M.read (mk_str "
 ") in
-                                            let* α4 :=
-                                              M.alloc
-                                                (Value.Array [ α2; α3 ]) in
+                                            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                                             M.pure (M.pointer_coercion α4) in
                                         let* α9 :=
                                           (* Unsize *)
                                             let* α6 :=
                                               M.get_associated_function
-                                                (Ty.path
-                                                  "core::fmt::rt::Argument")
+                                                (Ty.path "core::fmt::rt::Argument")
                                                 "new_display"
-                                                [
-                                                  Ty.path
-                                                    "alloc::string::String"
-                                                ] in
-                                            let* α7 :=
-                                              M.call_closure α6 [ ip ] in
-                                            let* α8 :=
-                                              M.alloc (Value.Array [ α7 ]) in
+                                                [ Ty.path "alloc::string::String" ] in
+                                            let* α7 := M.call_closure α6 [ ip ] in
+                                            let* α8 := M.alloc (Value.Array [ α7 ]) in
                                             M.pure (M.pointer_coercion α8) in
-                                        let* α10 :=
-                                          M.call_closure α1 [ α5; α9 ] in
+                                        let* α10 := M.call_closure α1 [ α5; α9 ] in
                                         let* α11 := M.call_closure α0 [ α10 ] in
                                         M.alloc α11 in
                                       M.alloc (Value.Tuple []) in

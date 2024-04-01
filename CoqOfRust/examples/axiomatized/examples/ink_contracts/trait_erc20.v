@@ -13,8 +13,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -28,8 +27,7 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
   Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -81,11 +79,7 @@ Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -174,18 +168,13 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("assert_receiver_is_total_eq",
-            InstanceField.Method assert_receiver_is_total_eq)
-        ].
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
   forall (T : Ty.t),
   (Ty.apply (Ty.path "trait_erc20::Result") [ T ]) =
-    (Ty.apply
-      (Ty.path "core::result::Result")
-      [ T; Ty.path "trait_erc20::Error" ]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "trait_erc20::Error" ]).
 
 (* Trait *)
 (* Empty module 'BaseErc20' *)
@@ -205,11 +194,7 @@ Axiom Result :
           Ty.apply
             (Ty.path "trait_erc20::Mapping")
             [
-              Ty.tuple
-                [
-                  Ty.path "trait_erc20::AccountId";
-                  Ty.path "trait_erc20::AccountId"
-                ];
+              Ty.tuple [ Ty.path "trait_erc20::AccountId"; Ty.path "trait_erc20::AccountId" ];
               Ty.path "u128"
             ])
       ];
@@ -234,14 +219,8 @@ End Impl_core_default_Default_for_trait_erc20_Erc20.
     ty_params := [];
     fields :=
       [
-        ("from",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "trait_erc20::AccountId" ]);
-        ("to",
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "trait_erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "trait_erc20::AccountId" ]);
         ("value", Ty.path "u128")
       ];
   } *)
@@ -285,8 +264,7 @@ Module Impl_trait_erc20_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_trait_erc20_Env.
 
 Module Impl_trait_erc20_Erc20.
@@ -294,8 +272,7 @@ Module Impl_trait_erc20_Erc20.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   

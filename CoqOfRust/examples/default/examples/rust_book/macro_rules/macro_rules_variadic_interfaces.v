@@ -16,18 +16,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* val :=
         let* α0 :=
-          BinOp.Panic.add
-            (Value.Integer Integer.Usize 1)
-            (Value.Integer Integer.Usize 2) in
+          BinOp.Panic.add (Value.Integer Integer.Usize 1) (Value.Integer Integer.Usize 2) in
         M.alloc α0 in
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "1 + 2 = ") in
@@ -53,18 +47,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* val :=
         let* α0 :=
-          BinOp.Panic.add
-            (Value.Integer Integer.Usize 3)
-            (Value.Integer Integer.Usize 4) in
+          BinOp.Panic.add (Value.Integer Integer.Usize 3) (Value.Integer Integer.Usize 4) in
         M.alloc α0 in
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "3 + 4 = ") in
@@ -88,20 +76,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
     let* val :=
-      let* α0 :=
-        BinOp.Panic.mul
-          (Value.Integer Integer.Usize 2)
-          (Value.Integer Integer.Usize 3) in
+      let* α0 := BinOp.Panic.mul (Value.Integer Integer.Usize 2) (Value.Integer Integer.Usize 3) in
       let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.Usize 1) in
       M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "(2 * 3) + 1 = ") in

@@ -19,9 +19,7 @@ Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
       β0
       [
         fun γ =>
-          let* α0 :=
-            M.get_constant
-              "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
+          let* α0 := M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
           M.read α0
       ]
   | _, _ => M.impossible
@@ -59,11 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "static_string: ") in
@@ -90,19 +84,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* lifetime_num := M.alloc (Value.Integer Integer.I32 9) in
       let* coerced_static :=
         let* α0 :=
-          M.get_function
-            "scoping_rules_lifetimes_reference_lifetime_static::coerce_static"
-            [] in
+          M.get_function "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" [] in
         let* α1 := M.call_closure α0 [ lifetime_num ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "coerced_static: ") in
@@ -128,11 +116,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "NUM: ") in
@@ -147,9 +131,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
                 [ Ty.path "i32" ] in
-            let* α7 :=
-              M.get_constant
-                "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
+            let* α7 := M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
             let* α8 := M.read α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
             let* α10 := M.alloc (Value.Array [ α9 ]) in

@@ -43,9 +43,7 @@ Require Import CoqOfRust.CoqOfRust.
       };
       {
         name := "CMYK";
-        item :=
-          StructTuple
-            [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       }
     ];

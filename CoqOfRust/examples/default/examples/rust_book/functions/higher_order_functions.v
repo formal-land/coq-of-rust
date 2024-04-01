@@ -54,17 +54,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
-            let* α2 :=
-              M.read
-                (mk_str
-                  "Find the sum of all the squared odd numbers under 1000
+            let* α2 := M.read (mk_str "Find the sum of all the squared odd numbers under 1000
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
             M.pure (M.pointer_coercion α3) in
@@ -102,9 +95,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply
-                        (Ty.path "core::ops::range::RangeFrom")
-                        [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
                       []
                       "next"
                       [] in
@@ -142,9 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pure (M.use α2) in
                               let* _ :=
                                 let* α0 := M.read γ in
-                                M.is_constant_or_break_match
-                                  α0
-                                  (Value.Bool true) in
+                                M.is_constant_or_break_match α0 (Value.Bool true) in
                               let* α0 := M.break in
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
@@ -157,18 +146,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   fun γ =>
                                     let* γ :=
                                       let* α0 :=
-                                        M.get_function
-                                          "higher_order_functions::is_odd"
-                                          [] in
+                                        M.get_function "higher_order_functions::is_odd" [] in
                                       let* α1 := M.read n_squared in
                                       let* α2 := M.call_closure α0 [ α1 ] in
                                       let* α3 := M.alloc α2 in
                                       M.pure (M.use α3) in
                                     let* _ :=
                                       let* α0 := M.read γ in
-                                      M.is_constant_or_break_match
-                                        α0
-                                        (Value.Bool true) in
+                                      M.is_constant_or_break_match α0 (Value.Bool true) in
                                     let* _ :=
                                       let β := acc in
                                       let* α0 := M.read β in
@@ -186,11 +171,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "imperative style: ") in
@@ -225,18 +206,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     [
-                      Ty.apply
-                        (Ty.path "core::ops::range::RangeFrom")
-                        [ Ty.path "u32" ];
+                      Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
                       Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                     ];
                   Ty.function
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                     (Ty.path "bool")
                 ];
-              Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-                (Ty.path "bool")
+              Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
             ])
           []
           "sum"
@@ -250,21 +227,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
                 [
-                  Ty.apply
-                    (Ty.path "core::ops::range::RangeFrom")
-                    [ Ty.path "u32" ];
+                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
                   Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                 ];
-              Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-                (Ty.path "bool")
+              Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
             ])
           []
           "filter"
-          [
-            Ty.function
-              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-              (Ty.path "bool")
+          [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
           ] in
       let* α2 :=
         M.get_trait_method
@@ -272,17 +242,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::iter::adapters::map::Map")
             [
-              Ty.apply
-                (Ty.path "core::ops::range::RangeFrom")
-                [ Ty.path "u32" ];
+              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
               Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
             ])
           []
           "take_while"
-          [
-            Ty.function
-              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-              (Ty.path "bool")
+          [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
           ] in
       let* α3 :=
         M.get_trait_method
@@ -290,10 +255,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
           []
           "map"
-          [
-            Ty.path "u32";
-            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-          ] in
+          [ Ty.path "u32"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32") ] in
       let* α4 :=
         M.call_closure
           α3
@@ -357,8 +319,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         let* γ := M.read γ in
                         let* n_squared := M.copy γ in
-                        let* α0 :=
-                          M.get_function "higher_order_functions::is_odd" [] in
+                        let* α0 := M.get_function "higher_order_functions::is_odd" [] in
                         let* α1 := M.read n_squared in
                         M.call_closure α0 [ α1 ]
                     ]
@@ -370,11 +331,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "functional style: ") in

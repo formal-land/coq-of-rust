@@ -17,13 +17,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "custom_environment::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -47,8 +41,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,11 +58,7 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -130,45 +119,15 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α2 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α3 := M.call_closure α2 [] in
-      let* α4 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α4 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α5 := M.call_closure α4 [] in
-      let* α6 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α6 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α7 := M.call_closure α6 [] in
-      let* α8 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α8 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α9 := M.call_closure α8 [] in
       M.pure
         (Value.StructRecord
@@ -230,8 +189,7 @@ Module Impl_custom_environment_Env.
   *)
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_custom_environment_Env.
 
 Module Impl_custom_environment_Topics.
@@ -244,8 +202,7 @@ Module Impl_custom_environment_Topics.
   *)
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -256,11 +213,7 @@ Module Impl_custom_environment_Topics.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "custom_environment::Topics")
-          "init_env"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "custom_environment::Topics") "init_env" [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -299,16 +252,8 @@ Module Impl_custom_environment_Topics.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.path "custom_environment::Env")
-            "emit_event"
-            [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "custom_environment::Topics")
-            "env"
-            [] in
+        let* α0 := M.get_associated_function (Ty.path "custom_environment::Env") "emit_event" [] in
+        let* α1 := M.get_associated_function (Ty.path "custom_environment::Topics") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -323,18 +268,12 @@ Module Impl_custom_environment_Topics.
         let* α7 :=
           M.call_closure
             α0
-            [
-              α4;
-              Value.StructTuple
-                "custom_environment::Event::EventWithTopics"
-                [ α6 ]
-            ] in
+            [ α4; Value.StructTuple "custom_environment::Event::EventWithTopics" [ α6 ] ] in
         M.alloc α7 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_trigger :
-    M.IsAssociatedFunction Self "trigger" trigger.
+  Axiom AssociatedFunction_trigger : M.IsAssociatedFunction Self "trigger" trigger.
 End Impl_custom_environment_Topics.

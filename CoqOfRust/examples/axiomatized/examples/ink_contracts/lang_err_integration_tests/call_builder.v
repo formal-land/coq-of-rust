@@ -38,18 +38,12 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
-Axiom Hash :
-  (Ty.path "call_builder::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 (* {
@@ -125,8 +119,5 @@ Module Impl_call_builder_CallBuilderTest.
   Parameter call_instantiate_fallible : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_instantiate_fallible :
-    M.IsAssociatedFunction
-      Self
-      "call_instantiate_fallible"
-      call_instantiate_fallible.
+    M.IsAssociatedFunction Self "call_instantiate_fallible" call_instantiate_fallible.
 End Impl_call_builder_CallBuilderTest.

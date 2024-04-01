@@ -22,9 +22,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* names :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply
-            (Ty.path "slice")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          (Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
       let* α8 :=
@@ -34,9 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
                   Ty.path "alloc::alloc::Global"
                 ])
               "new"
@@ -55,10 +51,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         "core::iter::traits::collect::IntoIterator"
         (Ty.apply
           (Ty.path "alloc::vec::into_iter::IntoIter")
-          [
-            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            Ty.path "alloc::alloc::Global"
-          ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
         []
         "into_iter"
         [] in
@@ -67,10 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         "core::iter::traits::collect::IntoIterator"
         (Ty.apply
           (Ty.path "alloc::vec::Vec")
-          [
-            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            Ty.path "alloc::alloc::Global"
-          ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
         []
         "into_iter"
         [] in
@@ -91,10 +81,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator"
                     (Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
-                      [
-                        Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                        Ty.path "alloc::alloc::Global"
-                      ])
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
                     []
                     "next"
                     [] in
@@ -110,18 +97,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match
-                          γ
-                          "core::option::Option::Some"
-                          0 in
+                        M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* name := M.copy γ0_0 in
                       M.match_operator
                         name
                         [
                           fun γ =>
                             let* _ :=
-                              let* α0 :=
-                                M.get_function "std::io::stdio::_print" [] in
+                              let* α0 := M.get_function "std::io::stdio::_print" [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
@@ -129,10 +112,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [] in
                               let* α4 :=
                                 (* Unsize *)
-                                  let* α2 :=
-                                    M.read
-                                      (mk_str
-                                        "There is a rustacean among us!
+                                  let* α2 := M.read (mk_str "There is a rustacean among us!
 ") in
                                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                                   M.pure (M.pointer_coercion α3) in
@@ -142,8 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (Value.Tuple []);
                           fun γ =>
                             let* _ :=
-                              let* α0 :=
-                                M.get_function "std::io::stdio::_print" [] in
+                              let* α0 := M.get_function "std::io::stdio::_print" [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
@@ -162,8 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::rt::Argument")
                                       "new_display"
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                                      ] in
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                                   let* α7 := M.call_closure α6 [ name ] in
                                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                                   M.pure (M.pointer_coercion α8) in

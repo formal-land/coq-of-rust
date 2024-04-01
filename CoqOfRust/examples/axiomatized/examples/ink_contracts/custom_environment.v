@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -122,8 +118,7 @@ Module Impl_custom_environment_Env.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event.
+  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_custom_environment_Env.
 
 Module Impl_custom_environment_Topics.
@@ -131,8 +126,7 @@ Module Impl_custom_environment_Topics.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -144,6 +138,5 @@ Module Impl_custom_environment_Topics.
   
   Parameter trigger : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_trigger :
-    M.IsAssociatedFunction Self "trigger" trigger.
+  Axiom AssociatedFunction_trigger : M.IsAssociatedFunction Self "trigger" trigger.
 End Impl_custom_environment_Topics.

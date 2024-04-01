@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* StructRecord

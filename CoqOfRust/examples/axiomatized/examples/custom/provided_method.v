@@ -6,10 +6,7 @@ Module ProvidedAndRequired.
   Parameter provided : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_provided :
-    M.IsProvidedMethod
-      "provided_method::ProvidedAndRequired"
-      "provided"
-      provided.
+    M.IsProvidedMethod "provided_method::ProvidedAndRequired" "provided" provided.
 End ProvidedAndRequired.
 
 Module Impl_provided_method_ProvidedAndRequired_for_i32.
@@ -38,9 +35,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [
-          ("required", InstanceField.Method required);
-          ("provided", InstanceField.Method provided)
+        [ ("required", InstanceField.Method required); ("provided", InstanceField.Method provided)
         ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 

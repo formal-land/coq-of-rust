@@ -12,11 +12,7 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_const"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "called `function()`
@@ -44,11 +40,7 @@ Module cool.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "called `cool::function()`
@@ -77,11 +69,7 @@ Module my.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "called `my::function()`
@@ -109,11 +97,7 @@ Module my.
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_const"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "called `my::cool::function()`
@@ -161,15 +145,10 @@ Module my.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_const"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
           let* α4 :=
             (* Unsize *)
-              let* α2 :=
-                M.read (mk_str "called `my::indirect_call()`, that
+              let* α2 := M.read (mk_str "called `my::indirect_call()`, that
 > ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
               M.pure (M.pointer_coercion α3) in

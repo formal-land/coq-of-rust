@@ -38,8 +38,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       "generics_traits::DoubleDrop"
       (Self T U)
       (* Trait polymorphic types *) [ (* T *) T ]
-      (* Instance *)
-        [ ("double_drop", InstanceField.Method (double_drop T U)) ].
+      (* Instance *) [ ("double_drop", InstanceField.Method (double_drop T U)) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (*

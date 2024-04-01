@@ -35,11 +35,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 :=
         M.match_operator
@@ -105,11 +101,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "write_str"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
       let* α2 :=
         M.match_operator
@@ -216,32 +208,22 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* food := M.copy γ0_0 in
-            let* α0 :=
-              M.get_function "combinators_and_then::have_ingredients" [] in
+            let* α0 := M.get_function "combinators_and_then::have_ingredients" [] in
             let* α1 := M.read food in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
             M.match_operator
               α3
               [
-                fun γ =>
-                  M.alloc (Value.StructTuple "core::option::Option::None" []);
+                fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
                 fun γ =>
                   let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "core::option::Option::Some"
-                      0 in
+                    M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                   let* food := M.copy γ0_0 in
                   let* α0 := M.read food in
-                  M.alloc
-                    (Value.StructTuple "core::option::Option::Some" [ α0 ])
+                  M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
               ]
         ] in
     M.read α4
@@ -259,17 +241,13 @@ Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
     let* food := M.alloc food in
     let* α0 :=
       M.get_associated_function
-        (Ty.apply
-          (Ty.path "core::option::Option")
-          [ Ty.path "combinators_and_then::Food" ])
+        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ])
         "and_then"
         [
           Ty.path "combinators_and_then::Food";
           Ty.function
             [ Ty.path "combinators_and_then::Food" ]
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ])
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ])
         ] in
     let* α1 := M.get_function "combinators_and_then::have_recipe" [] in
     let* α2 := M.read food in
@@ -301,19 +279,11 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::option::Option::Some"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
             let* food := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α6 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Yay! On ") in
@@ -345,11 +315,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Oh no. We don't get to eat on ") in
@@ -413,8 +379,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.call_closure
                   α0
-                  [ α1; Value.StructTuple "combinators_and_then::Day::Monday" []
-                  ] in
+                  [ α1; Value.StructTuple "combinators_and_then::Day::Monday" [] ] in
               M.alloc α2 in
             let* _ :=
               let* α0 := M.get_function "combinators_and_then::eat" [] in
@@ -422,10 +387,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.call_closure
                   α0
-                  [
-                    α1;
-                    Value.StructTuple "combinators_and_then::Day::Tuesday" []
-                  ] in
+                  [ α1; Value.StructTuple "combinators_and_then::Day::Tuesday" [] ] in
               M.alloc α2 in
             let* _ :=
               let* α0 := M.get_function "combinators_and_then::eat" [] in
@@ -433,10 +395,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.call_closure
                   α0
-                  [
-                    α1;
-                    Value.StructTuple "combinators_and_then::Day::Wednesday" []
-                  ] in
+                  [ α1; Value.StructTuple "combinators_and_then::Day::Wednesday" [] ] in
               M.alloc α2 in
             M.alloc (Value.Tuple [])
         ] in

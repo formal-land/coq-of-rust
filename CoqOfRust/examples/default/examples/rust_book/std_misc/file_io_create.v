@@ -35,17 +35,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* path :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "std::path::Path")
-          "new"
-          [ Ty.path "str" ] in
+      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" [ Ty.path "str" ] in
       let* α1 := M.read (mk_str "lorem_ipsum.txt") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* display :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "std::path::Path") "display" [] in
+      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "display" [] in
       let* α1 := M.read path in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -54,11 +49,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "std::fs::File")
           "create"
-          [
-            Ty.apply
-              (Ty.path "&")
-              [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-          ] in
+          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ] ] in
       let* α1 := M.call_closure α0 [ path ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -67,17 +58,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Err"
-                  0 in
+                M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* why := M.copy γ0_0 in
               let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "couldn't create ") in
@@ -105,22 +89,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α14 := M.never_to_any α13 in
               M.alloc α14;
             fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::result::Result::Ok"
-                  0 in
+              let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
               let* file := M.copy γ0_0 in
               M.pure file
           ] in
       M.copy α3 in
-    let* α0 :=
-      M.get_trait_method
-        "std::io::Write"
-        (Ty.path "std::fs::File")
-        []
-        "write_all"
-        [] in
+    let* α0 := M.get_trait_method "std::io::Write" (Ty.path "std::fs::File") [] "write_all" [] in
     let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
     let* α2 := M.get_constant "file_io_create::LOREM_IPSUM" in
     let* α3 := M.read α2 in
@@ -133,18 +107,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α7
         [
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Err"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
             let* why := M.copy γ0_0 in
             let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-            let* α1 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::Arguments")
-                "new_v1"
-                [] in
+            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
             let* α5 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "couldn't write to ") in
@@ -172,18 +138,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α14 := M.never_to_any α13 in
             M.alloc α14;
           fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "core::result::Result::Ok"
-                0 in
+            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "successfully wrote to ") in

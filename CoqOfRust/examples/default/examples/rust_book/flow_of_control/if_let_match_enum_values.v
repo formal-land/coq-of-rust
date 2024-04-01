@@ -57,10 +57,8 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* a :=
-      M.alloc (Value.StructTuple "if_let_match_enum_values::Foo::Bar" []) in
-    let* b :=
-      M.alloc (Value.StructTuple "if_let_match_enum_values::Foo::Baz" []) in
+    let* a := M.alloc (Value.StructTuple "if_let_match_enum_values::Foo::Bar" []) in
+    let* b := M.alloc (Value.StructTuple "if_let_match_enum_values::Foo::Baz" []) in
     let* c :=
       M.alloc
         (Value.StructTuple
@@ -77,10 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "a is foobar
@@ -105,10 +100,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "b is foobar
@@ -130,19 +122,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let γ := c in
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "if_let_match_enum_values::Foo::Qux"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "if_let_match_enum_values::Foo::Qux" 0 in
             let* value := M.copy γ0_0 in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1"
-                    [] in
+                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "c is ") in
@@ -175,10 +160,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             let γ := c in
             let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match
-                γ
-                "if_let_match_enum_values::Foo::Qux"
-                0 in
+              M.get_struct_tuple_field_or_break_match γ "if_let_match_enum_values::Foo::Qux" 0 in
             let* value := M.copy γ0_0 in
             let* _ :=
               let* α0 := M.read γ0_0 in
@@ -187,10 +169,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "c is one hundred

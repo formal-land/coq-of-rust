@@ -111,15 +111,10 @@ Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
-Axiom Balance :
-  (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128").
+Axiom Balance : (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
@@ -167,8 +162,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
@@ -180,8 +174,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Parameter get_balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_balance :
-    M.IsAssociatedFunction Self "get_balance" get_balance.
+  Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
   
   Parameter insert_balance : (list Ty.t) -> (list Value.t) -> M.
   
@@ -190,8 +183,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Parameter size_balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_size_balance :
-    M.IsAssociatedFunction Self "size_balance" size_balance.
+  Axiom AssociatedFunction_size_balance : M.IsAssociatedFunction Self "size_balance" size_balance.
   
   Parameter contains_balance : (list Ty.t) -> (list Value.t) -> M.
   
@@ -205,6 +197,5 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Parameter take_balance : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_take_balance :
-    M.IsAssociatedFunction Self "take_balance" take_balance.
+  Axiom AssociatedFunction_take_balance : M.IsAssociatedFunction Self "take_balance" take_balance.
 End Impl_mapping_integration_tests_Mappings.

@@ -39,9 +39,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
       M.alloc
-        (Value.StructRecord
-          "foreign_function_interface::Complex"
-          [ ("re", α0); ("im", α1) ]) in
+        (Value.StructRecord "foreign_function_interface::Complex" [ ("re", α0); ("im", α1) ]) in
     let* z_sqrt :=
       let* α0 := M.get_function "foreign_function_interface::csqrtf" [] in
       let* α1 := M.read z in
@@ -50,11 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "the square root of ") in
@@ -86,11 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α6 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "cos(") in
@@ -145,8 +135,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -163,11 +152,7 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -197,10 +182,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                 let* α0 := M.read self in
                 let* α1 :=
                   M.read
-                    (M.get_struct_record_field
-                      α0
-                      "foreign_function_interface::Complex"
-                      "im") in
+                    (M.get_struct_record_field α0 "foreign_function_interface::Complex" "im") in
                 let* α2 := M.read UnsupportedLiteral in
                 let* α3 := M.alloc (BinOp.Pure.lt α1 α2) in
                 M.pure (M.use α3) in
@@ -208,16 +190,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Formatter")
-                  "write_fmt"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
               let* α1 := M.read f in
-              let* α2 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "") in
@@ -236,12 +211,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α10 :=
                     M.call_closure
                       α8
-                      [
-                        M.get_struct_record_field
-                          α9
-                          "foreign_function_interface::Complex"
-                          "re"
-                      ] in
+                      [ M.get_struct_record_field α9 "foreign_function_interface::Complex" "re" ] in
                   let* α11 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
@@ -250,10 +220,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α12 := M.read self in
                   let* α13 :=
                     M.read
-                      (M.get_struct_record_field
-                        α12
-                        "foreign_function_interface::Complex"
-                        "im") in
+                      (M.get_struct_record_field α12 "foreign_function_interface::Complex" "im") in
                   let* α14 := UnOp.Panic.neg α13 in
                   let* α15 := M.alloc α14 in
                   let* α16 := M.call_closure α11 [ α15 ] in
@@ -264,16 +231,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               M.alloc α20;
             fun γ =>
               let* α0 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Formatter")
-                  "write_fmt"
-                  [] in
+                M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
               let* α1 := M.read f in
-              let* α2 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_v1"
-                  [] in
+              let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
               let* α7 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "") in
@@ -292,12 +252,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α10 :=
                     M.call_closure
                       α8
-                      [
-                        M.get_struct_record_field
-                          α9
-                          "foreign_function_interface::Complex"
-                          "re"
-                      ] in
+                      [ M.get_struct_record_field α9 "foreign_function_interface::Complex" "re" ] in
                   let* α11 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
@@ -307,11 +262,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α13 :=
                     M.call_closure
                       α11
-                      [
-                        M.get_struct_record_field
-                          α12
-                          "foreign_function_interface::Complex"
-                          "im"
+                      [ M.get_struct_record_field α12 "foreign_function_interface::Complex" "im"
                       ] in
                   let* α14 := M.alloc (Value.Array [ α10; α13 ]) in
                   M.pure (M.pointer_coercion α14) in

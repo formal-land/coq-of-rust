@@ -17,13 +17,7 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_terminate::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -47,8 +41,7 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,11 +58,7 @@ Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
   Definition Self : Ty.t := Ty.path "contract_terminate::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
 (* StructRecord
@@ -125,8 +114,7 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -138,10 +126,7 @@ Module Impl_contract_terminate_JustTerminate.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_associated_function
-          (Ty.path "contract_terminate::JustTerminate")
-          "init_env"
-          [] in
+        M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "init_env" [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -155,8 +140,7 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] =>
-      M.pure (Value.StructTuple "contract_terminate::JustTerminate" [])
+    | [], [] => M.pure (Value.StructTuple "contract_terminate::JustTerminate" [])
     | _, _ => M.impossible
     end.
   
@@ -173,28 +157,15 @@ Module Impl_contract_terminate_JustTerminate.
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
-          M.get_associated_function
-            (Ty.path "contract_terminate::Env")
-            "terminate_contract"
-            [] in
+          M.get_associated_function (Ty.path "contract_terminate::Env") "terminate_contract" [] in
         let* α1 :=
-          M.get_associated_function
-            (Ty.path "contract_terminate::JustTerminate")
-            "env"
-            [] in
+          M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "contract_terminate::Env")
-            "caller"
-            [] in
+        let* α5 := M.get_associated_function (Ty.path "contract_terminate::Env") "caller" [] in
         let* α6 :=
-          M.get_associated_function
-            (Ty.path "contract_terminate::JustTerminate")
-            "env"
-            [] in
+          M.get_associated_function (Ty.path "contract_terminate::JustTerminate") "env" [] in
         let* α7 := M.read self in
         let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
@@ -206,6 +177,5 @@ Module Impl_contract_terminate_JustTerminate.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_terminate_me :
-    M.IsAssociatedFunction Self "terminate_me" terminate_me.
+  Axiom AssociatedFunction_terminate_me : M.IsAssociatedFunction Self "terminate_me" terminate_me.
 End Impl_contract_terminate_JustTerminate.

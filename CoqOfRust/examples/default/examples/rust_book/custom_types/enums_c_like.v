@@ -63,11 +63,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "zero is ") in
@@ -93,11 +89,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1"
-            [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "one is ") in
@@ -124,10 +116,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted"
-            [] in
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "roses are #") in
@@ -150,11 +139,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α11) in
         let* α16 :=
           (* Unsize *)
-            let* α13 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Placeholder")
-                "new"
-                [] in
+            let* α13 := M.get_associated_function (Ty.path "core::fmt::rt::Placeholder") "new" [] in
             let* α14 :=
               M.call_closure
                 α13
@@ -164,17 +149,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
                   Value.Integer Integer.U32 8;
                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                  Value.StructTuple
-                    "core::fmt::rt::Count::Is"
-                    [ Value.Integer Integer.Usize 6 ]
+                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer Integer.Usize 6 ]
                 ] in
             let* α15 := M.alloc (Value.Array [ α14 ]) in
             M.pure (M.pointer_coercion α15) in
-        let* α17 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::UnsafeArg")
-            "new"
-            [] in
+        let* α17 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] in
         let* α18 := M.call_closure α17 [] in
         let* α19 := M.call_closure α1 [ α5; α12; α16; α18 ] in
         let* α20 := M.call_closure α0 [ α19 ] in
@@ -184,10 +163,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted"
-            [] in
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "violets are #") in
@@ -202,8 +178,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::rt::Argument")
                 "new_lower_hex"
                 [ Ty.path "i32" ] in
-            let* α7 :=
-              M.get_constant "enums_c_like::Color::Blue_discriminant" in
+            let* α7 := M.get_constant "enums_c_like::Color::Blue_discriminant" in
             let* α8 := BinOp.Panic.add α7 (Value.Integer Integer.Isize 0) in
             let* α9 := M.alloc (M.rust_cast α8) in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -211,11 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α11) in
         let* α16 :=
           (* Unsize *)
-            let* α13 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Placeholder")
-                "new"
-                [] in
+            let* α13 := M.get_associated_function (Ty.path "core::fmt::rt::Placeholder") "new" [] in
             let* α14 :=
               M.call_closure
                 α13
@@ -225,17 +196,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
                   Value.Integer Integer.U32 8;
                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                  Value.StructTuple
-                    "core::fmt::rt::Count::Is"
-                    [ Value.Integer Integer.Usize 6 ]
+                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer Integer.Usize 6 ]
                 ] in
             let* α15 := M.alloc (Value.Array [ α14 ]) in
             M.pure (M.pointer_coercion α15) in
-        let* α17 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::UnsafeArg")
-            "new"
-            [] in
+        let* α17 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] in
         let* α18 := M.call_closure α17 [] in
         let* α19 := M.call_closure α1 [ α5; α12; α16; α18 ] in
         let* α20 := M.call_closure α0 [ α19 ] in

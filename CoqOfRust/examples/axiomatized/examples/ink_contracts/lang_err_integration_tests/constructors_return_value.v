@@ -38,11 +38,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
@@ -54,13 +50,11 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
-Axiom Balance :
-  (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
+Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
@@ -96,8 +90,7 @@ Axiom ConstructorResult :
   } *)
 
 Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
-  Definition Self : Ty.t :=
-    Ty.path "constructors_return_value::ConstructorError".
+  Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorError".
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
@@ -127,8 +120,7 @@ End Impl_constructors_return_value_ReturnFlags.
 Parameter return_value : (list Ty.t) -> (list Value.t) -> M.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
-  Definition Self : Ty.t :=
-    Ty.path "constructors_return_value::ConstructorsReturnValue".
+  Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
@@ -136,13 +128,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new.
+  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter revert_new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_revert_new :
-    M.IsAssociatedFunction Self "revert_new" revert_new.
+  Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
   
   Parameter try_revert_new : (list Ty.t) -> (list Value.t) -> M.
   
@@ -151,6 +141,5 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   
   Parameter get_value : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_value :
-    M.IsAssociatedFunction Self "get_value" get_value.
+  Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.
 End Impl_constructors_return_value_ConstructorsReturnValue.

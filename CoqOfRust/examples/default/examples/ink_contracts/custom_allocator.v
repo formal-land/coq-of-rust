@@ -8,9 +8,7 @@ Require Import CoqOfRust.CoqOfRust.
     fields :=
       [
         ("value",
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -39,10 +37,7 @@ Module Impl_custom_allocator_CustomAllocator.
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "bool" ];
-                  Ty.path "alloc::alloc::Global"
-                ])
+                [ Ty.apply (Ty.path "array") [ Ty.path "bool" ]; Ty.path "alloc::alloc::Global" ])
               "new"
               [] in
           let* α2 := M.read init_value in
@@ -51,10 +46,7 @@ Module Impl_custom_allocator_CustomAllocator.
           let* α5 := M.read α4 in
           M.pure (M.pointer_coercion α5) in
       let* α7 := M.call_closure α0 [ α6 ] in
-      M.pure
-        (Value.StructRecord
-          "custom_allocator::CustomAllocator"
-          [ ("value", α7) ])
+      M.pure (Value.StructRecord "custom_allocator::CustomAllocator" [ ("value", α7) ])
     | _, _ => M.impossible
     end.
   
@@ -68,25 +60,14 @@ Module Impl_custom_allocator_CustomAllocator.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "custom_allocator::CustomAllocator")
-          "new"
-          [] in
-      let* α1 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "bool")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_associated_function (Ty.path "custom_allocator::CustomAllocator") "new" [] in
+      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_default :
-    M.IsAssociatedFunction Self "default" default.
+  Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
   
   (*
       pub fn flip(&mut self) {
@@ -112,10 +93,7 @@ Module Impl_custom_allocator_CustomAllocator.
           M.call_closure
             α0
             [
-              M.get_struct_record_field
-                α1
-                "custom_allocator::CustomAllocator"
-                "value";
+              M.get_struct_record_field α1 "custom_allocator::CustomAllocator" "value";
               Value.Integer Integer.Usize 0
             ] in
         let* α3 :=
@@ -132,10 +110,7 @@ Module Impl_custom_allocator_CustomAllocator.
           M.call_closure
             α3
             [
-              M.get_struct_record_field
-                α4
-                "custom_allocator::CustomAllocator"
-                "value";
+              M.get_struct_record_field α4 "custom_allocator::CustomAllocator" "value";
               Value.Integer Integer.Usize 0
             ] in
         let* α6 := M.read α5 in
@@ -159,9 +134,7 @@ Module Impl_custom_allocator_CustomAllocator.
       let* α0 :=
         M.get_trait_method
           "core::ops::index::Index"
-          (Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
           [ Ty.path "usize" ]
           "index"
           [] in
@@ -170,10 +143,7 @@ Module Impl_custom_allocator_CustomAllocator.
         M.call_closure
           α0
           [
-            M.get_struct_record_field
-              α1
-              "custom_allocator::CustomAllocator"
-              "value";
+            M.get_struct_record_field α1 "custom_allocator::CustomAllocator" "value";
             Value.Integer Integer.Usize 0
           ] in
       M.read α2

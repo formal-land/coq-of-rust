@@ -17,13 +17,7 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "u128")
-          []
-          "default"
-          [] in
+      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "updated_incrementer::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -47,8 +41,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,16 +58,10 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::Copy"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
+    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
-Axiom Hash :
-  (Ty.path "updated_incrementer::Hash") =
-    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash : (Ty.path "updated_incrementer::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Error *)
 (* {
@@ -120,8 +107,7 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env.
+  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -133,10 +119,7 @@ Module Impl_updated_incrementer_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_associated_function
-          (Ty.path "updated_incrementer::Incrementer")
-          "init_env"
-          [] in
+        M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "init_env" [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -158,10 +141,7 @@ Module Impl_updated_incrementer_Incrementer.
       let* α1 :=
         M.call_closure
           α0
-          [
-            mk_str
-              "Constructors are not called when upgrading using `set_code_hash`."
-          ] in
+          [ mk_str "Constructors are not called when upgrading using `set_code_hash`." ] in
       M.never_to_any α1
     | _, _ => M.impossible
     end.
@@ -184,29 +164,19 @@ Module Impl_updated_incrementer_Incrementer.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure
-            (M.get_struct_record_field
-              α0
-              "updated_incrementer::Incrementer"
-              "count") in
+          M.pure (M.get_struct_record_field α0 "updated_incrementer::Incrementer" "count") in
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 4) in
         M.assign β α1 in
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "The new count is ") in
               let* α3 :=
-                M.read
-                  (mk_str
-                    ", it was modified using the updated `new_incrementer` code.
+                M.read (mk_str ", it was modified using the updated `new_incrementer` code.
 ") in
               let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               M.pure (M.pointer_coercion α4) in
@@ -221,12 +191,7 @@ Module Impl_updated_incrementer_Incrementer.
               let* α8 :=
                 M.call_closure
                   α6
-                  [
-                    M.get_struct_record_field
-                      α7
-                      "updated_incrementer::Incrementer"
-                      "count"
-                  ] in
+                  [ M.get_struct_record_field α7 "updated_incrementer::Incrementer" "count" ] in
               let* α9 := M.alloc (Value.Array [ α8 ]) in
               M.pure (M.pointer_coercion α9) in
           let* α11 := M.call_closure α1 [ α5; α10 ] in
@@ -250,11 +215,7 @@ Module Impl_updated_incrementer_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read
-        (M.get_struct_record_field
-          α0
-          "updated_incrementer::Incrementer"
-          "count")
+      M.read (M.get_struct_record_field α0 "updated_incrementer::Incrementer" "count")
     | _, _ => M.impossible
     end.
   
@@ -280,21 +241,14 @@ Module Impl_updated_incrementer_Incrementer.
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "updated_incrementer::Error" ])
             "unwrap_or_else"
-            [
-              Ty.function
-                [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
-                (Ty.tuple [])
-            ] in
+            [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple []) ] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "updated_incrementer::Env")
             "set_code_hash"
             [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
         let* α2 :=
-          M.get_associated_function
-            (Ty.path "updated_incrementer::Incrementer")
-            "env"
-            [] in
+          M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "env" [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -332,11 +286,7 @@ Module Impl_updated_incrementer_Incrementer.
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Switched code hash to ") in
@@ -363,6 +313,5 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_set_code :
-    M.IsAssociatedFunction Self "set_code" set_code.
+  Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_updated_incrementer_Incrementer.

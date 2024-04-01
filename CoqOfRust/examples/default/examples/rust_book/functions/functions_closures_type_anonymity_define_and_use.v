@@ -14,13 +14,7 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::function::Fn"
-          F
-          [ Ty.tuple [] ]
-          "call"
-          [] in
+      let* α0 := M.get_trait_method "core::ops::function::Fn" F [ Ty.tuple [] ] "call" [] in
       let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -57,10 +51,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1"
-                          [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "") in
