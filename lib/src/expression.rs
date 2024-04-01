@@ -417,9 +417,17 @@ impl Expr {
                         },
                     ]),
             },
-            Expr::LogicalOperator { name, lhs, rhs } => {
-                coq::Expression::just_name(name.as_str()).apply_many(&[lhs.to_coq(), rhs.to_coq()])
-            }
+            Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
+                .monadic_apply_many(&[
+                    lhs.to_coq(),
+                    coq::Expression::ModeWrapper {
+                        mode: "ltac".to_string(),
+                        expr: Rc::new(coq::Expression::Application {
+                            func: Rc::new(coq::Expression::just_name("M.monadic")),
+                            args: vec![(None, rhs.to_coq())],
+                        }),
+                    },
+                ]),
             Expr::Lambda {
                 args,
                 body,
