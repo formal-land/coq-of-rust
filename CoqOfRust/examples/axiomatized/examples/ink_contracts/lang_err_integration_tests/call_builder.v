@@ -45,8 +45,9 @@ Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
 Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
-(* Enum LangError *)
-(* {
+(*
+Enum LangError
+{
   ty_params := [];
   variants :=
     [
@@ -61,7 +62,8 @@ Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.p
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 (* StructTuple
   {

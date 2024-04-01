@@ -144,8 +144,9 @@ End Impl_core_default_Default_for_erc20_Erc20.
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -160,10 +161,12 @@ End Impl_core_default_Default_for_erc20_Erc20.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -178,7 +181,8 @@ End Impl_core_default_Default_for_erc20_Erc20.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Axiom Result :
   forall (T : Ty.t),

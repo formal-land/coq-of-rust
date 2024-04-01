@@ -63,8 +63,9 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
     fields := [ ("value", Ty.path "bool") ];
   } *)
 
-(* Enum LangError *)
-(* {
+(*
+Enum LangError
+{
   ty_params := [];
   variants :=
     [
@@ -74,7 +75,8 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Axiom ConstructorResult :
   forall (T : Ty.t),

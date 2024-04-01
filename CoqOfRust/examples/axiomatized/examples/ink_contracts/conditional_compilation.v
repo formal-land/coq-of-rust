@@ -75,8 +75,9 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -91,7 +92,8 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_conditional_compilation_Env.
   Definition Self : Ty.t := Ty.path "conditional_compilation::Env".

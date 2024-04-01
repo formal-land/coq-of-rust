@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_PANGRAM : Value.t :=
-  (M.run ltac:(M.monadic (M.alloc (| mk_str "the quick brown fox jumped over the lazy dog
-" |)))).
+  M.run ltac:(M.monadic (M.alloc (| mk_str "the quick brown fox jumped over the lazy dog
+" |))).
 
 (*
 fn main() {

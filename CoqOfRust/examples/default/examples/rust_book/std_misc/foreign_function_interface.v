@@ -172,9 +172,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_contract_transfer_AccountId.
   Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -40,9 +38,7 @@ End Impl_core_default_Default_for_contract_transfer_AccountId.
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
   Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

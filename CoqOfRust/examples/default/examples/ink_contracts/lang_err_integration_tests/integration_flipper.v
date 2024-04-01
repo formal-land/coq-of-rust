@@ -17,9 +17,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

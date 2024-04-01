@@ -160,8 +160,9 @@ Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t.
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -196,7 +197,8 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
@@ -295,8 +297,9 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
     fields := [ ("value", Ty.path "alloc::string::String"); ("token_id", Ty.path "u128") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -316,7 +319,8 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".

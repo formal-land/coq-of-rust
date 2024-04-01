@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -40,9 +38,7 @@ End Impl_core_default_Default_for_constructors_return_value_AccountId.
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -99,8 +95,9 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
     fields := [ ("value", Ty.path "bool") ];
   } *)
 
-(* Enum LangError *)
-(* {
+(*
+Enum LangError
+{
   ty_params := [];
   variants :=
     [
@@ -110,7 +107,8 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
@@ -128,9 +126,7 @@ Axiom ConstructorResult :
 Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorError".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

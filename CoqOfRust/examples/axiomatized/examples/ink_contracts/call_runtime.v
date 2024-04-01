@@ -50,11 +50,13 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "call_runtime::AccountId") ];
   } *)
 
-(* Enum MultiAddress *)
-(* {
+(*
+Enum MultiAddress
+{
   ty_params := [ "AccountId"; "AccountIndex" ];
   variants := [];
-} *)
+}
+*)
 
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
   Definition Self : Ty.t :=
@@ -72,8 +74,9 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
-(* Enum BalancesCall *)
-(* {
+(*
+Enum BalancesCall
+{
   ty_params := [];
   variants :=
     [
@@ -91,10 +94,12 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
-(* Enum RuntimeCall *)
-(* {
+(*
+Enum RuntimeCall
+{
   ty_params := [];
   variants :=
     [
@@ -104,7 +109,8 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 (* StructTuple
   {
@@ -125,8 +131,9 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
-(* Enum RuntimeError *)
-(* {
+(*
+Enum RuntimeError
+{
   ty_params := [];
   variants :=
     [
@@ -136,7 +143,8 @@ End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
@@ -200,8 +208,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
-(* Enum EnvError *)
-(* {
+(*
+Enum EnvError
+{
   ty_params := [];
   variants :=
     [
@@ -216,7 +225,8 @@ End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".

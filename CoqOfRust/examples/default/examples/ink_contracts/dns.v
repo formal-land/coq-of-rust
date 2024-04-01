@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -152,9 +150,7 @@ End Impl_dns_Mapping_K_V.
 Module Impl_core_default_Default_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -181,9 +177,7 @@ End Impl_core_default_Default_for_dns_AccountId.
 Module Impl_core_clone_Clone_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -227,9 +221,7 @@ End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -313,8 +305,9 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -334,7 +327,8 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_dns_Env.
   Definition Self : Ty.t := Ty.path "dns::Env".
@@ -527,8 +521,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -543,7 +538,8 @@ End Impl_core_default_Default_for_dns_DomainNameService.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
@@ -559,9 +555,7 @@ End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 Module Impl_core_cmp_PartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -616,9 +610,7 @@ End Impl_core_marker_StructuralEq_for_dns_Error.
 Module Impl_core_cmp_Eq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

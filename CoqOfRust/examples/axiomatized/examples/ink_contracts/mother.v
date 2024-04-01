@@ -241,8 +241,9 @@ Module Impl_core_clone_Clone_for_mother_Bids.
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Bids.
 
-(* Enum Outline *)
-(* {
+(*
+Enum Outline
+{
   ty_params := [];
   variants :=
     [
@@ -262,7 +263,8 @@ End Impl_core_clone_Clone_for_mother_Bids.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
@@ -326,8 +328,9 @@ Module Impl_core_clone_Clone_for_mother_Outline.
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Outline.
 
-(* Enum Status *)
-(* {
+(*
+Enum Status
+{
   ty_params := [];
   variants :=
     [
@@ -357,7 +360,8 @@ End Impl_core_clone_Clone_for_mother_Outline.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
@@ -513,8 +517,9 @@ Module Impl_core_default_Default_for_mother_Auction.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Auction.
 
-(* Enum Failure *)
-(* {
+(*
+Enum Failure
+{
   ty_params := [];
   variants :=
     [
@@ -529,7 +534,8 @@ End Impl_core_default_Default_for_mother_Auction.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
@@ -587,8 +593,9 @@ End Impl_core_cmp_Eq_for_mother_Failure.
     fields := [ ("auction", Ty.path "mother::Auction") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -598,7 +605,8 @@ End Impl_core_cmp_Eq_for_mother_Failure.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_mother_Env.
   Definition Self : Ty.t := Ty.path "mother::Env".

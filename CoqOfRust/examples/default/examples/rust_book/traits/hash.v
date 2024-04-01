@@ -13,9 +13,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self : Ty.t := Ty.path "hash::Person".
   
-  (*
-  Hash
-  *)
+  (* Hash *)
   Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [ __H ], [ self; state ] =>

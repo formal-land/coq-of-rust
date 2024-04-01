@@ -186,8 +186,9 @@ Module Impl_core_default_Default_for_erc721_Erc721.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc721_Erc721.
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -227,7 +228,8 @@ End Impl_core_default_Default_for_erc721_Erc721.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
@@ -334,8 +336,9 @@ End Impl_core_marker_Copy_for_erc721_Error.
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -355,7 +358,8 @@ End Impl_core_marker_Copy_for_erc721_Error.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_erc721_Env.
   Definition Self : Ty.t := Ty.path "erc721::Env".

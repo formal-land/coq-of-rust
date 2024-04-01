@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -97,9 +95,7 @@ End Impl_mother_Mapping_K_V.
 Module Impl_core_default_Default_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -126,9 +122,7 @@ End Impl_core_default_Default_for_mother_AccountId.
 Module Impl_core_clone_Clone_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -172,9 +166,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
 Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -209,9 +201,7 @@ End Impl_core_marker_StructuralEq_for_mother_AccountId.
 Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -273,9 +263,7 @@ Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u
 Module Impl_core_default_Default_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -331,9 +319,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
 Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -404,9 +390,7 @@ End Impl_core_marker_StructuralEq_for_mother_Bids.
 Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -433,9 +417,7 @@ End Impl_core_cmp_Eq_for_mother_Bids.
 Module Impl_core_clone_Clone_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -478,8 +460,9 @@ Module Impl_core_clone_Clone_for_mother_Bids.
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Bids.
 
-(* Enum Outline *)
-(* {
+(*
+Enum Outline
+{
   ty_params := [];
   variants :=
     [
@@ -499,7 +482,8 @@ End Impl_core_clone_Clone_for_mother_Bids.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
@@ -515,9 +499,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
 Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -572,9 +554,7 @@ End Impl_core_marker_StructuralEq_for_mother_Outline.
 Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -596,9 +576,7 @@ End Impl_core_cmp_Eq_for_mother_Outline.
 Module Impl_core_clone_Clone_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -634,8 +612,9 @@ Module Impl_core_clone_Clone_for_mother_Outline.
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Outline.
 
-(* Enum Status *)
-(* {
+(*
+Enum Status
+{
   ty_params := [];
   variants :=
     [
@@ -665,7 +644,8 @@ End Impl_core_clone_Clone_for_mother_Outline.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
@@ -681,9 +661,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Status.
 Module Impl_core_cmp_PartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -833,9 +811,7 @@ End Impl_core_marker_StructuralEq_for_mother_Status.
 Module Impl_core_cmp_Eq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -869,9 +845,7 @@ End Impl_core_cmp_Eq_for_mother_Status.
 Module Impl_core_clone_Clone_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -1004,9 +978,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
 Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -1147,9 +1119,7 @@ End Impl_core_marker_StructuralEq_for_mother_Auction.
 Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -1222,9 +1192,7 @@ End Impl_core_cmp_Eq_for_mother_Auction.
 Module Impl_core_clone_Clone_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -1412,8 +1380,9 @@ Module Impl_core_default_Default_for_mother_Auction.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Auction.
 
-(* Enum Failure *)
-(* {
+(*
+Enum Failure
+{
   ty_params := [];
   variants :=
     [
@@ -1428,7 +1397,8 @@ End Impl_core_default_Default_for_mother_Auction.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
@@ -1444,9 +1414,7 @@ End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
 Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -1546,9 +1514,7 @@ End Impl_core_marker_StructuralEq_for_mother_Failure.
 Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -1579,8 +1545,9 @@ End Impl_core_cmp_Eq_for_mother_Failure.
     fields := [ ("auction", Ty.path "mother::Auction") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -1590,7 +1557,8 @@ End Impl_core_cmp_Eq_for_mother_Failure.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_mother_Env.
   Definition Self : Ty.t := Ty.path "mother::Env".
@@ -1636,9 +1604,7 @@ End Impl_mother_Env.
 Module Impl_core_default_Default_for_mother_Mother.
   Definition Self : Ty.t := Ty.path "mother::Mother".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

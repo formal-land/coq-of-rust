@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self : Ty.t := Ty.path "structures::Person".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

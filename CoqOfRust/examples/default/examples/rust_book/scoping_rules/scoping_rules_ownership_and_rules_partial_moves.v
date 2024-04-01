@@ -254,9 +254,7 @@ Module main.
     Definition Self : Ty.t :=
       Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
     
-    (*
-        Debug
-    *)
+    (*     Debug *)
     Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [ self; f ] =>

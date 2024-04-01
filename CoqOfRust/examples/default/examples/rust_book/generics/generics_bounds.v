@@ -14,9 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

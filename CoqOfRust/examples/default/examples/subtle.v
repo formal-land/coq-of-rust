@@ -18,9 +18,7 @@ End Impl_core_marker_Copy_for_subtle_Choice.
 Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -46,9 +44,7 @@ End Impl_core_clone_Clone_for_subtle_Choice.
 Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -190,9 +186,7 @@ End Impl_core_convert_From_subtle_Choice_for_bool.
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-      type Output = Choice;
-  *)
+  (*     type Output = Choice; *)
   Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -277,9 +271,7 @@ End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-      type Output = Choice;
-  *)
+  (*     type Output = Choice; *)
   Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -364,9 +356,7 @@ End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-      type Output = Choice;
-  *)
+  (*     type Output = Choice; *)
   Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -451,9 +441,7 @@ End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
-  (*
-      type Output = Choice;
-  *)
+  (*     type Output = Choice; *)
   Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -2980,9 +2968,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with
@@ -3036,9 +3022,7 @@ End Impl_core_marker_Copy_for_subtle_CtOption_T.
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with

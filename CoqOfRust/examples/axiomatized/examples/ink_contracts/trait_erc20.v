@@ -91,8 +91,9 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "trait_erc20::AccountId") ];
   } *)
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -107,7 +108,8 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
@@ -237,8 +239,9 @@ End Impl_core_default_Default_for_trait_erc20_Erc20.
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -253,7 +256,8 @@ End Impl_core_default_Default_for_trait_erc20_Erc20.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_trait_erc20_Env.
   Definition Self : Ty.t := Ty.path "trait_erc20::Env".
