@@ -324,24 +324,23 @@ fn build_inner_match(
 
 pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
     Rc::new(Expr::Call {
-        func: Expr::local_var("ltac:"),
-        args: vec![Rc::new(Expr::Call {
-            func: Expr::local_var("M.monadic_match_operator"),
-            args: vec![
-                scrutinee,
-                Rc::new(Expr::Array {
-                    is_internal: true,
-                    elements: arms
-                        .into_iter()
-                        .map(
-                            |MatchArm {
-                                 pattern,
-                                 if_let_guard,
-                                 body,
-                             }| {
-                                let body = if_let_guard.into_iter().rfold(
-                                    body,
-                                    |body, (pattern, guard)| {
+        func: Expr::local_var("M.match_operator"),
+        args: vec![
+            scrutinee,
+            Rc::new(Expr::Array {
+                is_internal: true,
+                elements: arms
+                    .into_iter()
+                    .map(
+                        |MatchArm {
+                             pattern,
+                             if_let_guard,
+                             body,
+                         }| {
+                            let body =
+                                if_let_guard
+                                    .into_iter()
+                                    .rfold(body, |body, (pattern, guard)| {
                                         Rc::new(Expr::Let {
                                             is_monadic: false,
                                             name: Some("γ".to_string()),
@@ -352,26 +351,19 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
                                                 0,
                                             ),
                                         })
-                                    },
-                                );
+                                    });
 
-                                Rc::new(Expr::Lambda {
-                                    is_internal: true,
-                                    args: vec![("γ".to_string(), None)],
-                                    body: build_inner_match(
-                                        vec![("γ".to_string(), pattern)],
-                                        body,
-                                        0,
-                                    ),
-                                })
-                            },
-                        )
-                        .collect(),
-                }),
-            ],
-            kind: CallKind::Pure,
-        })],
-        kind: CallKind::Pure,
+                            Rc::new(Expr::Lambda {
+                                is_internal: true,
+                                args: vec![("γ".to_string(), None)],
+                                body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
+                            })
+                        },
+                    )
+                    .collect(),
+            }),
+        ],
+        kind: CallKind::Effectful,
     })
 }
 

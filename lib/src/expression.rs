@@ -409,12 +409,13 @@ impl Expr {
                 CallKind::Effectful => func
                     .to_coq()
                     .monadic_apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
-                CallKind::Closure => coq::Expression::just_name("M.call_closure").monadic_apply_many(&[
-                    func.to_coq(),
-                    coq::Expression::List {
-                        exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
-                    },
-                ]),
+                CallKind::Closure => coq::Expression::just_name("M.call_closure")
+                    .monadic_apply_many(&[
+                        func.to_coq(),
+                        coq::Expression::List {
+                            exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
+                        },
+                    ]),
             },
             Expr::LogicalOperator { name, lhs, rhs } => {
                 coq::Expression::just_name(name.as_str()).apply_many(&[lhs.to_coq(), rhs.to_coq()])
@@ -430,7 +431,13 @@ impl Expr {
                             .iter()
                             .map(|(name, _)| coq::Expression::just_name(name))
                             .collect_vec(),
-                        body: body.to_coq().into(),
+                        body: Rc::new(coq::Expression::ModeWrapper {
+                            mode: "ltac".to_string(),
+                            expr: Rc::new(coq::Expression::Application {
+                                func: Rc::new(coq::Expression::just_name("M.monadic")),
+                                args: vec![(None, body.to_coq())],
+                            }),
+                        }),
                     };
                 };
 
@@ -493,7 +500,15 @@ impl Expr {
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
-            Expr::Loop { body } => coq::Expression::just_name("M.monadic_loop").apply(&body.to_coq()),
+            Expr::Loop { body } => coq::Expression::just_name("M.loop").monadic_apply(&Rc::new(
+                coq::Expression::ModeWrapper {
+                    mode: "ltac".to_string(),
+                    expr: Rc::new(coq::Expression::Application {
+                        func: Rc::new(coq::Expression::just_name("M.monadic")),
+                        args: vec![(None, body.to_coq())],
+                    }),
+                },
+            )),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
                 .monadic_apply_many(&[base.to_coq(), index.to_coq()]),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
@@ -542,7 +557,9 @@ impl Expr {
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),
             Expr::InternalInteger(i) => coq::Expression::just_name(i.to_string().as_str()),
-            Expr::Return(value) => coq::Expression::just_name("M.return_").monadic_apply(&value.to_coq()),
+            Expr::Return(value) => {
+                coq::Expression::just_name("M.return_").monadic_apply(&value.to_coq())
+            }
             Expr::Comment(message, expr) => {
                 coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
             }
