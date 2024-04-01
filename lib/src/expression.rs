@@ -319,8 +319,10 @@ fn string_to_coq(message: &str) -> coq::Expression {
 impl LoopControlFlow {
     pub fn to_coq<'a>(self) -> coq::Expression<'a> {
         match self {
-            LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic(),
-            LoopControlFlow::Continue => coq::Expression::just_name("M.continue").monadic(),
+            LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic_apply_empty(),
+            LoopControlFlow::Continue => {
+                coq::Expression::just_name("M.continue").monadic_apply_empty()
+            }
         }
     }
 }
@@ -418,16 +420,7 @@ impl Expr {
                     ]),
             },
             Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
-                .monadic_apply_many(&[
-                    lhs.to_coq(),
-                    coq::Expression::ModeWrapper {
-                        mode: "ltac".to_string(),
-                        expr: Rc::new(coq::Expression::Application {
-                            func: Rc::new(coq::Expression::just_name("M.monadic")),
-                            args: vec![(None, rhs.to_coq())],
-                        }),
-                    },
-                ]),
+                .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(&rhs.to_coq())]),
             Expr::Lambda {
                 args,
                 body,
@@ -439,47 +432,30 @@ impl Expr {
                             .iter()
                             .map(|(name, _)| coq::Expression::just_name(name))
                             .collect_vec(),
-                        body: Rc::new(coq::Expression::ModeWrapper {
-                            mode: "ltac".to_string(),
-                            expr: Rc::new(coq::Expression::Application {
-                                func: Rc::new(coq::Expression::just_name("M.monadic")),
-                                args: vec![(None, body.to_coq())],
-                            }),
-                        }),
+                        body: Rc::new(coq::Expression::monadic(&body.to_coq())),
                     };
                 };
 
                 coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
                     parameters: vec![coq::Expression::just_name("γ")],
-                    body: Rc::new(coq::Expression::ModeWrapper {
-                        mode: "ltac".to_string(),
-                        expr: Rc::new(coq::Expression::Application {
-                            func: Rc::new(coq::Expression::just_name("M.monadic")),
-                            args: vec![(
-                                None,
-                                coq::Expression::Match {
-                                    scrutinees: vec![coq::Expression::just_name("γ")],
-                                    arms: vec![
-                                        (
-                                            vec![coq::Expression::List {
-                                                exprs: args
-                                                    .iter()
-                                                    .map(|(name, _)| {
-                                                        coq::Expression::name_pattern(name)
-                                                    })
-                                                    .collect(),
-                                            }],
-                                            body.to_coq(),
-                                        ),
-                                        (
-                                            vec![coq::Expression::Wild],
-                                            coq::Expression::just_name("M.impossible").monadic(),
-                                        ),
-                                    ],
-                                },
-                            )],
-                        }),
-                    }),
+                    body: Rc::new(coq::Expression::monadic(&coq::Expression::Match {
+                        scrutinees: vec![coq::Expression::just_name("γ")],
+                        arms: vec![
+                            (
+                                vec![coq::Expression::List {
+                                    exprs: args
+                                        .iter()
+                                        .map(|(name, _)| coq::Expression::name_pattern(name))
+                                        .collect(),
+                                }],
+                                body.to_coq(),
+                            ),
+                            (
+                                vec![coq::Expression::Wild],
+                                coq::Expression::just_name("M.impossible").monadic_apply_empty(),
+                            ),
+                        ],
+                    })),
                 })
             }
             Expr::Array {
@@ -519,15 +495,8 @@ impl Expr {
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
-            Expr::Loop { body } => coq::Expression::just_name("M.loop").monadic_apply(&Rc::new(
-                coq::Expression::ModeWrapper {
-                    mode: "ltac".to_string(),
-                    expr: Rc::new(coq::Expression::Application {
-                        func: Rc::new(coq::Expression::just_name("M.monadic")),
-                        args: vec![(None, body.to_coq())],
-                    }),
-                },
-            )),
+            Expr::Loop { body } => coq::Expression::just_name("M.loop")
+                .monadic_apply(&Rc::new(coq::Expression::monadic(&body.to_coq()))),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
                 .monadic_apply_many(&[base.to_coq(), index.to_coq()]),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),

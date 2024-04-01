@@ -149,7 +149,6 @@ pub(crate) enum Expression<'a> {
         exprs: Vec<Expression<'a>>,
     },
     /// For example ltac:(...) or constr:(...)
-    #[allow(dead_code)]
     ModeWrapper {
         mode: String,
         expr: Rc<Expression<'a>>,
@@ -686,7 +685,7 @@ impl<'a> Expression<'a> {
         )
     }
 
-    pub(crate) fn monadic(&self) -> Self {
+    pub(crate) fn monadic_apply_empty(&self) -> Self {
         Expression::MonadicApplication {
             func: Rc::new(self.clone()),
             args: vec![],
@@ -726,6 +725,16 @@ impl<'a> Expression<'a> {
                 .map(|arg| (None, arg.to_owned()))
                 .collect::<Vec<_>>(),
         )
+    }
+
+    pub(crate) fn monadic(&self) -> Self {
+        Expression::ModeWrapper {
+            mode: "ltac".to_string(),
+            expr: Rc::new(Expression::Application {
+                func: Rc::new(Expression::just_name("M.monadic")),
+                args: vec![(None, self.to_owned())],
+            }),
+        }
     }
 
     #[allow(dead_code)]

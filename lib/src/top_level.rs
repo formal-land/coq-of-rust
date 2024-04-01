@@ -1200,13 +1200,7 @@ impl FunDefinition {
                                             .collect(),
                                     },
                                 ],
-                                coq::Expression::ModeWrapper {
-                                    mode: "ltac".to_string(),
-                                    expr: Rc::new(coq::Expression::Application {
-                                        func: Rc::new(coq::Expression::just_name("M.monadic")),
-                                        args: vec![(None, body.to_coq())],
-                                    }),
-                                },
+                                coq::Expression::monadic(&body.to_coq()),
                             ),
                             (
                                 vec![coq::Expression::Wild, coq::Expression::Wild],
@@ -1547,13 +1541,7 @@ impl TopLevelItem {
                             ty: Some(coq::Expression::just_name("Value.t")),
                             body: coq::Expression::Code(
                                 coq::Expression::just_name("M.run")
-                                    .apply(&coq::Expression::ModeWrapper {
-                                        mode: "ltac".to_string(),
-                                        expr: Rc::new(coq::Expression::Application {
-                                            func: Rc::new(coq::Expression::just_name("M.monadic")),
-                                            args: vec![(None, value.to_coq())],
-                                        }),
-                                    })
+                                    .apply(&coq::Expression::monadic(&value.to_coq()))
                                     .to_doc(true),
                             ),
                         },
