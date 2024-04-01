@@ -22,9 +22,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -54,9 +52,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -80,9 +76,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
   Definition Self : Ty.t := Ty.path "operator_overloading::Foo".
   
-  (*
-      type Output = FooBar;
-  *)
+  (*     type Output = FooBar; *)
   Definition _Output : Ty.t := Ty.path "operator_overloading::FooBar".
   
   (*
@@ -127,9 +121,7 @@ End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Fo
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
   Definition Self : Ty.t := Ty.path "operator_overloading::Bar".
   
-  (*
-      type Output = BarFoo;
-  *)
+  (*     type Output = BarFoo; *)
   Definition _Output : Ty.t := Ty.path "operator_overloading::BarFoo".
   
   (*

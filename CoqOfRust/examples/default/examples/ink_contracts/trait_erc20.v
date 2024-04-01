@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -87,9 +85,7 @@ End Impl_trait_erc20_Mapping_K_V.
 Module Impl_core_default_Default_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -110,9 +106,7 @@ End Impl_core_default_Default_for_trait_erc20_AccountId.
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -167,9 +161,7 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -217,9 +209,7 @@ End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -266,9 +256,7 @@ End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -318,9 +306,7 @@ Axiom Result :
 Module Impl_core_default_Default_for_trait_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

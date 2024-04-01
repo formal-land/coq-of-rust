@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_multisig_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -131,9 +129,7 @@ End Impl_multisig_Mapping_K_V.
 Module Impl_core_default_Default_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -154,9 +150,7 @@ End Impl_core_default_Default_for_multisig_AccountId.
 Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -186,9 +180,7 @@ End Impl_core_fmt_Debug_for_multisig_AccountId.
 Module Impl_core_clone_Clone_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -227,9 +219,7 @@ End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
 Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -265,9 +255,7 @@ End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -290,9 +278,7 @@ End Impl_core_cmp_Eq_for_multisig_AccountId.
 Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  PartialOrd
-  *)
+  (* PartialOrd *)
   Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -327,9 +313,7 @@ End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
 Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  (*
-  Ord
-  *)
+  (* Ord *)
   Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -399,9 +383,7 @@ Definition value_WRONG_TRANSACTION_ID : Value.t :=
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -445,9 +427,7 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 Module Impl_core_default_Default_for_multisig_Transaction.
   Definition Self : Ty.t := Ty.path "multisig::Transaction".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -519,9 +499,7 @@ End Impl_core_default_Default_for_multisig_Transaction.
 Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -560,9 +538,7 @@ End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
 Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -594,9 +570,7 @@ End Impl_core_marker_StructuralEq_for_multisig_Error.
 Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -629,9 +603,7 @@ End Impl_core_cmp_Eq_for_multisig_Error.
 Module Impl_core_default_Default_for_multisig_Transactions.
   Definition Self : Ty.t := Ty.path "multisig::Transactions".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -860,9 +832,7 @@ End Impl_multisig_Env.
 Module Impl_core_default_Default_for_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

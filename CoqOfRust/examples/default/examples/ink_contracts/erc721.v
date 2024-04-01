@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_erc721_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -131,9 +129,7 @@ End Impl_erc721_Mapping_K_V.
 Module Impl_core_default_Default_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -154,9 +150,7 @@ End Impl_core_default_Default_for_erc721_AccountId.
 Module Impl_core_clone_Clone_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -195,9 +189,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
 Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -270,9 +262,7 @@ Axiom TokenId : (Ty.path "erc721::TokenId") = (Ty.path "u32").
 Module Impl_core_default_Default_for_erc721_Erc721.
   Definition Self : Ty.t := Ty.path "erc721::Erc721".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -387,9 +377,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
 Module Impl_core_cmp_PartialEq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -436,9 +424,7 @@ End Impl_core_marker_StructuralEq_for_erc721_Error.
 Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -459,9 +445,7 @@ End Impl_core_cmp_Eq_for_erc721_Error.
 Module Impl_core_clone_Clone_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

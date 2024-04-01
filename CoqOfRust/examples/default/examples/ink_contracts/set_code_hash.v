@@ -24,9 +24,7 @@ Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Definition Self : Ty.t := Ty.path "set_code_hash::Incrementer".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

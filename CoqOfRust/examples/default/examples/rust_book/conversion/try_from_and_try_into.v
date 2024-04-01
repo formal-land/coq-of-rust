@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -54,9 +52,7 @@ End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -81,9 +77,7 @@ End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
-  (*
-      type Error = ();
-  *)
+  (*     type Error = (); *)
   Definition _Error : Ty.t := Ty.tuple [].
   
   (*

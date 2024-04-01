@@ -14,9 +14,7 @@ Definition id (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn tri(a: u64, b: u64, c: u64) {}
-*)
+(* fn tri(a: u64, b: u64, c: u64) {} *)
 Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ a; b; c ] =>

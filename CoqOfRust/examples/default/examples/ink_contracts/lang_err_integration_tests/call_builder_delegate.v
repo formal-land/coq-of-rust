@@ -27,9 +27,7 @@ Axiom Hash :
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

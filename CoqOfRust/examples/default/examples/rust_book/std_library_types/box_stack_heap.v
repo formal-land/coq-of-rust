@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -52,9 +50,7 @@ End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

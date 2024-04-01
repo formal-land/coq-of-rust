@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -34,9 +32,7 @@ End Impl_core_default_Default_for_call_runtime_AccountId.
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -140,9 +136,7 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => M.pure (Value.StructTuple "call_runtime::RuntimeCaller" [])
@@ -173,9 +167,7 @@ End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -210,9 +202,7 @@ End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -244,9 +234,7 @@ End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

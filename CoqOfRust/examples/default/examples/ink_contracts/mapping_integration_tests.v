@@ -16,9 +16,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -145,9 +143,7 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -168,9 +164,7 @@ End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -240,9 +234,7 @@ End Impl_mapping_integration_tests_Env.
 Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

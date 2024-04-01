@@ -18,8 +18,9 @@ pub(crate) struct TopLevel<'a> {
 pub(crate) enum TopLevelItem<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
+    #[allow(dead_code)]
     Code(Doc<'a>),
-    Comment(Expression<'a>),
+    Comment(Vec<Expression<'a>>),
     Definition(Definition<'a>),
     Line,
     Module(Module<'a>),
@@ -275,7 +276,15 @@ impl<'a> TopLevelItem<'a> {
         match self {
             TopLevelItem::Code(code) => code.to_owned(),
             TopLevelItem::Comment(expression) => {
-                concat([text("(* "), expression.to_doc(false), text(" *)")])
+                let expression: Vec<_> = expression.iter().map(|e| e.to_doc(false)).collect();
+                if expression.len() <= 1 {
+                    concat([vec![text("(* ")], expression, vec![text(" *)")]].concat())
+                } else {
+                    intersperse(
+                        [vec![text("(*")], expression, vec![text("*)")]].concat(),
+                        [hardline()],
+                    )
+                }
             }
             TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Line => nil(),

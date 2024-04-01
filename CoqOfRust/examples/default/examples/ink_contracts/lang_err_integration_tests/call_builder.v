@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -34,9 +32,7 @@ End Impl_core_default_Default_for_call_builder_AccountId.
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -111,9 +107,7 @@ End Impl_call_builder_Selector.
 Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Definition Self : Ty.t := Ty.path "call_builder::CallBuilderTest".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => M.pure (Value.StructTuple "call_builder::CallBuilderTest" [])

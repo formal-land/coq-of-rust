@@ -28,9 +28,7 @@ Module checked.
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self : Ty.t := Ty.path "result::checked::MathError".
     
-    (*
-        Debug
-    *)
+    (*     Debug *)
     Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [ self; f ] =>

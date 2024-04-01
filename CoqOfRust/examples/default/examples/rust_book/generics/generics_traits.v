@@ -19,9 +19,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.
   
-  (*
-      fn double_drop(self, _: T) {}
-  *)
+  (*     fn double_drop(self, _: T) {} *)
   Definition double_drop (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T U in
     match τ, α with

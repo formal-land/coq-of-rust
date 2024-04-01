@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::Borrowed".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -55,9 +53,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -121,9 +117,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::Either".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

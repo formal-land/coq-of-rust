@@ -39,9 +39,7 @@ Module Impl_functions_order_SomeType.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
   
-  (*
-      fn meth2(self) {}
-  *)
+  (*     fn meth2(self) {} *)
   Definition meth2 (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -120,9 +118,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     | _, _ => M.impossible
     end.
   
-  (*
-      fn some_trait_bar(&self) {}
-  *)
+  (*     fn some_trait_bar(&self) {} *)
   Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -146,9 +142,7 @@ End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Definition Self : Ty.t := Ty.path "functions_order::OtherType".
   
-  (*
-      fn some_trait_foo(&self) {}
-  *)
+  (*     fn some_trait_foo(&self) {} *)
   Definition some_trait_foo (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -157,9 +151,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     | _, _ => M.impossible
     end.
   
-  (*
-      fn some_trait_bar(&self) {}
-  *)
+  (*     fn some_trait_bar(&self) {} *)
   Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -199,9 +191,7 @@ Module inner_mod.
     | _, _ => M.impossible
     end.
   
-  (*
-      fn tar() {}
-  *)
+  (*     fn tar() {} *)
   Definition tar (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
   
@@ -223,9 +213,7 @@ Module inner_mod.
       | _, _ => M.impossible
       end.
     
-    (*
-            fn tack() {}
-    *)
+    (*         fn tack() {} *)
     Definition tack (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
   End nested_mod.
@@ -262,8 +250,6 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn foo() {}
-*)
+(* fn foo() {} *)
 Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.

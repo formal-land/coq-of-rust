@@ -44,14 +44,10 @@ End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
-  (*
-      type SomeType = SomeOtherType;
-  *)
+  (*     type SomeType = SomeOtherType; *)
   Definition _SomeType : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
-  (*
-      fn some_fn() {}
-  *)
+  (*     fn some_fn() {} *)
   Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
   

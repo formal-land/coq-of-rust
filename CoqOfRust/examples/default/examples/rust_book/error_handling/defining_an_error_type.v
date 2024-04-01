@@ -10,9 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -36,9 +34,7 @@ End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

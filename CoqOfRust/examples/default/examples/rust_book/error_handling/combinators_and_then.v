@@ -27,9 +27,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -93,9 +91,7 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

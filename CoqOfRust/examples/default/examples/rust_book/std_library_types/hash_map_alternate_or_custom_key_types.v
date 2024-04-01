@@ -26,9 +26,7 @@ End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_ty
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -104,9 +102,7 @@ End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Acc
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -134,9 +130,7 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
-  (*
-  Hash
-  *)
+  (* Hash *)
   Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [ __H ], [ self; state ] =>

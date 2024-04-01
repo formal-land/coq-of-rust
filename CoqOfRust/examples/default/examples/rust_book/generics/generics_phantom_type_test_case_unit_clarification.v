@@ -10,9 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -36,9 +34,7 @@ End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_I
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -72,9 +68,7 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -98,9 +92,7 @@ End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_M
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -136,9 +128,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (Unit : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self Unit in
     match τ, α with
@@ -185,9 +175,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (Unit : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self Unit in
     match τ, α with
@@ -252,9 +240,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
-  (*
-      type Output = Length<Unit>;
-  *)
+  (*     type Output = Length<Unit>; *)
   Definition _Output (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   

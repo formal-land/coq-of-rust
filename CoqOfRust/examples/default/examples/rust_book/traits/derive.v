@@ -22,9 +22,7 @@ End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -49,9 +47,7 @@ End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
-  (*
-  PartialOrd
-  *)
+  (* PartialOrd *)
   Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -93,9 +89,7 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self : Ty.t := Ty.path "derive::Inches".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

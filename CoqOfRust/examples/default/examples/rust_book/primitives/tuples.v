@@ -40,9 +40,7 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self : Ty.t := Ty.path "tuples::Matrix".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -34,9 +32,7 @@ End Impl_core_default_Default_for_updated_incrementer_AccountId.
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

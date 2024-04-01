@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -34,9 +32,7 @@ End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -92,9 +88,7 @@ End Impl_e2e_call_runtime_Env.
 Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Contract".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])

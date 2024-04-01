@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -34,9 +32,7 @@ End Impl_core_default_Default_for_payment_channel_AccountId.
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -75,9 +71,7 @@ End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -113,9 +107,7 @@ End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -230,9 +222,7 @@ End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -283,9 +273,7 @@ End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -458,9 +446,7 @@ Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
-  (*
-      type Type = [u8; 32];
-  *)
+  (*     type Type = [u8; 32]; *)
   Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
@@ -474,9 +460,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
-  (*
-      type Type = [u8; 32];
-  *)
+  (*     type Type = [u8; 32]; *)
   Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
@@ -490,9 +474,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
-  (*
-      type Type = [u8; 32];
-  *)
+  (*     type Type = [u8; 32]; *)
   Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
@@ -506,9 +488,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
-  (*
-      type Type = [u8; 16];
-  *)
+  (*     type Type = [u8; 16]; *)
   Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :

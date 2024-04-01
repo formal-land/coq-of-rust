@@ -27,9 +27,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self : Ty.t := Ty.path "combinators_map::Food".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -77,9 +75,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -116,9 +112,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -155,9 +149,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

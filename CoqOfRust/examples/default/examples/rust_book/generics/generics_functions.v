@@ -21,9 +21,7 @@ Require Import CoqOfRust.CoqOfRust.
     fields := [ T ];
   } *)
 
-(*
-fn reg_fn(_s: S) {}
-*)
+(* fn reg_fn(_s: S) {} *)
 Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ _s ] =>
@@ -32,9 +30,7 @@ Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn gen_spec_t(_s: SGen<A>) {}
-*)
+(* fn gen_spec_t(_s: SGen<A>) {} *)
 Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ _s ] =>
@@ -43,9 +39,7 @@ Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn gen_spec_i32(_s: SGen<i32>) {}
-*)
+(* fn gen_spec_i32(_s: SGen<i32>) {} *)
 Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ _s ] =>
@@ -54,9 +48,7 @@ Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn generic<T>(_s: SGen<T>) {}
-*)
+(* fn generic<T>(_s: SGen<T>) {} *)
 Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ T ], [ _s ] =>

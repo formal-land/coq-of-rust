@@ -114,8 +114,6 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(*
-fn main() {}
-*)
+(* fn main() {} *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.

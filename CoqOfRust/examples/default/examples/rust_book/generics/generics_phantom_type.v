@@ -25,9 +25,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
     match τ, α with
@@ -97,9 +95,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
     match τ, α with

@@ -37,9 +37,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
   Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_or::Fruit".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

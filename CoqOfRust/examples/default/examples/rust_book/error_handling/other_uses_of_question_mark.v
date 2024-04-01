@@ -22,9 +22,7 @@ Axiom Result :
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
