@@ -141,9 +141,6 @@ pub(crate) enum Expr {
         path: Path,
         fields: Vec<Rc<Expr>>,
     },
-    StructUnit {
-        path: Path,
-    },
     Use(Rc<Expr>),
     InternalString(String),
     InternalInteger(usize),
@@ -507,20 +504,23 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             )
         }
         Expr::StructTuple { path, fields } => {
-            let path = path.clone();
+            if fields.is_empty() {
+                (pure(expr), fresh_vars)
+            } else {
+                let path = path.clone();
 
-            monadic_lets(
-                fresh_vars,
-                fields.clone(),
-                Box::new(move |fresh_vars, fields| {
-                    (
-                        pure(Rc::new(Expr::StructTuple { path, fields })),
-                        fresh_vars,
-                    )
-                }),
-            )
+                monadic_lets(
+                    fresh_vars,
+                    fields.clone(),
+                    Box::new(move |fresh_vars, fields| {
+                        (
+                            pure(Rc::new(Expr::StructTuple { path, fields })),
+                            fresh_vars,
+                        )
+                    }),
+                )
+            }
         }
-        Expr::StructUnit { .. } => (pure(expr), fresh_vars),
         Expr::Use(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (pure(Rc::new(Expr::Use(expr))), fresh_vars)
         }),
@@ -867,11 +867,6 @@ impl Expr {
                     coq::Expression::List {
                         exprs: fields.iter().map(|expr| expr.to_coq()).collect(),
                     },
-                ]),
-            Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
-                .apply_many(&[
-                    coq::Expression::String(path.to_string()),
-                    coq::Expression::List { exprs: vec![] },
                 ]),
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),
