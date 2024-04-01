@@ -1292,7 +1292,8 @@ impl FunDefinition {
                             ty: Some(coq::Expression::just_name("M")),
                             body: if !generic_tys.is_empty() && !with_extra_self_ty {
                                 coq::Expression::Let {
-                                    name: "Self".to_string(),
+                                    name: Some("Self".to_string()),
+                                    is_monadic: false,
                                     ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
                                     value: Rc::new(
                                         coq::Expression::just_name("Self").apply_many(
@@ -1367,7 +1368,8 @@ impl ImplItemKind {
                                 ty: Some(coq::Expression::just_name("Value.t")),
                                 body: if !generic_tys.is_empty() {
                                     coq::Expression::Let {
-                                        name: "Self".to_string(),
+                                        name: Some("Self".to_string()),
+                                        is_monadic: false,
                                         ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
                                         value: Rc::new(
                                             coq::Expression::just_name("Self").apply_many(
