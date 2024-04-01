@@ -123,7 +123,6 @@ pub(crate) enum Expression<'a> {
         rhs: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
-    #[allow(dead_code)]
     Product {
         /// left hand side
         lhs: Rc<Expression<'a>>,

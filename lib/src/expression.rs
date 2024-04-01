@@ -319,8 +319,8 @@ fn string_to_coq(message: &str) -> coq::Expression {
 impl LoopControlFlow {
     pub fn to_coq<'a>(self) -> coq::Expression<'a> {
         match self {
-            LoopControlFlow::Break => coq::Expression::just_name("M.break"),
-            LoopControlFlow::Continue => coq::Expression::just_name("M.continue"),
+            LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic(),
+            LoopControlFlow::Continue => coq::Expression::just_name("M.continue").monadic(),
         }
     }
 }
@@ -356,9 +356,9 @@ impl Expr {
         match self {
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
-                .apply(&coq::Expression::String(path.to_string())),
+                .monadic_apply(&coq::Expression::String(path.to_string())),
             Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
-                .apply_many(&[
+                .monadic_apply_many(&[
                     coq::Expression::String(func.to_string()),
                     coq::Expression::List {
                         exprs: generic_tys
@@ -373,7 +373,7 @@ impl Expr {
                 trait_tys,
                 method_name,
                 generic_tys,
-            } => coq::Expression::just_name("M.get_trait_method").apply_many(&[
+            } => coq::Expression::just_name("M.get_trait_method").monadic_apply_many(&[
                 coq::Expression::String(trait_name.to_string()),
                 self_ty.to_coq(),
                 coq::Expression::List {
@@ -391,7 +391,7 @@ impl Expr {
                 ty,
                 func,
                 generic_tys,
-            } => coq::Expression::just_name("M.get_associated_function").apply_many(&[
+            } => coq::Expression::just_name("M.get_associated_function").monadic_apply_many(&[
                 ty.to_coq(),
                 coq::Expression::String(func.to_string()),
                 coq::Expression::List {
@@ -403,10 +403,13 @@ impl Expr {
             ]),
             Expr::Literal(literal) => literal.to_coq(),
             Expr::Call { func, args, kind } => match kind {
-                CallKind::Pure | CallKind::Effectful => func
+                CallKind::Pure => func
                     .to_coq()
                     .apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
-                CallKind::Closure => coq::Expression::just_name("M.call_closure").apply_many(&[
+                CallKind::Effectful => func
+                    .to_coq()
+                    .monadic_apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
+                CallKind::Closure => coq::Expression::just_name("M.call_closure").monadic_apply_many(&[
                     func.to_coq(),
                     coq::Expression::List {
                         exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
@@ -490,9 +493,9 @@ impl Expr {
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
-            Expr::Loop { body } => coq::Expression::just_name("M.loop").apply(&body.to_coq()),
+            Expr::Loop { body } => coq::Expression::just_name("M.monadic_loop").apply(&body.to_coq()),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
-                .apply_many(&[base.to_coq(), index.to_coq()]),
+                .monadic_apply_many(&[base.to_coq(), index.to_coq()]),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
             Expr::StructStruct { path, fields, base } => match base {
                 None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
@@ -539,7 +542,7 @@ impl Expr {
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),
             Expr::InternalInteger(i) => coq::Expression::just_name(i.to_string().as_str()),
-            Expr::Return(value) => coq::Expression::just_name("M.return_").apply(&value.to_coq()),
+            Expr::Return(value) => coq::Expression::just_name("M.return_").monadic_apply(&value.to_coq()),
             Expr::Comment(message, expr) => {
                 coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
             }
