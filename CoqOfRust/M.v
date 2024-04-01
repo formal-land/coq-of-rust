@@ -665,44 +665,6 @@ Definition find_or_pattern
   | Value.Tuple free_vars => call_closure body free_vars
   | _ => impossible
   end.
-(** A tactic that performs monadic transformation for each of
-    the branches of the match expression. *)
-Ltac monadic_match_branches branches :=
-  lazymatch branches with
-  | nil => exact nil
-  | ?branch :: ?branches' => 
-    lazymatch branch with
-    | fun v => @?f v =>
-      refine (cons _ _);
-      [ let v' := fresh v in
-        intro v';
-        let e := (eval cbn beta in (f v')) in
-        monadic e
-      | monadic_match_branches branches'
-      ]
-    end
-  end.
-
-(** A wrapper tactic over [match_operator]. This tactic calls
-    the [M.monadic] tactic on each branch of the match expression,
-    then calls the [match_operator] on the transformed branches. *)
-Ltac monadic_match_operator expr branches :=
-  refine (run (match_operator expr _));
-  monadic_match_branches branches.
-
-(** A wrapper tactic over [M.catch_return]. This tactic calls the
-   [M.monadic] tactic the body of the function, then calls the
-   [M.catch_return] on the result. *)
-Ltac monadic_catch_return expr := 
-  refine (run (catch_return _));
-  monadic expr.
-
-(** A wrapper tactic over [M.loop]. This tactic calls the
-    [M.monadic] tactic the body of the loop, then calls the [M.loop]
-    on the result. *)
-Ltac monadic_loop expr :=
-  refine (run (loop _));
-  monadic expr.
 
 Definition never_to_any (x : Value.t) : M :=
   M.impossible.
