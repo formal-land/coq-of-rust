@@ -1404,16 +1404,12 @@ impl ImplItemKind {
                             coq::ArgSpecKind::Explicit,
                         )],
                         ty: Some(coq::Expression::just_name("Ty.t")),
-                        body: coq::Expression::Code(nest([ty.to_coq().to_doc(false)])),
+                        body: ty.to_coq(),
                     },
                 ))]
             }
         }
     }
-
-    // fn to_doc<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Doc {
-    //     self.to_coq(name, generic_tys).to_doc(false)
-    // }
 }
 
 impl Snippet {
@@ -2048,13 +2044,9 @@ impl TopLevel {
         )
     }
 
-    fn to_doc(&self) -> Doc {
-        self.to_coq().to_doc()
-    }
-
     pub fn to_pretty(&self, width: usize) -> String {
         let mut w = Vec::new();
-        self.to_doc().render(width, &mut w).unwrap();
+        self.to_coq().to_doc().render(width, &mut w).unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
     }
 }
