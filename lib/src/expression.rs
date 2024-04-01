@@ -8,20 +8,6 @@ use itertools::Itertools;
 use rustc_middle::query::plumbing::IntoQueryParam;
 use std::rc::Rc;
 
-/// Struct [FreshVars] represents a set of fresh variables
-#[derive(Clone, Debug)]
-pub(crate) struct FreshVars(u64);
-
-impl FreshVars {
-    pub(crate) fn new() -> Self {
-        FreshVars(0)
-    }
-
-    fn next(&self) -> (String, Self) {
-        (format!("α{}", self.0), FreshVars(self.0 + 1))
-    }
-}
-
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Debug)]
@@ -74,7 +60,6 @@ pub(crate) enum Literal {
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) enum Expr {
-    Pure(Rc<Expr>),
     LocalVar(String),
     GetConst(Path),
     GetFunction {
@@ -240,327 +225,6 @@ impl Expr {
     }
 }
 
-fn pure(e: Rc<Expr>) -> Rc<Expr> {
-    Rc::new(Expr::Pure(e))
-}
-
-/// creates a monadic let statement with [e1] as the initializer
-/// and the result of [f] as the body
-fn monadic_let_in_stmt(
-    fresh_vars: FreshVars,
-    e1: Rc<Expr>,
-    f: impl FnOnce(FreshVars, Rc<Expr>) -> (Rc<Expr>, FreshVars),
-) -> (Rc<Expr>, FreshVars) {
-    match e1.as_ref() {
-        Expr::Pure(e) => f(fresh_vars, e.clone()),
-        Expr::Let {
-            name,
-            is_monadic,
-            init,
-            body,
-        } => {
-            let (body, fresh_vars) = monadic_let_in_stmt(fresh_vars, body.clone(), f);
-            (
-                Rc::new(Expr::Let {
-                    name: name.clone(),
-                    is_monadic: *is_monadic,
-                    init: init.clone(),
-                    body,
-                }),
-                fresh_vars,
-            )
-        }
-        _ => {
-            let (var_name, fresh_vars) = fresh_vars.next();
-            let (body, fresh_vars) = f(fresh_vars, Expr::local_var(&var_name));
-            (
-                Rc::new(Expr::Let {
-                    name: Some(var_name),
-                    is_monadic: true,
-                    init: e1,
-                    body,
-                }),
-                fresh_vars,
-            )
-        }
-    }
-}
-
-fn monadic_let(
-    fresh_vars: FreshVars,
-    e1: Rc<Expr>,
-    f: impl FnOnce(FreshVars, Rc<Expr>) -> (Rc<Expr>, FreshVars),
-) -> (Rc<Expr>, FreshVars) {
-    let (e1, fresh_vars) = mt_expression(fresh_vars, e1);
-    monadic_let_in_stmt(fresh_vars, e1, f)
-}
-
-fn monadic_optional_let(
-    fresh_vars: FreshVars,
-    e1: Option<Rc<Expr>>,
-    f: impl FnOnce(FreshVars, Option<Rc<Expr>>) -> (Rc<Expr>, FreshVars),
-) -> (Rc<Expr>, FreshVars) {
-    match e1 {
-        None => f(fresh_vars, None),
-        Some(e1) => monadic_let(fresh_vars, e1, |fresh_vars, e1| f(fresh_vars, Some(e1))),
-    }
-}
-
-type DynLetFn<'a> = Box<dyn FnOnce(FreshVars, Vec<Rc<Expr>>) -> (Rc<Expr>, FreshVars) + 'a>;
-
-fn monadic_lets(fresh_vars: FreshVars, es: Vec<Rc<Expr>>, f: DynLetFn) -> (Rc<Expr>, FreshVars) {
-    match &es[..] {
-        [] => f(fresh_vars, vec![]),
-        [e1, es @ ..] => monadic_let(fresh_vars, e1.clone(), |fresh_vars, e1| {
-            monadic_lets(
-                fresh_vars,
-                es.to_vec(),
-                Box::new(|fresh_vars, es| f(fresh_vars, [vec![e1], es].concat())),
-            )
-        }),
-    }
-}
-
-/// Monadic translation of an expression
-///
-/// The convention is to do transformation in a deep first fashion, so
-/// all functions dealing with monadic translation expect that their
-/// arguments already have been transformed. Not respecting this rule
-/// may lead to infinite loops because of the mutual recursion between
-/// the functions. In practice this means translating every sub-expression
-/// before translating the expression itself.
-pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>, FreshVars) {
-    match expr.as_ref() {
-        Expr::Pure(_) => panic!("Expressions should not be monadic yet."),
-        Expr::LocalVar(_) => (pure(expr), fresh_vars),
-        Expr::GetConst(_) => (expr, fresh_vars),
-        Expr::GetFunction { .. } => (expr, fresh_vars),
-        Expr::GetTraitMethod {
-            trait_name,
-            self_ty,
-            trait_tys,
-            method_name,
-            generic_tys,
-        } => (
-            Rc::new(Expr::GetTraitMethod {
-                trait_name: trait_name.clone(),
-                self_ty: self_ty.clone(),
-                trait_tys: trait_tys.clone(),
-                method_name: method_name.clone(),
-                generic_tys: generic_tys.clone(),
-            }),
-            fresh_vars,
-        ),
-        Expr::GetAssociatedFunction { .. } => (expr, fresh_vars),
-        Expr::Literal { .. } => (pure(expr), fresh_vars),
-        Expr::Call { func, args, kind } => {
-            let kind = *kind;
-
-            monadic_let(fresh_vars, func.clone(), |fresh_vars, func| {
-                monadic_lets(
-                    fresh_vars,
-                    args.clone(),
-                    Box::new(move |fresh_vars, args| {
-                        (
-                            {
-                                let call = Rc::new(Expr::Call {
-                                    func: func.clone(),
-                                    args,
-                                    kind,
-                                });
-
-                                match kind {
-                                    CallKind::Pure => pure(call),
-                                    CallKind::Effectful | CallKind::Closure => call,
-                                }
-                            },
-                            fresh_vars,
-                        )
-                    }),
-                )
-            })
-        }
-        Expr::LogicalOperator { name, lhs, rhs } => {
-            // We are discarding the [fresh_vars] here as it should not create
-            // collisions, and it helps to keep the counters for the generated
-            // names low.
-            let (rhs, _) = mt_expression(fresh_vars.clone(), rhs.clone());
-
-            monadic_let(fresh_vars, lhs.clone(), |fresh_vars, lhs| {
-                (
-                    Rc::new(Expr::LogicalOperator {
-                        name: name.clone(),
-                        lhs,
-                        rhs,
-                    }),
-                    fresh_vars,
-                )
-            })
-        }
-        Expr::Lambda {
-            args,
-            body,
-            is_internal,
-        } => {
-            let (body, _) = mt_expression(FreshVars::new(), body.clone());
-            (
-                pure(Rc::new(Expr::Lambda {
-                    args: args.clone(),
-                    body,
-                    is_internal: *is_internal,
-                })),
-                fresh_vars,
-            )
-        }
-        Expr::Array {
-            elements,
-            is_internal,
-        } => monadic_lets(
-            fresh_vars,
-            elements.clone(),
-            Box::new(|fresh_vars, elements| {
-                (
-                    pure(Rc::new(Expr::Array {
-                        elements,
-                        is_internal: *is_internal,
-                    })),
-                    fresh_vars,
-                )
-            }),
-        ),
-        Expr::Tuple { elements } => monadic_lets(
-            fresh_vars,
-            elements.clone(),
-            Box::new(|fresh_vars, elements| (pure(Rc::new(Expr::Tuple { elements })), fresh_vars)),
-        ),
-        Expr::Let {
-            name,
-            is_monadic,
-            init,
-            body,
-        } => {
-            if *is_monadic {
-                panic!("The let statement should not be monadic yet.")
-            }
-            let (init, _fresh_vars) = mt_expression(FreshVars::new(), init.clone());
-            let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
-            let pure_init: Option<Rc<Expr>> = get_pure_from_stmt(init.clone());
-            (
-                match pure_init {
-                    Some(pure_init) => Rc::new(Expr::Let {
-                        name: name.clone(),
-                        is_monadic: false,
-                        init: pure_init,
-                        body,
-                    }),
-                    None => Rc::new(Expr::Let {
-                        name: name.clone(),
-                        is_monadic: true,
-                        init,
-                        body,
-                    }),
-                },
-                fresh_vars,
-            )
-        }
-        Expr::Loop { body, .. } => {
-            let (body, fresh_vars) = mt_expression(fresh_vars, body.clone());
-            (Rc::new(Expr::Loop { body }), fresh_vars)
-        }
-        Expr::Index { base, index } => monadic_let(fresh_vars, base.clone(), |fresh_vars, base| {
-            monadic_let(fresh_vars, index.clone(), |fresh_vars, index| {
-                (Rc::new(Expr::Index { base, index }), fresh_vars)
-            })
-        }),
-        // control flow expressions are responsible for side effects, so they are monadic already
-        Expr::ControlFlow(lcf_expression) => {
-            (Rc::new(Expr::ControlFlow(*lcf_expression)), fresh_vars)
-        }
-        Expr::StructStruct { path, fields, base } => {
-            let path = path.clone();
-            let fields = fields.clone();
-            let base = base.clone();
-            let fields_values: Vec<Rc<Expr>> =
-                fields.iter().map(|(_, field)| field.clone()).collect();
-
-            monadic_lets(
-                fresh_vars,
-                fields_values,
-                Box::new(move |fresh_vars, fields_values| {
-                    monadic_optional_let(fresh_vars, base, |fresh_vars, base| {
-                        let fields_names: Vec<String> =
-                            fields.iter().map(|(name, _)| name.clone()).collect();
-                        (
-                            pure(Rc::new(Expr::StructStruct {
-                                path,
-                                fields: fields_names
-                                    .iter()
-                                    .zip(fields_values.iter())
-                                    .map(|(name, value)| (name.clone(), value.clone()))
-                                    .collect(),
-                                base,
-                            })),
-                            fresh_vars,
-                        )
-                    })
-                }),
-            )
-        }
-        Expr::StructTuple { path, fields } => {
-            let path = path.clone();
-
-            monadic_lets(
-                fresh_vars,
-                fields.clone(),
-                Box::new(move |fresh_vars, fields| {
-                    (
-                        pure(Rc::new(Expr::StructTuple { path, fields })),
-                        fresh_vars,
-                    )
-                }),
-            )
-        }
-        Expr::StructUnit { .. } => (pure(expr), fresh_vars),
-        Expr::Use(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
-            (pure(Rc::new(Expr::Use(expr))), fresh_vars)
-        }),
-        Expr::InternalString(_) => (pure(expr), fresh_vars),
-        Expr::InternalInteger(_) => (pure(expr), fresh_vars),
-        Expr::Return(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
-            (Rc::new(Expr::Return(expr)), fresh_vars)
-        }),
-        Expr::Comment(comment, expr) => {
-            let (expr, fresh_vars) = mt_expression(fresh_vars, expr.clone());
-
-            (Rc::new(Expr::Comment(comment.clone(), expr)), fresh_vars)
-        }
-    }
-}
-
-/// Get the pure part of a statement, if possible, as a statement.
-fn get_pure_from_stmt(statement: Rc<Expr>) -> Option<Rc<Expr>> {
-    match statement.as_ref() {
-        Expr::Pure(e) => Some(e.clone()),
-        Expr::Let {
-            is_monadic: true, ..
-        } => None,
-        Expr::Let {
-            name,
-            is_monadic: false,
-            init,
-            body,
-        } => get_pure_from_stmt(body.clone()).map(|body| {
-            Rc::new(Expr::Let {
-                name: name.clone(),
-                is_monadic: false,
-                init: init.clone(),
-                body,
-            })
-        }),
-        _ => None,
-    }
-}
-
 pub(crate) fn apply_on_thir<'a, F, A>(
     env: &Env<'a>,
     local_def_id: impl IntoQueryParam<rustc_span::def_id::LocalDefId>,
@@ -655,8 +319,10 @@ fn string_to_coq(message: &str) -> coq::Expression {
 impl LoopControlFlow {
     pub fn to_coq<'a>(self) -> coq::Expression<'a> {
         match self {
-            LoopControlFlow::Break => coq::Expression::just_name("M.break"),
-            LoopControlFlow::Continue => coq::Expression::just_name("M.continue"),
+            LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic_apply_empty(),
+            LoopControlFlow::Continue => {
+                coq::Expression::just_name("M.continue").monadic_apply_empty()
+            }
         }
     }
 }
@@ -690,12 +356,11 @@ impl Literal {
 impl Expr {
     pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
-            Expr::Pure(expr) => coq::Expression::just_name("M.pure").apply(&expr.to_coq()),
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
-                .apply(&coq::Expression::String(path.to_string())),
+                .monadic_apply(&coq::Expression::String(path.to_string())),
             Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
-                .apply_many(&[
+                .monadic_apply_many(&[
                     coq::Expression::String(func.to_string()),
                     coq::Expression::List {
                         exprs: generic_tys
@@ -710,7 +375,7 @@ impl Expr {
                 trait_tys,
                 method_name,
                 generic_tys,
-            } => coq::Expression::just_name("M.get_trait_method").apply_many(&[
+            } => coq::Expression::just_name("M.get_trait_method").monadic_apply_many(&[
                 coq::Expression::String(trait_name.to_string()),
                 self_ty.to_coq(),
                 coq::Expression::List {
@@ -728,7 +393,7 @@ impl Expr {
                 ty,
                 func,
                 generic_tys,
-            } => coq::Expression::just_name("M.get_associated_function").apply_many(&[
+            } => coq::Expression::just_name("M.get_associated_function").monadic_apply_many(&[
                 ty.to_coq(),
                 coq::Expression::String(func.to_string()),
                 coq::Expression::List {
@@ -740,19 +405,22 @@ impl Expr {
             ]),
             Expr::Literal(literal) => literal.to_coq(),
             Expr::Call { func, args, kind } => match kind {
-                CallKind::Pure | CallKind::Effectful => func
+                CallKind::Pure => func
                     .to_coq()
                     .apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
-                CallKind::Closure => coq::Expression::just_name("M.call_closure").apply_many(&[
-                    func.to_coq(),
-                    coq::Expression::List {
-                        exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
-                    },
-                ]),
+                CallKind::Effectful => func
+                    .to_coq()
+                    .monadic_apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
+                CallKind::Closure => coq::Expression::just_name("M.call_closure")
+                    .monadic_apply_many(&[
+                        func.to_coq(),
+                        coq::Expression::List {
+                            exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
+                        },
+                    ]),
             },
-            Expr::LogicalOperator { name, lhs, rhs } => {
-                coq::Expression::just_name(name.as_str()).apply_many(&[lhs.to_coq(), rhs.to_coq()])
-            }
+            Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
+                .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(&rhs.to_coq())]),
             Expr::Lambda {
                 args,
                 body,
@@ -764,13 +432,13 @@ impl Expr {
                             .iter()
                             .map(|(name, _)| coq::Expression::just_name(name))
                             .collect_vec(),
-                        body: body.to_coq().into(),
+                        body: Rc::new(coq::Expression::monadic(&body.to_coq())),
                     };
                 };
 
                 coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
                     parameters: vec![coq::Expression::just_name("γ")],
-                    body: Rc::new(coq::Expression::Match {
+                    body: Rc::new(coq::Expression::monadic(&coq::Expression::Match {
                         scrutinees: vec![coq::Expression::just_name("γ")],
                         arms: vec![
                             (
@@ -784,10 +452,10 @@ impl Expr {
                             ),
                             (
                                 vec![coq::Expression::Wild],
-                                coq::Expression::just_name("M.impossible"),
+                                coq::Expression::just_name("M.impossible").monadic_apply_empty(),
                             ),
                         ],
-                    }),
+                    })),
                 })
             }
             Expr::Array {
@@ -827,9 +495,10 @@ impl Expr {
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
-            Expr::Loop { body } => coq::Expression::just_name("M.loop").apply(&body.to_coq()),
+            Expr::Loop { body } => coq::Expression::just_name("M.loop")
+                .monadic_apply(&Rc::new(coq::Expression::monadic(&body.to_coq()))),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
-                .apply_many(&[base.to_coq(), index.to_coq()]),
+                .monadic_apply_many(&[base.to_coq(), index.to_coq()]),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
             Expr::StructStruct { path, fields, base } => match base {
                 None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
@@ -876,7 +545,9 @@ impl Expr {
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),
             Expr::InternalInteger(i) => coq::Expression::just_name(i.to_string().as_str()),
-            Expr::Return(value) => coq::Expression::just_name("M.return_").apply(&value.to_coq()),
+            Expr::Return(value) => {
+                coq::Expression::just_name("M.return_").monadic_apply(&value.to_coq())
+            }
             Expr::Comment(message, expr) => {
                 coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
             }

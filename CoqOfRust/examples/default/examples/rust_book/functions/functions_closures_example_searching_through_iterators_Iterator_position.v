@@ -19,235 +19,335 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* vec :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
-      let* α5 :=
-        (* Unsize *)
-          let* α1 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
-              "new"
-              [] in
-          let* α2 :=
-            M.alloc
-              (Value.Array
+    ltac:(M.monadic
+      (M.read (|
+          let vec :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        "into_vec",
+                        [ Ty.path "alloc::alloc::Global" ]
+                      |),
+                    [
+                      (* Unsize *)
+                        M.pointer_coercion
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                  [
+                                    M.alloc (|
+                                        Value.Array
+                                          [
+                                            Value.Integer Integer.I32 1;
+                                            Value.Integer Integer.I32 9;
+                                            Value.Integer Integer.I32 3;
+                                            Value.Integer Integer.I32 3;
+                                            Value.Integer Integer.I32 13;
+                                            Value.Integer Integer.I32 2
+                                          ]
+                                      |)
+                                  ]
+                                |)
+                            |))
+                    ]
+                  |)
+              |) in
+          let index_of_first_even_number :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ],
+                        [],
+                        "position",
+                        [
+                          Ty.function
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                            (Ty.path "bool")
+                        ]
+                      |),
+                    [
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                  "iter",
+                                  []
+                                |),
+                              [
+                                M.call_closure (|
+                                    M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                    [ vec ]
+                                  |)
+                              ]
+                            |)
+                        |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let x := M.copy (| γ |) in
+                                        BinOp.Pure.eq
+                                          (BinOp.Panic.rem (|
+                                              M.read (| x |),
+                                              Value.Integer Integer.I32 2
+                                            |))
+                                          (Value.Integer Integer.I32 0)))
+                                  ]
+                                |)
+                            | _ => M.impossible (||)
+                            end))
+                    ]
+                  |)
+              |) in
+          let _ :=
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
+                      [
+                        index_of_first_even_number;
+                        M.alloc (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer Integer.Usize 5 ]
+                          |)
+                      ]
+                  |),
                 [
-                  Value.Integer Integer.I32 1;
-                  Value.Integer Integer.I32 9;
-                  Value.Integer Integer.I32 3;
-                  Value.Integer Integer.I32 3;
-                  Value.Integer Integer.I32 13;
-                  Value.Integer Integer.I32 2
-                ]) in
-          let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* index_of_first_even_number :=
-      let* α0 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ])
-          []
-          "position"
-          [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ] (Ty.path "bool")
-          ] in
-      let* α1 :=
-        M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "iter" [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::ops::deref::Deref"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          []
-          "deref"
-          [] in
-      let* α3 := M.call_closure α2 [ vec ] in
-      let* α4 := M.call_closure α1 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 :=
-        M.call_closure
-          α0
-          [
-            α5;
-            M.closure
-              (fun γ =>
-                match γ with
-                | [ α0 ] =>
-                  let* α0 := M.alloc α0 in
-                  M.match_operator
-                    α0
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.get_tuple_field γ 0 in
+                      let γ0_1 := M.get_tuple_field γ 1 in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    [ Ty.path "usize" ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                              [ M.read (| left_val |); M.read (| right_val |) ]
+                                            |))
+                                      |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                    |) in
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
+                                                    "core::panicking::AssertKind::Eq"
+                                                    []
+                                                |) in
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
+                                                        "core::panicking::assert_failed",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            [ Ty.path "usize" ];
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            [ Ty.path "usize" ]
+                                                        ]
+                                                      |),
+                                                    [
+                                                      M.read (| kind |);
+                                                      M.read (| left_val |);
+                                                      M.read (| right_val |);
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    ]
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
+                                  |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                ]
+              |) in
+          let index_of_first_negative_number :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        "position",
+                        [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ]
+                      |),
                     [
-                      fun γ =>
-                        let* γ := M.read γ in
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
-                        M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0))
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_trait_method (|
+                                  "core::iter::traits::collect::IntoIterator",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  "into_iter",
+                                  []
+                                |),
+                              [ M.read (| vec |) ]
+                            |)
+                        |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let x := M.copy (| γ |) in
+                                        BinOp.Pure.lt
+                                          (M.read (| x |))
+                                          (Value.Integer Integer.I32 0)))
+                                  ]
+                                |)
+                            | _ => M.impossible (||)
+                            end))
                     ]
-                | _ => M.impossible
-                end)
-          ] in
-      M.alloc α6 in
-    let* _ :=
-      let* α0 :=
-        M.alloc
-          (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.Usize 5 ]) in
-      let* α1 := M.alloc (Value.Tuple [ index_of_first_even_number; α0 ]) in
-      M.match_operator
-        α1
-        [
-          fun γ =>
-            let γ0_0 := M.get_tuple_field γ 0 in
-            let γ0_1 := M.get_tuple_field γ 1 in
-            let* left_val := M.copy γ0_0 in
-            let* right_val := M.copy γ0_1 in
-            let* α0 := M.alloc (Value.Tuple []) in
-            M.match_operator
-              α0
-              [
-                fun γ =>
-                  let* γ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ] ]
-                        "eq"
-                        [] in
-                    let* α1 := M.read left_val in
-                    let* α2 := M.read right_val in
-                    let* α3 := M.call_closure α0 [ α1; α2 ] in
-                    let* α4 := M.alloc (UnOp.Pure.not α3) in
-                    M.pure (M.use α4) in
-                  let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-                  let* α0 :=
-                    M.get_function
-                      "core::panicking::assert_failed"
+                  |)
+              |) in
+          let _ :=
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ]
-                      ] in
-                  let* α1 := M.read kind in
-                  let* α2 := M.read left_val in
-                  let* α3 := M.read right_val in
-                  let* α4 :=
-                    M.call_closure
-                      α0
-                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
-                  let* α0 := M.alloc α4 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2;
-                fun γ => M.alloc (Value.Tuple [])
-              ]
-        ] in
-    let* index_of_first_negative_number :=
-      let* α0 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply
-            (Ty.path "alloc::vec::into_iter::IntoIter")
-            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          []
-          "position"
-          [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::collect::IntoIterator"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          []
-          "into_iter"
-          [] in
-      let* α2 := M.read vec in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.alloc α3 in
-      let* α5 :=
-        M.call_closure
-          α0
-          [
-            α4;
-            M.closure
-              (fun γ =>
-                match γ with
-                | [ α0 ] =>
-                  let* α0 := M.alloc α0 in
-                  M.match_operator
-                    α0
-                    [
-                      fun γ =>
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        M.pure (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0))
-                    ]
-                | _ => M.impossible
-                end)
-          ] in
-      M.alloc α5 in
-    let* _ :=
-      let* α0 := M.alloc (Value.StructTuple "core::option::Option::None" []) in
-      let* α1 := M.alloc (Value.Tuple [ index_of_first_negative_number; α0 ]) in
-      M.match_operator
-        α1
-        [
-          fun γ =>
-            let γ0_0 := M.get_tuple_field γ 0 in
-            let γ0_1 := M.get_tuple_field γ 1 in
-            let* left_val := M.copy γ0_0 in
-            let* right_val := M.copy γ0_1 in
-            let* α0 := M.alloc (Value.Tuple []) in
-            M.match_operator
-              α0
-              [
-                fun γ =>
-                  let* γ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
-                        [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ] ]
-                        "eq"
-                        [] in
-                    let* α1 := M.read left_val in
-                    let* α2 := M.read right_val in
-                    let* α3 := M.call_closure α0 [ α1; α2 ] in
-                    let* α4 := M.alloc (UnOp.Pure.not α3) in
-                    M.pure (M.use α4) in
-                  let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-                  let* α0 :=
-                    M.get_function
-                      "core::panicking::assert_failed"
-                      [
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ];
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ]
-                      ] in
-                  let* α1 := M.read kind in
-                  let* α2 := M.read left_val in
-                  let* α3 := M.read right_val in
-                  let* α4 :=
-                    M.call_closure
-                      α0
-                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
-                  let* α0 := M.alloc α4 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2;
-                fun γ => M.alloc (Value.Tuple [])
-              ]
-        ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+                        index_of_first_negative_number;
+                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                      ]
+                  |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.get_tuple_field γ 0 in
+                      let γ0_1 := M.get_tuple_field γ 1 in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    [ Ty.path "usize" ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                              [ M.read (| left_val |); M.read (| right_val |) ]
+                                            |))
+                                      |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                    |) in
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
+                                                    "core::panicking::AssertKind::Eq"
+                                                    []
+                                                |) in
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
+                                                        "core::panicking::assert_failed",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            [ Ty.path "usize" ];
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            [ Ty.path "usize" ]
+                                                        ]
+                                                      |),
+                                                    [
+                                                      M.read (| kind |);
+                                                      M.read (| left_val |);
+                                                      M.read (| right_val |);
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    ]
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
+                                  |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                ]
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

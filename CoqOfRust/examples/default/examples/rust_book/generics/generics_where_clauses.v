@@ -16,36 +16,62 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α11 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_debug"
-                  [ Ty.apply (Ty.path "core::option::Option") [ T ] ] in
-              let* α7 := M.read self in
-              let* α8 := M.alloc (Value.StructTuple "core::option::Option::Some" [ α7 ]) in
-              let* α9 := M.call_closure α6 [ α8 ] in
-              let* α10 := M.alloc (Value.Array [ α9 ]) in
-              M.pure (M.pointer_coercion α10) in
-          let* α12 := M.call_closure α1 [ α5; α11 ] in
-          let* α13 := M.call_closure α0 [ α12 ] in
-          M.alloc α13 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_debug",
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        [ T ]
+                                                    ]
+                                                  |),
+                                                [
+                                                  M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [ M.read (| self |) ]
+                                                    |)
+                                                ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -68,46 +94,62 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* vec :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
-      let* α5 :=
-        (* Unsize *)
-          let* α1 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
-              "new"
-              [] in
-          let* α2 :=
-            M.alloc
-              (Value.Array
-                [
-                  Value.Integer Integer.I32 1;
-                  Value.Integer Integer.I32 2;
-                  Value.Integer Integer.I32 3
-                ]) in
-          let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "generics_where_clauses::PrintInOption"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          []
-          "print_in_option"
-          [] in
-      let* α1 := M.read vec in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let vec :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        "into_vec",
+                        [ Ty.path "alloc::alloc::Global" ]
+                      |),
+                    [
+                      (* Unsize *)
+                        M.pointer_coercion
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                  [
+                                    M.alloc (|
+                                        Value.Array
+                                          [
+                                            Value.Integer Integer.I32 1;
+                                            Value.Integer Integer.I32 2;
+                                            Value.Integer Integer.I32 3
+                                          ]
+                                      |)
+                                  ]
+                                |)
+                            |))
+                    ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "generics_where_clauses::PrintInOption",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        "print_in_option",
+                        []
+                      |),
+                    [ M.read (| vec |) ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

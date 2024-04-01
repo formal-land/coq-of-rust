@@ -17,34 +17,54 @@ fn with_impls<A>(func: impl Default, func2: impl Default, foo: A) {
 Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ A; impl_Default; impl_Default'1 ], [ func; func2; foo ] =>
-    let* func := M.alloc func in
-    let* func2 := M.alloc func2 in
-    let* foo := M.alloc foo in
-    let* x := M.copy func in
-    let* _ :=
-      let* α0 := M.get_trait_method "core::default::Default" impl_Default [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.assign x α1 in
-    let* y := M.copy func2 in
-    let* _ :=
-      let* α0 := M.get_trait_method "core::default::Default" impl_Default'1 [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.assign y α1 in
-    let* z := M.copy foo in
-    let* b :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ])
-          "new"
-          [] in
-      let* α1 := M.read x in
-      let* α2 := M.read y in
-      let* α3 := M.read z in
-      let* α4 := M.call_closure α0 [ Value.Tuple [ α1; α2; α3 ] ] in
-      M.alloc α4 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (let func := M.alloc (| func |) in
+      let func2 := M.alloc (| func2 |) in
+      let foo := M.alloc (| foo |) in
+      M.read (|
+          let x := M.copy (| func |) in
+          let _ :=
+            M.assign (|
+                x,
+                M.call_closure (|
+                    M.get_trait_method (| "core::default::Default", impl_Default, [], "default", []
+                      |),
+                    []
+                  |)
+              |) in
+          let y := M.copy (| func2 |) in
+          let _ :=
+            M.assign (|
+                y,
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::default::Default",
+                        impl_Default'1,
+                        [],
+                        "default",
+                        []
+                      |),
+                    []
+                  |)
+              |) in
+          let z := M.copy (| foo |) in
+          let b :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          [
+                            Ty.tuple [ impl_Default; impl_Default'1; A ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                    [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

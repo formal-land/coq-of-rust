@@ -935,40 +935,14 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
 
 fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
     match item.as_ref() {
-        ImplItemKind::Const { ty, body } => {
-            let body = match body {
-                None => body.clone(),
-                Some(body) => {
-                    let body = mt_expression(FreshVars::new(), body.clone()).0;
-
-                    Some(body)
-                }
-            };
-            Rc::new(ImplItemKind::Const {
-                ty: ty.clone(),
-                body,
-            })
-        }
+        ImplItemKind::Const { ty, body } => Rc::new(ImplItemKind::Const {
+            ty: ty.clone(),
+            body: body.clone(),
+        }),
         ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
-            definition: definition.mt(),
+            definition: definition.clone(),
         }),
         ImplItemKind::Type { .. } => item,
-    }
-}
-
-impl FnSigAndBody {
-    fn mt(&self) -> Rc<Self> {
-        Rc::new(FnSigAndBody {
-            args: self.args.clone(),
-            ret_ty: self.ret_ty.clone(),
-            body: match &self.body {
-                None => self.body.clone(),
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
-                    Some(body)
-                }
-            },
-        })
     }
 }
 
@@ -977,7 +951,7 @@ fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
         TraitItem::Definition { .. } => body,
         TraitItem::Type() => body,
         TraitItem::DefinitionWithDefault(fun_definition) => {
-            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.mt()))
+            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.clone()))
         }
     }
 }
@@ -993,13 +967,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
     match item.as_ref() {
         TopLevelItem::Const { name, value } => Rc::new(TopLevelItem::Const {
             name: name.clone(),
-            value: match value {
-                None => value.clone(),
-                Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), value.clone());
-                    Some(value)
-                }
-            },
+            value: value.clone(),
         }),
         TopLevelItem::Definition {
             name,
@@ -1008,7 +976,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         } => Rc::new(TopLevelItem::Definition {
             name: name.clone(),
             snippet: snippet.clone(),
-            definition: definition.mt(),
+            definition: definition.clone(),
         }),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
@@ -1167,13 +1135,6 @@ impl FunDefinition {
         })
     }
 
-    fn mt(&self) -> Rc<Self> {
-        Rc::new(FunDefinition {
-            ty_params: self.ty_params.clone(),
-            signature_and_body: self.signature_and_body.mt(),
-        })
-    }
-
     /// The generics [generic_tys] are not part of the definition itself, but
     /// come from above, for example from the generics of the enclosing `impl`.
     /// The [with_extra_self_ty] is to add an extra `Self` parameter, for
@@ -1239,7 +1200,7 @@ impl FunDefinition {
                                             .collect(),
                                     },
                                 ],
-                                body.to_coq(),
+                                coq::Expression::monadic(&body.to_coq()),
                             ),
                             (
                                 vec![coq::Expression::Wild, coq::Expression::Wild],
@@ -1578,7 +1539,11 @@ impl TopLevelItem {
                         &coq::DefinitionKind::Alias {
                             args: vec![],
                             ty: Some(coq::Expression::just_name("Value.t")),
-                            body: coq::Expression::just_name("M.run").apply(&value.to_coq()),
+                            body: coq::Expression::Code(
+                                coq::Expression::just_name("M.run")
+                                    .apply(&coq::Expression::monadic(&value.to_coq()))
+                                    .to_doc(true),
+                            ),
                         },
                     ))]
                 }

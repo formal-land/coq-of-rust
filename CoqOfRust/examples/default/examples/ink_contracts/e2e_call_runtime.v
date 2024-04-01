@@ -17,9 +17,16 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "e2e_call_runtime::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "e2e_call_runtime::AccountId"
+          [
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +47,14 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -97,7 +109,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
     | _, _ => M.impossible
     end.
   
@@ -129,9 +141,12 @@ Module Impl_e2e_call_runtime_Contract.
   Definition env (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "init_env" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [] |),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -144,7 +159,7 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
     | _, _ => M.impossible
     end.
   
@@ -158,13 +173,20 @@ Module Impl_e2e_call_runtime_Contract.
   Definition get_contract_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "e2e_call_runtime::Env") "balance" [] in
-      let* α1 := M.get_associated_function (Ty.path "e2e_call_runtime::Contract") "env" [] in
-      let* α2 := M.read self in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.alloc α3 in
-      M.call_closure α0 [ α4 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [] |),
+            [
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "env", []
+                        |),
+                      [ M.read (| self |) ]
+                    |)
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   

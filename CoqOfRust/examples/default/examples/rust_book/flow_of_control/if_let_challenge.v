@@ -28,32 +28,44 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* a := M.alloc (Value.StructTuple "if_let_challenge::Foo::Bar" []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    let* α0 :=
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let γ := a in
-            let* _ :=
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-                let* α4 :=
-                  (* Unsize *)
-                    let* α2 := M.read (mk_str "a is foobar
-") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
-                let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
-              M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []);
-          fun γ => M.alloc (Value.Tuple [])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let a := M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
+          M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := a in
+                    let _ :=
+                      let _ :=
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "std::io::stdio::_print", [] |),
+                                [
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
+                                      [
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                                Value.Array [ M.read (| mk_str "a is foobar
+" |) ]
+                                              |))
+                                      ]
+                                    |)
+                                ]
+                              |)
+                          |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.

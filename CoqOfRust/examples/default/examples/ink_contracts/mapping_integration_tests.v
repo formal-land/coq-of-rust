@@ -23,24 +23,33 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
-          []
-          "default"
-          [] in
-      let* α3 := M.call_closure α2 [] in
-      M.pure
-        (Value.StructRecord "mapping_integration_tests::Mapping" [ ("_key", α1); ("_value", α3) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "mapping_integration_tests::Mapping"
+          [
+            ("_key",
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                  []
+                |));
+            ("_value",
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -151,9 +160,16 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "mapping_integration_tests::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "mapping_integration_tests::AccountId"
+          [
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -174,9 +190,14 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -215,9 +236,11 @@ Module Impl_mapping_integration_tests_Env.
   Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "mapping_integration_tests::Env" "caller")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.get_struct_record_field (M.read (| self |)) "mapping_integration_tests::Env" "caller"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -246,17 +269,24 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          []
-          "default"
-          [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructRecord "mapping_integration_tests::Mappings" [ ("balances", α1) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "mapping_integration_tests::Mappings"
+          [
+            ("balances",
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "mapping_integration_tests::Mapping")
+                        [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -298,22 +328,29 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* balances :=
-        let* α0 :=
-          M.get_trait_method
-            "core::default::Default"
-            (Ty.apply
-              (Ty.path "mapping_integration_tests::Mapping")
-              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-            []
-            "default"
-            [] in
-        let* α1 := M.call_closure α0 [] in
-        M.alloc α1 in
-      let* α0 := M.read balances in
-      let* α0 :=
-        M.alloc (Value.StructRecord "mapping_integration_tests::Mappings" [ ("balances", α0) ]) in
-      M.read α0
+      ltac:(M.monadic
+        (M.read (|
+            let balances :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "mapping_integration_tests::Mapping")
+                            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                          [],
+                          "default",
+                          []
+                        |),
+                      []
+                    |)
+                |) in
+            M.alloc (|
+                Value.StructRecord
+                  "mapping_integration_tests::Mappings"
+                  [ ("balances", M.read (| balances |)) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -328,31 +365,50 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          "get"
-          [] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call_closure
-          α0
-          [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; caller
-          ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "mapping_integration_tests::Mapping")
+                          [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                        "get",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "mapping_integration_tests::Mappings"
+                        "balances";
+                      caller
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -367,34 +423,52 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition insert_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; value ] =>
-      let* self := M.alloc self in
-      let* value := M.alloc value in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          "insert"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.read caller in
-      let* α3 := M.read value in
-      let* α4 :=
-        M.call_closure
-          α0
-          [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; α2; α3
-          ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let value := M.alloc (| value |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "mapping_integration_tests::Mapping")
+                          [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                        "insert",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "mapping_integration_tests::Mappings"
+                        "balances";
+                      M.read (| caller |);
+                      M.read (| value |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -410,31 +484,50 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition size_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          "size"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.read caller in
-      let* α3 :=
-        M.call_closure
-          α0
-          [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; α2 ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "mapping_integration_tests::Mapping")
+                          [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                        "size",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "mapping_integration_tests::Mappings"
+                        "balances";
+                      M.read (| caller |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -449,31 +542,50 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition contains_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          "contains"
-          [] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call_closure
-          α0
-          [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; caller
-          ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "mapping_integration_tests::Mapping")
+                          [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                        "contains",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "mapping_integration_tests::Mappings"
+                        "balances";
+                      caller
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -489,33 +601,52 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition remove_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "mapping_integration_tests::Mapping")
-              [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-            "remove"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read caller in
-        let* α3 :=
-          M.call_closure
-            α0
-            [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; α2 ] in
-        M.alloc α3 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "mapping_integration_tests::Mapping")
+                            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                          "remove",
+                          []
+                        |),
+                      [
+                        M.get_struct_record_field
+                          (M.read (| self |))
+                          "mapping_integration_tests::Mappings"
+                          "balances";
+                        M.read (| caller |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -531,31 +662,50 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition take_balance (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* caller :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Env") "caller" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "mapping_integration_tests::Mappings") "env" [] in
-        let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
-          "take"
-          [] in
-      let* α1 := M.read self in
-      let* α2 := M.read caller in
-      let* α3 :=
-        M.call_closure
-          α0
-          [ M.get_struct_record_field α1 "mapping_integration_tests::Mappings" "balances"; α2 ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let caller :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "mapping_integration_tests::Env",
+                          "caller",
+                          []
+                        |),
+                      [
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "mapping_integration_tests::Mappings",
+                                    "env",
+                                    []
+                                  |),
+                                []
+                              |)
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "mapping_integration_tests::Mapping")
+                          [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                        "take",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "mapping_integration_tests::Mappings"
+                        "balances";
+                      M.read (| caller |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   

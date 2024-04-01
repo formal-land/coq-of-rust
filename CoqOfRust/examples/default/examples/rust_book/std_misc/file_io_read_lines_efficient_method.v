@@ -13,88 +13,125 @@ where
 Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ P ], [ filename ] =>
-    let* filename := M.alloc filename in
-    let* file :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::try_trait::Try"
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
-          []
-          "branch"
-          [] in
-      let* α1 := M.get_associated_function (Ty.path "std::fs::File") "open" [ P ] in
-      let* α2 := M.read filename in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 :=
-        M.match_operator
-          α5
-          [
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::ops::control_flow::ControlFlow::Break"
-                  0 in
-              let* residual := M.copy γ0_0 in
-              let* α0 :=
-                M.get_trait_method
-                  "core::ops::try_trait::FromResidual"
-                  (Ty.apply
-                    (Ty.path "core::result::Result")
+    ltac:(M.monadic
+      (let filename := M.alloc (| filename |) in
+      M.read (|
+          let file :=
+            M.copy (|
+                M.match_operator (|
+                    M.alloc (|
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                                [],
+                                "branch",
+                                []
+                              |),
+                            [
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "std::fs::File",
+                                      "open",
+                                      [ P ]
+                                    |),
+                                  [ M.read (| filename |) ]
+                                |)
+                            ]
+                          |)
+                      |),
                     [
-                      Ty.apply
-                        (Ty.path "std::io::Lines")
-                        [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                          let residual := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                              M.never_to_any (|
+                                  M.read (|
+                                      M.return_ (|
+                                          M.call_closure (|
+                                              M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "std::io::Lines")
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "std::io::buffered::bufreader::BufReader")
+                                                            [ Ty.path "std::fs::File" ]
+                                                        ];
+                                                      Ty.path "std::io::error::Error"
+                                                    ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "std::io::error::Error"
+                                                      ]
+                                                  ],
+                                                  "from_residual",
+                                                  []
+                                                |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                        |)
+                                    |)
+                                |)
+                            |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                          let val := M.copy (| γ0_0 |) in
+                          val))
+                    ]
+                  |)
+              |) in
+          M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "std::io::BufRead",
                           Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
-                            [ Ty.path "std::fs::File" ]
-                        ];
-                      Ty.path "std::io::error::Error"
-                    ])
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error" ]
-                  ]
-                  "from_residual"
-                  [] in
-              let* α1 := M.read residual in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in
-              let* α5 := M.never_to_any α4 in
-              M.alloc α5;
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "core::ops::control_flow::ControlFlow::Continue"
-                  0 in
-              let* val := M.copy γ0_0 in
-              M.pure val
-          ] in
-      M.copy α6 in
-    let* α0 :=
-      M.get_trait_method
-        "std::io::BufRead"
-        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
-        []
-        "lines"
-        [] in
-    let* α1 :=
-      M.get_associated_function
-        (Ty.apply (Ty.path "std::io::buffered::bufreader::BufReader") [ Ty.path "std::fs::File" ])
-        "new"
-        [] in
-    let* α2 := M.read file in
-    let* α3 := M.call_closure α1 [ α2 ] in
-    let* α4 := M.call_closure α0 [ α3 ] in
-    let* α0 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α4 ]) in
-    M.read α0
+                            [ Ty.path "std::fs::File" ],
+                          [],
+                          "lines",
+                          []
+                        |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "std::io::buffered::bufreader::BufReader")
+                                  [ Ty.path "std::fs::File" ],
+                                "new",
+                                []
+                              |),
+                            [ M.read (| file |) ]
+                          |)
+                      ]
+                    |)
+                ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -114,126 +151,176 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* α0 := M.alloc (Value.Tuple []) in
-    let* α1 :=
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 :=
-                M.get_function
-                  "file_io_read_lines_efficient_method::read_lines"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 := M.read (mk_str "./hosts") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              M.alloc α2 in
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-            let* lines := M.copy γ0_0 in
-            let* α0 :=
-              M.get_trait_method
-                "core::iter::traits::collect::IntoIterator"
-                (Ty.apply
-                  (Ty.path "std::io::Lines")
-                  [
-                    Ty.apply
-                      (Ty.path "std::io::buffered::bufreader::BufReader")
-                      [ Ty.path "std::fs::File" ]
-                  ])
-                []
-                "into_iter"
-                [] in
-            let* α1 := M.read lines in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.alloc α2 in
-            let* α4 :=
-              M.match_operator
-                α3
-                [
-                  fun γ =>
-                    let* iter := M.copy γ in
-                    M.loop
-                      (let* _ :=
-                        let* α0 :=
-                          M.get_trait_method
-                            "core::iter::traits::iterator::Iterator"
-                            (Ty.apply
-                              (Ty.path "std::io::Lines")
-                              [
-                                Ty.apply
-                                  (Ty.path "std::io::buffered::bufreader::BufReader")
-                                  [ Ty.path "std::fs::File" ]
-                              ])
-                            []
-                            "next"
-                            [] in
-                        let* α1 := M.call_closure α0 [ iter ] in
-                        let* α2 := M.alloc α1 in
-                        M.match_operator
-                          α2
+    ltac:(M.monadic
+      (M.read (|
+          M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (|
+                                  "file_io_read_lines_efficient_method::read_lines",
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                |),
+                              [ M.read (| mk_str "./hosts" |) ]
+                            |)
+                        |) in
+                    let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
+                        |) in
+                    let lines := M.copy (| γ0_0 |) in
+                    M.use
+                      (M.match_operator (|
+                          M.alloc (|
+                              M.call_closure (|
+                                  M.get_trait_method (|
+                                      "core::iter::traits::collect::IntoIterator",
+                                      Ty.apply
+                                        (Ty.path "std::io::Lines")
+                                        [
+                                          Ty.apply
+                                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                                            [ Ty.path "std::fs::File" ]
+                                        ],
+                                      [],
+                                      "into_iter",
+                                      []
+                                    |),
+                                  [ M.read (| lines |) ]
+                                |)
+                            |),
                           [
                             fun γ =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2;
-                            fun γ =>
-                              let* γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match
-                                  γ
-                                  "core::option::Option::Some"
-                                  0 in
-                              let* line := M.copy γ0_0 in
-                              let* α0 := M.alloc (Value.Tuple []) in
-                              M.match_operator
-                                α0
-                                [
-                                  fun γ =>
-                                    let γ := line in
-                                    let* γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match
-                                        γ
-                                        "core::result::Result::Ok"
-                                        0 in
-                                    let* ip := M.copy γ0_0 in
-                                    let* _ :=
-                                      let* _ :=
-                                        let* α0 := M.get_function "std::io::stdio::_print" [] in
-                                        let* α1 :=
-                                          M.get_associated_function
-                                            (Ty.path "core::fmt::Arguments")
-                                            "new_v1"
-                                            [] in
-                                        let* α5 :=
-                                          (* Unsize *)
-                                            let* α2 := M.read (mk_str "") in
-                                            let* α3 := M.read (mk_str "
-") in
-                                            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                                            M.pure (M.pointer_coercion α4) in
-                                        let* α9 :=
-                                          (* Unsize *)
-                                            let* α6 :=
-                                              M.get_associated_function
-                                                (Ty.path "core::fmt::rt::Argument")
-                                                "new_display"
-                                                [ Ty.path "alloc::string::String" ] in
-                                            let* α7 := M.call_closure α6 [ ip ] in
-                                            let* α8 := M.alloc (Value.Array [ α7 ]) in
-                                            M.pure (M.pointer_coercion α8) in
-                                        let* α10 := M.call_closure α1 [ α5; α9 ] in
-                                        let* α11 := M.call_closure α0 [ α10 ] in
-                                        M.alloc α11 in
-                                      M.alloc (Value.Tuple []) in
-                                    M.alloc (Value.Tuple []);
-                                  fun γ => M.alloc (Value.Tuple [])
-                                ]
-                          ] in
-                      M.alloc (Value.Tuple []))
-                ] in
-            M.pure (M.use α4);
-          fun γ => M.alloc (Value.Tuple [])
-        ] in
-    M.read α1
+                              ltac:(M.monadic
+                                (let iter := M.copy (| γ |) in
+                                M.loop (|
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.match_operator (|
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_trait_method (|
+                                                        "core::iter::traits::iterator::Iterator",
+                                                        Ty.apply
+                                                          (Ty.path "std::io::Lines")
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "std::io::buffered::bufreader::BufReader")
+                                                              [ Ty.path "std::fs::File" ]
+                                                          ],
+                                                        [],
+                                                        "next",
+                                                        []
+                                                      |),
+                                                    [ iter ]
+                                                  |)
+                                              |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                                    |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.get_struct_tuple_field_or_break_match (|
+                                                        γ,
+                                                        "core::option::Option::Some",
+                                                        0
+                                                      |) in
+                                                  let line := M.copy (| γ0_0 |) in
+                                                  M.match_operator (|
+                                                      M.alloc (| Value.Tuple [] |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ := line in
+                                                            let γ0_0 :=
+                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                  γ,
+                                                                  "core::result::Result::Ok",
+                                                                  0
+                                                                |) in
+                                                            let ip := M.copy (| γ0_0 |) in
+                                                            let _ :=
+                                                              let _ :=
+                                                                M.alloc (|
+                                                                    M.call_closure (|
+                                                                        M.get_function (|
+                                                                            "std::io::stdio::_print",
+                                                                            []
+                                                                          |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_v1",
+                                                                                  []
+                                                                                |),
+                                                                              [
+                                                                                (* Unsize *)
+                                                                                  M.pointer_coercion
+                                                                                    (M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                                mk_str
+                                                                                                  ""
+                                                                                              |);
+                                                                                            M.read (|
+                                                                                                mk_str
+                                                                                                  "
+"
+                                                                                              |)
+                                                                                          ]
+                                                                                      |));
+                                                                                (* Unsize *)
+                                                                                  M.pointer_coercion
+                                                                                    (M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "alloc::string::String"
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                [ ip
+                                                                                                ]
+                                                                                              |)
+                                                                                          ]
+                                                                                      |))
+                                                                              ]
+                                                                            |)
+                                                                        ]
+                                                                      |)
+                                                                  |) in
+                                                              M.alloc (| Value.Tuple [] |) in
+                                                            M.alloc (| Value.Tuple [] |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (| Value.Tuple [] |)))
+                                                      ]
+                                                    |)))
+                                            ]
+                                          |) in
+                                      M.alloc (| Value.Tuple [] |)))
+                                  |)))
+                          ]
+                        |))));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.

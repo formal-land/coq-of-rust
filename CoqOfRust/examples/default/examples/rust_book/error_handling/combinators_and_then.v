@@ -33,29 +33,34 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "CordonBleu") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Steak") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Sushi") in
-              M.alloc α0
-          ] in
-      let* α3 := M.read α2 in
-      M.call_closure α0 [ α1; α3 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [
+              M.read (| f |);
+              M.read (|
+                  M.match_operator (|
+                      self,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "CordonBleu" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Steak" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Sushi" |) |)))
+                      ]
+                    |)
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -99,29 +104,34 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Monday") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Tuesday") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Wednesday") in
-              M.alloc α0
-          ] in
-      let* α3 := M.read α2 in
-      M.call_closure α0 [ α1; α3 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [
+              M.read (| f |);
+              M.read (|
+                  M.match_operator (|
+                      self,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Monday" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Tuesday" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Wednesday" |) |)))
+                      ]
+                    |)
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -144,17 +154,22 @@ fn have_ingredients(food: Food) -> Option<Food> {
 Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ food ] =>
-    let* food := M.alloc food in
-    let* α0 :=
-      M.match_operator
-        food
-        [
-          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
-          fun γ =>
-            let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (let food := M.alloc (| food |) in
+      M.read (|
+          M.match_operator (|
+              food,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                      |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -169,17 +184,22 @@ fn have_recipe(food: Food) -> Option<Food> {
 Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ food ] =>
-    let* food := M.alloc food in
-    let* α0 :=
-      M.match_operator
-        food
-        [
-          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
-          fun γ =>
-            let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (let food := M.alloc (| food |) in
+      M.read (|
+          M.match_operator (|
+              food,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                      |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -197,36 +217,56 @@ fn cookable_v1(food: Food) -> Option<Food> {
 Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ food ] =>
-    let* food := M.alloc food in
-    let* α0 := M.get_function "combinators_and_then::have_recipe" [] in
-    let* α1 := M.read food in
-    let* α2 := M.call_closure α0 [ α1 ] in
-    let* α3 := M.alloc α2 in
-    let* α4 :=
-      M.match_operator
-        α3
-        [
-          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
-            let* food := M.copy γ0_0 in
-            let* α0 := M.get_function "combinators_and_then::have_ingredients" [] in
-            let* α1 := M.read food in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.alloc α2 in
-            M.match_operator
-              α3
+    ltac:(M.monadic
+      (let food := M.alloc (| food |) in
+      M.read (|
+          M.match_operator (|
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "combinators_and_then::have_recipe", [] |),
+                      [ M.read (| food |) ]
+                    |)
+                |),
               [
-                fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
                 fun γ =>
-                  let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
-                  let* food := M.copy γ0_0 in
-                  let* α0 := M.read food in
-                  M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
+                        |) in
+                    let food := M.copy (| γ0_0 |) in
+                    M.match_operator (|
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "combinators_and_then::have_ingredients", [] |),
+                                [ M.read (| food |) ]
+                              |)
+                          |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                              let food := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [ M.read (| food |) ]
+                                |)))
+                        ]
+                      |)))
               ]
-        ] in
-    M.read α4
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -238,22 +278,29 @@ fn cookable_v2(food: Food) -> Option<Food> {
 Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ food ] =>
-    let* food := M.alloc food in
-    let* α0 :=
-      M.get_associated_function
-        (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ])
-        "and_then"
-        [
-          Ty.path "combinators_and_then::Food";
-          Ty.function
-            [ Ty.path "combinators_and_then::Food" ]
-            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ])
-        ] in
-    let* α1 := M.get_function "combinators_and_then::have_recipe" [] in
-    let* α2 := M.read food in
-    let* α3 := M.call_closure α1 [ α2 ] in
-    let* α4 := M.get_function "combinators_and_then::have_ingredients" [] in
-    M.call_closure α0 [ α3; α4 ]
+    ltac:(M.monadic
+      (let food := M.alloc (| food |) in
+      M.call_closure (|
+          M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ],
+              "and_then",
+              [
+                Ty.path "combinators_and_then::Food";
+                Ty.function
+                  [ Ty.path "combinators_and_then::Food" ]
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    [ Ty.path "combinators_and_then::Food" ])
+              ]
+            |),
+          [
+            M.call_closure (|
+                M.get_function (| "combinators_and_then::have_recipe", [] |),
+                [ M.read (| food |) ]
+              |);
+            M.get_function (| "combinators_and_then::have_ingredients", [] |)
+          ]
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -268,77 +315,125 @@ fn eat(food: Food, day: Day) {
 Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ food; day ] =>
-    let* food := M.alloc food in
-    let* day := M.alloc day in
-    let* α0 := M.get_function "combinators_and_then::cookable_v2" [] in
-    let* α1 := M.read food in
-    let* α2 := M.call_closure α0 [ α1 ] in
-    let* α3 := M.alloc α2 in
-    let* α4 :=
-      M.match_operator
-        α3
-        [
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
-            let* food := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α6 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "Yay! On ") in
-                  let* α3 := M.read (mk_str " we get to eat ") in
-                  let* α4 := M.read (mk_str ".
-") in
-                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                  M.pure (M.pointer_coercion α5) in
-              let* α12 :=
-                (* Unsize *)
-                  let* α7 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug"
-                      [ Ty.path "combinators_and_then::Day" ] in
-                  let* α8 := M.call_closure α7 [ day ] in
-                  let* α9 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug"
-                      [ Ty.path "combinators_and_then::Food" ] in
-                  let* α10 := M.call_closure α9 [ food ] in
-                  let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
-                  M.pure (M.pointer_coercion α11) in
-              let* α13 := M.call_closure α1 [ α6; α12 ] in
-              let* α14 := M.call_closure α0 [ α13 ] in
-              M.alloc α14 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "Oh no. We don't get to eat on ") in
-                  let* α3 := M.read (mk_str "?
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug"
-                      [ Ty.path "combinators_and_then::Day" ] in
-                  let* α7 := M.call_closure α6 [ day ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple [])
-        ] in
-    M.read α4
+    ltac:(M.monadic
+      (let food := M.alloc (| food |) in
+      let day := M.alloc (| day |) in
+      M.read (|
+          M.match_operator (|
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "combinators_and_then::cookable_v2", [] |),
+                      [ M.read (| food |) ]
+                    |)
+                |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::option::Option::Some", 0
+                        |) in
+                    let food := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "Yay! On " |);
+                                                  M.read (| mk_str " we get to eat " |);
+                                                  M.read (| mk_str ".
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "combinators_and_then::Day" ]
+                                                        |),
+                                                      [ day ]
+                                                    |);
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "combinators_and_then::Food" ]
+                                                        |),
+                                                      [ food ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "Oh no. We don't get to eat on "
+                                                    |);
+                                                  M.read (| mk_str "?
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "combinators_and_then::Day" ]
+                                                        |),
+                                                      [ day ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -354,51 +449,59 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* α0 :=
-      M.alloc
-        (Value.Tuple
-          [
-            Value.StructTuple "combinators_and_then::Food::CordonBleu" [];
-            Value.StructTuple "combinators_and_then::Food::Steak" [];
-            Value.StructTuple "combinators_and_then::Food::Sushi" []
-          ]) in
-    let* α1 :=
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let γ0_0 := M.get_tuple_field γ 0 in
-            let γ0_1 := M.get_tuple_field γ 1 in
-            let γ0_2 := M.get_tuple_field γ 2 in
-            let* cordon_bleu := M.copy γ0_0 in
-            let* steak := M.copy γ0_1 in
-            let* sushi := M.copy γ0_2 in
-            let* _ :=
-              let* α0 := M.get_function "combinators_and_then::eat" [] in
-              let* α1 := M.read cordon_bleu in
-              let* α2 :=
-                M.call_closure
-                  α0
-                  [ α1; Value.StructTuple "combinators_and_then::Day::Monday" [] ] in
-              M.alloc α2 in
-            let* _ :=
-              let* α0 := M.get_function "combinators_and_then::eat" [] in
-              let* α1 := M.read steak in
-              let* α2 :=
-                M.call_closure
-                  α0
-                  [ α1; Value.StructTuple "combinators_and_then::Day::Tuesday" [] ] in
-              M.alloc α2 in
-            let* _ :=
-              let* α0 := M.get_function "combinators_and_then::eat" [] in
-              let* α1 := M.read sushi in
-              let* α2 :=
-                M.call_closure
-                  α0
-                  [ α1; Value.StructTuple "combinators_and_then::Day::Wednesday" [] ] in
-              M.alloc α2 in
-            M.alloc (Value.Tuple [])
-        ] in
-    M.read α1
+    ltac:(M.monadic
+      (M.read (|
+          M.match_operator (|
+              M.alloc (|
+                  Value.Tuple
+                    [
+                      Value.StructTuple "combinators_and_then::Food::CordonBleu" [];
+                      Value.StructTuple "combinators_and_then::Food::Steak" [];
+                      Value.StructTuple "combinators_and_then::Food::Sushi" []
+                    ]
+                |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.get_tuple_field γ 0 in
+                    let γ0_1 := M.get_tuple_field γ 1 in
+                    let γ0_2 := M.get_tuple_field γ 2 in
+                    let cordon_bleu := M.copy (| γ0_0 |) in
+                    let steak := M.copy (| γ0_1 |) in
+                    let sushi := M.copy (| γ0_2 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "combinators_and_then::eat", [] |),
+                              [
+                                M.read (| cordon_bleu |);
+                                Value.StructTuple "combinators_and_then::Day::Monday" []
+                              ]
+                            |)
+                        |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "combinators_and_then::eat", [] |),
+                              [
+                                M.read (| steak |);
+                                Value.StructTuple "combinators_and_then::Day::Tuesday" []
+                              ]
+                            |)
+                        |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "combinators_and_then::eat", [] |),
+                              [
+                                M.read (| sushi |);
+                                Value.StructTuple "combinators_and_then::Day::Wednesday" []
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.

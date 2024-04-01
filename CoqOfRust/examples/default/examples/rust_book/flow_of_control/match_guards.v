@@ -37,138 +37,233 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* temperature :=
-      M.alloc
-        (Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer Integer.I32 35 ]) in
-    let* α0 :=
-      M.match_operator
-        temperature
-        [
-          fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Celsius" 0 in
-            let* t := M.copy γ0_0 in
-            let* γ :=
-              let* α0 := M.read t in
-              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 30)) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str "C is above 30 Celsius
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "i32" ] in
-                  let* α7 := M.call_closure α6 [ t ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Celsius" 0 in
-            let* t := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str "C is below 30 Celsius
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "i32" ] in
-                  let* α7 := M.call_closure α6 [ t ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Fahrenheit" 0 in
-            let* t := M.copy γ0_0 in
-            let* γ :=
-              let* α0 := M.read t in
-              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 86)) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str "F is above 86 Fahrenheit
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "i32" ] in
-                  let* α7 := M.call_closure α6 [ t ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 :=
-              M.get_struct_tuple_field_or_break_match γ "match_guards::Temperature::Fahrenheit" 0 in
-            let* t := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str "F is below 86 Fahrenheit
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "i32" ] in
-                  let* α7 := M.call_closure α6 [ t ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple [])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let temperature :=
+            M.alloc (|
+                Value.StructTuple
+                  "match_guards::Temperature::Celsius"
+                  [ Value.Integer Integer.I32 35 ]
+              |) in
+          M.match_operator (|
+              temperature,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_guards::Temperature::Celsius",
+                          0
+                        |) in
+                    let t := M.copy (| γ0_0 |) in
+                    let γ :=
+                      M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 30) |) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "" |);
+                                                  M.read (| mk_str "C is above 30 Celsius
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                      [ t ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_guards::Temperature::Celsius",
+                          0
+                        |) in
+                    let t := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "" |);
+                                                  M.read (| mk_str "C is below 30 Celsius
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                      [ t ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_guards::Temperature::Fahrenheit",
+                          0
+                        |) in
+                    let t := M.copy (| γ0_0 |) in
+                    let γ :=
+                      M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 86) |) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "" |);
+                                                  M.read (| mk_str "F is above 86 Fahrenheit
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                      [ t ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (|
+                          γ,
+                          "match_guards::Temperature::Fahrenheit",
+                          0
+                        |) in
+                    let t := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "" |);
+                                                  M.read (| mk_str "F is below 86 Fahrenheit
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                      [ t ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.

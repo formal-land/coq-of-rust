@@ -7,7 +7,7 @@ fn some_fn() {
 }
 *)
 Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -18,23 +18,45 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* a :=
-      let* α0 := M.get_function "diverging_functions_no_info_in_return_type::some_fn" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 := M.get_function "std::io::stdio::_print" [] in
-      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-      let* α4 :=
-        (* Unsize *)
-          let* α2 := M.read (mk_str "This function returns and you can see this line.
-") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          M.pure (M.pointer_coercion α3) in
-      let* α5 := M.call_closure α1 [ α4 ] in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let a :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "diverging_functions_no_info_in_return_type::some_fn", [] |),
+                    []
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "std::io::stdio::_print", [] |),
+                    [
+                      M.call_closure (|
+                          M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              []
+                            |),
+                          [
+                            (* Unsize *)
+                              M.pointer_coercion
+                                (M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                            mk_str
+                                              "This function returns and you can see this line.
+"
+                                          |)
+                                      ]
+                                  |))
+                          ]
+                        |)
+                    ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

@@ -17,9 +17,16 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "basic_contract_caller::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "basic_contract_caller::AccountId"
+          [
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +47,14 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -88,9 +100,11 @@ Module Impl_basic_contract_caller_OtherContract.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
-      let* init_value := M.alloc init_value in
-      let* α0 := M.read init_value in
-      M.pure (Value.StructRecord "basic_contract_caller::OtherContract" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let init_value := M.alloc (| init_value |) in
+        Value.StructRecord
+          "basic_contract_caller::OtherContract"
+          [ ("value", M.read (| init_value |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -104,17 +118,25 @@ Module Impl_basic_contract_caller_OtherContract.
   Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.read (M.get_struct_record_field α1 "basic_contract_caller::OtherContract" "value") in
-        M.assign
-          (M.get_struct_record_field α0 "basic_contract_caller::OtherContract" "value")
-          (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.get_struct_record_field
+                    (M.read (| self |))
+                    "basic_contract_caller::OtherContract"
+                    "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field
+                          (M.read (| self |))
+                          "basic_contract_caller::OtherContract"
+                          "value"
+                      |))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -128,9 +150,14 @@ Module Impl_basic_contract_caller_OtherContract.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "basic_contract_caller::OtherContract" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.get_struct_record_field
+              (M.read (| self |))
+              "basic_contract_caller::OtherContract"
+              "value"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -162,20 +189,24 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ other_contract_code_hash ] =>
-      let* other_contract_code_hash := M.alloc other_contract_code_hash in
-      let* other_contract :=
-        let* α0 := M.get_function "core::panicking::panic" [] in
-        let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3 in
-      let* α0 := M.read other_contract in
-      let* α0 :=
-        M.alloc
-          (Value.StructRecord
-            "basic_contract_caller::BasicContractCaller"
-            [ ("other_contract", α0) ]) in
-      M.read α0
+      ltac:(M.monadic
+        (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
+        M.read (|
+            let other_contract :=
+              M.alloc (|
+                  M.never_to_any (|
+                      M.call_closure (|
+                          M.get_function (| "core::panicking::panic", [] |),
+                          [ M.read (| mk_str "not yet implemented" |) ]
+                        |)
+                    |)
+                |) in
+            M.alloc (|
+                Value.StructRecord
+                  "basic_contract_caller::BasicContractCaller"
+                  [ ("other_contract", M.read (| other_contract |)) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -190,35 +221,41 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   Definition flip_and_get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 :=
-          M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "flip" [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field
-                α1
-                "basic_contract_caller::BasicContractCaller"
-                "other_contract"
-            ] in
-        M.alloc α2 in
-      let* α0 :=
-        M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "get" [] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call_closure
-          α0
-          [
-            M.get_struct_record_field
-              α1
-              "basic_contract_caller::BasicContractCaller"
-              "other_contract"
-          ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.path "basic_contract_caller::OtherContract",
+                          "flip",
+                          []
+                        |),
+                      [
+                        M.get_struct_record_field
+                          (M.read (| self |))
+                          "basic_contract_caller::BasicContractCaller"
+                          "other_contract"
+                      ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "basic_contract_caller::OtherContract",
+                        "get",
+                        []
+                      |),
+                    [
+                      M.get_struct_record_field
+                        (M.read (| self |))
+                        "basic_contract_caller::BasicContractCaller"
+                        "other_contract"
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   

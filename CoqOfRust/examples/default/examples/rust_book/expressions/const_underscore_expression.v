@@ -33,8 +33,9 @@ Module underscore.
     Definition show (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [ self ] =>
-        let* self := M.alloc self in
-        M.read (M.get_struct_record_field self "const_underscore_expression::Bar" "test")
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (| M.get_struct_record_field self "const_underscore_expression::Bar" "test" |)))
       | _, _ => M.impossible
       end.
     

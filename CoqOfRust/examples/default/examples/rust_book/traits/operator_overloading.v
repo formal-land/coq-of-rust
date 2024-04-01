@@ -28,12 +28,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "FooBar") in
-      M.call_closure α0 [ α1; α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [ M.read (| f |); M.read (| mk_str "FooBar" |) ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -60,12 +61,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "BarFoo") in
-      M.call_closure α0 [ α1; α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [ M.read (| f |); M.read (| mk_str "BarFoo" |) ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -95,24 +97,38 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; _rhs ] =>
-      let* self := M.alloc self in
-      let* _rhs := M.alloc _rhs in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-          let* α4 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "> Foo.add(Bar) was called
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
-              M.pure (M.pointer_coercion α3) in
-          let* α5 := M.call_closure α1 [ α4 ] in
-          let* α6 := M.call_closure α0 [ α5 ] in
-          M.alloc α6 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.StructTuple "operator_overloading::FooBar" []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _rhs := M.alloc (| _rhs |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "> Foo.add(Bar) was called
+" |) ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -142,24 +158,38 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; _rhs ] =>
-      let* self := M.alloc self in
-      let* _rhs := M.alloc _rhs in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-          let* α4 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "> Bar.add(Foo) was called
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
-              M.pure (M.pointer_coercion α3) in
-          let* α5 := M.call_closure α1 [ α4 ] in
-          let* α6 := M.call_closure α0 [ α5 ] in
-          M.alloc α6 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.StructTuple "operator_overloading::BarFoo" []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _rhs := M.alloc (| _rhs |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "> Bar.add(Foo) was called
+" |) ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -180,87 +210,137 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Foo + Bar = ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α12 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "operator_overloading::FooBar" ] in
-            let* α7 :=
-              M.get_trait_method
-                "core::ops::arith::Add"
-                (Ty.path "operator_overloading::Foo")
-                [ Ty.path "operator_overloading::Bar" ]
-                "add"
-                [] in
-            let* α8 :=
-              M.call_closure
-                α7
-                [
-                  Value.StructTuple "operator_overloading::Foo" [];
-                  Value.StructTuple "operator_overloading::Bar" []
-                ] in
-            let* α9 := M.alloc α8 in
-            let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
-        let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Bar + Foo = ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α12 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "operator_overloading::BarFoo" ] in
-            let* α7 :=
-              M.get_trait_method
-                "core::ops::arith::Add"
-                (Ty.path "operator_overloading::Bar")
-                [ Ty.path "operator_overloading::Foo" ]
-                "add"
-                [] in
-            let* α8 :=
-              M.call_closure
-                α7
-                [
-                  Value.StructTuple "operator_overloading::Bar" [];
-                  Value.StructTuple "operator_overloading::Foo" []
-                ] in
-            let* α9 := M.alloc α8 in
-            let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
-        let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "Foo + Bar = " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "operator_overloading::FooBar" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
+                                                            "core::ops::arith::Add",
+                                                            Ty.path "operator_overloading::Foo",
+                                                            [ Ty.path "operator_overloading::Bar" ],
+                                                            "add",
+                                                            []
+                                                          |),
+                                                        [
+                                                          Value.StructTuple
+                                                            "operator_overloading::Foo"
+                                                            [];
+                                                          Value.StructTuple
+                                                            "operator_overloading::Bar"
+                                                            []
+                                                        ]
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "Bar + Foo = " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "operator_overloading::BarFoo" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
+                                                            "core::ops::arith::Add",
+                                                            Ty.path "operator_overloading::Bar",
+                                                            [ Ty.path "operator_overloading::Foo" ],
+                                                            "add",
+                                                            []
+                                                          |),
+                                                        [
+                                                          Value.StructTuple
+                                                            "operator_overloading::Bar"
+                                                            [];
+                                                          Value.StructTuple
+                                                            "operator_overloading::Foo"
+                                                            []
+                                                        ]
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

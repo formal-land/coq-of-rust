@@ -452,26 +452,42 @@ Import Notations.
     This allows to represent Rust programs without introducing
     explicit names for all intermediate computation results. *)
 Ltac monadic e :=
-  match e with
+  lazymatch e with
   | context ctxt [let v : _ := ?x in @?f v] =>
-    refine (M.let_ _ _);
+    refine (let_ _ _);
       [ monadic x
-      | intro v;
-        let y := (eval cbn beta in (f v)) in
-        monadic y
-      ]
-  | context ctxt [run ?x] =>
-    refine (M.let_ _ _);
-      [ monadic x
-      | let v := fresh "v" in
-        intro v;
-        let y := context ctxt [v] in
-        match y with
-        | v => exact (M.pure v)
-        | _ => monadic y
+      | let v' := fresh v in
+        intro v';
+        let y := (eval cbn beta in (f v')) in
+        lazymatch context ctxt [let v := x in y] with
+        | let _ := x in y => monadic y
+        | _ =>
+          refine (let_ _ _);
+            [ monadic y
+            | let w := fresh "v" in
+              intro w;
+              let z := context ctxt [w] in
+              monadic z
+            ]
         end
       ]
-  | _ => exact e
+  | context ctxt [run ?x] =>
+    lazymatch context ctxt [run x] with
+    | run x => monadic x
+    | _ =>
+      refine (let_ _ _);
+        [ monadic x
+        | let v := fresh "v" in
+          intro v;
+          let y := context ctxt [v] in
+          monadic y
+        ]
+    end
+  | _ =>
+    lazymatch type of e with
+    | M => exact e
+    | _ => exact (pure e)
+    end
   end.
 
 Definition raise (exception : Exception.t) : M :=

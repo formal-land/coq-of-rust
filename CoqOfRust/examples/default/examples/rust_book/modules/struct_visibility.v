@@ -29,9 +29,11 @@ Module my.
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ contents ] =>
-        let* contents := M.alloc contents in
-        let* α0 := M.read contents in
-        M.pure (Value.StructRecord "struct_visibility::my::ClosedBox" [ ("contents", α0) ])
+        ltac:(M.monadic
+          (let contents := M.alloc (| contents |) in
+          Value.StructRecord
+            "struct_visibility::my::ClosedBox"
+            [ ("contents", M.read (| contents |)) ]))
       | _, _ => M.impossible
       end.
     
@@ -67,50 +69,77 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* open_box :=
-      let* α0 := M.read (mk_str "public information") in
-      M.alloc (Value.StructRecord "struct_visibility::my::OpenBox" [ ("contents", α0) ]) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "The open box contains: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α7 :=
-              M.call_closure
-                α6
-                [ M.get_struct_record_field open_box "struct_visibility::my::OpenBox" "contents"
-                ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* _closed_box :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "struct_visibility::my::ClosedBox")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "new"
-          [] in
-      let* α1 := M.read (mk_str "classified information") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let open_box :=
+            M.alloc (|
+                Value.StructRecord
+                  "struct_visibility::my::OpenBox"
+                  [ ("contents", M.read (| mk_str "public information" |)) ]
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "The open box contains: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                |),
+                                              [
+                                                M.get_struct_record_field
+                                                  open_box
+                                                  "struct_visibility::my::OpenBox"
+                                                  "contents"
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _closed_box :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "struct_visibility::my::ClosedBox")
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                        "new",
+                        []
+                      |),
+                    [ M.read (| mk_str "classified information" |) ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

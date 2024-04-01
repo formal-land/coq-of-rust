@@ -10,59 +10,94 @@ fn compare_prints<T: Debug + Display>(t: &T) {
 Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ T ], [ t ] =>
-    let* t := M.alloc t in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Debug: `") in
-            let* α3 := M.read (mk_str "`
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.apply (Ty.path "&") [ T ] ] in
-            let* α7 := M.call_closure α6 [ t ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Display: `") in
-            let* α3 := M.read (mk_str "`
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "&") [ T ] ] in
-            let* α7 := M.call_closure α6 [ t ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (let t := M.alloc (| t |) in
+      M.read (|
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Debug: `" |); M.read (| mk_str "`
+" |) ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                                |),
+                                              [ t ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "Display: `" |); M.read (| mk_str "`
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                                |),
+                                              [ t ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -75,60 +110,94 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
 Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [ T; U ], [ t; u ] =>
-    let* t := M.alloc t in
-    let* u := M.alloc u in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "t: `") in
-            let* α3 := M.read (mk_str "`
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.apply (Ty.path "&") [ T ] ] in
-            let* α7 := M.call_closure α6 [ t ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "u: `") in
-            let* α3 := M.read (mk_str "`
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.apply (Ty.path "&") [ U ] ] in
-            let* α7 := M.call_closure α6 [ u ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (let t := M.alloc (| t |) in
+      let u := M.alloc (| u |) in
+      M.read (|
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "t: `" |); M.read (| mk_str "`
+" |) ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                                |),
+                                              [ t ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "u: `" |); M.read (| mk_str "`
+" |) ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.apply (Ty.path "&") [ U ] ]
+                                                |),
+                                              [ u ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -148,58 +217,82 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* string := M.copy (mk_str "words") in
-    let* array :=
-      M.alloc
-        (Value.Array
-          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2; Value.Integer Integer.I32 3
-          ]) in
-    let* vec :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
-      let* α5 :=
-        (* Unsize *)
-          let* α1 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
-              "new"
-              [] in
-          let* α2 :=
-            M.alloc
-              (Value.Array
-                [
-                  Value.Integer Integer.I32 1;
-                  Value.Integer Integer.I32 2;
-                  Value.Integer Integer.I32 3
-                ]) in
-          let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* _ :=
-      let* α0 :=
-        M.get_function
-          "generics_multiple_bounds::compare_prints"
-          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-      let* α1 := M.call_closure α0 [ string ] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_function
-          "generics_multiple_bounds::compare_types"
-          [
-            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-            Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
-      let* α1 := M.call_closure α0 [ array; vec ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let string := M.copy (| mk_str "words" |) in
+          let array :=
+            M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer Integer.I32 1;
+                    Value.Integer Integer.I32 2;
+                    Value.Integer Integer.I32 3
+                  ]
+              |) in
+          let vec :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        "into_vec",
+                        [ Ty.path "alloc::alloc::Global" ]
+                      |),
+                    [
+                      (* Unsize *)
+                        M.pointer_coercion
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                  [
+                                    M.alloc (|
+                                        Value.Array
+                                          [
+                                            Value.Integer Integer.I32 1;
+                                            Value.Integer Integer.I32 2;
+                                            Value.Integer Integer.I32 3
+                                          ]
+                                      |)
+                                  ]
+                                |)
+                            |))
+                    ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (|
+                        "generics_multiple_bounds::compare_prints",
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      |),
+                    [ string ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (|
+                        "generics_multiple_bounds::compare_types",
+                        [
+                          Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                      |),
+                    [ array; vec ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

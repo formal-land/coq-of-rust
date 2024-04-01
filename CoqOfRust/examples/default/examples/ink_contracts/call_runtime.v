@@ -17,9 +17,16 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "call_runtime::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "call_runtime::AccountId"
+          [
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +47,14 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -145,7 +157,7 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "call_runtime::RuntimeCaller" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
     | _, _ => M.impossible
     end.
   
@@ -179,12 +191,13 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "CallRuntimeFailed") in
-      M.call_closure α0 [ α1; α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [ M.read (| f |); M.read (| mk_str "CallRuntimeFailed" |) ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -216,9 +229,10 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      M.pure (Value.Bool true)
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        Value.Bool true))
     | _, _ => M.impossible
     end.
   
@@ -250,8 +264,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.Tuple []))
     | _, _ => M.impossible
     end.
   
@@ -296,23 +311,34 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
   Definition from (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ e ] =>
-      let* e := M.alloc e in
-      let* α0 :=
-        M.match_operator
-          e
-          [
-            fun γ => M.alloc (Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []);
-            fun γ =>
-              let* α0 :=
-                M.get_function
-                  "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 := M.read (mk_str "Unexpected error from `pallet-contracts`.") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let e := M.alloc (| e |) in
+        M.read (|
+            M.match_operator (|
+                e,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                          Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                          M.never_to_any (|
+                              M.call_closure (|
+                                  M.get_function (|
+                                      "std::panicking::begin_panic",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                  [ M.read (| mk_str "Unexpected error from `pallet-contracts`." |)
+                                  ]
+                                |)
+                            |)
+                        |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -357,9 +383,12 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition env (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "init_env" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [] |),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -373,14 +402,17 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "call_runtime::RuntimeCaller")
-          []
-          "default"
-          [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (M.call_closure (|
+            M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "call_runtime::RuntimeCaller",
+                [],
+                "default",
+                []
+              |),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -403,60 +435,78 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition transfer_through_runtime (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; receiver; value ] =>
-      let* self := M.alloc self in
-      let* receiver := M.alloc receiver in
-      let* value := M.alloc value in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
-          "map_err"
-          [
-            Ty.path "call_runtime::RuntimeError";
-            Ty.function [ Ty.path "call_runtime::EnvError" ] (Ty.path "call_runtime::RuntimeError")
-          ] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.path "call_runtime::Env")
-          "call_runtime"
-          [ Ty.path "call_runtime::RuntimeCall" ] in
-      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] in
-      let* α3 := M.read self in
-      let* α4 := M.call_closure α2 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "call_runtime::AccountId")
-          [
-            Ty.apply
-              (Ty.path "call_runtime::MultiAddress")
-              [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
-          ]
-          "into"
-          [] in
-      let* α7 := M.read receiver in
-      let* α8 := M.call_closure α6 [ α7 ] in
-      let* α9 := M.read value in
-      let* α10 :=
-        M.alloc
-          (Value.StructTuple
-            "call_runtime::RuntimeCall::Balances"
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let receiver := M.alloc (| receiver |) in
+        let value := M.alloc (| value |) in
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
+                "map_err",
+                [
+                  Ty.path "call_runtime::RuntimeError";
+                  Ty.function
+                    [ Ty.path "call_runtime::EnvError" ]
+                    (Ty.path "call_runtime::RuntimeError")
+                ]
+              |),
             [
-              Value.StructRecord
-                "call_runtime::BalancesCall::Transfer"
-                [ ("dest", α8); ("value", α9) ]
-            ]) in
-      let* α11 := M.call_closure α1 [ α5; α10 ] in
-      let* α12 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "call_runtime::EnvError")
-          [ Ty.path "call_runtime::RuntimeError" ]
-          "into"
-          [] in
-      M.call_closure α0 [ α11; α12 ]
+              M.call_closure (|
+                  M.get_associated_function (|
+                      Ty.path "call_runtime::Env",
+                      "call_runtime",
+                      [ Ty.path "call_runtime::RuntimeCall" ]
+                    |),
+                  [
+                    M.alloc (|
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "call_runtime::RuntimeCaller",
+                                "env",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |)
+                      |);
+                    M.alloc (|
+                        Value.StructTuple
+                          "call_runtime::RuntimeCall::Balances"
+                          [
+                            Value.StructRecord
+                              "call_runtime::BalancesCall::Transfer"
+                              [
+                                ("dest",
+                                  M.call_closure (|
+                                      M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "call_runtime::AccountId",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "call_runtime::MultiAddress")
+                                              [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+                                          ],
+                                          "into",
+                                          []
+                                        |),
+                                      [ M.read (| receiver |) ]
+                                    |));
+                                ("value", M.read (| value |))
+                              ]
+                          ]
+                      |)
+                  ]
+                |);
+              M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.path "call_runtime::EnvError",
+                  [ Ty.path "call_runtime::RuntimeError" ],
+                  "into",
+                  []
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -471,33 +521,51 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition call_nonexistent_extrinsic (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
-          "map_err"
-          [
-            Ty.path "call_runtime::RuntimeError";
-            Ty.function [ Ty.path "call_runtime::EnvError" ] (Ty.path "call_runtime::RuntimeError")
-          ] in
-      let* α1 :=
-        M.get_associated_function (Ty.path "call_runtime::Env") "call_runtime" [ Ty.tuple [] ] in
-      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] in
-      let* α3 := M.read self in
-      let* α4 := M.call_closure α2 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 := M.alloc (Value.Tuple []) in
-      let* α7 := M.call_closure α1 [ α5; α6 ] in
-      let* α8 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "call_runtime::EnvError")
-          [ Ty.path "call_runtime::RuntimeError" ]
-          "into"
-          [] in
-      M.call_closure α0 [ α7; α8 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
+                "map_err",
+                [
+                  Ty.path "call_runtime::RuntimeError";
+                  Ty.function
+                    [ Ty.path "call_runtime::EnvError" ]
+                    (Ty.path "call_runtime::RuntimeError")
+                ]
+              |),
+            [
+              M.call_closure (|
+                  M.get_associated_function (|
+                      Ty.path "call_runtime::Env",
+                      "call_runtime",
+                      [ Ty.tuple [] ]
+                    |),
+                  [
+                    M.alloc (|
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "call_runtime::RuntimeCaller",
+                                "env",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |)
+                      |);
+                    M.alloc (| Value.Tuple [] |)
+                  ]
+                |);
+              M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.path "call_runtime::EnvError",
+                  [ Ty.path "call_runtime::RuntimeError" ],
+                  "into",
+                  []
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   

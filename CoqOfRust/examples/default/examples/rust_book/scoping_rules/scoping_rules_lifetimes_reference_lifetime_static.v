@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  M.run
-    (let* α0 := M.alloc (Value.Integer Integer.I32 18) in
-    M.alloc α0).
+  (M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 18 |) |)))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -14,14 +12,18 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ β0 ] =>
-    let* β0 := M.alloc β0 in
-    M.match_operator
-      β0
-      [
-        fun γ =>
-          let* α0 := M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
-          M.read α0
-      ]
+    ltac:(M.monadic
+      (let β0 := M.alloc (| β0 |) in
+      M.match_operator (|
+          β0,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                    M.get_constant (| "scoping_rules_lifetimes_reference_lifetime_static::NUM" |)
+                  |)))
+          ]
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -52,95 +54,163 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* static_string := M.copy (mk_str "I'm in read-only memory") in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "static_string: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α7 := M.call_closure α6 [ static_string ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* lifetime_num := M.alloc (Value.Integer Integer.I32 9) in
-      let* coerced_static :=
-        let* α0 :=
-          M.get_function "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" [] in
-        let* α1 := M.call_closure α0 [ lifetime_num ] in
-        M.alloc α1 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "coerced_static: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
-              let* α7 := M.call_closure α6 [ coerced_static ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "NUM: ") in
-            let* α3 := M.read (mk_str " stays accessible!
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α11 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "i32" ] in
-            let* α7 := M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
-            let* α8 := M.read α7 in
-            let* α9 := M.call_closure α6 [ α8 ] in
-            let* α10 := M.alloc (Value.Array [ α9 ]) in
-            M.pure (M.pointer_coercion α10) in
-        let* α12 := M.call_closure α1 [ α5; α11 ] in
-        let* α13 := M.call_closure α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let _ :=
+            let static_string := M.copy (| mk_str "I'm in read-only memory" |) in
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "static_string: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                  |),
+                                                [ static_string ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let lifetime_num := M.alloc (| Value.Integer Integer.I32 9 |) in
+            let coerced_static :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (|
+                          "scoping_rules_lifetimes_reference_lifetime_static::coerce_static",
+                          []
+                        |),
+                      [ lifetime_num ]
+                    |)
+                |) in
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "coerced_static: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                  |),
+                                                [ coerced_static ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "NUM: " |);
+                                          M.read (| mk_str " stays accessible!
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                              [
+                                                M.read (|
+                                                    M.get_constant (|
+                                                        "scoping_rules_lifetimes_reference_lifetime_static::NUM"
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

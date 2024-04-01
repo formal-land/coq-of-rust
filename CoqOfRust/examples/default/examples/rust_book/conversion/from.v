@@ -19,9 +19,9 @@ Module Impl_core_convert_From_i32_for_from_Number.
   Definition from (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ item ] =>
-      let* item := M.alloc item in
-      let* α0 := M.read item in
-      M.pure (Value.StructRecord "from::Number" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let item := M.alloc (| item |) in
+        Value.StructRecord "from::Number" [ ("value", M.read (| item |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -41,17 +41,22 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::From"
-          (Ty.path "from::Number")
-          [ Ty.path "i32" ]
-          "from"
-          [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 30 ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "from::Number",
+                        [ Ty.path "i32" ],
+                        "from",
+                        []
+                      |),
+                    [ Value.Integer Integer.I32 30 ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

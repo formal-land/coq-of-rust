@@ -43,37 +43,42 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Apple") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Orange") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Banana") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Kiwi") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Lemon") in
-              M.alloc α0
-          ] in
-      let* α3 := M.read α2 in
-      M.call_closure α0 [ α1; α3 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [
+              M.read (| f |);
+              M.read (|
+                  M.match_operator (|
+                      self,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Apple" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Orange" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Banana" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Kiwi" |) |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            M.alloc (| M.read (| mk_str "Lemon" |) |)))
+                      ]
+                    |)
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -101,80 +106,131 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* my_fruit := M.alloc (Value.StructTuple "core::option::Option::None" []) in
-    let* apple :=
-      M.alloc
-        (Value.StructTuple "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple" []) in
-    let* first_available_fruit :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ])
-          "get_or_insert"
-          [] in
-      let* α1 := M.read apple in
-      let* α2 := M.call_closure α0 [ my_fruit; α1 ] in
-      M.alloc α2 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "my_fruit is: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [
-                  Ty.apply
-                    (Ty.path "&mut")
-                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
-                ] in
-            let* α7 := M.call_closure α6 [ first_available_fruit ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "first_available_fruit is: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [
-                  Ty.apply
-                    (Ty.path "&mut")
-                    [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ]
-                ] in
-            let* α7 := M.call_closure α6 [ first_available_fruit ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let my_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          let apple :=
+            M.alloc (|
+                Value.StructTuple
+                  "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple"
+                  []
+              |) in
+          let first_available_fruit :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
+                        "get_or_insert",
+                        []
+                      |),
+                    [ my_fruit; M.read (| apple |) ]
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "my_fruit is: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      [
+                                                        Ty.path
+                                                          "unpacking_options_and_defaults_via_get_or_insert::Fruit"
+                                                      ]
+                                                  ]
+                                                |),
+                                              [ first_available_fruit ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "first_available_fruit is: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      [
+                                                        Ty.path
+                                                          "unpacking_options_and_defaults_via_get_or_insert::Fruit"
+                                                      ]
+                                                  ]
+                                                |),
+                                              [ first_available_fruit ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

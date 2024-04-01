@@ -16,12 +16,10 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.read self in
-      let* α1 := M.match_operator α0 [] in
-      let* α2 := M.read α1 in
-      M.never_to_any α2
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
     | _, _ => M.impossible
     end.
   
@@ -42,9 +40,9 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.read (| self |) |)))
     | _, _ => M.impossible
     end.
   
@@ -78,12 +76,10 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.read self in
-      let* α1 := M.match_operator α0 [] in
-      let* α2 := M.read α1 in
-      M.never_to_any α2
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
     | _, _ => M.impossible
     end.
   
@@ -104,9 +100,9 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.read (| self |) |)))
     | _, _ => M.impossible
     end.
   
@@ -143,32 +139,34 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
     let Self : Ty.t := Self Unit in
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field2_finish" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "Length") in
-      let* α4 :=
-        (* Unsize *)
-          let* α3 := M.read self in
-          M.pure
-            (M.pointer_coercion
-              (M.get_struct_tuple_field
-                α3
-                "generics_phantom_type_test_case_unit_clarification::Length"
-                0)) in
-      let* α7 :=
-        (* Unsize *)
-          let* α5 := M.read self in
-          let* α6 :=
-            M.alloc
-              (M.get_struct_tuple_field
-                α5
-                "generics_phantom_type_test_case_unit_clarification::Length"
-                1) in
-          M.pure (M.pointer_coercion α6) in
-      M.call_closure α0 [ α1; α2; α4; α7 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field2_finish",
+                []
+              |),
+            [
+              M.read (| f |);
+              M.read (| mk_str "Length" |);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.get_struct_tuple_field
+                    (M.read (| self |))
+                    "generics_phantom_type_test_case_unit_clarification::Length"
+                    0);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc (|
+                      M.get_struct_tuple_field
+                        (M.read (| self |))
+                        "generics_phantom_type_test_case_unit_clarification::Length"
+                        1
+                    |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -192,37 +190,36 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     let Self : Ty.t := Self Unit in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "f64") [] "clone" [] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call_closure
-          α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.StructTuple
+          "generics_phantom_type_test_case_unit_clarification::Length"
           [
-            M.get_struct_tuple_field
-              α1
-              "generics_phantom_type_test_case_unit_clarification::Length"
-              0
-          ] in
-      let* α3 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ])
-          []
-          "clone"
-          [] in
-      let* α4 := M.read self in
-      let* α5 :=
-        M.call_closure
-          α3
-          [
-            M.get_struct_tuple_field
-              α4
-              "generics_phantom_type_test_case_unit_clarification::Length"
-              1
-          ] in
-      M.pure
-        (Value.StructTuple "generics_phantom_type_test_case_unit_clarification::Length" [ α2; α5 ])
+            M.call_closure (|
+                M.get_trait_method (| "core::clone::Clone", Ty.path "f64", [], "clone", [] |),
+                [
+                  M.get_struct_tuple_field
+                    (M.read (| self |))
+                    "generics_phantom_type_test_case_unit_clarification::Length"
+                    0
+                ]
+              |);
+            M.call_closure (|
+                M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ],
+                    [],
+                    "clone",
+                    []
+                  |),
+                [
+                  M.get_struct_tuple_field
+                    (M.read (| self |))
+                    "generics_phantom_type_test_case_unit_clarification::Length"
+                    1
+                ]
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -268,25 +265,28 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
     let Self : Ty.t := Self Unit in
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* α0 :=
-        M.read
-          (M.get_struct_tuple_field
-            self
-            "generics_phantom_type_test_case_unit_clarification::Length"
-            0) in
-      let* α1 :=
-        M.read
-          (M.get_struct_tuple_field
-            rhs
-            "generics_phantom_type_test_case_unit_clarification::Length"
-            0) in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      M.pure
-        (Value.StructTuple
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α2; Value.StructTuple "core::marker::PhantomData" [] ])
+          [
+            BinOp.Panic.add (|
+                M.read (|
+                    M.get_struct_tuple_field
+                      self
+                      "generics_phantom_type_test_case_unit_clarification::Length"
+                      0
+                  |),
+                M.read (|
+                    M.get_struct_tuple_field
+                      rhs
+                      "generics_phantom_type_test_case_unit_clarification::Length"
+                      0
+                  |)
+              |);
+            Value.StructTuple "core::marker::PhantomData" []
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -326,121 +326,163 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* one_foot :=
-      let* α0 := M.read UnsupportedLiteral in
-      M.alloc
-        (Value.StructTuple
-          "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α0; Value.StructTuple "core::marker::PhantomData" [] ]) in
-    let* one_meter :=
-      let* α0 := M.read UnsupportedLiteral in
-      M.alloc
-        (Value.StructTuple
-          "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α0; Value.StructTuple "core::marker::PhantomData" [] ]) in
-    let* two_feet :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::arith::Add"
-          (Ty.apply
-            (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ])
-          [
-            Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
-          ]
-          "add"
-          [] in
-      let* α1 := M.read one_foot in
-      let* α2 := M.read one_foot in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* two_meters :=
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::arith::Add"
-          (Ty.apply
-            (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ])
-          [
-            Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
-          ]
-          "add"
-          [] in
-      let* α1 := M.read one_meter in
-      let* α2 := M.read one_meter in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "one foot + one_foot = ") in
-            let* α3 := M.read (mk_str " in
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "f64" ] in
-            let* α7 :=
-              M.call_closure
-                α6
-                [
-                  M.get_struct_tuple_field
-                    two_feet
-                    "generics_phantom_type_test_case_unit_clarification::Length"
-                    0
-                ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "one meter + one_meter = ") in
-            let* α3 := M.read (mk_str " mm
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "f64" ] in
-            let* α7 :=
-              M.call_closure
-                α6
-                [
-                  M.get_struct_tuple_field
-                    two_meters
-                    "generics_phantom_type_test_case_unit_clarification::Length"
-                    0
-                ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let one_foot :=
+            M.alloc (|
+                Value.StructTuple
+                  "generics_phantom_type_test_case_unit_clarification::Length"
+                  [
+                    M.read (| UnsupportedLiteral |);
+                    Value.StructTuple "core::marker::PhantomData" []
+                  ]
+              |) in
+          let one_meter :=
+            M.alloc (|
+                Value.StructTuple
+                  "generics_phantom_type_test_case_unit_clarification::Length"
+                  [
+                    M.read (| UnsupportedLiteral |);
+                    Value.StructTuple "core::marker::PhantomData" []
+                  ]
+              |) in
+          let two_feet :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::arith::Add",
+                        Ty.apply
+                          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                          [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
+                        [
+                          Ty.apply
+                            (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+                        ],
+                        "add",
+                        []
+                      |),
+                    [ M.read (| one_foot |); M.read (| one_foot |) ]
+                  |)
+              |) in
+          let two_meters :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::arith::Add",
+                        Ty.apply
+                          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                          [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
+                        [
+                          Ty.apply
+                            (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+                        ],
+                        "add",
+                        []
+                      |),
+                    [ M.read (| one_meter |); M.read (| one_meter |) ]
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "one foot + one_foot = " |);
+                                          M.read (| mk_str " in
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "f64" ]
+                                                |),
+                                              [
+                                                M.get_struct_tuple_field
+                                                  two_feet
+                                                  "generics_phantom_type_test_case_unit_clarification::Length"
+                                                  0
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "one meter + one_meter = " |);
+                                          M.read (| mk_str " mm
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "f64" ]
+                                                |),
+                                              [
+                                                M.get_struct_tuple_field
+                                                  two_meters
+                                                  "generics_phantom_type_test_case_unit_clarification::Length"
+                                                  0
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

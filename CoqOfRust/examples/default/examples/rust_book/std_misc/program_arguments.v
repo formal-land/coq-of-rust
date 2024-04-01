@@ -17,123 +17,197 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* args :=
-      let* α0 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.path "std::env::Args")
-          []
-          "collect"
-          [
-            Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
-          ] in
-      let* α1 := M.get_function "std::env::args" [] in
-      let* α2 := M.call_closure α1 [] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "My path is ") in
-            let* α3 := M.read (mk_str ".
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α11 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "alloc::string::String" ] in
-            let* α7 :=
-              M.get_trait_method
-                "core::ops::index::Index"
-                (Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
-                [ Ty.path "usize" ]
-                "index"
-                [] in
-            let* α8 := M.call_closure α7 [ args; Value.Integer Integer.Usize 0 ] in
-            let* α9 := M.call_closure α6 [ α8 ] in
-            let* α10 := M.alloc (Value.Array [ α9 ]) in
-            M.pure (M.pointer_coercion α10) in
-        let* α12 := M.call_closure α1 [ α5; α11 ] in
-        let* α13 := M.call_closure α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α6 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "I got ") in
-            let* α3 := M.read (mk_str " arguments: ") in
-            let* α4 := M.read (mk_str ".
-") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
-        let* α19 :=
-          (* Unsize *)
-            let* α7 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "usize" ] in
-            let* α8 :=
-              M.get_associated_function
-                (Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
-                "len"
-                [] in
-            let* α9 := M.call_closure α8 [ args ] in
-            let* α10 := BinOp.Panic.sub α9 (Value.Integer Integer.Usize 1) in
-            let* α11 := M.alloc α10 in
-            let* α12 := M.call_closure α7 [ α11 ] in
-            let* α13 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [
-                  Ty.apply
-                    (Ty.path "&")
-                    [ Ty.apply (Ty.path "slice") [ Ty.path "alloc::string::String" ] ]
-                ] in
-            let* α14 :=
-              M.get_trait_method
-                "core::ops::index::Index"
-                (Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
-                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
-                "index"
-                [] in
-            let* α15 :=
-              M.call_closure
-                α14
-                [
-                  args;
-                  Value.StructRecord
-                    "core::ops::range::RangeFrom"
-                    [ ("start", Value.Integer Integer.Usize 1) ]
-                ] in
-            let* α16 := M.alloc α15 in
-            let* α17 := M.call_closure α13 [ α16 ] in
-            let* α18 := M.alloc (Value.Array [ α12; α17 ]) in
-            M.pure (M.pointer_coercion α18) in
-        let* α20 := M.call_closure α1 [ α6; α19 ] in
-        let* α21 := M.call_closure α0 [ α20 ] in
-        M.alloc α21 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let args :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.path "std::env::Args",
+                        [],
+                        "collect",
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                      |),
+                    [ M.call_closure (| M.get_function (| "std::env::args", [] |), [] |) ]
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "My path is " |);
+                                          M.read (| mk_str ".
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                              [
+                                                M.call_closure (|
+                                                    M.get_trait_method (|
+                                                        "core::ops::index::Index",
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          [
+                                                            Ty.path "alloc::string::String";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        [ Ty.path "usize" ],
+                                                        "index",
+                                                        []
+                                                      |),
+                                                    [ args; Value.Integer Integer.Usize 0 ]
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "I got " |);
+                                          M.read (| mk_str " arguments: " |);
+                                          M.read (| mk_str ".
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    BinOp.Panic.sub (|
+                                                        M.call_closure (|
+                                                            M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  [
+                                                                    Ty.path "alloc::string::String";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                "len",
+                                                                []
+                                                              |),
+                                                            [ args ]
+                                                          |),
+                                                        Value.Integer Integer.Usize 1
+                                                      |)
+                                                  |)
+                                              ]
+                                            |);
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          [ Ty.path "alloc::string::String" ]
+                                                      ]
+                                                  ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_trait_method (|
+                                                            "core::ops::index::Index",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              [
+                                                                Ty.path "alloc::string::String";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::range::RangeFrom")
+                                                                [ Ty.path "usize" ]
+                                                            ],
+                                                            "index",
+                                                            []
+                                                          |),
+                                                        [
+                                                          args;
+                                                          Value.StructRecord
+                                                            "core::ops::range::RangeFrom"
+                                                            [
+                                                              ("start",
+                                                                Value.Integer Integer.Usize 1)
+                                                            ]
+                                                        ]
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

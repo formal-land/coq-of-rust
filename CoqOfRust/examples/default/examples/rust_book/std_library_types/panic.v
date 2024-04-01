@@ -14,36 +14,39 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 Definition division (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ dividend; divisor ] =>
-    let* dividend := M.alloc dividend in
-    let* divisor := M.alloc divisor in
-    let* α0 := M.alloc (Value.Tuple []) in
-    let* α1 :=
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 := M.read divisor in
-              let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
-              M.pure (M.use α1) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 :=
-              M.get_function
-                "std::panicking::begin_panic"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α1 := M.read (mk_str "division by zero") in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.never_to_any α2 in
-            M.alloc α3;
-          fun γ =>
-            let* α0 := M.read dividend in
-            let* α1 := M.read divisor in
-            let* α2 := BinOp.Panic.div α0 α1 in
-            M.alloc α2
-        ] in
-    M.read α1
+    ltac:(M.monadic
+      (let dividend := M.alloc (| dividend |) in
+      let divisor := M.alloc (| divisor |) in
+      M.read (|
+          M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                            BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
+                          |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                        M.never_to_any (|
+                            M.call_closure (|
+                                M.get_function (|
+                                    "std::panicking::begin_panic",
+                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  |),
+                                [ M.read (| mk_str "division by zero" |) ]
+                              |)
+                          |)
+                      |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |)
+                      |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -63,33 +66,55 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _x :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          "new"
-          [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 0 ] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 := M.get_function "panic::division" [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ] in
-      M.alloc α1 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-        let* α4 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "This point won't be reached!
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let _x :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                        "new",
+                        []
+                      |),
+                    [ Value.Integer Integer.I32 0 ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "panic::division", [] |),
+                    [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ]
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "This point won't be reached!
+" |) ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

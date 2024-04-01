@@ -18,118 +18,187 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* some_vector :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
-          "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
-      let* α5 :=
-        (* Unsize *)
-          let* α1 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "u32" ]; Ty.path "alloc::alloc::Global" ])
-              "new"
-              [] in
-          let* α2 :=
-            M.alloc
-              (Value.Array
-                [
-                  Value.Integer Integer.U32 1;
-                  Value.Integer Integer.U32 2;
-                  Value.Integer Integer.U32 3;
-                  Value.Integer Integer.U32 4
-                ]) in
-          let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* pointer :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "as_ptr"
-          [] in
-      let* α1 := M.call_closure α0 [ some_vector ] in
-      M.alloc α1 in
-    let* length :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "len"
-          [] in
-      let* α1 := M.call_closure α0 [ some_vector ] in
-      M.alloc α1 in
-    let* my_slice :=
-      let* α0 := M.get_function "core::slice::raw::from_raw_parts" [ Ty.path "u32" ] in
-      let* α1 := M.read pointer in
-      let* α2 := M.read length in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* _ :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "as_slice"
-          [] in
-      let* α1 := M.call_closure α0 [ some_vector ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.alloc (Value.Tuple [ α2; my_slice ]) in
-      M.match_operator
-        α3
-        [
-          fun γ =>
-            let γ0_0 := M.get_tuple_field γ 0 in
-            let γ0_1 := M.get_tuple_field γ 1 in
-            let* left_val := M.copy γ0_0 in
-            let* right_val := M.copy γ0_1 in
-            let* α0 := M.alloc (Value.Tuple []) in
-            M.match_operator
-              α0
-              [
-                fun γ =>
-                  let* γ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ])
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ] ]
-                        "eq"
-                        [] in
-                    let* α1 := M.read left_val in
-                    let* α2 := M.read right_val in
-                    let* α3 := M.call_closure α0 [ α1; α2 ] in
-                    let* α4 := M.alloc (UnOp.Pure.not α3) in
-                    M.pure (M.use α4) in
-                  let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
-                  let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-                  let* α0 :=
-                    M.get_function
-                      "core::panicking::assert_failed"
+    ltac:(M.monadic
+      (M.read (|
+          let some_vector :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                        "into_vec",
+                        [ Ty.path "alloc::alloc::Global" ]
+                      |),
+                    [
+                      (* Unsize *)
+                        M.pointer_coercion
+                          (M.read (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.apply (Ty.path "array") [ Ty.path "u32" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                  [
+                                    M.alloc (|
+                                        Value.Array
+                                          [
+                                            Value.Integer Integer.U32 1;
+                                            Value.Integer Integer.U32 2;
+                                            Value.Integer Integer.U32 3;
+                                            Value.Integer Integer.U32 4
+                                          ]
+                                      |)
+                                  ]
+                                |)
+                            |))
+                    ]
+                  |)
+              |) in
+          let pointer :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                        "as_ptr",
+                        []
+                      |),
+                    [ some_vector ]
+                  |)
+              |) in
+          let length :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                        "len",
+                        []
+                      |),
+                    [ some_vector ]
+                  |)
+              |) in
+          let my_slice :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u32" ] |),
+                    [ M.read (| pointer |); M.read (| length |) ]
+                  |)
+              |) in
+          let _ :=
+            M.match_operator (|
+                M.alloc (|
+                    Value.Tuple
                       [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
-                      ] in
-                  let* α1 := M.read kind in
-                  let* α2 := M.read left_val in
-                  let* α3 := M.read right_val in
-                  let* α4 :=
-                    M.call_closure
-                      α0
-                      [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
-                  let* α0 := M.alloc α4 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2;
-                fun γ => M.alloc (Value.Tuple [])
-              ]
-        ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                                    "as_slice",
+                                    []
+                                  |),
+                                [ some_vector ]
+                              |)
+                          |);
+                        my_slice
+                      ]
+                  |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.get_tuple_field γ 0 in
+                      let γ0_1 := M.get_tuple_field γ 1 in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                        UnOp.Pure.not
+                                          (M.call_closure (|
+                                              M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ]
+                                                    ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ]
+                                                      ]
+                                                  ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                              [ M.read (| left_val |); M.read (| right_val |) ]
+                                            |))
+                                      |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                    |) in
+                                M.alloc (|
+                                    M.never_to_any (|
+                                        M.read (|
+                                            let kind :=
+                                              M.alloc (|
+                                                  Value.StructTuple
+                                                    "core::panicking::AssertKind::Eq"
+                                                    []
+                                                |) in
+                                            M.alloc (|
+                                                M.call_closure (|
+                                                    M.get_function (|
+                                                        "core::panicking::assert_failed",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [ Ty.path "u32" ]
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [ Ty.path "u32" ]
+                                                            ]
+                                                        ]
+                                                      |),
+                                                    [
+                                                      M.read (| kind |);
+                                                      M.read (| left_val |);
+                                                      M.read (| right_val |);
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    ]
+                                                  |)
+                                              |)
+                                          |)
+                                      |)
+                                  |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                ]
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

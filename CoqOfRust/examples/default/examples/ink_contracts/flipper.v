@@ -19,9 +19,9 @@ Module Impl_flipper_Flipper.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
-      let* init_value := M.alloc init_value in
-      let* α0 := M.read init_value in
-      M.pure (Value.StructRecord "flipper::Flipper" [ ("value", α0) ])
+      ltac:(M.monadic
+        (let init_value := M.alloc (| init_value |) in
+        Value.StructRecord "flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -35,10 +35,17 @@ Module Impl_flipper_Flipper.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in
-      M.call_closure α0 [ α2 ]
+      ltac:(M.monadic
+        (M.call_closure (|
+            M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", []
+                    |),
+                  []
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -52,14 +59,19 @@ Module Impl_flipper_Flipper.
   Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record_field α1 "flipper::Flipper" "value") in
-        M.assign (M.get_struct_record_field α0 "flipper::Flipper" "value") (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value",
+                  UnOp.Pure.not
+                    (M.read (|
+                        M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value"
+                      |))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -73,9 +85,9 @@ Module Impl_flipper_Flipper.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "flipper::Flipper" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value" |)))
     | _, _ => M.impossible
     end.
   

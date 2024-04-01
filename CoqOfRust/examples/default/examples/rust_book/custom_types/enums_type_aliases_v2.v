@@ -33,27 +33,25 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   Definition run (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; x; y ] =>
-      let* self := M.alloc self in
-      let* x := M.alloc x in
-      let* y := M.alloc y in
-      let* α0 :=
-        M.match_operator
-          self
-          [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read x in
-              let* α1 := M.read y in
-              let* α2 := BinOp.Panic.add α0 α1 in
-              M.alloc α2;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read x in
-              let* α1 := M.read y in
-              let* α2 := BinOp.Panic.sub α0 α1 in
-              M.alloc α2
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let x := M.alloc (| x |) in
+        let y := M.alloc (| y |) in
+        M.read (|
+            M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| BinOp.Panic.add (| M.read (| x |), M.read (| y |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (| BinOp.Panic.sub (| M.read (| x |), M.read (| y |) |) |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   

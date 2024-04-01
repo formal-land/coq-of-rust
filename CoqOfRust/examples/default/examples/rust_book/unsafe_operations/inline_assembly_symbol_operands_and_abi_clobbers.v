@@ -31,7 +31,7 @@ fn main() {
 }
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 Module main.
   (*
@@ -43,36 +43,52 @@ Module main.
   Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ arg ] =>
-      let* arg := M.alloc arg in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "arg = ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "i32" ] in
-              let* α7 := M.call_closure α6 [ arg ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.read arg in
-      let* α1 := BinOp.Panic.mul α0 (Value.Integer Integer.I32 2) in
-      let* α0 := M.alloc α1 in
-      M.read α0
+      ltac:(M.monadic
+        (let arg := M.alloc (| arg |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [ M.read (| mk_str "arg = " |); M.read (| mk_str "
+" |) ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "i32" ]
+                                                  |),
+                                                [ arg ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| BinOp.Panic.mul (| M.read (| arg |), Value.Integer Integer.I32 2 |) |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -99,10 +115,13 @@ Module main.
   Definition call_foo (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ arg ] =>
-      let* arg := M.alloc arg in
-      let* result := M.copy Value.DeclaredButUndefined in
-      let _ := InlineAssembly in
-      M.read result
+      ltac:(M.monadic
+        (let arg := M.alloc (| arg |) in
+        M.read (|
+            let result := M.copy (| Value.DeclaredButUndefined |) in
+            let _ := InlineAssembly in
+            result
+          |)))
     | _, _ => M.impossible
     end.
 End main.

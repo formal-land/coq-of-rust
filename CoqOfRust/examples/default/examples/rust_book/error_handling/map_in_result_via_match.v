@@ -15,48 +15,79 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
 Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ first_number_str; second_number_str ] =>
-    let* first_number_str := M.alloc first_number_str in
-    let* second_number_str := M.alloc second_number_str in
-    let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
-    let* α1 := M.read first_number_str in
-    let* α2 := M.call_closure α0 [ α1 ] in
-    let* α3 := M.alloc α2 in
-    let* α4 :=
-      M.match_operator
-        α3
-        [
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-            let* first_number := M.copy γ0_0 in
-            let* α0 := M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
-            let* α1 := M.read second_number_str in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.alloc α2 in
-            M.match_operator
-              α3
+    ltac:(M.monadic
+      (let first_number_str := M.alloc (| first_number_str |) in
+      let second_number_str := M.alloc (| second_number_str |) in
+      M.read (|
+          M.match_operator (|
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                      [ M.read (| first_number_str |) ]
+                    |)
+                |),
               [
                 fun γ =>
-                  let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-                  let* second_number := M.copy γ0_0 in
-                  let* α0 := M.read first_number in
-                  let* α1 := M.read second_number in
-                  let* α2 := BinOp.Panic.mul α0 α1 in
-                  M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]);
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
+                        |) in
+                    let first_number := M.copy (| γ0_0 |) in
+                    M.match_operator (|
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_associated_function (|
+                                    Ty.path "str",
+                                    "parse",
+                                    [ Ty.path "i32" ]
+                                  |),
+                                [ M.read (| second_number_str |) ]
+                              |)
+                          |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "core::result::Result::Ok",
+                                    0
+                                  |) in
+                              let second_number := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    [
+                                      BinOp.Panic.mul (|
+                                          M.read (| first_number |),
+                                          M.read (| second_number |)
+                                        |)
+                                    ]
+                                |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.get_struct_tuple_field_or_break_match (|
+                                    γ,
+                                    "core::result::Result::Err",
+                                    0
+                                  |) in
+                              let e := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                  Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                                |)))
+                        ]
+                      |)));
                 fun γ =>
-                  let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-                  let* e := M.copy γ0_0 in
-                  let* α0 := M.read e in
-                  M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
-              ];
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-            let* e := M.copy γ0_0 in
-            let* α0 := M.read e in
-            M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
-        ] in
-    M.read α4
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
+                        |) in
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -71,67 +102,116 @@ fn print(result: Result<i32, ParseIntError>) {
 Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ result ] =>
-    let* result := M.alloc result in
-    let* α0 :=
-      M.match_operator
-        result
-        [
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-            let* n := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "n is ") in
-                  let* α3 := M.read (mk_str "
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "i32" ] in
-                  let* α7 := M.call_closure α6 [ n ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
-            let* e := M.copy γ0_0 in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-              let* α5 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "Error: ") in
-                  let* α3 := M.read (mk_str "
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
-              let* α9 :=
-                (* Unsize *)
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [ Ty.path "core::num::error::ParseIntError" ] in
-                  let* α7 := M.call_closure α6 [ e ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
-              let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
-            M.alloc (Value.Tuple [])
-        ] in
-    M.read α0
+    ltac:(M.monadic
+      (let result := M.alloc (| result |) in
+      M.read (|
+          M.match_operator (|
+              result,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0
+                        |) in
+                    let n := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "n is " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "i32" ]
+                                                        |),
+                                                      [ n ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0
+                        |) in
+                    let e := M.copy (| γ0_0 |) in
+                    let _ :=
+                      M.alloc (|
+                          M.call_closure (|
+                              M.get_function (| "std::io::stdio::_print", [] |),
+                              [
+                                M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
+                                    [
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| mk_str "Error: " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                            |));
+                                      (* Unsize *)
+                                        M.pointer_coercion
+                                          (M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [
+                                                            Ty.path
+                                                              "core::num::error::ParseIntError"
+                                                          ]
+                                                        |),
+                                                      [ e ]
+                                                    |)
+                                                ]
+                                            |))
+                                    ]
+                                  |)
+                              ]
+                            |)
+                        |) in
+                    M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -149,29 +229,37 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* twenty :=
-      let* α0 := M.get_function "map_in_result_via_match::multiply" [] in
-      let* α1 := M.read (mk_str "10") in
-      let* α2 := M.read (mk_str "2") in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* _ :=
-      let* α0 := M.get_function "map_in_result_via_match::print" [] in
-      let* α1 := M.read twenty in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* tt_ :=
-      let* α0 := M.get_function "map_in_result_via_match::multiply" [] in
-      let* α1 := M.read (mk_str "t") in
-      let* α2 := M.read (mk_str "2") in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* _ :=
-      let* α0 := M.get_function "map_in_result_via_match::print" [] in
-      let* α1 := M.read tt_ in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let twenty :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "map_in_result_via_match::multiply", [] |),
+                    [ M.read (| mk_str "10" |); M.read (| mk_str "2" |) ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "map_in_result_via_match::print", [] |),
+                    [ M.read (| twenty |) ]
+                  |)
+              |) in
+          let tt_ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "map_in_result_via_match::multiply", [] |),
+                    [ M.read (| mk_str "t" |); M.read (| mk_str "2" |) ]
+                  |)
+              |) in
+          let _ :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_function (| "map_in_result_via_match::print", [] |),
+                    [ M.read (| tt_ |) ]
+                  |)
+              |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

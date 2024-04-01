@@ -17,9 +17,16 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "contract_transfer::AccountId" [ α1 ])
+      ltac:(M.monadic
+        (Value.StructTuple
+          "contract_transfer::AccountId"
+          [
+            M.call_closure (|
+                M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", []
+                  |),
+                []
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -40,9 +47,14 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -81,9 +93,10 @@ Module Impl_contract_transfer_Env.
   Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "contract_transfer::Env" "caller")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.get_struct_record_field (M.read (| self |)) "contract_transfer::Env" "caller"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -144,9 +157,12 @@ Module Impl_contract_transfer_GiveMe.
   Definition env (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "init_env" [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [] |),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -159,7 +175,7 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "contract_transfer::GiveMe" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" []))
     | _, _ => M.impossible
     end.
   
@@ -184,147 +200,251 @@ Module Impl_contract_transfer_GiveMe.
   Definition give_me (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; value ] =>
-      let* self := M.alloc self in
-      let* value := M.alloc value in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "requested value: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "u128" ] in
-              let* α7 := M.call_closure α6 [ value ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "contract balance: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α16 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "u128" ] in
-              let* α7 :=
-                M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] in
-              let* α8 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-              let* α9 := M.read self in
-              let* α10 := M.call_closure α8 [ α9 ] in
-              let* α11 := M.alloc α10 in
-              let* α12 := M.call_closure α7 [ α11 ] in
-              let* α13 := M.alloc α12 in
-              let* α14 := M.call_closure α6 [ α13 ] in
-              let* α15 := M.alloc (Value.Array [ α14 ]) in
-              M.pure (M.pointer_coercion α15) in
-          let* α17 := M.call_closure α1 [ α5; α16 ] in
-          let* α18 := M.call_closure α0 [ α17 ] in
-          M.alloc α18 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* α0 := M.alloc (Value.Tuple []) in
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 := M.read value in
-                let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "balance" [] in
-                let* α2 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-                let* α3 := M.read self in
-                let* α4 := M.call_closure α2 [ α3 ] in
-                let* α5 := M.alloc α4 in
-                let* α6 := M.call_closure α1 [ α5 ] in
-                let* α7 := M.alloc (UnOp.Pure.not (BinOp.Pure.le α0 α6)) in
-                M.pure (M.use α7) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 :=
-                M.get_function
-                  "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 := M.read (mk_str "insufficient funds!") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3;
-            fun γ => M.alloc (Value.Tuple [])
-          ] in
-      let* α0 := M.alloc (Value.Tuple []) in
-      let* α0 :=
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 :=
-                  M.get_associated_function
-                    (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.tuple [] ])
-                    "is_err"
-                    [] in
-                let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "transfer" [] in
-                let* α2 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-                let* α3 := M.read self in
-                let* α4 := M.call_closure α2 [ α3 ] in
-                let* α5 := M.alloc α4 in
-                let* α6 :=
-                  M.get_associated_function (Ty.path "contract_transfer::Env") "caller" [] in
-                let* α7 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-                let* α8 := M.read self in
-                let* α9 := M.call_closure α7 [ α8 ] in
-                let* α10 := M.alloc α9 in
-                let* α11 := M.call_closure α6 [ α10 ] in
-                let* α12 := M.read value in
-                let* α13 := M.call_closure α1 [ α5; α11; α12 ] in
-                let* α14 := M.alloc α13 in
-                let* α15 := M.call_closure α0 [ α14 ] in
-                let* α16 := M.alloc α15 in
-                M.pure (M.use α16) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 :=
-                M.get_function
-                  "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 :=
-                M.read
-                  (mk_str
-                    "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3;
-            fun γ => M.alloc (Value.Tuple [])
-          ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let value := M.alloc (| value |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "requested value: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "u128" ]
+                                                  |),
+                                                [ value ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "contract balance: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "u128" ]
+                                                  |),
+                                                [
+                                                  M.alloc (|
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "contract_transfer::Env",
+                                                              "balance",
+                                                              []
+                                                            |),
+                                                          [
+                                                            M.alloc (|
+                                                                M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "contract_transfer::GiveMe",
+                                                                        "env",
+                                                                        []
+                                                                      |),
+                                                                    [ M.read (| self |) ]
+                                                                  |)
+                                                              |)
+                                                          ]
+                                                        |)
+                                                    |)
+                                                ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            let _ :=
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                                UnOp.Pure.not
+                                  (BinOp.Pure.le
+                                    (M.read (| value |))
+                                    (M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "contract_transfer::Env",
+                                            "balance",
+                                            []
+                                          |),
+                                        [
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::GiveMe",
+                                                      "env",
+                                                      []
+                                                    |),
+                                                  [ M.read (| self |) ]
+                                                |)
+                                            |)
+                                        ]
+                                      |)))
+                              |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.call_closure (|
+                                    M.get_function (|
+                                        "std::panicking::begin_panic",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                    [ M.read (| mk_str "insufficient funds!" |) ]
+                                  |)
+                              |)
+                          |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+            M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [ Ty.tuple []; Ty.tuple [] ],
+                                      "is_err",
+                                      []
+                                    |),
+                                  [
+                                    M.alloc (|
+                                        M.call_closure (|
+                                            M.get_associated_function (|
+                                                Ty.path "contract_transfer::Env",
+                                                "transfer",
+                                                []
+                                              |),
+                                            [
+                                              M.alloc (|
+                                                  M.call_closure (|
+                                                      M.get_associated_function (|
+                                                          Ty.path "contract_transfer::GiveMe",
+                                                          "env",
+                                                          []
+                                                        |),
+                                                      [ M.read (| self |) ]
+                                                    |)
+                                                |);
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::Env",
+                                                      "caller",
+                                                      []
+                                                    |),
+                                                  [
+                                                    M.alloc (|
+                                                        M.call_closure (|
+                                                            M.get_associated_function (|
+                                                                Ty.path "contract_transfer::GiveMe",
+                                                                "env",
+                                                                []
+                                                              |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                      |)
+                                                  ]
+                                                |);
+                                              M.read (| value |)
+                                            ]
+                                          |)
+                                      |)
+                                  ]
+                                |)
+                            |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                          M.never_to_any (|
+                              M.call_closure (|
+                                  M.get_function (|
+                                      "std::panicking::begin_panic",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                  [
+                                    M.read (|
+                                        mk_str
+                                          "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
+                                      |)
+                                  ]
+                                |)
+                            |)
+                        |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -339,79 +459,126 @@ Module Impl_contract_transfer_GiveMe.
   Definition was_it_ten (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "received payment: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α16 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "u128" ] in
-              let* α7 :=
-                M.get_associated_function
-                  (Ty.path "contract_transfer::Env")
-                  "transferred_value"
-                  [] in
-              let* α8 := M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-              let* α9 := M.read self in
-              let* α10 := M.call_closure α8 [ α9 ] in
-              let* α11 := M.alloc α10 in
-              let* α12 := M.call_closure α7 [ α11 ] in
-              let* α13 := M.alloc α12 in
-              let* α14 := M.call_closure α6 [ α13 ] in
-              let* α15 := M.alloc (Value.Array [ α14 ]) in
-              M.pure (M.pointer_coercion α15) in
-          let* α17 := M.call_closure α1 [ α5; α16 ] in
-          let* α18 := M.call_closure α0 [ α17 ] in
-          M.alloc α18 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* α0 := M.alloc (Value.Tuple []) in
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 :=
-                  M.get_associated_function
-                    (Ty.path "contract_transfer::Env")
-                    "transferred_value"
-                    [] in
-                let* α1 :=
-                  M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" [] in
-                let* α2 := M.read self in
-                let* α3 := M.call_closure α1 [ α2 ] in
-                let* α4 := M.alloc α3 in
-                let* α5 := M.call_closure α0 [ α4 ] in
-                let* α6 :=
-                  M.alloc (UnOp.Pure.not (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
-                M.pure (M.use α6) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 :=
-                M.get_function
-                  "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α1 := M.read (mk_str "payment was not ten") in
-              let* α2 := M.call_closure α0 [ α1 ] in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3;
-            fun γ => M.alloc (Value.Tuple [])
-          ] in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "received payment: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "u128" ]
+                                                  |),
+                                                [
+                                                  M.alloc (|
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "contract_transfer::Env",
+                                                              "transferred_value",
+                                                              []
+                                                            |),
+                                                          [
+                                                            M.alloc (|
+                                                                M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "contract_transfer::GiveMe",
+                                                                        "env",
+                                                                        []
+                                                                      |),
+                                                                    [ M.read (| self |) ]
+                                                                  |)
+                                                              |)
+                                                          ]
+                                                        |)
+                                                    |)
+                                                ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            let _ :=
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                                UnOp.Pure.not
+                                  (BinOp.Pure.eq
+                                    (M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "contract_transfer::Env",
+                                            "transferred_value",
+                                            []
+                                          |),
+                                        [
+                                          M.alloc (|
+                                              M.call_closure (|
+                                                  M.get_associated_function (|
+                                                      Ty.path "contract_transfer::GiveMe",
+                                                      "env",
+                                                      []
+                                                    |),
+                                                  [ M.read (| self |) ]
+                                                |)
+                                            |)
+                                        ]
+                                      |))
+                                    (Value.Integer Integer.U128 10))
+                              |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.call_closure (|
+                                    M.get_function (|
+                                        "std::panicking::begin_panic",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                    [ M.read (| mk_str "payment was not ten" |) ]
+                                  |)
+                              |)
+                          |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   

@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => M.pure (Value.Tuple []) | _, _ => M.impossible end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
 Module main.
   (*
@@ -27,15 +27,24 @@ Module main.
   Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [ F ], [ f ] =>
-      let* f := M.alloc f in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method "core::ops::function::FnOnce" F [ Ty.tuple [] ] "call_once" [] in
-        let* α1 := M.read f in
-        let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
-        M.alloc α2 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let f := M.alloc (| f |) in
+        M.read (|
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [ Ty.tuple [] ],
+                          "call_once",
+                          []
+                        |),
+                      [ M.read (| f |); Value.Tuple [] ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
 End main.

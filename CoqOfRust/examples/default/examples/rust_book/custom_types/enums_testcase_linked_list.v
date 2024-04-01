@@ -37,7 +37,7 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "enums_testcase_linked_list::List::Nil" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" []))
     | _, _ => M.impossible
     end.
   
@@ -52,19 +52,25 @@ Module Impl_enums_testcase_linked_list_List.
   Definition prepend (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; elem ] =>
-      let* self := M.alloc self in
-      let* elem := M.alloc elem in
-      let* α0 := M.read elem in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ])
-          "new"
-          [] in
-      let* α2 := M.read self in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      M.pure (Value.StructTuple "enums_testcase_linked_list::List::Cons" [ α0; α3 ])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let elem := M.alloc (| elem |) in
+        Value.StructTuple
+          "enums_testcase_linked_list::List::Cons"
+          [
+            M.read (| elem |);
+            M.call_closure (|
+                M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                [ M.read (| self |) ]
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -91,34 +97,44 @@ Module Impl_enums_testcase_linked_list_List.
   Definition len (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      let* α1 :=
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "enums_testcase_linked_list::List::Cons"
-                  0 in
-              let* γ0_1 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "enums_testcase_linked_list::List::Cons"
-                  1 in
-              let* tail := M.alloc γ0_1 in
-              let* α0 :=
-                M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "len" [] in
-              let* α1 := M.read tail in
-              let* α2 := M.read α1 in
-              let* α3 := M.call_closure α0 [ α2 ] in
-              let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
-              M.alloc α4;
-            fun γ => M.alloc (Value.Integer Integer.U32 0)
-          ] in
-      M.read α1
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                M.read (| self |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "enums_testcase_linked_list::List::Cons",
+                            0
+                          |) in
+                      let γ0_1 :=
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "enums_testcase_linked_list::List::Cons",
+                            1
+                          |) in
+                      let tail := M.alloc (| γ0_1 |) in
+                      M.alloc (|
+                          BinOp.Panic.add (|
+                              Value.Integer Integer.U32 1,
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "enums_testcase_linked_list::List",
+                                      "len",
+                                      []
+                                    |),
+                                  [ M.read (| M.read (| tail |) |) ]
+                                |)
+                            |)
+                        |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 0 |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -141,79 +157,115 @@ Module Impl_enums_testcase_linked_list_List.
   Definition stringify (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      let* α1 :=
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ0_0 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "enums_testcase_linked_list::List::Cons"
-                  0 in
-              let* γ0_1 :=
-                M.get_struct_tuple_field_or_break_match
-                  γ
-                  "enums_testcase_linked_list::List::Cons"
-                  1 in
-              let* head := M.copy γ0_0 in
-              let* tail := M.alloc γ0_1 in
-              let* res :=
-                let* α0 := M.get_function "alloc::fmt::format" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                let* α5 :=
-                  (* Unsize *)
-                    let* α2 := M.read (mk_str "") in
-                    let* α3 := M.read (mk_str ", ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
-                let* α16 :=
-                  (* Unsize *)
-                    let* α6 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display"
-                        [ Ty.path "u32" ] in
-                    let* α7 := M.call_closure α6 [ head ] in
-                    let* α8 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display"
-                        [ Ty.path "alloc::string::String" ] in
-                    let* α9 :=
-                      M.get_associated_function
-                        (Ty.path "enums_testcase_linked_list::List")
-                        "stringify"
-                        [] in
-                    let* α10 := M.read tail in
-                    let* α11 := M.read α10 in
-                    let* α12 := M.call_closure α9 [ α11 ] in
-                    let* α13 := M.alloc α12 in
-                    let* α14 := M.call_closure α8 [ α13 ] in
-                    let* α15 := M.alloc (Value.Array [ α7; α14 ]) in
-                    M.pure (M.pointer_coercion α15) in
-                let* α17 := M.call_closure α1 [ α5; α16 ] in
-                let* α18 := M.call_closure α0 [ α17 ] in
-                M.alloc α18 in
-              M.pure res;
-            fun γ =>
-              let* res :=
-                let* α0 := M.get_function "alloc::fmt::format" [] in
-                let* α1 :=
-                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-                let* α4 :=
-                  (* Unsize *)
-                    let* α2 := M.read (mk_str "Nil") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
-                let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
-              M.pure res
-          ] in
-      M.read α1
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                M.read (| self |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "enums_testcase_linked_list::List::Cons",
+                            0
+                          |) in
+                      let γ0_1 :=
+                        M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "enums_testcase_linked_list::List::Cons",
+                            1
+                          |) in
+                      let head := M.copy (| γ0_0 |) in
+                      let tail := M.alloc (| γ0_1 |) in
+                      let res :=
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "alloc::fmt::format", [] |),
+                                [
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                      [
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| mk_str "" |); M.read (| mk_str ", " |)
+                                                  ]
+                                              |));
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "u32" ]
+                                                          |),
+                                                        [ head ]
+                                                      |);
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                        [
+                                                          M.alloc (|
+                                                              M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "enums_testcase_linked_list::List",
+                                                                      "stringify",
+                                                                      []
+                                                                    |),
+                                                                  [ M.read (| M.read (| tail |) |) ]
+                                                                |)
+                                                            |)
+                                                        ]
+                                                      |)
+                                                  ]
+                                              |))
+                                      ]
+                                    |)
+                                ]
+                              |)
+                          |) in
+                      res));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let res :=
+                        M.alloc (|
+                            M.call_closure (|
+                                M.get_function (| "alloc::fmt::format", [] |),
+                                [
+                                  M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
+                                      [
+                                        (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (| Value.Array [ M.read (| mk_str "Nil" |) ]
+                                              |))
+                                      ]
+                                    |)
+                                ]
+                              |)
+                          |) in
+                      res))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -238,90 +290,165 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* list :=
-      let* α0 := M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "new" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
-      let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 1 ] in
-      M.assign list α2 in
-    let* _ :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
-      let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 2 ] in
-      M.assign list α2 in
-    let* _ :=
-      let* α0 :=
-        M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
-      let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
-      M.assign list α2 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "linked list has length: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α12 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u32" ] in
-            let* α7 :=
-              M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "len" [] in
-            let* α8 := M.call_closure α7 [ list ] in
-            let* α9 := M.alloc α8 in
-            let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
-        let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α12 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "alloc::string::String" ] in
-            let* α7 :=
-              M.get_associated_function
-                (Ty.path "enums_testcase_linked_list::List")
-                "stringify"
-                [] in
-            let* α8 := M.call_closure α7 [ list ] in
-            let* α9 := M.alloc α8 in
-            let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
-        let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let list :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "enums_testcase_linked_list::List",
+                        "new",
+                        []
+                      |),
+                    []
+                  |)
+              |) in
+          let _ :=
+            M.assign (|
+                list,
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "enums_testcase_linked_list::List",
+                        "prepend",
+                        []
+                      |),
+                    [ M.read (| list |); Value.Integer Integer.U32 1 ]
+                  |)
+              |) in
+          let _ :=
+            M.assign (|
+                list,
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "enums_testcase_linked_list::List",
+                        "prepend",
+                        []
+                      |),
+                    [ M.read (| list |); Value.Integer Integer.U32 2 ]
+                  |)
+              |) in
+          let _ :=
+            M.assign (|
+                list,
+                M.call_closure (|
+                    M.get_associated_function (|
+                        Ty.path "enums_testcase_linked_list::List",
+                        "prepend",
+                        []
+                      |),
+                    [ M.read (| list |); Value.Integer Integer.U32 3 ]
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "linked list has length: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path
+                                                              "enums_testcase_linked_list::List",
+                                                            "len",
+                                                            []
+                                                          |),
+                                                        [ list ]
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path
+                                                              "enums_testcase_linked_list::List",
+                                                            "stringify",
+                                                            []
+                                                          |),
+                                                        [ list ]
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

@@ -9,10 +9,11 @@ fn is_odd(n: u32) -> bool {
 Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ n ] =>
-    let* n := M.alloc n in
-    let* α0 := M.read n in
-    let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.U32 2) in
-    M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.U32 1))
+    ltac:(M.monadic
+      (let n := M.alloc (| n |) in
+      BinOp.Pure.eq
+        (BinOp.Panic.rem (| M.read (| n |), Value.Integer Integer.U32 2 |))
+        (Value.Integer Integer.U32 1)))
   | _, _ => M.impossible
   end.
 
@@ -51,309 +52,424 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
-        let* α4 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "Find the sum of all the squared odd numbers under 1000
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
-      M.alloc (Value.Tuple []) in
-    let* upper := M.alloc (Value.Integer Integer.U32 1000) in
-    let* acc := M.alloc (Value.Integer Integer.U32 0) in
-    let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::iter::traits::collect::IntoIterator"
-          (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
-          []
-          "into_iter"
-          [] in
-      let* α1 :=
-        M.call_closure
-          α0
-          [
-            Value.StructRecord
-              "core::ops::range::RangeFrom"
-              [ ("start", Value.Integer Integer.U32 0) ]
-          ] in
-      let* α2 := M.alloc α1 in
-      let* α3 :=
-        M.match_operator
-          α2
-          [
-            fun γ =>
-              let* iter := M.copy γ in
-              M.loop
-                (let* _ :=
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::iter::traits::iterator::Iterator"
-                      (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
-                      []
-                      "next"
-                      [] in
-                  let* α1 := M.call_closure α0 [ iter ] in
-                  let* α2 := M.alloc α1 in
-                  M.match_operator
-                    α2
-                    [
-                      fun γ =>
-                        let* α0 := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 := M.never_to_any α1 in
-                        M.alloc α2;
-                      fun γ =>
-                        let* γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            γ
-                            "core::option::Option::Some"
-                            0 in
-                        let* n := M.copy γ0_0 in
-                        let* n_squared :=
-                          let* α0 := M.read n in
-                          let* α1 := M.read n in
-                          let* α2 := BinOp.Panic.mul α0 α1 in
-                          M.alloc α2 in
-                        let* α0 := M.alloc (Value.Tuple []) in
-                        M.match_operator
-                          α0
+    ltac:(M.monadic
+      (M.read (|
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                              mk_str
+                                                "Find the sum of all the squared odd numbers under 1000
+"
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let upper := M.alloc (| Value.Integer Integer.U32 1000 |) in
+          let acc := M.alloc (| Value.Integer Integer.U32 0 |) in
+          let _ :=
+            M.use
+              (M.match_operator (|
+                  M.alloc (|
+                      M.call_closure (|
+                          M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
+                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ],
+                              [],
+                              "into_iter",
+                              []
+                            |),
                           [
-                            fun γ =>
-                              let* γ :=
-                                let* α0 := M.read n_squared in
-                                let* α1 := M.read upper in
-                                let* α2 := M.alloc (BinOp.Pure.ge α0 α1) in
-                                M.pure (M.use α2) in
-                              let* _ :=
-                                let* α0 := M.read γ in
-                                M.is_constant_or_break_match α0 (Value.Bool true) in
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2;
-                            fun γ =>
-                              let* α0 := M.alloc (Value.Tuple []) in
-                              M.match_operator
-                                α0
-                                [
-                                  fun γ =>
-                                    let* γ :=
-                                      let* α0 :=
-                                        M.get_function "higher_order_functions::is_odd" [] in
-                                      let* α1 := M.read n_squared in
-                                      let* α2 := M.call_closure α0 [ α1 ] in
-                                      let* α3 := M.alloc α2 in
-                                      M.pure (M.use α3) in
-                                    let* _ :=
-                                      let* α0 := M.read γ in
-                                      M.is_constant_or_break_match α0 (Value.Bool true) in
-                                    let* _ :=
-                                      let β := acc in
-                                      let* α0 := M.read β in
-                                      let* α1 := M.read n_squared in
-                                      let* α2 := BinOp.Panic.add α0 α1 in
-                                      M.assign β α2 in
-                                    M.alloc (Value.Tuple []);
-                                  fun γ => M.alloc (Value.Tuple [])
-                                ]
+                            Value.StructRecord
+                              "core::ops::range::RangeFrom"
+                              [ ("start", Value.Integer Integer.U32 0) ]
                           ]
-                    ] in
-                M.alloc (Value.Tuple []))
-          ] in
-      M.pure (M.use α3) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "imperative style: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u32" ] in
-            let* α7 := M.call_closure α6 [ acc ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* sum_of_squared_odd_numbers :=
-      let* α0 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply
-            (Ty.path "core::iter::adapters::filter::Filter")
-            [
-              Ty.apply
-                (Ty.path "core::iter::adapters::take_while::TakeWhile")
-                [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
+                        |)
+                    |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let iter := M.copy (| γ |) in
+                        M.loop (|
+                            ltac:(M.monadic
+                              (let _ :=
+                                M.match_operator (|
+                                    M.alloc (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  [ Ty.path "u32" ],
+                                                [],
+                                                "next",
+                                                []
+                                              |),
+                                            [ iter ]
+                                          |)
+                                      |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.get_struct_tuple_field_or_break_match (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
+                                              |) in
+                                          let n := M.copy (| γ0_0 |) in
+                                          let n_squared :=
+                                            M.alloc (|
+                                                BinOp.Panic.mul (| M.read (| n |), M.read (| n |) |)
+                                              |) in
+                                          M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                            BinOp.Pure.ge
+                                                              (M.read (| n_squared |))
+                                                              (M.read (| upper |))
+                                                          |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                    M.alloc (|
+                                                        M.never_to_any (| M.read (| M.break (||) |)
+                                                          |)
+                                                      |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                      M.call_closure (|
+                                                                          M.get_function (|
+                                                                              "higher_order_functions::is_odd",
+                                                                              []
+                                                                            |),
+                                                                          [ M.read (| n_squared |) ]
+                                                                        |)
+                                                                    |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                    M.read (| γ |),
+                                                                    Value.Bool true
+                                                                  |) in
+                                                              let _ :=
+                                                                let β := acc in
+                                                                M.assign (|
+                                                                    β,
+                                                                    BinOp.Panic.add (|
+                                                                        M.read (| β |),
+                                                                        M.read (| n_squared |)
+                                                                      |)
+                                                                  |) in
+                                                              M.alloc (| Value.Tuple [] |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |)))
+                                              ]
+                                            |)))
+                                    ]
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                  ]
+                |)) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "imperative style: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                              [ acc ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          let sum_of_squared_odd_numbers :=
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::filter::Filter")
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map::Map")
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeFrom")
+                                      [ Ty.path "u32" ];
+                                    Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                  ];
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                  (Ty.path "bool")
+                              ];
+                            Ty.function
+                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                              (Ty.path "bool")
+                          ],
+                        [],
+                        "sum",
+                        [ Ty.path "u32" ]
+                      |),
                     [
-                      Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
-                      Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                    ];
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-                    (Ty.path "bool")
-                ];
-              Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
-            ])
-          []
-          "sum"
-          [ Ty.path "u32" ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply
-            (Ty.path "core::iter::adapters::take_while::TakeWhile")
-            [
-              Ty.apply
-                (Ty.path "core::iter::adapters::map::Map")
-                [
-                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
-                  Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                ];
-              Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
-            ])
-          []
-          "filter"
-          [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
-          ] in
-      let* α2 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply
-            (Ty.path "core::iter::adapters::map::Map")
-            [
-              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
-              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-            ])
-          []
-          "take_while"
-          [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ] (Ty.path "bool")
-          ] in
-      let* α3 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
-          []
-          "map"
-          [ Ty.path "u32"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32") ] in
-      let* α4 :=
-        M.call_closure
-          α3
-          [
-            Value.StructRecord
-              "core::ops::range::RangeFrom"
-              [ ("start", Value.Integer Integer.U32 0) ];
-            M.closure
-              (fun γ =>
-                match γ with
-                | [ α0 ] =>
-                  let* α0 := M.alloc α0 in
-                  M.match_operator
-                    α0
-                    [
-                      fun γ =>
-                        let* n := M.copy γ in
-                        let* α0 := M.read n in
-                        let* α1 := M.read n in
-                        BinOp.Panic.mul α0 α1
+                      M.call_closure (|
+                          M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::map::Map")
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeFrom")
+                                        [ Ty.path "u32" ];
+                                      Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                    ];
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                    (Ty.path "bool")
+                                ],
+                              [],
+                              "filter",
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                  (Ty.path "bool")
+                              ]
+                            |),
+                          [
+                            M.call_closure (|
+                                M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeFrom")
+                                          [ Ty.path "u32" ];
+                                        Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                      ],
+                                    [],
+                                    "take_while",
+                                    [
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                        (Ty.path "bool")
+                                    ]
+                                  |),
+                                [
+                                  M.call_closure (|
+                                      M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeFrom")
+                                            [ Ty.path "u32" ],
+                                          [],
+                                          "map",
+                                          [
+                                            Ty.path "u32";
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "u32" ] ]
+                                              (Ty.path "u32")
+                                          ]
+                                        |),
+                                      [
+                                        Value.StructRecord
+                                          "core::ops::range::RangeFrom"
+                                          [ ("start", Value.Integer Integer.U32 0) ];
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let n := M.copy (| γ |) in
+                                                          BinOp.Panic.mul (|
+                                                              M.read (| n |),
+                                                              M.read (| n |)
+                                                            |)))
+                                                    ]
+                                                  |)
+                                              | _ => M.impossible (||)
+                                              end))
+                                      ]
+                                    |);
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0 ] =>
+                                          M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ := M.read (| γ |) in
+                                                    let n_squared := M.copy (| γ |) in
+                                                    BinOp.Pure.lt
+                                                      (M.read (| n_squared |))
+                                                      (M.read (| upper |))))
+                                              ]
+                                            |)
+                                        | _ => M.impossible (||)
+                                        end))
+                                ]
+                              |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let n_squared := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                  M.get_function (|
+                                                      "higher_order_functions::is_odd",
+                                                      []
+                                                    |),
+                                                  [ M.read (| n_squared |) ]
+                                                |)))
+                                        ]
+                                      |)
+                                  | _ => M.impossible (||)
+                                  end))
+                          ]
+                        |)
                     ]
-                | _ => M.impossible
-                end)
-          ] in
-      let* α5 :=
-        M.call_closure
-          α2
-          [
-            α4;
-            M.closure
-              (fun γ =>
-                match γ with
-                | [ α0 ] =>
-                  let* α0 := M.alloc α0 in
-                  M.match_operator
-                    α0
-                    [
-                      fun γ =>
-                        let* γ := M.read γ in
-                        let* n_squared := M.copy γ in
-                        let* α0 := M.read n_squared in
-                        let* α1 := M.read upper in
-                        M.pure (BinOp.Pure.lt α0 α1)
-                    ]
-                | _ => M.impossible
-                end)
-          ] in
-      let* α6 :=
-        M.call_closure
-          α1
-          [
-            α5;
-            M.closure
-              (fun γ =>
-                match γ with
-                | [ α0 ] =>
-                  let* α0 := M.alloc α0 in
-                  M.match_operator
-                    α0
-                    [
-                      fun γ =>
-                        let* γ := M.read γ in
-                        let* n_squared := M.copy γ in
-                        let* α0 := M.get_function "higher_order_functions::is_odd" [] in
-                        let* α1 := M.read n_squared in
-                        M.call_closure α0 [ α1 ]
-                    ]
-                | _ => M.impossible
-                end)
-          ] in
-      let* α7 := M.call_closure α0 [ α6 ] in
-      M.alloc α7 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α5 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "functional style: ") in
-            let* α3 := M.read (mk_str "
-") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
-        let* α9 :=
-          (* Unsize *)
-            let* α6 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u32" ] in
-            let* α7 := M.call_closure α6 [ sum_of_squared_odd_numbers ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
-        let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+                  |)
+              |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "functional style: " |);
+                                          M.read (| mk_str "
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                              [ sum_of_squared_odd_numbers ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

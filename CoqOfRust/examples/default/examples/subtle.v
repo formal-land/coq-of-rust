@@ -24,9 +24,14 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -47,18 +52,23 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "Choice") in
-      let* α5 :=
-        (* Unsize *)
-          let* α3 := M.read self in
-          let* α4 := M.alloc (M.get_struct_tuple_field α3 "subtle::Choice" 0) in
-          M.pure (M.pointer_coercion α4) in
-      M.call_closure α0 [ α1; α2; α5 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_tuple_field1_finish",
+                []
+              |),
+            [
+              M.read (| f |);
+              M.read (| mk_str "Choice" |);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -81,9 +91,9 @@ Module Impl_subtle_Choice.
   Definition unwrap_u8 (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_tuple_field α0 "subtle::Choice" 0)
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |)))
     | _, _ => M.impossible
     end.
   
@@ -102,52 +112,77 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
   Definition from (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ source ] =>
-      let* source := M.alloc source in
-      let* _ :=
-        let* α0 := M.alloc (Value.Tuple []) in
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 := M.alloc (Value.Bool true) in
-                M.pure (M.use α0) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* _ :=
-                let* α0 := M.alloc (Value.Tuple []) in
-                M.match_operator
-                  α0
+      ltac:(M.monadic
+        (let source := M.alloc (| source |) in
+        M.read (|
+            let _ :=
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
-                      let* γ :=
-                        let* α0 := M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
-                        let* α1 := M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
-                        let* α2 :=
-                          M.alloc
-                            (UnOp.Pure.not
-                              (BinOp.Pure.bit_or
-                                (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0))
-                                (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
-                        M.pure (M.use α2) in
-                      let* _ :=
-                        let* α0 := M.read γ in
-                        M.is_constant_or_break_match α0 (Value.Bool true) in
-                      let* α0 := M.get_function "core::panicking::panic" [] in
-                      let* α1 :=
-                        M.read (mk_str "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)") in
-                      let* α2 := M.call_closure α0 [ α1 ] in
-                      let* α3 := M.never_to_any α2 in
-                      M.alloc α3;
-                    fun γ => M.alloc (Value.Tuple [])
-                  ] in
-              M.alloc (Value.Tuple []);
-            fun γ => M.alloc (Value.Tuple [])
-          ] in
-      let* α0 := M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
-      let* α0 := M.alloc (BinOp.Pure.ne α0 (Value.Integer Integer.U8 0)) in
-      M.read α0
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ :=
+                          M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                            UnOp.Pure.not
+                                              (BinOp.Pure.bit_or
+                                                (BinOp.Pure.eq
+                                                  (M.read (|
+                                                      M.get_struct_tuple_field
+                                                        source
+                                                        "subtle::Choice"
+                                                        0
+                                                    |))
+                                                  (Value.Integer Integer.U8 0))
+                                                (BinOp.Pure.eq
+                                                  (M.read (|
+                                                      M.get_struct_tuple_field
+                                                        source
+                                                        "subtle::Choice"
+                                                        0
+                                                    |))
+                                                  (Value.Integer Integer.U8 1)))
+                                          |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                    M.alloc (|
+                                        M.never_to_any (|
+                                            M.call_closure (|
+                                                M.get_function (| "core::panicking::panic", [] |),
+                                                [
+                                                  M.read (|
+                                                      mk_str
+                                                        "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+                                                    |)
+                                                ]
+                                              |)
+                                          |)
+                                      |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+            M.alloc (|
+                BinOp.Pure.ne
+                  (M.read (| M.get_struct_tuple_field source "subtle::Choice" 0 |))
+                  (Value.Integer Integer.U8 0)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -175,18 +210,23 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
-      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
-      M.call_closure α0 [ BinOp.Pure.bit_and α1 α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.call_closure (|
+            M.get_trait_method (|
+                "core::convert::Into",
+                Ty.path "u8",
+                [ Ty.path "subtle::Choice" ],
+                "into",
+                []
+              |),
+            [
+              BinOp.Pure.bit_and
+                (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
+                (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -210,24 +250,26 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.path "subtle::Choice")
-            [ Ty.path "subtle::Choice" ]
-            "bitand"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read rhs in
-        let* α5 := M.call_closure α1 [ α3; α4 ] in
-        M.assign α0 α5 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.read (| self |),
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.path "subtle::Choice",
+                          [ Ty.path "subtle::Choice" ],
+                          "bitand",
+                          []
+                        |),
+                      [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -255,18 +297,23 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
-      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
-      M.call_closure α0 [ BinOp.Pure.bit_or α1 α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.call_closure (|
+            M.get_trait_method (|
+                "core::convert::Into",
+                Ty.path "u8",
+                [ Ty.path "subtle::Choice" ],
+                "into",
+                []
+              |),
+            [
+              BinOp.Pure.bit_or
+                (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
+                (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -290,24 +337,26 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::BitOr"
-            (Ty.path "subtle::Choice")
-            [ Ty.path "subtle::Choice" ]
-            "bitor"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read rhs in
-        let* α5 := M.call_closure α1 [ α3; α4 ] in
-        M.assign α0 α5 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.read (| self |),
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitOr",
+                          Ty.path "subtle::Choice",
+                          [ Ty.path "subtle::Choice" ],
+                          "bitor",
+                          []
+                        |),
+                      [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -335,18 +384,23 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
-      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
-      M.call_closure α0 [ BinOp.Pure.bit_xor α1 α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.call_closure (|
+            M.get_trait_method (|
+                "core::convert::Into",
+                Ty.path "u8",
+                [ Ty.path "subtle::Choice" ],
+                "into",
+                []
+              |),
+            [
+              BinOp.Pure.bit_xor
+                (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
+                (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -370,24 +424,26 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.path "subtle::Choice")
-            [ Ty.path "subtle::Choice" ]
-            "bitxor"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read rhs in
-        let* α5 := M.call_closure α1 [ α3; α4 ] in
-        M.assign α0 α5 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.read (| self |),
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.path "subtle::Choice",
+                          [ Ty.path "subtle::Choice" ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -415,16 +471,22 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Definition not (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
-      M.call_closure α0 [ BinOp.Pure.bit_and (Value.Integer Integer.U8 1) (UnOp.Pure.not α1) ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_trait_method (|
+                "core::convert::Into",
+                Ty.path "u8",
+                [ Ty.path "subtle::Choice" ],
+                "into",
+                []
+              |),
+            [
+              BinOp.Pure.bit_and
+                (Value.Integer Integer.U8 1)
+                (UnOp.Pure.not (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |)))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -456,55 +518,65 @@ fn black_box(input: u8) -> u8 {
 Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ input ] =>
-    let* input := M.alloc input in
-    let* _ :=
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.match_operator
-        α0
-        [
-          fun γ =>
-            let* γ :=
-              let* α0 := M.alloc (Value.Bool true) in
-              M.pure (M.use α0) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* _ :=
-              let* α0 := M.alloc (Value.Tuple []) in
-              M.match_operator
-                α0
+    ltac:(M.monadic
+      (let input := M.alloc (| input |) in
+      M.read (|
+          let _ :=
+            M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
-                    let* γ :=
-                      let* α0 := M.read input in
-                      let* α1 := M.read input in
-                      let* α2 :=
-                        M.alloc
-                          (UnOp.Pure.not
-                            (BinOp.Pure.bit_or
-                              (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0))
-                              (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
-                      M.pure (M.use α2) in
-                    let* _ :=
-                      let* α0 := M.read γ in
-                      M.is_constant_or_break_match α0 (Value.Bool true) in
-                    let* α0 := M.get_function "core::panicking::panic" [] in
-                    let* α1 :=
-                      M.read (mk_str "assertion failed: (input == 0u8) | (input == 1u8)") in
-                    let* α2 := M.call_closure α0 [ α1 ] in
-                    let* α3 := M.never_to_any α2 in
-                    M.alloc α3;
-                  fun γ => M.alloc (Value.Tuple [])
-                ] in
-            M.alloc (Value.Tuple []);
-          fun γ => M.alloc (Value.Tuple [])
-        ] in
-    let* α0 := M.get_function "core::ptr::read_volatile" [ Ty.path "u8" ] in
-    let* α1 := M.alloc input in
-    let* α2 := M.read (M.use α1) in
-    let* α3 := M.call_closure α0 [ α2 ] in
-    let* α0 := M.alloc α3 in
-    M.read α0
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ :=
+                        M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                          UnOp.Pure.not
+                                            (BinOp.Pure.bit_or
+                                              (BinOp.Pure.eq
+                                                (M.read (| input |))
+                                                (Value.Integer Integer.U8 0))
+                                              (BinOp.Pure.eq
+                                                (M.read (| input |))
+                                                (Value.Integer Integer.U8 1)))
+                                        |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                      |) in
+                                  M.alloc (|
+                                      M.never_to_any (|
+                                          M.call_closure (|
+                                              M.get_function (| "core::panicking::panic", [] |),
+                                              [
+                                                M.read (|
+                                                    mk_str
+                                                      "assertion failed: (input == 0u8) | (input == 1u8)"
+                                                  |)
+                                              ]
+                                            |)
+                                        |)
+                                    |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |) in
+          M.alloc (|
+              M.call_closure (|
+                  M.get_function (| "core::ptr::read_volatile", [ Ty.path "u8" ] |),
+                  [ M.read (| M.use (M.alloc (| input |)) |) ]
+                |)
+            |)
+        |)))
   | _, _ => M.impossible
   end.
 
@@ -521,11 +593,14 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition from (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ input ] =>
-      let* input := M.alloc input in
-      let* α0 := M.get_function "subtle::black_box" [] in
-      let* α1 := M.read input in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.pure (Value.StructTuple "subtle::Choice" [ α2 ])
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        Value.StructTuple
+          "subtle::Choice"
+          [
+            M.call_closure (| M.get_function (| "subtle::black_box", [] |), [ M.read (| input |) ]
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -542,14 +617,18 @@ Module ConstantTimeEq.
   Definition ct_ne (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α1 := M.get_trait_method "subtle::ConstantTimeEq" Self [] "ct_eq" [] in
-      let* α2 := M.read self in
-      let* α3 := M.read other in
-      let* α4 := M.call_closure α1 [ α2; α3 ] in
-      M.call_closure α0 [ α4 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], "ct_eq", [] |),
+                  [ M.read (| self |); M.read (| other |) ]
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -584,142 +663,205 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; _rhs ] =>
-      let* self := M.alloc self in
-      let* _rhs := M.alloc _rhs in
-      let* len :=
-        let* α0 := M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" [] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* _ :=
-        let* α0 := M.alloc (Value.Tuple []) in
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 := M.read len in
-                let* α1 := M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" [] in
-                let* α2 := M.read _rhs in
-                let* α3 := M.call_closure α1 [ α2 ] in
-                let* α4 := M.alloc (BinOp.Pure.ne α0 α3) in
-                M.pure (M.use α4) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 :=
-                M.get_trait_method
-                  "core::convert::From"
-                  (Ty.path "subtle::Choice")
-                  [ Ty.path "u8" ]
-                  "from"
-                  [] in
-              let* α1 := M.call_closure α0 [ Value.Integer Integer.U8 0 ] in
-              let* α2 := M.return_ α1 in
-              let* α3 := M.read α2 in
-              let* α4 := M.never_to_any α3 in
-              M.alloc α4;
-            fun γ => M.alloc (Value.Tuple [])
-          ] in
-      let* x := M.alloc (Value.Integer Integer.U8 1) in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::iter::traits::collect::IntoIterator"
-            (Ty.apply
-              (Ty.path "core::iter::adapters::zip::Zip")
-              [
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-              ])
-            []
-            "into_iter"
-            [] in
-        let* α1 :=
-          M.get_trait_method
-            "core::iter::traits::iterator::Iterator"
-            (Ty.apply (Ty.path "core::slice::iter::Iter") [ T ])
-            []
-            "zip"
-            [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ] in
-        let* α2 := M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" [] in
-        let* α3 := M.read self in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" [] in
-        let* α6 := M.read _rhs in
-        let* α7 := M.call_closure α5 [ α6 ] in
-        let* α8 := M.call_closure α1 [ α4; α7 ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        let* α10 := M.alloc α9 in
-        let* α11 :=
-          M.match_operator
-            α10
-            [
-              fun γ =>
-                let* iter := M.copy γ in
-                M.loop
-                  (let* _ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::iter::traits::iterator::Iterator"
-                        (Ty.apply
-                          (Ty.path "core::iter::adapters::zip::Zip")
-                          [
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-                          ])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _rhs := M.alloc (| _rhs |) in
+        M.read (|
+            let len :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                      [ M.read (| self |) ]
+                    |)
+                |) in
+            let _ :=
+              M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                                BinOp.Pure.ne
+                                  (M.read (| len |))
+                                  (M.call_closure (|
+                                      M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ T ],
+                                          "len",
+                                          []
+                                        |),
+                                      [ M.read (| _rhs |) ]
+                                    |))
+                              |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                            M.never_to_any (|
+                                M.read (|
+                                    M.return_ (|
+                                        M.call_closure (|
+                                            M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "subtle::Choice",
+                                                [ Ty.path "u8" ],
+                                                "from",
+                                                []
+                                              |),
+                                            [ Value.Integer Integer.U8 0 ]
+                                          |)
+                                      |)
+                                  |)
+                              |)
+                          |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+            let x := M.alloc (| Value.Integer Integer.U8 1 |) in
+            let _ :=
+              M.use
+                (M.match_operator (|
+                    M.alloc (|
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::iter::traits::collect::IntoIterator",
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::zip::Zip")
+                                  [
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                                  ],
+                                [],
+                                "into_iter",
+                                []
+                              |),
+                            [
+                              M.call_closure (|
+                                  M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                      [],
+                                      "zip",
+                                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                                    |),
+                                  [
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [ T ],
+                                            "iter",
+                                            []
+                                          |),
+                                        [ M.read (| self |) ]
+                                      |);
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [ T ],
+                                            "iter",
+                                            []
+                                          |),
+                                        [ M.read (| _rhs |) ]
+                                      |)
+                                  ]
+                                |)
+                            ]
+                          |)
+                      |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.match_operator (|
+                                      M.alloc (|
+                                          M.call_closure (|
+                                              M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::zip::Zip")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        [ T ];
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        [ T ]
+                                                    ],
+                                                  [],
+                                                  "next",
+                                                  []
+                                                |),
+                                              [ iter ]
+                                            |)
+                                        |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.get_struct_tuple_field_or_break_match (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                            let γ1_0 := M.get_tuple_field γ0_0 0 in
+                                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                            let ai := M.copy (| γ1_0 |) in
+                                            let bi := M.copy (| γ1_1 |) in
+                                            let _ :=
+                                              let β := x in
+                                              M.assign (|
+                                                  β,
+                                                  BinOp.Pure.bit_and
+                                                    (M.read (| β |))
+                                                    (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                            Ty.path "subtle::Choice",
+                                                            "unwrap_u8",
+                                                            []
+                                                          |),
+                                                        [
+                                                          M.alloc (|
+                                                              M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                      "subtle::ConstantTimeEq",
+                                                                      T,
+                                                                      [],
+                                                                      "ct_eq",
+                                                                      []
+                                                                    |),
+                                                                  [ M.read (| ai |); M.read (| bi |)
+                                                                  ]
+                                                                |)
+                                                            |)
+                                                        ]
+                                                      |))
+                                                |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                M.alloc (| Value.Tuple [] |)))
+                            |)))
+                    ]
+                  |)) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
                         []
-                        "next"
-                        [] in
-                    let* α1 := M.call_closure α0 [ iter ] in
-                    let* α2 := M.alloc α1 in
-                    M.match_operator
-                      α2
-                      [
-                        fun γ =>
-                          let* α0 := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 := M.never_to_any α1 in
-                          M.alloc α2;
-                        fun γ =>
-                          let* γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match
-                              γ
-                              "core::option::Option::Some"
-                              0 in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
-                          let* ai := M.copy γ1_0 in
-                          let* bi := M.copy γ1_1 in
-                          let* _ :=
-                            let β := x in
-                            let* α0 := M.read β in
-                            let* α1 :=
-                              M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-                            let* α2 :=
-                              M.get_trait_method "subtle::ConstantTimeEq" T [] "ct_eq" [] in
-                            let* α3 := M.read ai in
-                            let* α4 := M.read bi in
-                            let* α5 := M.call_closure α2 [ α3; α4 ] in
-                            let* α6 := M.alloc α5 in
-                            let* α7 := M.call_closure α1 [ α6 ] in
-                            M.assign β (BinOp.Pure.bit_and α0 α7) in
-                          M.alloc (Value.Tuple [])
-                      ] in
-                  M.alloc (Value.Tuple []))
-            ] in
-        M.pure (M.use α11) in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read x in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+                      |),
+                    [ M.read (| x |) ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -743,22 +885,24 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* α0 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α1 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitxor"
-          [] in
-      let* α2 := M.read self in
-      let* α3 := M.read α2 in
-      let* α4 := M.read rhs in
-      let* α5 := M.read α4 in
-      let* α6 := M.call_closure α1 [ α3; α5 ] in
-      M.call_closure α0 [ α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.call_closure (|
+            M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::ops::bit::BitXor",
+                      Ty.path "subtle::Choice",
+                      [ Ty.path "subtle::Choice" ],
+                      "bitxor",
+                      []
+                    |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| rhs |) |) ]
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -789,43 +933,57 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* x :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
-            "bitxor"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
-      let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u8") "wrapping_neg" [] in
-        let* α2 := M.read x in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := BinOp.Panic.sub (Value.Integer Integer.I32 8) (Value.Integer Integer.I32 1) in
-        let* α5 := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α3) α4 in
-        M.alloc α5 in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc (Value.Integer Integer.U8 1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.alloc (BinOp.Pure.bit_xor α1 α3) in
-      let* α5 := M.read (M.use α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      let* α0 := M.alloc α6 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let x :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |)
+                |) in
+            let y :=
+              M.alloc (|
+                  BinOp.Panic.shr (|
+                      BinOp.Pure.bit_or
+                        (M.read (| x |))
+                        (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
+                            [ M.read (| x |) ]
+                          |)),
+                      BinOp.Panic.sub (| Value.Integer Integer.I32 8, Value.Integer Integer.I32 1 |)
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
+                        []
+                      |),
+                    [
+                      M.read (|
+                          M.use
+                            (M.alloc (|
+                                BinOp.Pure.bit_xor
+                                  (M.read (| y |))
+                                  (M.read (| M.use (M.alloc (| Value.Integer Integer.U8 1 |)) |))
+                              |))
+                        |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -849,16 +1007,16 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "subtle::ConstantTimeEq" (Ty.path "u8") [] "ct_eq" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read α1 in
-      let* α3 := M.alloc (M.rust_cast α2) in
-      let* α4 := M.read other in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (M.rust_cast α5) in
-      M.call_closure α0 [ α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u8", [], "ct_eq", [] |),
+            [
+              M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
+              M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -889,41 +1047,54 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* x :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-            [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
-            "bitxor"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
-      let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u16") "wrapping_neg" [] in
-        let* α2 := M.read x in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := BinOp.Panic.sub (Value.Integer Integer.I32 16) (Value.Integer Integer.I32 1) in
-        let* α5 := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α3) α4 in
-        M.alloc α5 in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc (Value.Integer Integer.U16 1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_xor α1 α3) ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let x :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |)
+                |) in
+            let y :=
+              M.alloc (|
+                  BinOp.Panic.shr (|
+                      BinOp.Pure.bit_or
+                        (M.read (| x |))
+                        (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
+                            [ M.read (| x |) ]
+                          |)),
+                      BinOp.Panic.sub (| Value.Integer Integer.I32 16, Value.Integer Integer.I32 1
+                        |)
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_xor
+                          (M.read (| y |))
+                          (M.read (| M.use (M.alloc (| Value.Integer Integer.U16 1 |)) |)))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -947,16 +1118,16 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "subtle::ConstantTimeEq" (Ty.path "u16") [] "ct_eq" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read α1 in
-      let* α3 := M.alloc (M.rust_cast α2) in
-      let* α4 := M.read other in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (M.rust_cast α5) in
-      M.call_closure α0 [ α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u16", [], "ct_eq", [] |),
+            [
+              M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
+              M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -987,41 +1158,54 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* x :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-            [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
-            "bitxor"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
-      let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u32") "wrapping_neg" [] in
-        let* α2 := M.read x in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := BinOp.Panic.sub (Value.Integer Integer.I32 32) (Value.Integer Integer.I32 1) in
-        let* α5 := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α3) α4 in
-        M.alloc α5 in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc (Value.Integer Integer.U32 1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_xor α1 α3) ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let x :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |)
+                |) in
+            let y :=
+              M.alloc (|
+                  BinOp.Panic.shr (|
+                      BinOp.Pure.bit_or
+                        (M.read (| x |))
+                        (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
+                            [ M.read (| x |) ]
+                          |)),
+                      BinOp.Panic.sub (| Value.Integer Integer.I32 32, Value.Integer Integer.I32 1
+                        |)
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_xor
+                          (M.read (| y |))
+                          (M.read (| M.use (M.alloc (| Value.Integer Integer.U32 1 |)) |)))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1045,16 +1229,16 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "subtle::ConstantTimeEq" (Ty.path "u32") [] "ct_eq" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read α1 in
-      let* α3 := M.alloc (M.rust_cast α2) in
-      let* α4 := M.read other in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (M.rust_cast α5) in
-      M.call_closure α0 [ α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u32", [], "ct_eq", [] |),
+            [
+              M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
+              M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1085,41 +1269,54 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* x :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-            [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
-            "bitxor"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
-      let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u64") "wrapping_neg" [] in
-        let* α2 := M.read x in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := BinOp.Panic.sub (Value.Integer Integer.I32 64) (Value.Integer Integer.I32 1) in
-        let* α5 := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α3) α4 in
-        M.alloc α5 in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc (Value.Integer Integer.U64 1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_xor α1 α3) ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let x :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |)
+                |) in
+            let y :=
+              M.alloc (|
+                  BinOp.Panic.shr (|
+                      BinOp.Pure.bit_or
+                        (M.read (| x |))
+                        (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
+                            [ M.read (| x |) ]
+                          |)),
+                      BinOp.Panic.sub (| Value.Integer Integer.I32 64, Value.Integer Integer.I32 1
+                        |)
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_xor
+                          (M.read (| y |))
+                          (M.read (| M.use (M.alloc (| Value.Integer Integer.U64 1 |)) |)))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1143,16 +1340,16 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "subtle::ConstantTimeEq" (Ty.path "u64") [] "ct_eq" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read α1 in
-      let* α3 := M.alloc (M.rust_cast α2) in
-      let* α4 := M.read other in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (M.rust_cast α5) in
-      M.call_closure α0 [ α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u64", [], "ct_eq", [] |),
+            [
+              M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
+              M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1183,44 +1380,62 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* x :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitXor"
-            (Ty.apply (Ty.path "&") [ Ty.path "usize" ])
-            [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ]
-            "bitxor"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read other in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
-      let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "usize") "wrapping_neg" [] in
-        let* α2 := M.read x in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.get_function "core::mem::size_of" [ Ty.path "usize" ] in
-        let* α5 := M.call_closure α4 [] in
-        let* α6 := BinOp.Panic.mul α5 (Value.Integer Integer.Usize 8) in
-        let* α7 := BinOp.Panic.sub α6 (Value.Integer Integer.Usize 1) in
-        let* α8 := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α3) α7 in
-        M.alloc α8 in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::Into"
-          (Ty.path "u8")
-          [ Ty.path "subtle::Choice" ]
-          "into"
-          [] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc (Value.Integer Integer.Usize 1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_xor α1 α3) ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let x :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitXor",
+                          Ty.apply (Ty.path "&") [ Ty.path "usize" ],
+                          [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                          "bitxor",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |)
+                |) in
+            let y :=
+              M.alloc (|
+                  BinOp.Panic.shr (|
+                      BinOp.Pure.bit_or
+                        (M.read (| x |))
+                        (M.call_closure (|
+                            M.get_associated_function (| Ty.path "usize", "wrapping_neg", [] |),
+                            [ M.read (| x |) ]
+                          |)),
+                      BinOp.Panic.sub (|
+                          BinOp.Panic.mul (|
+                              M.call_closure (|
+                                  M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                                  []
+                                |),
+                              Value.Integer Integer.Usize 8
+                            |),
+                          Value.Integer Integer.Usize 1
+                        |)
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.path "u8",
+                        [ Ty.path "subtle::Choice" ],
+                        "into",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_xor
+                          (M.read (| y |))
+                          (M.read (| M.use (M.alloc (| Value.Integer Integer.Usize 1 |)) |)))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1244,16 +1459,16 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 := M.get_trait_method "subtle::ConstantTimeEq" (Ty.path "usize") [] "ct_eq" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read α1 in
-      let* α3 := M.alloc (M.rust_cast α2) in
-      let* α4 := M.read other in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (M.rust_cast α5) in
-      M.call_closure α0 [ α3; α6 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "usize", [], "ct_eq", [] |),
+            [
+              M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
+              M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1270,20 +1485,27 @@ Module ConditionallySelectable.
   Definition conditional_assign (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.get_trait_method "subtle::ConditionallySelectable" Self [] "conditional_select" [] in
-        let* α2 := M.read self in
-        let* α3 := M.read other in
-        let* α4 := M.read choice in
-        let* α5 := M.call_closure α1 [ α2; α3; α4 ] in
-        M.assign α0 α5 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let _ :=
+              M.assign (|
+                  M.read (| self |),
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "subtle::ConditionallySelectable",
+                          Self,
+                          [],
+                          "conditional_select",
+                          []
+                        |),
+                      [ M.read (| self |); M.read (| other |); M.read (| choice |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1292,29 +1514,40 @@ Module ConditionallySelectable.
   Definition conditional_swap (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* t :=
-        let* α0 := M.read a in
-        M.copy α0 in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method "subtle::ConditionallySelectable" Self [] "conditional_assign" [] in
-        let* α1 := M.read a in
-        let* α2 := M.read b in
-        let* α3 := M.read choice in
-        let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
-        M.alloc α4 in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method "subtle::ConditionallySelectable" Self [] "conditional_assign" [] in
-        let* α1 := M.read b in
-        let* α2 := M.read choice in
-        let* α3 := M.call_closure α0 [ α1; t; α2 ] in
-        M.alloc α3 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let t := M.copy (| M.read (| a |) |) in
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "subtle::ConditionallySelectable",
+                          Self,
+                          [],
+                          "conditional_assign",
+                          []
+                        |),
+                      [ M.read (| a |); M.read (| b |); M.read (| choice |) ]
+                    |)
+                |) in
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "subtle::ConditionallySelectable",
+                          Self,
+                          [],
+                          "conditional_assign",
+                          []
+                        |),
+                      [ M.read (| b |); t; M.read (| choice |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1336,36 +1569,50 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-          [ Ty.path "u8" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                        [ Ty.path "u8" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1380,25 +1627,37 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1415,33 +1674,37 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1472,37 +1735,55 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i8" ])
-          [ Ty.path "i8" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i8" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "i8" ],
+                        [ Ty.path "i8" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "i8" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1517,26 +1798,42 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1553,34 +1850,42 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1611,36 +1916,50 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-          [ Ty.path "u16" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                        [ Ty.path "u16" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1655,25 +1974,37 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1690,33 +2021,37 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1747,37 +2082,55 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i16" ])
-          [ Ty.path "i16" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i16" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "i16" ],
+                        [ Ty.path "i16" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "i16" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1792,26 +2145,42 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1828,34 +2197,42 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1886,36 +2263,50 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-          [ Ty.path "u32" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                        [ Ty.path "u32" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1930,25 +2321,37 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -1965,33 +2368,37 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2022,37 +2429,55 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
-          [ Ty.path "i32" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "i32" ],
+                        [ Ty.path "i32" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "i32" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2067,26 +2492,42 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2103,34 +2544,42 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2161,36 +2610,50 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-          [ Ty.path "u64" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                        [ Ty.path "u64" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2205,25 +2668,37 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2240,33 +2715,37 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        M.alloc (M.rust_cast α2) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.alloc (|
+                  M.rust_cast
+                    (UnOp.Panic.neg (|
+                        M.rust_cast
+                          (M.call_closure (|
+                              M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", []
+                                |),
+                              [ choice ]
+                            |))
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2297,37 +2776,55 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i64" ])
-          [ Ty.path "i64" ]
-          "bitxor"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
-        M.get_trait_method
-          "core::ops::bit::BitXor"
-          (Ty.apply (Ty.path "&") [ Ty.path "i64" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ]
-          "bitxor"
-          [] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call_closure α3 [ α4; α5 ] in
-      let* α7 := M.call_closure α0 [ α1; BinOp.Pure.bit_and α2 α6 ] in
-      let* α0 := M.alloc α7 in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitXor",
+                        Ty.apply (Ty.path "&") [ Ty.path "i64" ],
+                        [ Ty.path "i64" ],
+                        "bitxor",
+                        []
+                      |),
+                    [
+                      M.read (| a |);
+                      BinOp.Pure.bit_and
+                        (M.read (| mask |))
+                        (M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::BitXor",
+                                Ty.apply (Ty.path "&") [ Ty.path "i64" ],
+                                [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                                "bitxor",
+                                []
+                              |),
+                            [ M.read (| a |); M.read (| b |) ]
+                          |))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2342,26 +2839,42 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other; choice ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* _ :=
-        let* β := M.read self in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read α2 in
-        let* α4 := M.read other in
-        let* α5 := M.read α4 in
-        M.assign β (BinOp.Pure.bit_xor α0 (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let _ :=
+              let β := M.read (| self |) in
+              M.assign (|
+                  β,
+                  BinOp.Pure.bit_xor
+                    (M.read (| β |))
+                    (BinOp.Pure.bit_and
+                      (M.read (| mask |))
+                      (BinOp.Pure.bit_xor
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))))
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2378,34 +2891,42 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* mask :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 := M.call_closure α0 [ choice ] in
-        let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
-        let* α3 := M.alloc α2 in
-        M.copy (M.use α3) in
-      let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read α1 in
-        let* α3 := M.read b in
-        let* α4 := M.read α3 in
-        M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
-      let* _ :=
-        let* β := M.read a in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* _ :=
-        let* β := M.read b in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        M.assign β (BinOp.Pure.bit_xor α0 α1) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let mask :=
+              M.copy (|
+                  M.use
+                    (M.alloc (|
+                        UnOp.Panic.neg (|
+                            M.rust_cast
+                              (M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ choice ]
+                                |))
+                          |)
+                      |))
+                |) in
+            let t :=
+              M.alloc (|
+                  BinOp.Pure.bit_and
+                    (M.read (| mask |))
+                    (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                |) in
+            let _ :=
+              let β := M.read (| a |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            let _ :=
+              let β := M.read (| b |) in
+              M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2433,28 +2954,28 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* α0 :=
-        M.get_trait_method
-          "subtle::ConditionallySelectable"
-          (Ty.path "u8")
-          []
-          "conditional_select"
-          [] in
-      let* α1 := M.read a in
-      let* α2 := M.read b in
-      let* α3 := M.read choice in
-      let* α4 :=
-        M.call_closure
-          α0
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        Value.StructTuple
+          "subtle::Choice"
           [
-            M.get_struct_tuple_field α1 "subtle::Choice" 0;
-            M.get_struct_tuple_field α2 "subtle::Choice" 0;
-            α3
-          ] in
-      M.pure (Value.StructTuple "subtle::Choice" [ α4 ])
+            M.call_closure (|
+                M.get_trait_method (|
+                    "subtle::ConditionallySelectable",
+                    Ty.path "u8",
+                    [],
+                    "conditional_select",
+                    []
+                  |),
+                [
+                  M.get_struct_tuple_field (M.read (| a |)) "subtle::Choice" 0;
+                  M.get_struct_tuple_field (M.read (| b |)) "subtle::Choice" 0;
+                  M.read (| choice |)
+                ]
+              |)
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -2483,25 +3004,38 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; choice ] =>
-      let* self := M.alloc self in
-      let* choice := M.alloc choice in
-      let* self_neg :=
-        let* α0 :=
-          M.get_trait_method "core::ops::arith::Neg" (Ty.apply (Ty.path "&") [ T ]) [] "neg" [] in
-        let* α1 := M.read self in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read (M.use α2) in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_assign" [] in
-        let* α1 := M.read self in
-        let* α2 := M.read choice in
-        let* α3 := M.call_closure α0 [ α1; self_neg; α2 ] in
-        M.alloc α3 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let choice := M.alloc (| choice |) in
+        M.read (|
+            let self_neg :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::arith::Neg",
+                          Ty.apply (Ty.path "&") [ T ],
+                          [],
+                          "neg",
+                          []
+                        |),
+                      [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
+                    |)
+                |) in
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "subtle::ConditionallySelectable",
+                          T,
+                          [],
+                          "conditional_assign",
+                          []
+                        |),
+                      [ M.read (| self |); self_neg; M.read (| choice |) ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2531,14 +3065,28 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_trait_method "core::clone::Clone" T [] "clone" [] in
-      let* α1 := M.read self in
-      let* α2 := M.call_closure α0 [ M.get_struct_record_field α1 "subtle::CtOption" "value" ] in
-      let* α3 := M.get_trait_method "core::clone::Clone" (Ty.path "subtle::Choice") [] "clone" [] in
-      let* α4 := M.read self in
-      let* α5 := M.call_closure α3 [ M.get_struct_record_field α4 "subtle::CtOption" "is_some" ] in
-      M.pure (Value.StructRecord "subtle::CtOption" [ ("value", α2); ("is_some", α5) ])
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.StructRecord
+          "subtle::CtOption"
+          [
+            ("value",
+              M.call_closure (|
+                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                  [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value" ]
+                |));
+            ("is_some",
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "subtle::Choice",
+                      [],
+                      "clone",
+                      []
+                    |),
+                  [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" ]
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -2573,27 +3121,30 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish"
-          [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "CtOption") in
-      let* α3 := M.read (mk_str "value") in
-      let* α5 :=
-        (* Unsize *)
-          let* α4 := M.read self in
-          M.pure (M.pointer_coercion (M.get_struct_record_field α4 "subtle::CtOption" "value")) in
-      let* α6 := M.read (mk_str "is_some") in
-      let* α9 :=
-        (* Unsize *)
-          let* α7 := M.read self in
-          let* α8 := M.alloc (M.get_struct_record_field α7 "subtle::CtOption" "is_some") in
-          M.pure (M.pointer_coercion α8) in
-      M.call_closure α0 [ α1; α2; α3; α5; α6; α9 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_struct_field2_finish",
+                []
+              |),
+            [
+              M.read (| f |);
+              M.read (| mk_str "CtOption" |);
+              M.read (| mk_str "value" |);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value");
+              M.read (| mk_str "is_some" |);
+              (* Unsize *)
+                M.pointer_coercion
+                  (M.alloc (|
+                      M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some"
+                    |))
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2622,33 +3173,54 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ source ] =>
-      let* source := M.alloc source in
-      let* α0 := M.alloc (Value.Tuple []) in
-      let* α1 :=
-        M.match_operator
-          α0
-          [
-            fun γ =>
-              let* γ :=
-                let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-                    "is_some"
-                    [] in
-                let* α2 := M.call_closure α1 [ source ] in
-                let* α3 := M.alloc α2 in
-                let* α4 := M.call_closure α0 [ α3 ] in
-                let* α5 := M.alloc (BinOp.Pure.eq α4 (Value.Integer Integer.U8 1)) in
-                M.pure (M.use α5) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 := M.read (M.get_struct_record_field source "subtle::CtOption" "value") in
-              M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]);
-            fun γ => M.alloc (Value.StructTuple "core::option::Option::None" [])
-          ] in
-      M.read α1
+      ltac:(M.monadic
+        (let source := M.alloc (| source |) in
+        M.read (|
+            M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                              BinOp.Pure.eq
+                                (M.call_closure (|
+                                    M.get_associated_function (|
+                                        Ty.path "subtle::Choice",
+                                        "unwrap_u8",
+                                        []
+                                      |),
+                                    [
+                                      M.alloc (|
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                                                  "is_some",
+                                                  []
+                                                |),
+                                              [ source ]
+                                            |)
+                                        |)
+                                    ]
+                                  |))
+                                (Value.Integer Integer.U8 1)
+                            |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              M.read (| M.get_struct_record_field source "subtle::CtOption" "value"
+                                |)
+                            ]
+                        |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2676,11 +3248,12 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ value; is_some ] =>
-      let* value := M.alloc value in
-      let* is_some := M.alloc is_some in
-      let* α0 := M.read value in
-      let* α1 := M.read is_some in
-      M.pure (Value.StructRecord "subtle::CtOption" [ ("value", α0); ("is_some", α1) ])
+      ltac:(M.monadic
+        (let value := M.alloc (| value |) in
+        let is_some := M.alloc (| is_some |) in
+        Value.StructRecord
+          "subtle::CtOption"
+          [ ("value", M.read (| value |)); ("is_some", M.read (| is_some |)) ]))
     | _, _ => M.impossible
     end.
   
@@ -2697,76 +3270,127 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; msg ] =>
-      let* self := M.alloc self in
-      let* msg := M.alloc msg in
-      let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 :=
-          M.call_closure α0 [ M.get_struct_record_field self "subtle::CtOption" "is_some" ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.alloc (Value.Integer Integer.U8 1) in
-        let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-        M.match_operator
-          α4
-          [
-            fun γ =>
-              let γ0_0 := M.get_tuple_field γ 0 in
-              let γ0_1 := M.get_tuple_field γ 1 in
-              let* left_val := M.copy γ0_0 in
-              let* right_val := M.copy γ0_1 in
-              let* α0 := M.alloc (Value.Tuple []) in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* γ :=
-                      let* α0 := M.read left_val in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.read right_val in
-                      let* α3 := M.read α2 in
-                      let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
-                      M.pure (M.use α4) in
-                    let* _ :=
-                      let* α0 := M.read γ in
-                      M.is_constant_or_break_match α0 (Value.Bool true) in
-                    let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-                    let* α0 :=
-                      M.get_function
-                        "core::panicking::assert_failed"
-                        [ Ty.path "u8"; Ty.path "u8" ] in
-                    let* α1 := M.read kind in
-                    let* α2 := M.read left_val in
-                    let* α3 := M.read right_val in
-                    let* α4 :=
-                      M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                    let* α7 :=
-                      (* Unsize *)
-                        let* α5 := M.read (mk_str "") in
-                        let* α6 := M.alloc (Value.Array [ α5 ]) in
-                        M.pure (M.pointer_coercion α6) in
-                    let* α11 :=
-                      (* Unsize *)
-                        let* α8 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::rt::Argument")
-                            "new_display"
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                        let* α9 := M.call_closure α8 [ msg ] in
-                        let* α10 := M.alloc (Value.Array [ α9 ]) in
-                        M.pure (M.pointer_coercion α10) in
-                    let* α12 := M.call_closure α4 [ α7; α11 ] in
-                    let* α13 :=
-                      M.call_closure
-                        α0
-                        [ α1; α2; α3; Value.StructTuple "core::option::Option::Some" [ α12 ] ] in
-                    let* α0 := M.alloc α13 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.never_to_any α1 in
-                    M.alloc α2;
-                  fun γ => M.alloc (Value.Tuple [])
-                ]
-          ] in
-      M.read (M.get_struct_record_field self "subtle::CtOption" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let msg := M.alloc (| msg |) in
+        M.read (|
+            let _ :=
+              M.match_operator (|
+                  M.alloc (|
+                      Value.Tuple
+                        [
+                          M.alloc (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                                |)
+                            |);
+                          M.alloc (| Value.Integer Integer.U8 1 |)
+                        ]
+                    |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.get_tuple_field γ 0 in
+                        let γ0_1 := M.get_tuple_field γ 1 in
+                        let left_val := M.copy (| γ0_0 |) in
+                        let right_val := M.copy (| γ0_1 |) in
+                        M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                          UnOp.Pure.not
+                                            (BinOp.Pure.eq
+                                              (M.read (| M.read (| left_val |) |))
+                                              (M.read (| M.read (| right_val |) |)))
+                                        |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                      |) in
+                                  M.alloc (|
+                                      M.never_to_any (|
+                                          M.read (|
+                                              let kind :=
+                                                M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::panicking::AssertKind::Eq"
+                                                      []
+                                                  |) in
+                                              M.alloc (|
+                                                  M.call_closure (|
+                                                      M.get_function (|
+                                                          "core::panicking::assert_failed",
+                                                          [ Ty.path "u8"; Ty.path "u8" ]
+                                                        |),
+                                                      [
+                                                        M.read (| kind |);
+                                                        M.read (| left_val |);
+                                                        M.read (| right_val |);
+                                                        Value.StructTuple
+                                                          "core::option::Option::Some"
+                                                          [
+                                                            M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                    Ty.path "core::fmt::Arguments",
+                                                                    "new_v1",
+                                                                    []
+                                                                  |),
+                                                                [
+                                                                  (* Unsize *)
+                                                                    M.pointer_coercion
+                                                                      (M.alloc (|
+                                                                          Value.Array
+                                                                            [ M.read (| mk_str "" |)
+                                                                            ]
+                                                                        |));
+                                                                  (* Unsize *)
+                                                                    M.pointer_coercion
+                                                                      (M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_display",
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "str"
+                                                                                          ]
+                                                                                      ]
+                                                                                    |),
+                                                                                  [ msg ]
+                                                                                |)
+                                                                            ]
+                                                                        |))
+                                                                ]
+                                                              |)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                |)
+                                            |)
+                                        |)
+                                    |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)))
+                  ]
+                |) in
+            M.get_struct_record_field self "subtle::CtOption" "value"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2785,57 +3409,85 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
-        let* α1 :=
-          M.call_closure α0 [ M.get_struct_record_field self "subtle::CtOption" "is_some" ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.alloc (Value.Integer Integer.U8 1) in
-        let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-        M.match_operator
-          α4
-          [
-            fun γ =>
-              let γ0_0 := M.get_tuple_field γ 0 in
-              let γ0_1 := M.get_tuple_field γ 1 in
-              let* left_val := M.copy γ0_0 in
-              let* right_val := M.copy γ0_1 in
-              let* α0 := M.alloc (Value.Tuple []) in
-              M.match_operator
-                α0
-                [
-                  fun γ =>
-                    let* γ :=
-                      let* α0 := M.read left_val in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.read right_val in
-                      let* α3 := M.read α2 in
-                      let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
-                      M.pure (M.use α4) in
-                    let* _ :=
-                      let* α0 := M.read γ in
-                      M.is_constant_or_break_match α0 (Value.Bool true) in
-                    let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-                    let* α0 :=
-                      M.get_function
-                        "core::panicking::assert_failed"
-                        [ Ty.path "u8"; Ty.path "u8" ] in
-                    let* α1 := M.read kind in
-                    let* α2 := M.read left_val in
-                    let* α3 := M.read right_val in
-                    let* α4 :=
-                      M.call_closure
-                        α0
-                        [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
-                    let* α0 := M.alloc α4 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.never_to_any α1 in
-                    M.alloc α2;
-                  fun γ => M.alloc (Value.Tuple [])
-                ]
-          ] in
-      M.read (M.get_struct_record_field self "subtle::CtOption" "value")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              M.match_operator (|
+                  M.alloc (|
+                      Value.Tuple
+                        [
+                          M.alloc (|
+                              M.call_closure (|
+                                  M.get_associated_function (|
+                                      Ty.path "subtle::Choice",
+                                      "unwrap_u8",
+                                      []
+                                    |),
+                                  [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                                |)
+                            |);
+                          M.alloc (| Value.Integer Integer.U8 1 |)
+                        ]
+                    |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.get_tuple_field γ 0 in
+                        let γ0_1 := M.get_tuple_field γ 1 in
+                        let left_val := M.copy (| γ0_0 |) in
+                        let right_val := M.copy (| γ0_1 |) in
+                        M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                          UnOp.Pure.not
+                                            (BinOp.Pure.eq
+                                              (M.read (| M.read (| left_val |) |))
+                                              (M.read (| M.read (| right_val |) |)))
+                                        |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                      |) in
+                                  M.alloc (|
+                                      M.never_to_any (|
+                                          M.read (|
+                                              let kind :=
+                                                M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::panicking::AssertKind::Eq"
+                                                      []
+                                                  |) in
+                                              M.alloc (|
+                                                  M.call_closure (|
+                                                      M.get_function (|
+                                                          "core::panicking::assert_failed",
+                                                          [ Ty.path "u8"; Ty.path "u8" ]
+                                                        |),
+                                                      [
+                                                        M.read (| kind |);
+                                                        M.read (| left_val |);
+                                                        M.read (| right_val |);
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      ]
+                                                    |)
+                                                |)
+                                            |)
+                                        |)
+                                    |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)))
+                  ]
+                |) in
+            M.get_struct_record_field self "subtle::CtOption" "value"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2855,12 +3507,18 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; def ] =>
-      let* self := M.alloc self in
-      let* def := M.alloc def in
-      let* α0 :=
-        M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_select" [] in
-      let* α1 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-      M.call_closure α0 [ def; M.get_struct_record_field self "subtle::CtOption" "value"; α1 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let def := M.alloc (| def |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConditionallySelectable", T, [], "conditional_select", []
+              |),
+            [
+              def;
+              M.get_struct_record_field self "subtle::CtOption" "value";
+              M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2881,17 +3539,29 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [ F ], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_select" [] in
-      let* α1 :=
-        M.get_trait_method "core::ops::function::FnOnce" F [ Ty.tuple [] ] "call_once" [] in
-      let* α2 := M.read f in
-      let* α3 := M.call_closure α1 [ α2; Value.Tuple [] ] in
-      let* α4 := M.alloc α3 in
-      let* α5 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-      M.call_closure α0 [ α4; M.get_struct_record_field self "subtle::CtOption" "value"; α5 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_trait_method (| "subtle::ConditionallySelectable", T, [], "conditional_select", []
+              |),
+            [
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [ Ty.tuple [] ],
+                          "call_once",
+                          []
+                        |),
+                      [ M.read (| f |); Value.Tuple [] ]
+                    |)
+                |);
+              M.get_struct_record_field self "subtle::CtOption" "value";
+              M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2908,9 +3578,9 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "subtle::CtOption" "is_some")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" |)))
     | _, _ => M.impossible
     end.
   
@@ -2927,11 +3597,15 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α1 := M.read self in
-      let* α2 := M.read (M.get_struct_record_field α1 "subtle::CtOption" "is_some") in
-      M.call_closure α0 [ α2 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.call_closure (|
+            M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+            [
+              M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some"
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -2959,23 +3633,56 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [ U; F ], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.apply (Ty.path "subtle::CtOption") [ U ]) "new" [] in
-      let* α1 :=
-        M.get_trait_method "core::ops::function::FnOnce" F [ Ty.tuple [ T ] ] "call_once" [] in
-      let* α2 := M.read f in
-      let* α3 :=
-        M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_select" [] in
-      let* α4 := M.get_trait_method "core::default::Default" T [] "default" [] in
-      let* α5 := M.call_closure α4 [] in
-      let* α6 := M.alloc α5 in
-      let* α7 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-      let* α8 :=
-        M.call_closure α3 [ α6; M.get_struct_record_field self "subtle::CtOption" "value"; α7 ] in
-      let* α9 := M.call_closure α1 [ α2; Value.Tuple [ α8 ] ] in
-      let* α10 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-      M.call_closure α0 [ α9; α10 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [ U ], "new", [] |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      []
+                    |),
+                  [
+                    M.read (| f |);
+                    Value.Tuple
+                      [
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "subtle::ConditionallySelectable",
+                                T,
+                                [],
+                                "conditional_select",
+                                []
+                              |),
+                            [
+                              M.alloc (|
+                                  M.call_closure (|
+                                      M.get_trait_method (|
+                                          "core::default::Default",
+                                          T,
+                                          [],
+                                          "default",
+                                          []
+                                        |),
+                                      []
+                                    |)
+                                |);
+                              M.get_struct_record_field self "subtle::CtOption" "value";
+                              M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some"
+                                |)
+                            ]
+                          |)
+                      ]
+                  ]
+                |);
+              M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3001,35 +3708,73 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [ U; F ], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* tmp :=
-        let* α0 :=
-          M.get_trait_method "core::ops::function::FnOnce" F [ Ty.tuple [ T ] ] "call_once" [] in
-        let* α1 := M.read f in
-        let* α2 :=
-          M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_select" [] in
-        let* α3 := M.get_trait_method "core::default::Default" T [] "default" [] in
-        let* α4 := M.call_closure α3 [] in
-        let* α5 := M.alloc α4 in
-        let* α6 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-        let* α7 :=
-          M.call_closure α2 [ α5; M.get_struct_record_field self "subtle::CtOption" "value"; α6 ] in
-        let* α8 := M.call_closure α0 [ α1; Value.Tuple [ α7 ] ] in
-        M.alloc α8 in
-      let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAndAssign"
-            (Ty.path "subtle::Choice")
-            [ Ty.path "subtle::Choice" ]
-            "bitand_assign"
-            [] in
-        let* α1 := M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
-        let* α2 :=
-          M.call_closure α0 [ M.get_struct_record_field tmp "subtle::CtOption" "is_some"; α1 ] in
-        M.alloc α2 in
-      M.read tmp
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.read (|
+            let tmp :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [ Ty.tuple [ T ] ],
+                          "call_once",
+                          []
+                        |),
+                      [
+                        M.read (| f |);
+                        Value.Tuple
+                          [
+                            M.call_closure (|
+                                M.get_trait_method (|
+                                    "subtle::ConditionallySelectable",
+                                    T,
+                                    [],
+                                    "conditional_select",
+                                    []
+                                  |),
+                                [
+                                  M.alloc (|
+                                      M.call_closure (|
+                                          M.get_trait_method (|
+                                              "core::default::Default",
+                                              T,
+                                              [],
+                                              "default",
+                                              []
+                                            |),
+                                          []
+                                        |)
+                                    |);
+                                  M.get_struct_record_field self "subtle::CtOption" "value";
+                                  M.read (|
+                                      M.get_struct_record_field self "subtle::CtOption" "is_some"
+                                    |)
+                                ]
+                              |)
+                          ]
+                      ]
+                    |)
+                |) in
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAndAssign",
+                          Ty.path "subtle::Choice",
+                          [ Ty.path "subtle::Choice" ],
+                          "bitand_assign",
+                          []
+                        |),
+                      [
+                        M.get_struct_record_field tmp "subtle::CtOption" "is_some";
+                        M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                      ]
+                    |)
+                |) in
+            tmp
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3053,30 +3798,47 @@ Module Impl_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [ F ], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* is_none :=
-        let* α0 :=
-          M.get_associated_function (Ty.apply (Ty.path "subtle::CtOption") [ T ]) "is_none" [] in
-        let* α1 := M.call_closure α0 [ self ] in
-        M.alloc α1 in
-      let* f :=
-        let* α0 :=
-          M.get_trait_method "core::ops::function::FnOnce" F [ Ty.tuple [] ] "call_once" [] in
-        let* α1 := M.read f in
-        let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
-        M.alloc α2 in
-      let* α0 :=
-        M.get_trait_method
-          "subtle::ConditionallySelectable"
-          (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-          []
-          "conditional_select"
-          [] in
-      let* α1 := M.read is_none in
-      let* α2 := M.call_closure α0 [ self; f; α1 ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.read (|
+            let is_none :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                          "is_none",
+                          []
+                        |),
+                      [ self ]
+                    |)
+                |) in
+            let f :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [ Ty.tuple [] ],
+                          "call_once",
+                          []
+                        |),
+                      [ M.read (| f |); Value.Tuple [] ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "subtle::ConditionallySelectable",
+                        Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                        [],
+                        "conditional_select",
+                        []
+                      |),
+                    [ self; f; M.read (| is_none |) ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3100,42 +3862,43 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ a; b; choice ] =>
-      let* a := M.alloc a in
-      let* b := M.alloc b in
-      let* choice := M.alloc choice in
-      let* α0 := M.get_associated_function (Ty.apply (Ty.path "subtle::CtOption") [ T ]) "new" [] in
-      let* α1 :=
-        M.get_trait_method "subtle::ConditionallySelectable" T [] "conditional_select" [] in
-      let* α2 := M.read a in
-      let* α3 := M.read b in
-      let* α4 := M.read choice in
-      let* α5 :=
-        M.call_closure
-          α1
-          [
-            M.get_struct_record_field α2 "subtle::CtOption" "value";
-            M.get_struct_record_field α3 "subtle::CtOption" "value";
-            α4
-          ] in
-      let* α6 :=
-        M.get_trait_method
-          "subtle::ConditionallySelectable"
-          (Ty.path "subtle::Choice")
-          []
-          "conditional_select"
-          [] in
-      let* α7 := M.read a in
-      let* α8 := M.read b in
-      let* α9 := M.read choice in
-      let* α10 :=
-        M.call_closure
-          α6
-          [
-            M.get_struct_record_field α7 "subtle::CtOption" "is_some";
-            M.get_struct_record_field α8 "subtle::CtOption" "is_some";
-            α9
-          ] in
-      M.call_closure α0 [ α5; α10 ]
+      ltac:(M.monadic
+        (let a := M.alloc (| a |) in
+        let b := M.alloc (| b |) in
+        let choice := M.alloc (| choice |) in
+        M.call_closure (|
+            M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [ T ], "new", [] |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "subtle::ConditionallySelectable",
+                      T,
+                      [],
+                      "conditional_select",
+                      []
+                    |),
+                  [
+                    M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "value";
+                    M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "value";
+                    M.read (| choice |)
+                  ]
+                |);
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "subtle::ConditionallySelectable",
+                      Ty.path "subtle::Choice",
+                      [],
+                      "conditional_select",
+                      []
+                    |),
+                  [
+                    M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "is_some";
+                    M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "is_some";
+                    M.read (| choice |)
+                  ]
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3163,72 +3926,112 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; rhs ] =>
-      let* self := M.alloc self in
-      let* rhs := M.alloc rhs in
-      let* a :=
-        let* α0 :=
-          M.get_associated_function (Ty.apply (Ty.path "subtle::CtOption") [ T ]) "is_some" [] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* b :=
-        let* α0 :=
-          M.get_associated_function (Ty.apply (Ty.path "subtle::CtOption") [ T ]) "is_some" [] in
-        let* α1 := M.read rhs in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        M.alloc α2 in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitOr"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitor"
-          [] in
-      let* α1 :=
-        M.get_trait_method
-          "core::ops::bit::BitAnd"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitand"
-          [] in
-      let* α2 :=
-        M.get_trait_method
-          "core::ops::bit::BitAnd"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitand"
-          [] in
-      let* α3 := M.read a in
-      let* α4 := M.read b in
-      let* α5 := M.call_closure α2 [ α3; α4 ] in
-      let* α6 := M.get_trait_method "subtle::ConstantTimeEq" T [] "ct_eq" [] in
-      let* α7 := M.read self in
-      let* α8 := M.read rhs in
-      let* α9 :=
-        M.call_closure
-          α6
-          [
-            M.get_struct_record_field α7 "subtle::CtOption" "value";
-            M.get_struct_record_field α8 "subtle::CtOption" "value"
-          ] in
-      let* α10 := M.call_closure α1 [ α5; α9 ] in
-      let* α11 :=
-        M.get_trait_method
-          "core::ops::bit::BitAnd"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitand"
-          [] in
-      let* α12 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α13 := M.read a in
-      let* α14 := M.call_closure α12 [ α13 ] in
-      let* α15 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α16 := M.read b in
-      let* α17 := M.call_closure α15 [ α16 ] in
-      let* α18 := M.call_closure α11 [ α14; α17 ] in
-      let* α19 := M.call_closure α0 [ α10; α18 ] in
-      let* α0 := M.alloc α19 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let rhs := M.alloc (| rhs |) in
+        M.read (|
+            let a :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                          "is_some",
+                          []
+                        |),
+                      [ M.read (| self |) ]
+                    |)
+                |) in
+            let b :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                          "is_some",
+                          []
+                        |),
+                      [ M.read (| rhs |) ]
+                    |)
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::ops::bit::BitOr",
+                        Ty.path "subtle::Choice",
+                        [ Ty.path "subtle::Choice" ],
+                        "bitor",
+                        []
+                      |),
+                    [
+                      M.call_closure (|
+                          M.get_trait_method (|
+                              "core::ops::bit::BitAnd",
+                              Ty.path "subtle::Choice",
+                              [ Ty.path "subtle::Choice" ],
+                              "bitand",
+                              []
+                            |),
+                          [
+                            M.call_closure (|
+                                M.get_trait_method (|
+                                    "core::ops::bit::BitAnd",
+                                    Ty.path "subtle::Choice",
+                                    [ Ty.path "subtle::Choice" ],
+                                    "bitand",
+                                    []
+                                  |),
+                                [ M.read (| a |); M.read (| b |) ]
+                              |);
+                            M.call_closure (|
+                                M.get_trait_method (| "subtle::ConstantTimeEq", T, [], "ct_eq", []
+                                  |),
+                                [
+                                  M.get_struct_record_field
+                                    (M.read (| self |))
+                                    "subtle::CtOption"
+                                    "value";
+                                  M.get_struct_record_field
+                                    (M.read (| rhs |))
+                                    "subtle::CtOption"
+                                    "value"
+                                ]
+                              |)
+                          ]
+                        |);
+                      M.call_closure (|
+                          M.get_trait_method (|
+                              "core::ops::bit::BitAnd",
+                              Ty.path "subtle::Choice",
+                              [ Ty.path "subtle::Choice" ],
+                              "bitand",
+                              []
+                            |),
+                          [
+                            M.call_closure (|
+                                M.get_trait_method (|
+                                    "core::ops::bit::Not",
+                                    Ty.path "subtle::Choice",
+                                    [],
+                                    "not",
+                                    []
+                                  |),
+                                [ M.read (| a |) ]
+                              |);
+                            M.call_closure (|
+                                M.get_trait_method (|
+                                    "core::ops::bit::Not",
+                                    Ty.path "subtle::Choice",
+                                    [],
+                                    "not",
+                                    []
+                                  |),
+                                [ M.read (| b |) ]
+                              |)
+                          ]
+                        |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3273,145 +4076,179 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
   Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* gtb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-            [ Ty.path "u8" ]
-            "bitand"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-            []
-            "not"
-            [] in
-        let* α3 := M.read other in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.call_closure α0 [ α1; α4 ] in
-        M.alloc α5 in
-      let* ltb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.path "u8")
-            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
-            "bitand"
-            [] in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
-            []
-            "not"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.read other in
-        let* α5 := M.call_closure α0 [ α3; α4 ] in
-        M.alloc α5 in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 8)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := ltb in
-                  let* α0 := M.read β in
-                  let* α1 := M.read ltb in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc (BinOp.Pure.bit_and α0 (UnOp.Pure.not α1)) in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 8)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := bit in
-                  let* α0 := M.read β in
-                  let* α1 := M.read bit in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::From"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "u8" ]
-          "from"
-          [] in
-      let* α1 := M.read bit in
-      let* α2 := M.alloc (BinOp.Pure.bit_and α1 (Value.Integer Integer.U8 1)) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let gtb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                          [ Ty.path "u8" ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.read (| self |);
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| other |) ]
+                          |)
+                      ]
+                    |)
+                |) in
+            let ltb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.path "u8",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |);
+                        M.read (| other |)
+                      ]
+                    |)
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := ltb in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            let bit :=
+              M.alloc (| BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := bit in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "subtle::Choice",
+                        [ Ty.path "u8" ],
+                        "from",
+                        []
+                      |),
+                    [
+                      M.read (|
+                          M.use
+                            (M.alloc (|
+                                BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U8 1)
+                              |))
+                        |)
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3452,144 +4289,179 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
   Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* gtb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-            [ Ty.path "u16" ]
-            "bitand"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-            []
-            "not"
-            [] in
-        let* α3 := M.read other in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.call_closure α0 [ α1; α4 ] in
-        M.alloc α5 in
-      let* ltb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.path "u16")
-            [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
-            "bitand"
-            [] in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
-            []
-            "not"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.read other in
-        let* α5 := M.call_closure α0 [ α3; α4 ] in
-        M.alloc α5 in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 16)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := ltb in
-                  let* α0 := M.read β in
-                  let* α1 := M.read ltb in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc (BinOp.Pure.bit_and α0 (UnOp.Pure.not α1)) in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 16)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := bit in
-                  let* α0 := M.read β in
-                  let* α1 := M.read bit in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::From"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "u8" ]
-          "from"
-          [] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_and α1 (Value.Integer Integer.U16 1)) ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let gtb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                          [ Ty.path "u16" ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.read (| self |);
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| other |) ]
+                          |)
+                      ]
+                    |)
+                |) in
+            let ltb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.path "u16",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |);
+                        M.read (| other |)
+                      ]
+                    |)
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 16)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := ltb in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            let bit :=
+              M.alloc (| BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 16)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := bit in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "subtle::Choice",
+                        [ Ty.path "u8" ],
+                        "from",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U16 1))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3630,144 +4502,179 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
   Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* gtb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-            [ Ty.path "u32" ]
-            "bitand"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-            []
-            "not"
-            [] in
-        let* α3 := M.read other in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.call_closure α0 [ α1; α4 ] in
-        M.alloc α5 in
-      let* ltb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.path "u32")
-            [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
-            "bitand"
-            [] in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-            []
-            "not"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.read other in
-        let* α5 := M.call_closure α0 [ α3; α4 ] in
-        M.alloc α5 in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 32)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := ltb in
-                  let* α0 := M.read β in
-                  let* α1 := M.read ltb in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc (BinOp.Pure.bit_and α0 (UnOp.Pure.not α1)) in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 32)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := bit in
-                  let* α0 := M.read β in
-                  let* α1 := M.read bit in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::From"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "u8" ]
-          "from"
-          [] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_and α1 (Value.Integer Integer.U32 1)) ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let gtb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                          [ Ty.path "u32" ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.read (| self |);
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| other |) ]
+                          |)
+                      ]
+                    |)
+                |) in
+            let ltb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.path "u32",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |);
+                        M.read (| other |)
+                      ]
+                    |)
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 32)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := ltb in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            let bit :=
+              M.alloc (| BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 32)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := bit in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "subtle::Choice",
+                        [ Ty.path "u8" ],
+                        "from",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U32 1))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3808,144 +4715,179 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* gtb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-            [ Ty.path "u64" ]
-            "bitand"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-            []
-            "not"
-            [] in
-        let* α3 := M.read other in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.call_closure α0 [ α1; α4 ] in
-        M.alloc α5 in
-      let* ltb :=
-        let* α0 :=
-          M.get_trait_method
-            "core::ops::bit::BitAnd"
-            (Ty.path "u64")
-            [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
-            "bitand"
-            [] in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::bit::Not"
-            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
-            []
-            "not"
-            [] in
-        let* α2 := M.read self in
-        let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.read other in
-        let* α5 := M.call_closure α0 [ α3; α4 ] in
-        M.alloc α5 in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 64)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := ltb in
-                  let* α0 := M.read β in
-                  let* α1 := M.read ltb in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc (BinOp.Pure.bit_and α0 (UnOp.Pure.not α1)) in
-      let* pow := M.alloc (Value.Integer Integer.I32 1) in
-      let* _ :=
-        M.loop
-          (let* α0 := M.alloc (Value.Tuple []) in
-          M.match_operator
-            α0
-            [
-              fun γ =>
-                let* γ :=
-                  let* α0 := M.read pow in
-                  let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 64)) in
-                  M.pure (M.use α1) in
-                let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
-                let* _ :=
-                  let β := bit in
-                  let* α0 := M.read β in
-                  let* α1 := M.read bit in
-                  let* α2 := M.read pow in
-                  let* α3 := BinOp.Panic.shr α1 α2 in
-                  M.assign β (BinOp.Pure.bit_or α0 α3) in
-                let* _ :=
-                  let β := pow in
-                  let* α0 := M.read β in
-                  let* α1 := M.read pow in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.assign β α2 in
-                M.alloc (Value.Tuple []);
-              fun γ =>
-                let* _ :=
-                  let* α0 := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2 in
-                let* α0 := M.alloc (Value.Tuple []) in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-            ]) in
-      let* α0 :=
-        M.get_trait_method
-          "core::convert::From"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "u8" ]
-          "from"
-          [] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call_closure α0 [ M.rust_cast (BinOp.Pure.bit_and α1 (Value.Integer Integer.U64 1)) ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.read (|
+            let gtb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                          [ Ty.path "u64" ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.read (| self |);
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| other |) ]
+                          |)
+                      ]
+                    |)
+                |) in
+            let ltb :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_trait_method (|
+                          "core::ops::bit::BitAnd",
+                          Ty.path "u64",
+                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                          "bitand",
+                          []
+                        |),
+                      [
+                        M.call_closure (|
+                            M.get_trait_method (|
+                                "core::ops::bit::Not",
+                                Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                                [],
+                                "not",
+                                []
+                              |),
+                            [ M.read (| self |) ]
+                          |);
+                        M.read (| other |)
+                      ]
+                    |)
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 64)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := ltb in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            let bit :=
+              M.alloc (| BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
+                |) in
+            let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+            let _ :=
+              M.loop (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                      BinOp.Pure.lt
+                                        (M.read (| pow |))
+                                        (Value.Integer Integer.I32 64)
+                                    |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true
+                                  |) in
+                              let _ :=
+                                let β := bit in
+                                M.assign (|
+                                    β,
+                                    BinOp.Pure.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                                  |) in
+                              let _ :=
+                                let β := pow in
+                                M.assign (|
+                                    β,
+                                    BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                                  |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                  M.never_to_any (|
+                                      M.read (|
+                                          let _ :=
+                                            M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                    |)
+                                |)))
+                        ]
+                      |)))
+                |) in
+            M.alloc (|
+                M.call_closure (|
+                    M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "subtle::Choice",
+                        [ Ty.path "u8" ],
+                        "from",
+                        []
+                      |),
+                    [
+                      M.rust_cast
+                        (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U64 1))
+                    ]
+                  |)
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -3962,28 +4904,51 @@ Module ConstantTimeLess.
   Definition ct_lt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
-      let* self := M.alloc self in
-      let* other := M.alloc other in
-      let* α0 :=
-        M.get_trait_method
-          "core::ops::bit::BitAnd"
-          (Ty.path "subtle::Choice")
-          [ Ty.path "subtle::Choice" ]
-          "bitand"
-          [] in
-      let* α1 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α2 := M.get_trait_method "subtle::ConstantTimeGreater" Self [] "ct_gt" [] in
-      let* α3 := M.read self in
-      let* α4 := M.read other in
-      let* α5 := M.call_closure α2 [ α3; α4 ] in
-      let* α6 := M.call_closure α1 [ α5 ] in
-      let* α7 := M.get_trait_method "core::ops::bit::Not" (Ty.path "subtle::Choice") [] "not" [] in
-      let* α8 := M.get_trait_method "subtle::ConstantTimeEq" Self [] "ct_eq" [] in
-      let* α9 := M.read self in
-      let* α10 := M.read other in
-      let* α11 := M.call_closure α8 [ α9; α10 ] in
-      let* α12 := M.call_closure α7 [ α11 ] in
-      M.call_closure α0 [ α6; α12 ]
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let other := M.alloc (| other |) in
+        M.call_closure (|
+            M.get_trait_method (|
+                "core::ops::bit::BitAnd",
+                Ty.path "subtle::Choice",
+                [ Ty.path "subtle::Choice" ],
+                "bitand",
+                []
+              |),
+            [
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::ops::bit::Not",
+                      Ty.path "subtle::Choice",
+                      [],
+                      "not",
+                      []
+                    |),
+                  [
+                    M.call_closure (|
+                        M.get_trait_method (| "subtle::ConstantTimeGreater", Self, [], "ct_gt", []
+                          |),
+                        [ M.read (| self |); M.read (| other |) ]
+                      |)
+                  ]
+                |);
+              M.call_closure (|
+                  M.get_trait_method (|
+                      "core::ops::bit::Not",
+                      Ty.path "subtle::Choice",
+                      [],
+                      "not",
+                      []
+                    |),
+                  [
+                    M.call_closure (|
+                        M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], "ct_eq", [] |),
+                        [ M.read (| self |); M.read (| other |) ]
+                      |)
+                  ]
+                |)
+            ]
+          |)))
     | _, _ => M.impossible
     end.
   

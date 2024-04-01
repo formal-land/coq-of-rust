@@ -14,9 +14,11 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* cmd := M.alloc (Value.Integer Integer.I32 209) in
-    let _ := InlineAssembly in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let cmd := M.alloc (| Value.Integer Integer.I32 209 |) in
+          let _ := InlineAssembly in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.

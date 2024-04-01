@@ -30,9 +30,17 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u32") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructRecord "set_code_hash::Incrementer" [ ("count", α1) ])
+      ltac:(M.monadic
+        (Value.StructRecord
+          "set_code_hash::Incrementer"
+          [
+            ("count",
+              M.call_closure (|
+                  M.get_trait_method (| "core::default::Default", Ty.path "u32", [], "default", []
+                    |),
+                  []
+                |))
+          ]))
     | _, _ => M.impossible
     end.
   
@@ -55,14 +63,17 @@ Module Impl_set_code_hash_Incrementer.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 :=
-        M.get_trait_method
-          "core::default::Default"
-          (Ty.path "set_code_hash::Incrementer")
-          []
-          "default"
-          [] in
-      M.call_closure α0 []
+      ltac:(M.monadic
+        (M.call_closure (|
+            M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "set_code_hash::Incrementer",
+                [],
+                "default",
+                []
+              |),
+            []
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -80,45 +91,70 @@ Module Impl_set_code_hash_Incrementer.
   Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (M.get_struct_record_field α0 "set_code_hash::Incrementer" "count") in
-        let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
-        M.assign β α1 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "The new count is ") in
-              let* α3 := M.read (mk_str ", it was modified using the original contract code.
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α10 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "u32" ] in
-              let* α7 := M.read self in
-              let* α8 :=
-                M.call_closure
-                  α6
-                  [ M.get_struct_record_field α7 "set_code_hash::Incrementer" "count" ] in
-              let* α9 := M.alloc (Value.Array [ α8 ]) in
-              M.pure (M.pointer_coercion α9) in
-          let* α11 := M.call_closure α1 [ α5; α10 ] in
-          let* α12 := M.call_closure α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            let _ :=
+              let β :=
+                M.get_struct_record_field
+                  (M.read (| self |))
+                  "set_code_hash::Incrementer"
+                  "count" in
+              M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "The new count is " |);
+                                            M.read (|
+                                                mk_str
+                                                  ", it was modified using the original contract code.
+"
+                                              |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "u32" ]
+                                                  |),
+                                                [
+                                                  M.get_struct_record_field
+                                                    (M.read (| self |))
+                                                    "set_code_hash::Incrementer"
+                                                    "count"
+                                                ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -132,9 +168,10 @@ Module Impl_set_code_hash_Incrementer.
   Definition get (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "set_code_hash::Incrementer" "count")
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (| M.get_struct_record_field (M.read (| self |)) "set_code_hash::Incrementer" "count"
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -151,78 +188,110 @@ Module Impl_set_code_hash_Incrementer.
   Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; code_hash ] =>
-      let* self := M.alloc self in
-      let* code_hash := M.alloc code_hash in
-      let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "set_code_hash::Error" ])
-            "unwrap_or_else"
-            [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ] in
-        let* α1 :=
-          M.get_function
-            "set_code_hash::set_code_hash"
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-        let* α2 := M.call_closure α1 [ code_hash ] in
-        let* α3 :=
-          M.call_closure
-            α0
-            [
-              α2;
-              M.closure
-                (fun γ =>
-                  match γ with
-                  | [ α0 ] =>
-                    let* α0 := M.alloc α0 in
-                    M.match_operator
-                      α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        M.read (|
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
+                          "unwrap_or_else",
+                          [
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
+                              (Ty.tuple [])
+                          ]
+                        |),
                       [
-                        fun γ =>
-                          let* err := M.copy γ in
-                          let* α0 :=
-                            M.get_function
-                              "std::panicking::begin_panic"
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                          let* α1 :=
-                            M.read
-                              (mk_str
-                                "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                          let* α2 := M.call_closure α0 [ α1 ] in
-                          M.never_to_any α2
+                        M.call_closure (|
+                            M.get_function (|
+                                "set_code_hash::set_code_hash",
+                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                              |),
+                            [ code_hash ]
+                          |);
+                        M.closure
+                          (fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [ α0 ] =>
+                                M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let err := M.copy (| γ |) in
+                                          M.never_to_any (|
+                                              M.call_closure (|
+                                                  M.get_function (|
+                                                      "std::panicking::begin_panic",
+                                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                    |),
+                                                  [
+                                                    M.read (|
+                                                        mk_str
+                                                          "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                                      |)
+                                                  ]
+                                                |)
+                                            |)))
+                                    ]
+                                  |)
+                              | _ => M.impossible (||)
+                              end))
                       ]
-                  | _ => M.impossible
-                  end)
-            ] in
-        M.alloc α3 in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "Switched code hash to ") in
-              let* α3 := M.read (mk_str ".
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_debug"
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-              let* α7 := M.call_closure α6 [ code_hash ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+                    |)
+                |) in
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "Switched code hash to " |);
+                                            M.read (| mk_str ".
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_debug",
+                                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                                  |),
+                                                [ code_hash ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   

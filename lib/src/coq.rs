@@ -80,6 +80,10 @@ pub(crate) enum Expression<'a> {
         ///     the application is curried when it gets printed)
         args: Vec<(Option<String>, Expression<'a>)>,
     },
+    MonadicApplication {
+        func: Rc<Expression<'a>>,
+        args: Vec<(Option<String>, Expression<'a>)>,
+    },
     /// a (curried) function
     Function {
         parameters: Vec<Expression<'a>>,
@@ -119,7 +123,6 @@ pub(crate) enum Expression<'a> {
         rhs: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
-    #[allow(dead_code)]
     Product {
         /// left hand side
         lhs: Rc<Expression<'a>>,
@@ -146,8 +149,6 @@ pub(crate) enum Expression<'a> {
         exprs: Vec<Expression<'a>>,
     },
     /// For example ltac:(...) or constr:(...)
-    /// #[allow(dead_code)]
-    #[allow(dead_code)]
     ModeWrapper {
         mode: String,
         expr: Rc<Expression<'a>>,
@@ -407,6 +408,36 @@ impl<'a> Expression<'a> {
                     ),
                 ]),
             ),
+            Self::MonadicApplication { func, args } => paren(
+                with_paren,
+                nest([
+                    func.to_doc(false),
+                    text(" "),
+                    optional_insert(!args.is_empty(), text("(||)")),
+                    optional_insert(
+                        args.is_empty(),
+                        concat([
+                            text("(|"),
+                            nest([
+                                line(),
+                                intersperse(
+                                    args.iter().map(|(param, arg)| match param {
+                                        Some(param) => render::round_brackets(group([
+                                            text(param.to_owned()),
+                                            text(" := "),
+                                            arg.to_doc(false),
+                                        ])),
+                                        None => arg.to_doc(false),
+                                    }),
+                                    [text(","), line()],
+                                ),
+                            ]),
+                            line(),
+                            text("|)"),
+                        ]),
+                    ),
+                ]),
+            ),
             Self::Function { parameters, body } => {
                 if parameters.is_empty() {
                     body.to_doc(with_paren)
@@ -652,6 +683,58 @@ impl<'a> Expression<'a> {
                 .map(|arg| (None, arg.to_owned()))
                 .collect::<Vec<_>>(),
         )
+    }
+
+    pub(crate) fn monadic_apply_empty(&self) -> Self {
+        Expression::MonadicApplication {
+            func: Rc::new(self.clone()),
+            args: vec![],
+        }
+    }
+
+    /// apply the expression as a function to one argument
+    pub(crate) fn monadic_apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
+        Expression::MonadicApplication {
+            func: Rc::new(self.clone()),
+            args: vec![(name.clone(), arg.clone())],
+        }
+    }
+
+    /// apply the expression as a function to one argument
+    pub(crate) fn monadic_apply(&self, arg: &Self) -> Self {
+        self.monadic_apply_arg(&None, arg)
+    }
+
+    /// apply the expression as a function to many arguments
+    pub(crate) fn monadic_apply_many_args(&self, args: &[(Option<String>, Self)]) -> Self {
+        if args.is_empty() {
+            return self.to_owned();
+        }
+
+        Expression::MonadicApplication {
+            func: Rc::new(self.to_owned()),
+            args: args.to_vec(),
+        }
+    }
+
+    /// apply the expression as a function to many arguments
+    pub(crate) fn monadic_apply_many(&self, args: &[Self]) -> Self {
+        self.monadic_apply_many_args(
+            &args
+                .iter()
+                .map(|arg| (None, arg.to_owned()))
+                .collect::<Vec<_>>(),
+        )
+    }
+
+    pub(crate) fn monadic(&self) -> Self {
+        Expression::ModeWrapper {
+            mode: "ltac".to_string(),
+            expr: Rc::new(Expression::Application {
+                func: Rc::new(Expression::just_name("M.monadic")),
+                args: vec![(None, self.to_owned())],
+            }),
+        }
     }
 
     #[allow(dead_code)]

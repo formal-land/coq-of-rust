@@ -24,7 +24,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [] => M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
+    | [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
     | _, _ => M.impossible
     end.
   
@@ -39,73 +39,111 @@ Module Impl_wildcard_selector_WildcardSelector.
   Definition wildcard (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            [
-              Ty.tuple
-                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ];
-              Ty.tuple []
-            ])
-          "unwrap"
-          [] in
-      let* α1 :=
-        M.get_function
-          "wildcard_selector::decode_input"
-          [
-            Ty.tuple
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "alloc::string::String" ]
-          ] in
-      let* α2 := M.call_closure α1 [] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      let* α4 := M.alloc α3 in
-      let* α5 :=
-        M.match_operator
-          α4
-          [
-            fun γ =>
-              let γ0_0 := M.get_tuple_field γ 0 in
-              let γ0_1 := M.get_tuple_field γ 1 in
-              let* _selector := M.copy γ0_0 in
-              let* _message := M.copy γ0_1 in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-                  let* α6 :=
-                    (* Unsize *)
-                      let* α2 := M.read (mk_str "Wildcard selector: ") in
-                      let* α3 := M.read (mk_str ", message: ") in
-                      let* α4 := M.read (mk_str "
-") in
-                      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                      M.pure (M.pointer_coercion α5) in
-                  let* α12 :=
-                    (* Unsize *)
-                      let* α7 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_debug"
-                          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-                      let* α8 := M.call_closure α7 [ _selector ] in
-                      let* α9 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display"
-                          [ Ty.path "alloc::string::String" ] in
-                      let* α10 := M.call_closure α9 [ _message ] in
-                      let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
-                      M.pure (M.pointer_coercion α11) in
-                  let* α13 := M.call_closure α1 [ α6; α12 ] in
-                  let* α14 := M.call_closure α0 [ α13 ] in
-                  M.alloc α14 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
-          ] in
-      M.read α5
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.read (|
+            M.match_operator (|
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                                    Ty.path "alloc::string::String"
+                                  ];
+                                Ty.tuple []
+                              ],
+                            "unwrap",
+                            []
+                          |),
+                        [
+                          M.call_closure (|
+                              M.get_function (|
+                                  "wildcard_selector::decode_input",
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                                        Ty.path "alloc::string::String"
+                                      ]
+                                  ]
+                                |),
+                              []
+                            |)
+                        ]
+                      |)
+                  |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.get_tuple_field γ 0 in
+                      let γ0_1 := M.get_tuple_field γ 1 in
+                      let _selector := M.copy (| γ0_0 |) in
+                      let _message := M.copy (| γ0_1 |) in
+                      let _ :=
+                        let _ :=
+                          M.alloc (|
+                              M.call_closure (|
+                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                  [
+                                    M.call_closure (|
+                                        M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_v1",
+                                            []
+                                          |),
+                                        [
+                                          (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| mk_str "Wildcard selector: " |);
+                                                      M.read (| mk_str ", message: " |);
+                                                      M.read (| mk_str "
+" |)
+                                                    ]
+                                                |));
+                                          (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Ty.path "u8" ]
+                                                              ]
+                                                            |),
+                                                          [ _selector ]
+                                                        |);
+                                                      M.call_closure (|
+                                                          M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                          [ _message ]
+                                                        |)
+                                                    ]
+                                                |))
+                                        ]
+                                      |)
+                                  ]
+                                |)
+                            |) in
+                        M.alloc (| Value.Tuple [] |) in
+                      M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
+          |)))
     | _, _ => M.impossible
     end.
   
@@ -119,35 +157,56 @@ Module Impl_wildcard_selector_WildcardSelector.
   Definition wildcard_complement (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; _message ] =>
-      let* self := M.alloc self in
-      let* _message := M.alloc _message in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-          let* α5 :=
-            (* Unsize *)
-              let* α2 := M.read (mk_str "Wildcard complement message: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
-          let* α9 :=
-            (* Unsize *)
-              let* α6 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "alloc::string::String" ] in
-              let* α7 := M.call_closure α6 [ _message ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
-          let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
-        M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _message := M.alloc (| _message |) in
+        M.read (|
+            let _ :=
+              let _ :=
+                M.alloc (|
+                    M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                              M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                              [
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| mk_str "Wildcard complement message: " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                      |));
+                                (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                                M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                [ _message ]
+                                              |)
+                                          ]
+                                      |))
+                              ]
+                            |)
+                        ]
+                      |)
+                  |) in
+              M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
     | _, _ => M.impossible
     end.
   

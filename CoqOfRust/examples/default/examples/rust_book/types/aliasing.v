@@ -26,56 +26,80 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* nanoseconds :=
-      let* α0 := M.alloc (Value.Integer Integer.U64 5) in
-      M.copy (M.use α0) in
-    let* inches :=
-      let* α0 := M.alloc (Value.Integer Integer.U64 2) in
-      M.copy (M.use α0) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
-        let* α7 :=
-          (* Unsize *)
-            let* α2 := M.read (mk_str "") in
-            let* α3 := M.read (mk_str " nanoseconds + ") in
-            let* α4 := M.read (mk_str " inches = ") in
-            let* α5 := M.read (mk_str " unit?
-") in
-            let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
-            M.pure (M.pointer_coercion α6) in
-        let* α19 :=
-          (* Unsize *)
-            let* α8 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u64" ] in
-            let* α9 := M.call_closure α8 [ nanoseconds ] in
-            let* α10 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u64" ] in
-            let* α11 := M.call_closure α10 [ inches ] in
-            let* α12 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.path "u64" ] in
-            let* α13 := M.read nanoseconds in
-            let* α14 := M.read inches in
-            let* α15 := BinOp.Panic.add α13 α14 in
-            let* α16 := M.alloc α15 in
-            let* α17 := M.call_closure α12 [ α16 ] in
-            let* α18 := M.alloc (Value.Array [ α9; α11; α17 ]) in
-            M.pure (M.pointer_coercion α18) in
-        let* α20 := M.call_closure α1 [ α7; α19 ] in
-        let* α21 := M.call_closure α0 [ α20 ] in
-        M.alloc α21 in
-      M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    ltac:(M.monadic
+      (M.read (|
+          let nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 5 |)) |) in
+          let inches := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 2 |)) |) in
+          let _ :=
+            let _ :=
+              M.alloc (|
+                  M.call_closure (|
+                      M.get_function (| "std::io::stdio::_print", [] |),
+                      [
+                        M.call_closure (|
+                            M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_v1",
+                                []
+                              |),
+                            [
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| mk_str "" |);
+                                          M.read (| mk_str " nanoseconds + " |);
+                                          M.read (| mk_str " inches = " |);
+                                          M.read (| mk_str " unit?
+" |)
+                                        ]
+                                    |));
+                              (* Unsize *)
+                                M.pointer_coercion
+                                  (M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u64" ]
+                                                |),
+                                              [ nanoseconds ]
+                                            |);
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u64" ]
+                                                |),
+                                              [ inches ]
+                                            |);
+                                          M.call_closure (|
+                                              M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u64" ]
+                                                |),
+                                              [
+                                                M.alloc (|
+                                                    BinOp.Panic.add (|
+                                                        M.read (| nanoseconds |),
+                                                        M.read (| inches |)
+                                                      |)
+                                                  |)
+                                              ]
+                                            |)
+                                        ]
+                                    |))
+                            ]
+                          |)
+                      ]
+                    |)
+                |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
   | _, _ => M.impossible
   end.
