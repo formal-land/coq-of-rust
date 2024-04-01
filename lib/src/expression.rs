@@ -2,9 +2,9 @@ use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use crate::ty::*;
 use core::panic;
+use itertools::Itertools;
 use rustc_middle::query::plumbing::IntoQueryParam;
 use std::rc::Rc;
 
@@ -119,8 +119,8 @@ pub(crate) enum Expr {
         elements: Vec<Rc<Expr>>,
     },
     Let {
-        is_monadic: bool,
         name: Option<String>,
+        is_monadic: bool,
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
@@ -254,16 +254,16 @@ fn monadic_let_in_stmt(
     match e1.as_ref() {
         Expr::Pure(e) => f(fresh_vars, e.clone()),
         Expr::Let {
-            is_monadic,
             name,
+            is_monadic,
             init,
             body,
         } => {
             let (body, fresh_vars) = monadic_let_in_stmt(fresh_vars, body.clone(), f);
             (
                 Rc::new(Expr::Let {
-                    is_monadic: *is_monadic,
                     name: name.clone(),
+                    is_monadic: *is_monadic,
                     init: init.clone(),
                     body,
                 }),
@@ -275,8 +275,8 @@ fn monadic_let_in_stmt(
             let (body, fresh_vars) = f(fresh_vars, Expr::local_var(&var_name));
             (
                 Rc::new(Expr::Let {
-                    is_monadic: true,
                     name: Some(var_name),
+                    is_monadic: true,
                     init: e1,
                     body,
                 }),
@@ -434,8 +434,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             Box::new(|fresh_vars, elements| (pure(Rc::new(Expr::Tuple { elements })), fresh_vars)),
         ),
         Expr::Let {
-            is_monadic,
             name,
+            is_monadic,
             init,
             body,
         } => {
@@ -448,14 +448,14 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             (
                 match pure_init {
                     Some(pure_init) => Rc::new(Expr::Let {
-                        is_monadic: false,
                         name: name.clone(),
+                        is_monadic: false,
                         init: pure_init,
                         body,
                     }),
                     None => Rc::new(Expr::Let {
-                        is_monadic: true,
                         name: name.clone(),
+                        is_monadic: true,
                         init,
                         body,
                     }),
@@ -545,14 +545,14 @@ fn get_pure_from_stmt(statement: Rc<Expr>) -> Option<Rc<Expr>> {
             is_monadic: true, ..
         } => None,
         Expr::Let {
-            is_monadic: false,
             name,
+            is_monadic: false,
             init,
             body,
         } => get_pure_from_stmt(body.clone()).map(|body| {
             Rc::new(Expr::Let {
-                is_monadic: false,
                 name: name.clone(),
+                is_monadic: false,
                 init: init.clone(),
                 body,
             })
@@ -653,10 +653,10 @@ fn string_to_coq(message: &str) -> coq::Expression {
 }
 
 impl LoopControlFlow {
-    pub fn to_doc<'a>(self) -> Doc<'a> {
+    pub fn to_coq<'a>(self) -> coq::Expression<'a> {
         match self {
-            LoopControlFlow::Break => text("M.break"),
-            LoopControlFlow::Continue => text("M.continue"),
+            LoopControlFlow::Break => coq::Expression::just_name("M.break"),
+            LoopControlFlow::Continue => coq::Expression::just_name("M.continue"),
         }
     }
 }
@@ -665,7 +665,7 @@ impl Literal {
     pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
             Literal::Bool(b) => coq::Expression::just_name("Value.Bool")
-                .apply(&coq::Expression::just_name(format!("{b}").as_str())),
+                .apply(&coq::Expression::just_name(b.to_string().as_str())),
             Literal::Integer(LiteralInteger {
                 name,
                 negative_sign,
@@ -685,306 +685,201 @@ impl Literal {
             Literal::Error => coq::Expression::just_name("UnsupportedLiteral"),
         }
     }
-
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-        self.to_coq().to_doc(with_paren)
-    }
 }
 
 impl Expr {
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
+    pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
-            Expr::Pure(expr) => paren(
-                with_paren,
-                nest([text("M.pure"), line(), expr.to_doc(true)]),
-            ),
-            Expr::LocalVar(ref name) => text(name),
-            Expr::GetConst(path) => paren(
-                with_paren,
-                nest([text("M.get_constant"), line(), text(format!("\"{path}\""))]),
-            ),
-            Expr::GetFunction { func, generic_tys } => paren(
-                with_paren,
-                nest([
-                    text("M.get_function"),
-                    line(),
-                    text(format!("\"{func}\"")),
-                    line(),
-                    list(
-                        generic_tys
+            Expr::Pure(expr) => coq::Expression::just_name("M.pure").apply(&expr.to_coq()),
+            Expr::LocalVar(ref name) => coq::Expression::just_name(name),
+            Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
+                .apply(&coq::Expression::String(path.to_string())),
+            Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
+                .apply_many(&[
+                    coq::Expression::String(func.to_string()),
+                    coq::Expression::List {
+                        exprs: generic_tys
                             .iter()
-                            .map(|generic_ty| generic_ty.to_coq().to_doc(false))
-                            .collect(),
-                    ),
+                            .map(|generic_ty| generic_ty.to_coq())
+                            .collect_vec(),
+                    },
                 ]),
-            ),
             Expr::GetTraitMethod {
                 trait_name,
                 self_ty,
                 trait_tys,
                 method_name,
                 generic_tys,
-            } => paren(
-                with_paren,
-                nest([
-                    text("M.get_trait_method"),
-                    line(),
-                    text(format!("\"{trait_name}\"")),
-                    line(),
-                    self_ty.to_coq().to_doc(true),
-                    line(),
-                    list(
-                        trait_tys
-                            .iter()
-                            .map(|trait_ty| trait_ty.to_coq().to_doc(false))
-                            .collect(),
-                    ),
-                    line(),
-                    text(format!("\"{method_name}\"")),
-                    line(),
-                    list(
-                        generic_tys
-                            .iter()
-                            .map(|ty| ty.to_coq().to_doc(false))
-                            .collect(),
-                    ),
-                ]),
-            ),
+            } => coq::Expression::just_name("M.get_trait_method").apply_many(&[
+                coq::Expression::String(trait_name.to_string()),
+                self_ty.to_coq(),
+                coq::Expression::List {
+                    exprs: trait_tys
+                        .iter()
+                        .map(|trait_ty| trait_ty.to_coq())
+                        .collect_vec(),
+                },
+                coq::Expression::String(method_name.to_string()),
+                coq::Expression::List {
+                    exprs: generic_tys.iter().map(|ty| ty.to_coq()).collect_vec(),
+                },
+            ]),
             Expr::GetAssociatedFunction {
                 ty,
                 func,
                 generic_tys,
-            } => coq::Expression::just_name("M.get_associated_function")
-                .apply_many(&[
-                    ty.to_coq(),
-                    coq::Expression::String(func.to_string()),
-                    coq::Expression::List {
-                        exprs: generic_tys
-                            .iter()
-                            .map(|generic_ty| generic_ty.to_coq())
-                            .collect(),
-                    },
-                ])
-                .to_doc(with_paren),
-            Expr::Literal(literal) => literal.to_doc(with_paren),
-            Expr::Call { func, args, kind } => paren(
-                with_paren,
-                match kind {
-                    CallKind::Pure | CallKind::Effectful => nest([
-                        func.to_doc(true),
-                        concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                    ]),
-                    CallKind::Closure => nest([
-                        text("M.call_closure"),
-                        line(),
-                        func.to_doc(true),
-                        line(),
-                        list(args.iter().map(|arg| arg.to_doc(false)).collect()),
-                    ]),
+            } => coq::Expression::just_name("M.get_associated_function").apply_many(&[
+                ty.to_coq(),
+                coq::Expression::String(func.to_string()),
+                coq::Expression::List {
+                    exprs: generic_tys
+                        .iter()
+                        .map(|generic_ty| generic_ty.to_coq())
+                        .collect(),
                 },
-            ),
-            Expr::LogicalOperator { name, lhs, rhs } => paren(
-                with_paren,
-                nest([
-                    text(name),
-                    line(),
-                    lhs.to_doc(true),
-                    line(),
-                    rhs.to_doc(true),
+            ]),
+            Expr::Literal(literal) => literal.to_coq(),
+            Expr::Call { func, args, kind } => match kind {
+                CallKind::Pure | CallKind::Effectful => func
+                    .to_coq()
+                    .apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
+                CallKind::Closure => coq::Expression::just_name("M.call_closure").apply_many(&[
+                    func.to_coq(),
+                    coq::Expression::List {
+                        exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
+                    },
                 ]),
-            ),
+            },
+            Expr::LogicalOperator { name, lhs, rhs } => {
+                coq::Expression::just_name(name.as_str()).apply_many(&[lhs.to_coq(), rhs.to_coq()])
+            }
             Expr::Lambda {
                 args,
                 body,
                 is_internal,
             } => {
                 if *is_internal {
-                    return paren(
-                        with_paren,
-                        nest([
-                            nest([
-                                text("fun"),
-                                concat(args.iter().map(|(name, _)| concat([line(), text(name)]))),
-                                text(" =>"),
-                            ]),
-                            line(),
-                            body.to_doc(false),
-                        ]),
-                    );
-                }
+                    return coq::Expression::Function {
+                        parameters: args
+                            .iter()
+                            .map(|(name, _)| coq::Expression::just_name(name))
+                            .collect_vec(),
+                        body: body.to_coq().into(),
+                    };
+                };
 
-                coq::Expression::just_name("M.closure")
-                    .apply(&coq::Expression::Function {
-                        parameters: vec![coq::Expression::just_name("γ")],
-                        body: Rc::new(coq::Expression::Match {
-                            scrutinees: vec![coq::Expression::just_name("γ")],
-                            arms: vec![
-                                (
-                                    vec![coq::Expression::List {
-                                        exprs: args
-                                            .iter()
-                                            .map(|(name, _)| coq::Expression::name_pattern(name))
-                                            .collect(),
-                                    }],
-                                    coq::Expression::Code(body.to_doc(false)),
-                                ),
-                                (
-                                    vec![coq::Expression::Wild],
-                                    coq::Expression::just_name("M.impossible"),
-                                ),
-                            ],
-                        }),
-                    })
-                    .to_doc(with_paren)
+                coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
+                    parameters: vec![coq::Expression::just_name("γ")],
+                    body: Rc::new(coq::Expression::Match {
+                        scrutinees: vec![coq::Expression::just_name("γ")],
+                        arms: vec![
+                            (
+                                vec![coq::Expression::List {
+                                    exprs: args
+                                        .iter()
+                                        .map(|(name, _)| coq::Expression::name_pattern(name))
+                                        .collect(),
+                                }],
+                                body.to_coq(),
+                            ),
+                            (
+                                vec![coq::Expression::Wild],
+                                coq::Expression::just_name("M.impossible"),
+                            ),
+                        ],
+                    }),
+                })
             }
             Expr::Array {
                 elements,
                 is_internal,
             } => {
-                let elements_doc = list(
-                    elements
+                let elements_expression = coq::Expression::List {
+                    exprs: elements
                         .iter()
-                        .map(|element| element.to_doc(false))
-                        .collect(),
-                );
+                        .map(|element| element.to_coq())
+                        .collect_vec(),
+                };
 
                 if *is_internal {
-                    return elements_doc;
+                    return elements_expression;
                 }
 
-                paren(
-                    with_paren,
-                    nest([text("Value.Array"), line(), elements_doc]),
-                )
+                coq::Expression::just_name("Value.Array").apply(&elements_expression)
             }
-            Expr::Tuple { elements } => paren(
-                with_paren,
-                nest([
-                    text("Value.Tuple"),
-                    line(),
-                    list(
-                        elements
-                            .iter()
-                            .map(|element| element.to_doc(false))
-                            .collect(),
-                    ),
-                ]),
-            ),
+            Expr::Tuple { elements } => {
+                coq::Expression::just_name("Value.Tuple").apply(&coq::Expression::List {
+                    exprs: elements
+                        .iter()
+                        .map(|element| element.to_coq())
+                        .collect_vec(),
+                })
+            }
             Expr::Let {
-                is_monadic,
                 name,
+                is_monadic,
                 init,
                 body,
-            } => paren(
-                with_paren,
-                group([
-                    nest([
-                        nest([
-                            nest([
-                                text("let"),
-                                optional_insert(!*is_monadic, text("*")),
-                                line(),
-                                text(match name {
-                                    Some(name) => name,
-                                    None => "_",
-                                }),
-                            ]),
-                            text(" :="),
-                        ]),
-                        line(),
-                        init.to_doc(false),
-                        text(" in"),
-                    ]),
-                    hardline(),
-                    body.to_doc(false),
-                ]),
-            ),
-            Expr::Loop { body } => paren(
-                with_paren,
-                nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
-            ),
-            Expr::Index { base, index } => paren(
-                with_paren,
-                nest([
-                    text("M.get_array_field"),
-                    line(),
-                    base.to_doc(true),
-                    line(),
-                    index.to_doc(true),
-                ]),
-            ),
-            Expr::ControlFlow(lcf_expression) => lcf_expression.to_doc(),
+            } => coq::Expression::Let {
+                name: name.to_owned(),
+                is_monadic: *is_monadic,
+                ty: None,
+                init: Rc::new(init.to_coq()),
+                body: Rc::new(body.to_coq()),
+            },
+            Expr::Loop { body } => coq::Expression::just_name("M.loop").apply(&body.to_coq()),
+            Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
+                .apply_many(&[base.to_coq(), index.to_coq()]),
+            Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
             Expr::StructStruct { path, fields, base } => match base {
-                None => paren(
-                    with_paren,
-                    nest([
-                        text("Value.StructRecord"),
-                        line(),
-                        text(format!("\"{path}\"")),
-                        line(),
-                        list(
-                            fields
-                                .iter()
-                                .map(|(name, expr)| {
-                                    nest([
-                                        text("("),
-                                        text(format!("\"{name}\"")),
-                                        text(","),
-                                        line(),
-                                        expr.to_doc(false),
-                                        text(")"),
-                                    ])
-                                })
-                                .collect(),
-                        ),
-                    ]),
-                ),
-                Some(base) => coq::Expression::just_name("M.struct_record_update")
-                    .apply_many(&[
-                        coq::Expression::Code(base.to_doc(true)),
-                        coq::Expression::List {
-                            exprs: fields
-                                .iter()
-                                .map(|(name, expr)| {
-                                    coq::Expression::Tuple(vec![
-                                        coq::Expression::String(name.to_string()),
-                                        coq::Expression::Code(expr.to_doc(false)),
-                                    ])
-                                })
-                                .collect(),
-                        },
-                    ])
-                    .to_doc(with_paren),
+                None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
+                    coq::Expression::String(path.to_string()),
+                    coq::Expression::List {
+                        exprs: fields
+                            .iter()
+                            .map(|(name, expr)| {
+                                coq::Expression::Tuple(vec![
+                                    coq::Expression::String(name.to_owned()),
+                                    expr.to_coq(),
+                                ])
+                            })
+                            .collect_vec(),
+                    },
+                ]),
+                Some(base) => coq::Expression::just_name("M.struct_record_update").apply_many(&[
+                    base.to_coq(),
+                    coq::Expression::List {
+                        exprs: fields
+                            .iter()
+                            .map(|(name, expr)| {
+                                coq::Expression::Tuple(vec![
+                                    coq::Expression::String(name.to_string()),
+                                    expr.to_coq(),
+                                ])
+                            })
+                            .collect(),
+                    },
+                ]),
             },
             Expr::StructTuple { path, fields } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List {
-                        exprs: fields
-                            .iter()
-                            .map(|expr| coq::Expression::Code(expr.to_doc(false)))
-                            .collect(),
+                        exprs: fields.iter().map(|expr| expr.to_coq()).collect(),
                     },
-                ])
-                .to_doc(with_paren),
+                ]),
             Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List { exprs: vec![] },
-                ])
-                .to_doc(with_paren),
-            Expr::Use(expr) => paren(with_paren, nest([text("M.use"), line(), expr.to_doc(true)])),
-            Expr::InternalString(s) => text(format!("\"{s}\"")),
-            Expr::InternalInteger(i) => text(i.to_string()),
-            Expr::Return(value) => paren(
-                with_paren,
-                nest([text("M.return_"), line(), value.to_doc(true)]),
-            ),
-            Expr::Comment(message, expr) => nest([
-                text(format!("(* {message} *)")),
-                line(),
-                expr.to_doc(with_paren),
-            ]),
+                ]),
+            Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
+            Expr::InternalString(s) => coq::Expression::String(s.to_string()),
+            Expr::InternalInteger(i) => coq::Expression::just_name(i.to_string().as_str()),
+            Expr::Return(value) => coq::Expression::just_name("M.return_").apply(&value.to_coq()),
+            Expr::Comment(message, expr) => {
+                coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
+            }
         }
     }
 }

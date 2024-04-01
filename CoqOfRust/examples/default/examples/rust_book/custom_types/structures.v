@@ -216,7 +216,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* bottom_right :=
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read point in
-      M.alloc (M.struct_record_update (α1) [ ("x", α0) ]) in
+      M.alloc (M.struct_record_update α1 [ ("x", α0) ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
