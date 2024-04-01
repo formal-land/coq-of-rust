@@ -451,23 +451,34 @@ impl Expr {
 
                 coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
                     parameters: vec![coq::Expression::just_name("γ")],
-                    body: Rc::new(coq::Expression::Match {
-                        scrutinees: vec![coq::Expression::just_name("γ")],
-                        arms: vec![
-                            (
-                                vec![coq::Expression::List {
-                                    exprs: args
-                                        .iter()
-                                        .map(|(name, _)| coq::Expression::name_pattern(name))
-                                        .collect(),
-                                }],
-                                body.to_coq(),
-                            ),
-                            (
-                                vec![coq::Expression::Wild],
-                                coq::Expression::just_name("M.impossible"),
-                            ),
-                        ],
+                    body: Rc::new(coq::Expression::ModeWrapper {
+                        mode: "ltac".to_string(),
+                        expr: Rc::new(coq::Expression::Application {
+                            func: Rc::new(coq::Expression::just_name("M.monadic")),
+                            args: vec![(
+                                None,
+                                coq::Expression::Match {
+                                    scrutinees: vec![coq::Expression::just_name("γ")],
+                                    arms: vec![
+                                        (
+                                            vec![coq::Expression::List {
+                                                exprs: args
+                                                    .iter()
+                                                    .map(|(name, _)| {
+                                                        coq::Expression::name_pattern(name)
+                                                    })
+                                                    .collect(),
+                                            }],
+                                            body.to_coq(),
+                                        ),
+                                        (
+                                            vec![coq::Expression::Wild],
+                                            coq::Expression::just_name("M.impossible").monadic(),
+                                        ),
+                                    ],
+                                },
+                            )],
+                        }),
                     }),
                 })
             }
