@@ -824,7 +824,11 @@ pub(crate) fn compile_expr<'a>(
                 .map(|base| compile_expr(env, generics, thir, &base.base).read());
 
             if fields.is_empty() {
-                return Rc::new(Expr::StructTuple { path: path, fields: vec![] }).alloc();
+                return Rc::new(Expr::StructTuple {
+                    path: path,
+                    fields: vec![],
+                })
+                .alloc();
             }
 
             if is_a_tuple {

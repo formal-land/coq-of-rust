@@ -70,6 +70,7 @@ pub(crate) enum DefinitionKind<'a> {
 pub(crate) enum Expression<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
+    #[allow(dead_code)]
     Code(Doc<'a>),
     /// an (curried) application of a function to some arguments
     Application {
