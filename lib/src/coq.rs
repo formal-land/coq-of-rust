@@ -16,8 +16,6 @@ pub(crate) struct TopLevel {
 #[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem {
-    /// the Code variant is for those constructions
-    /// that are not yet represented by the types in this file
     Comment(Vec<Expression>),
     Definition(Definition),
     Line,
@@ -64,8 +62,6 @@ pub(crate) enum DefinitionKind {
 /// (suitable also for coq type expressions,
 ///     because in coq types are like any other values)
 pub(crate) enum Expression {
-    /// the Code variant is for those constructions
-    /// that are not yet represented by the types in this file
     /// an (curried) application of a function to some arguments
     Application {
         /// the function that is applied
