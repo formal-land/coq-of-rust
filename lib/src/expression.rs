@@ -289,7 +289,7 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     result
 }
 
-fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
+fn string_pieces_to_coq(pieces: &[StringPiece]) -> coq::Expression {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => {
@@ -314,7 +314,7 @@ fn string_to_coq(message: &str) -> coq::Expression {
 }
 
 impl LoopControlFlow {
-    pub fn to_coq<'a>(self) -> coq::Expression<'a> {
+    pub fn to_coq(self) -> coq::Expression {
         match self {
             LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic_apply_empty(),
             LoopControlFlow::Continue => {

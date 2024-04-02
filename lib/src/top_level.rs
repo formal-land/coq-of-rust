@@ -1144,7 +1144,7 @@ impl FunDefinition {
         snippet: &'a Option<Rc<Snippet>>,
         generic_tys: Vec<String>,
         with_extra_self_ty: bool,
-    ) -> Vec<coq::TopLevelItem<'a>> {
+    ) -> Vec<coq::TopLevelItem> {
         [
             match snippet {
                 Some(snippet) => vec![snippet.to_coq()],
@@ -1288,7 +1288,7 @@ impl ImplItemKind {
         }
     }
 
-    fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Vec<coq::TopLevelItem<'a>> {
+    fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Vec<coq::TopLevelItem> {
         let definition_name = self.to_definition_name(name.to_string());
 
         match self {

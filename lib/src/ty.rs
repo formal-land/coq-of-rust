@@ -132,7 +132,7 @@ pub(crate) fn compile_path_ty_params(
 }
 
 impl CoqType {
-    pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
+    pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
             CoqType::Var(name) => coq::Expression::just_name(name),
             CoqType::Path { path } => coq::Expression::just_name("Ty.path")
