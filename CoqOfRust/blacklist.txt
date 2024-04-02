@@ -1,11 +1,4 @@
 examples/default/examples/ink_contracts/proofs/erc20.v
-old_stdlib/
-# The following files of the stdlib were not working before also
-old_stdlib/std/iter_type.v
-old_stdlib/std/iter.v
-old_stdlib/std/net.v
 examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
-ink/
-num_traits.v
