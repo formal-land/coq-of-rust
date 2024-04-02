@@ -18,8 +18,6 @@ pub(crate) struct TopLevel<'a> {
 pub(crate) enum TopLevelItem<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
-    #[allow(dead_code)]
-    Code(Doc<'a>),
     Comment(Vec<Expression<'a>>),
     Definition(Definition<'a>),
     Line,
@@ -275,7 +273,6 @@ impl<'a> TopLevel<'a> {
 impl<'a> TopLevelItem<'a> {
     pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
         match self {
-            TopLevelItem::Code(code) => code.to_owned(),
             TopLevelItem::Comment(expression) => {
                 let expression: Vec<_> = expression.iter().map(|e| e.to_doc(false)).collect();
                 if expression.len() <= 1 {
