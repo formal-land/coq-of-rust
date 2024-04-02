@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -141,9 +139,7 @@ End Impl_erc1155_Mapping_K_V.
 Module Impl_core_default_Default_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -170,9 +166,7 @@ End Impl_core_default_Default_for_erc1155_AccountId.
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -216,9 +210,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -289,7 +281,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
-  (M.run
+  M.run
     ltac:(M.monadic
       (M.alloc (|
         Value.Array
@@ -299,10 +291,10 @@ Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
             Value.Integer Integer.U8 110;
             Value.Integer Integer.U8 97
           ]
-      |)))).
+      |))).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
-  (M.run
+  M.run
     ltac:(M.monadic
       (M.alloc (|
         Value.Array
@@ -312,12 +304,13 @@ Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
             Value.Integer Integer.U8 124;
             Value.Integer Integer.U8 129
           ]
-      |)))).
+      |))).
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -352,7 +345,8 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
@@ -368,9 +362,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
-  (*
-  PartialEq
-  *)
+  (* PartialEq *)
   Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
@@ -425,9 +417,7 @@ End Impl_core_marker_StructuralEq_for_erc1155_Error.
 Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
-  (*
-  Eq
-  *)
+  (* Eq *)
   Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -494,8 +484,9 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
     fields := [ ("value", Ty.path "alloc::string::String"); ("token_id", Ty.path "u128") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -515,7 +506,8 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".
@@ -568,9 +560,7 @@ End Impl_erc1155_Env.
 Module Impl_core_default_Default_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  (M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 18 |) |)))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 18 |) |))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {

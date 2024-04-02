@@ -24,8 +24,9 @@ Definition order (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Enum Container *)
-(* {
+(*
+Enum Container
+{
   ty_params := [];
   variants :=
     [
@@ -45,7 +46,8 @@ Definition order (τ : list Ty.t) (α : list Value.t) : M :=
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 (*
 fn extract_value(container: Container) -> i32 {

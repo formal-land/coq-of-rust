@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  (M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 10 |)))).
+  M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 10 |))).
 
 (*
 fn main() {

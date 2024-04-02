@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -40,9 +38,7 @@ End Impl_core_default_Default_for_custom_environment_AccountId.
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -90,9 +86,7 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 Module Impl_core_default_Default_for_custom_environment_Topics.
   Definition Self : Ty.t := Ty.path "custom_environment::Topics".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => ltac:(M.monadic (Value.StructTuple "custom_environment::Topics" []))
@@ -124,9 +118,7 @@ End Impl_core_default_Default_for_custom_environment_Topics.
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -201,8 +193,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -212,7 +205,8 @@ End Impl_core_default_Default_for_custom_environment_EventWithTopics.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_custom_environment_Env.
   Definition Self : Ty.t := Ty.path "custom_environment::Env".

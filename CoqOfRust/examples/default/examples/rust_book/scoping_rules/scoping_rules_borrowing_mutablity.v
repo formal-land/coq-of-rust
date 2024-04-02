@@ -16,9 +16,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>

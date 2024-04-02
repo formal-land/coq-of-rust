@@ -216,8 +216,9 @@ Parameter value_WRONG_TRANSACTION_ID : Value.t.
     fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
   } *)
 
-(* Enum ConfirmationStatus *)
-(* {
+(*
+Enum ConfirmationStatus
+{
   ty_params := [];
   variants :=
     [
@@ -232,7 +233,8 @@ Parameter value_WRONG_TRANSACTION_ID : Value.t.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
@@ -283,8 +285,9 @@ Module Impl_core_default_Default_for_multisig_Transaction.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transaction.
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -294,7 +297,8 @@ End Impl_core_default_Default_for_multisig_Transaction.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
@@ -467,8 +471,9 @@ End Impl_core_default_Default_for_multisig_Transactions.
     fields := [ ("new_requirement", Ty.path "u32") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -513,7 +518,8 @@ End Impl_core_default_Default_for_multisig_Transactions.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_multisig_Env.
   Definition Self : Ty.t := Ty.path "multisig::Env".

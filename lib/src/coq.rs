@@ -9,154 +9,145 @@ use std::rc::Rc;
 
 #[derive(Clone)]
 /// a list of coq top level items
-pub(crate) struct TopLevel<'a> {
-    pub(crate) items: Vec<TopLevelItem<'a>>,
+pub(crate) struct TopLevel {
+    pub(crate) items: Vec<TopLevelItem>,
 }
 
 #[derive(Clone)]
 /// any coq top level item
-pub(crate) enum TopLevelItem<'a> {
-    /// the Code variant is for those constructions
-    /// that are not yet represented by the types in this file
-    Code(Doc<'a>),
-    Comment(Expression<'a>),
-    Definition(Definition<'a>),
+pub(crate) enum TopLevelItem {
+    Comment(Vec<Expression>),
+    Definition(Definition),
     Line,
-    Module(Module<'a>),
+    Module(Module),
 }
 
 #[derive(Clone)]
 /// a coq module
-pub(crate) struct Module<'a> {
+pub(crate) struct Module {
     name: String,
-    items: TopLevel<'a>,
+    items: TopLevel,
 }
 
 #[derive(Clone)]
 /// a coq constant definition
-pub(crate) struct Definition<'a> {
+pub(crate) struct Definition {
     name: String,
-    kind: DefinitionKind<'a>,
+    kind: DefinitionKind,
 }
 
 #[derive(Clone)]
 /// the kind of a coq definition
-pub(crate) enum DefinitionKind<'a> {
+pub(crate) enum DefinitionKind {
     /// an alias for an expression
     /// (using `Definition`)
     Alias {
-        args: Vec<ArgDecl<'a>>,
-        ty: Option<Expression<'a>>,
-        body: Expression<'a>,
+        args: Vec<ArgDecl>,
+        ty: Option<Expression>,
+        body: Expression,
     },
     /// an opaque constant
     /// (using `Parameter`)
-    Assumption { ty: Expression<'a> },
+    Assumption { ty: Expression },
     /// an axiom
     /// (using `Axiom`)
-    Axiom { ty: Expression<'a> },
+    Axiom { ty: Expression },
     /// a definition with an `exact` tactic
     #[allow(dead_code)]
-    Ltac {
-        args: Vec<String>,
-        body: Expression<'a>,
-    },
+    Ltac { args: Vec<String>, body: Expression },
 }
 
 #[derive(Clone)]
 /// a coq expression
 /// (suitable also for coq type expressions,
 ///     because in coq types are like any other values)
-pub(crate) enum Expression<'a> {
-    /// the Code variant is for those constructions
-    /// that are not yet represented by the types in this file
-    Code(Doc<'a>),
+pub(crate) enum Expression {
     /// an (curried) application of a function to some arguments
     Application {
         /// the function that is applied
-        func: Rc<Expression<'a>>,
+        func: Rc<Expression>,
         /// a nonempty list of arguments
         /// (we accept many arguments to control their indentation better,
         ///     the application is curried when it gets printed)
-        args: Vec<(Option<String>, Expression<'a>)>,
+        args: Vec<(Option<String>, Expression)>,
     },
     MonadicApplication {
-        func: Rc<Expression<'a>>,
-        args: Vec<(Option<String>, Expression<'a>)>,
+        func: Rc<Expression>,
+        args: Vec<(Option<String>, Expression)>,
     },
     /// a (curried) function
     Function {
-        parameters: Vec<Expression<'a>>,
-        body: Rc<Expression<'a>>,
+        parameters: Vec<Expression>,
+        body: Rc<Expression>,
     },
     Let {
         name: Option<String>,
         is_monadic: bool,
-        ty: Option<Rc<Expression<'a>>>,
-        init: Rc<Expression<'a>>,
-        body: Rc<Expression<'a>>,
+        ty: Option<Rc<Expression>>,
+        init: Rc<Expression>,
+        body: Rc<Expression>,
     },
     Match {
-        scrutinees: Vec<Expression<'a>>,
-        arms: Vec<(Vec<Expression<'a>>, Expression<'a>)>,
+        scrutinees: Vec<Expression>,
+        arms: Vec<(Vec<Expression>, Expression)>,
     },
     /// a (curried) function type
     FunctionType {
         /// a nonempty list of domains
         /// (we accept many domains to control their indentation in the type better,
         ///     the type is curried when it gets printed)
-        domains: Vec<Expression<'a>>,
+        domains: Vec<Expression>,
         /// the image (range, co-domain) of functions of the type
-        image: Rc<Expression<'a>>,
+        image: Rc<Expression>,
     },
     /// a dependent product of types
     /// (like `forall (x : A), B(x)`)
     PiType {
         /// a list of arguments of `forall`
-        args: Vec<ArgDecl<'a>>,
+        args: Vec<ArgDecl>,
         /// the expression for the resulting type
-        image: Rc<Expression<'a>>,
+        image: Rc<Expression>,
     },
     /// The equality of two expressions `lhs = rhs`
     Equality {
-        lhs: Rc<Expression<'a>>,
-        rhs: Rc<Expression<'a>>,
+        lhs: Rc<Expression>,
+        rhs: Rc<Expression>,
     },
     /// a product of two variables (they can be types or numbers)
     Product {
         /// left hand side
-        lhs: Rc<Expression<'a>>,
+        lhs: Rc<Expression>,
         /// right hand side
-        rhs: Rc<Expression<'a>>,
+        rhs: Rc<Expression>,
     },
     /// A tuple of expressions `(e1, e2, ...)`
-    Tuple(Vec<Expression<'a>>),
+    Tuple(Vec<Expression>),
     Record {
-        fields: Vec<Field<'a>>,
+        fields: Vec<Field>,
     },
     #[allow(dead_code)]
     RecordField {
-        record: Rc<Expression<'a>>,
+        record: Rc<Expression>,
         field: String,
     },
     #[allow(dead_code)]
     RecordUpdate {
-        record: Rc<Expression<'a>>,
+        record: Rc<Expression>,
         field: String,
-        update: Rc<Expression<'a>>,
+        update: Rc<Expression>,
     },
     List {
-        exprs: Vec<Expression<'a>>,
+        exprs: Vec<Expression>,
     },
     /// For example ltac:(...) or constr:(...)
     ModeWrapper {
         mode: String,
-        expr: Rc<Expression<'a>>,
+        expr: Rc<Expression>,
     },
     /// Comment next to an expression
-    Comment(String, Rc<Expression<'a>>),
+    Comment(String, Rc<Expression>),
     /// `as` expression in patterns
-    As(Rc<Expression<'a>>, Rc<Expression<'a>>),
+    As(Rc<Expression>, Rc<Expression>),
     /// An integer
     U128(u128),
     /// a string in quotes
@@ -176,29 +167,29 @@ pub(crate) enum Expression<'a> {
 
 /// a field of a record expression
 #[derive(Clone)]
-pub(crate) struct Field<'a> {
+pub(crate) struct Field {
     pub(crate) name: String,
-    pub(crate) args: Vec<ArgDecl<'a>>,
-    pub(crate) body: Expression<'a>,
+    pub(crate) args: Vec<ArgDecl>,
+    pub(crate) body: Expression,
 }
 
 #[derive(Clone)]
 /// a declaration of an argument of a coq construction
-pub(crate) struct ArgDecl<'a> {
-    decl: ArgDeclVar<'a>,
+pub(crate) struct ArgDecl {
+    decl: ArgDeclVar,
     kind: ArgSpecKind,
 }
 
 #[derive(Clone)]
 /// a variant of the argument declaration
-pub(crate) enum ArgDeclVar<'a> {
+pub(crate) enum ArgDeclVar {
     /// a regular declaration
     Simple {
         // @TODO: try to make it really non-empty
         /// a non-empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Option<Expression<'a>>,
+        ty: Option<Expression>,
     },
     /// a generalized declaration (preceded by `` ` ``)
     #[allow(dead_code)]
@@ -206,11 +197,11 @@ pub(crate) enum ArgDeclVar<'a> {
         /// a possibly empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Expression<'a>,
+        ty: Expression,
     },
     /// a destructured argument
     #[allow(dead_code)]
-    Destructured { pattern: Expression<'a> },
+    Destructured { pattern: Expression },
 }
 
 #[derive(Clone)]
@@ -226,9 +217,9 @@ pub(crate) enum ArgSpecKind {
     Implicit,
 }
 
-impl<'a> TopLevel<'a> {
+impl<'a> TopLevel {
     /// produces a new list of coq items
-    pub(crate) fn new(items: &[TopLevelItem<'a>]) -> Self {
+    pub(crate) fn new(items: &[TopLevelItem]) -> Self {
         TopLevel {
             items: items.to_vec(),
         }
@@ -270,12 +261,19 @@ impl<'a> TopLevel<'a> {
     }
 }
 
-impl<'a> TopLevelItem<'a> {
+impl<'a> TopLevelItem {
     pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
         match self {
-            TopLevelItem::Code(code) => code.to_owned(),
             TopLevelItem::Comment(expression) => {
-                concat([text("(* "), expression.to_doc(false), text(" *)")])
+                let expression: Vec<_> = expression.iter().map(|e| e.to_doc(false)).collect();
+                if expression.len() <= 1 {
+                    concat([vec![text("(* ")], expression, vec![text(" *)")]].concat())
+                } else {
+                    intersperse(
+                        [vec![text("(*")], expression, vec![text("*)")]].concat(),
+                        [hardline()],
+                    )
+                }
             }
             TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Line => nil(),
@@ -284,9 +282,9 @@ impl<'a> TopLevelItem<'a> {
     }
 }
 
-impl<'a> Module<'a> {
+impl<'a> Module {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: TopLevel) -> Self {
         Module {
             name: name.to_string(),
             items,
@@ -316,9 +314,9 @@ impl<'a> Module<'a> {
     }
 }
 
-impl<'a> Definition<'a> {
+impl<'a> Definition {
     /// produces a new coq definition
-    pub(crate) fn new(name: &str, kind: &DefinitionKind<'a>) -> Self {
+    pub(crate) fn new(name: &str, kind: &DefinitionKind) -> Self {
         Definition {
             name: name.to_owned(),
             kind: kind.to_owned(),
@@ -386,10 +384,9 @@ impl<'a> Definition<'a> {
     }
 }
 
-impl<'a> Expression<'a> {
+impl<'a> Expression {
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc<'a> {
         match self {
-            Self::Code(doc) => paren(with_paren, doc.to_owned()),
             Self::Application { func, args } => paren(
                 with_paren,
                 nest([
@@ -793,9 +790,9 @@ impl<'a> Expression<'a> {
     }
 }
 
-impl<'a> Field<'a> {
+impl<'a> Field {
     #[allow(dead_code)]
-    pub(crate) fn new(name: &str, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
+    pub(crate) fn new(name: &str, args: &[ArgDecl], body: &Expression) -> Self {
         Field {
             name: name.to_owned(),
             args: args.to_owned(),
@@ -823,7 +820,7 @@ impl<'a> Field<'a> {
     }
 }
 
-impl<'a> ArgDecl<'a> {
+impl<'a> ArgDecl {
     pub(crate) fn is_empty(&self) -> bool {
         match self.decl.to_owned() {
             ArgDeclVar::Simple { idents, .. } => idents.is_empty(),
@@ -833,7 +830,7 @@ impl<'a> ArgDecl<'a> {
     }
 
     /// produces a new coq argument
-    pub(crate) fn new(decl: &ArgDeclVar<'a>, kind: ArgSpecKind) -> Self {
+    pub(crate) fn new(decl: &ArgDeclVar, kind: ArgSpecKind) -> Self {
         ArgDecl {
             decl: decl.to_owned(),
             kind,

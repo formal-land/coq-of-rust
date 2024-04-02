@@ -126,9 +126,6 @@ pub(crate) enum Expr {
         path: Path,
         fields: Vec<Rc<Expr>>,
     },
-    StructUnit {
-        path: Path,
-    },
     Use(Rc<Expr>),
     InternalString(String),
     InternalInteger(usize),
@@ -292,7 +289,7 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     result
 }
 
-fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
+fn string_pieces_to_coq(pieces: &[StringPiece]) -> coq::Expression {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => {
@@ -317,7 +314,7 @@ fn string_to_coq(message: &str) -> coq::Expression {
 }
 
 impl LoopControlFlow {
-    pub fn to_coq<'a>(self) -> coq::Expression<'a> {
+    pub fn to_coq(self) -> coq::Expression {
         match self {
             LoopControlFlow::Break => coq::Expression::just_name("M.break").monadic_apply_empty(),
             LoopControlFlow::Continue => {
@@ -536,11 +533,6 @@ impl Expr {
                     coq::Expression::List {
                         exprs: fields.iter().map(|expr| expr.to_coq()).collect(),
                     },
-                ]),
-            Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
-                .apply_many(&[
-                    coq::Expression::String(path.to_string()),
-                    coq::Expression::List { exprs: vec![] },
                 ]),
             Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
             Expr::InternalString(s) => coq::Expression::String(s.to_string()),

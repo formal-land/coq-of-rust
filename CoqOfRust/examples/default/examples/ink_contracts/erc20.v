@@ -15,9 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
@@ -97,9 +95,7 @@ End Impl_erc20_Mapping_K_V.
 Module Impl_core_default_Default_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -126,9 +122,7 @@ End Impl_core_default_Default_for_erc20_AccountId.
 Module Impl_core_clone_Clone_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -186,9 +180,7 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 Module Impl_core_default_Default_for_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "erc20::Erc20".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -272,8 +264,9 @@ End Impl_core_default_Default_for_erc20_Erc20.
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -288,10 +281,12 @@ End Impl_core_default_Default_for_erc20_Erc20.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -306,7 +301,8 @@ End Impl_core_default_Default_for_erc20_Erc20.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Axiom Result :
   forall (T : Ty.t),

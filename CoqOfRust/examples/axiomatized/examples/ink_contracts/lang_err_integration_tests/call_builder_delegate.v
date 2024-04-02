@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Axiom Hash :
   (Ty.path "call_builder_delegate::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
-(* Enum LangError *)
-(* {
+(*
+Enum LangError
+{
   ty_params := [];
   variants :=
     [
@@ -15,7 +16,8 @@ Axiom Hash :
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 (* StructRecord
   {

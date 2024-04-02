@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -40,9 +38,7 @@ End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -75,11 +71,13 @@ End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 Axiom Hash :
   (Ty.path "basic_contract_caller::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants := [];
-} *)
+}
+*)
 
 (* StructRecord
   {

@@ -10,9 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
@@ -37,9 +35,7 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -78,9 +74,7 @@ End Impl_core_marker_Copy_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -128,9 +122,7 @@ End Impl_core_clone_Clone_for_clone_Pair.
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>

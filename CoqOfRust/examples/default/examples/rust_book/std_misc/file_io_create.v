@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_LOREM_IPSUM : Value.t :=
-  (M.run
+  M.run
     ltac:(M.monadic
       (M.alloc (|
         mk_str
@@ -13,7 +13,7 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 "
-      |)))).
+      |))).
 
 (*
 fn main() {

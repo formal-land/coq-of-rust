@@ -3,8 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter order : (list Ty.t) -> (list Value.t) -> M.
 
-(* Enum Container *)
-(* {
+(*
+Enum Container
+{
   ty_params := [];
   variants :=
     [
@@ -24,7 +25,8 @@ Parameter order : (list Ty.t) -> (list Value.t) -> M.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Parameter extract_value : (list Ty.t) -> (list Value.t) -> M.
 

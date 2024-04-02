@@ -12,9 +12,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with

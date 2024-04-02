@@ -2,8 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
-  (* Enum MathError *)
-  (* {
+  (*
+  Enum MathError
+  {
     ty_params := [];
     variants :=
       [
@@ -23,14 +24,13 @@ Module checked.
           discriminant := None;
         }
       ];
-  } *)
+  }
+  *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Definition Self : Ty.t := Ty.path "result_chaining_with_question_mark::checked::MathError".
     
-    (*
-        Debug
-    *)
+    (*     Debug *)
     Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [ self; f ] =>

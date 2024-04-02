@@ -128,8 +128,9 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
       ];
   } *)
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -164,7 +165,8 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
@@ -227,8 +229,9 @@ Axiom Result :
     fields := [ ("expiration", Ty.path "u64"); ("close_duration", Ty.path "u64") ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -238,7 +241,8 @@ Axiom Result :
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_payment_channel_Env.
   Definition Self : Ty.t := Ty.path "payment_channel::Env".
@@ -284,29 +288,37 @@ Parameter hash_encoded : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
 
-(* Enum Sha2x256 *)
-(* {
+(*
+Enum Sha2x256
+{
   ty_params := [];
   variants := [];
-} *)
+}
+*)
 
-(* Enum Keccak256 *)
-(* {
+(*
+Enum Keccak256
+{
   ty_params := [];
   variants := [];
-} *)
+}
+*)
 
-(* Enum Blake2x256 *)
-(* {
+(*
+Enum Blake2x256
+{
   ty_params := [];
   variants := [];
-} *)
+}
+*)
 
-(* Enum Blake2x128 *)
-(* {
+(*
+Enum Blake2x128
+{
   ty_params := [];
   variants := [];
-} *)
+}
+*)
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".

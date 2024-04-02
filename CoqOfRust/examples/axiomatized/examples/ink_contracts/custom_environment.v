@@ -96,8 +96,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -107,7 +108,8 @@ End Impl_core_default_Default_for_custom_environment_EventWithTopics.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_custom_environment_Env.
   Definition Self : Ty.t := Ty.path "custom_environment::Env".

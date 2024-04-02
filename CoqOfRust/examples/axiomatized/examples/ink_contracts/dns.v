@@ -194,8 +194,9 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
       ];
   } *)
 
-(* Enum Event *)
-(* {
+(*
+Enum Event
+{
   ty_params := [];
   variants :=
     [
@@ -215,7 +216,8 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_dns_Env.
   Definition Self : Ty.t := Ty.path "dns::Env".
@@ -262,8 +264,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
-(* Enum Error *)
-(* {
+(*
+Enum Error
+{
   ty_params := [];
   variants :=
     [
@@ -278,7 +281,8 @@ End Impl_core_default_Default_for_dns_DomainNameService.
         discriminant := None;
       }
     ];
-} *)
+}
+*)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".

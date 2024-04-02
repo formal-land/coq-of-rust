@@ -11,9 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_contract_ref_AccountId.
   Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
   
-  (*
-  Default
-  *)
+  (* Default *)
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
@@ -40,9 +38,7 @@ End Impl_core_default_Default_for_contract_ref_AccountId.
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
   Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
   
-  (*
-  Clone
-  *)
+  (* Clone *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self ] =>
@@ -99,9 +95,7 @@ Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.p
 Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
   Definition Self : Ty.t := Ty.path "contract_ref::FlipperError".
   
-  (*
-  Debug
-  *)
+  (* Debug *)
   Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
