@@ -89,6 +89,7 @@ Axiom ConstructorResult :
   {
     name := "ConstructorError";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
@@ -108,6 +109,7 @@ End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
   {
     name := "ReturnFlags";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_constructors_return_value_ReturnFlags.

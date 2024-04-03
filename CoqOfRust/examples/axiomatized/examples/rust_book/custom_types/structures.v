@@ -25,6 +25,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
   {
     name := "Unit";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple

@@ -90,6 +90,7 @@ Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.p
   {
     name := "FlipperError";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.

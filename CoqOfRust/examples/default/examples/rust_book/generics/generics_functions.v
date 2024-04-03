@@ -5,6 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "A";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple

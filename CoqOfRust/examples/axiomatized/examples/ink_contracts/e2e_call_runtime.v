@@ -62,6 +62,7 @@ End Impl_e2e_call_runtime_Env.
   {
     name := "Contract";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_default_Default_for_e2e_call_runtime_Contract.

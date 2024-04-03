@@ -5,6 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "DoubleError";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.

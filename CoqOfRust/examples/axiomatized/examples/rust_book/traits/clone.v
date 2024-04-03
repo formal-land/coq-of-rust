@@ -5,6 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Unit";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_clone_Unit.

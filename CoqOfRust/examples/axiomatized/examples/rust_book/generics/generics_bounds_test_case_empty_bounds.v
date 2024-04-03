@@ -5,18 +5,21 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Cardinal";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple
   {
     name := "BlueJay";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple
   {
     name := "Turkey";
     ty_params := [];
+    fields := [];
   } *)
 
 (* Trait *)

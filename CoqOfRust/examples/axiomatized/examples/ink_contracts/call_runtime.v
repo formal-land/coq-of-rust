@@ -116,6 +116,7 @@ Enum RuntimeCall
   {
     name := "RuntimeCaller";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.

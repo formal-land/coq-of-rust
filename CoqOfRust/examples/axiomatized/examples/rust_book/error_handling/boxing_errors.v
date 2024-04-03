@@ -17,6 +17,7 @@ Axiom Result :
   {
     name := "EmptyVec";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.

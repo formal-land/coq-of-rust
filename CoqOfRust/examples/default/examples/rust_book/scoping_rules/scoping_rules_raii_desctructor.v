@@ -5,6 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "ToDrop";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.

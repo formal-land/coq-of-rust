@@ -111,6 +111,7 @@ End Impl_contract_terminate_Env.
   {
     name := "JustTerminate";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_contract_terminate_JustTerminate.
