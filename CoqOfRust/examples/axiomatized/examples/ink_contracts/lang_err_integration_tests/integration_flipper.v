@@ -12,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "FlipperError";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.

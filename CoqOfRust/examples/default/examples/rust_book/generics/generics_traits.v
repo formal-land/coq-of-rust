@@ -5,12 +5,14 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Empty";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple
   {
     name := "Null";
     ty_params := [];
+    fields := [];
   } *)
 
 (* Trait *)

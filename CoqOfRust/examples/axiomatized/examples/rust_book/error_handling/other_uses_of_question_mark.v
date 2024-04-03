@@ -17,6 +17,7 @@ Axiom Result :
   {
     name := "EmptyVec";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.

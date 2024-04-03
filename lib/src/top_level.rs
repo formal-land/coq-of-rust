@@ -143,10 +143,6 @@ enum TopLevelItem {
         ty_params: Vec<String>,
         fields: Vec<Rc<CoqType>>,
     },
-    TypeStructUnit {
-        name: String,
-        ty_params: Vec<String>,
-    },
     Module {
         name: String,
         body: Rc<TopLevel>,
@@ -461,7 +457,11 @@ fn compile_top_level_item_without_local_items<'a>(
             match body {
                 VariantData::Struct(fields, _) => {
                     if fields.is_empty() {
-                        return vec![Rc::new(TopLevelItem::TypeStructUnit { name, ty_params })];
+                        return vec![Rc::new(TopLevelItem::TypeStructTuple {
+                            name,
+                            ty_params,
+                            fields: vec![],
+                        })];
                     }
                     let fields = fields
                         .iter()
@@ -489,7 +489,11 @@ fn compile_top_level_item_without_local_items<'a>(
                     })]
                 }
                 VariantData::Unit(_, _) => {
-                    vec![Rc::new(TopLevelItem::TypeStructUnit { name, ty_params })]
+                    vec![Rc::new(TopLevelItem::TypeStructTuple {
+                        name,
+                        ty_params,
+                        fields: vec![],
+                    })]
                 }
             }
         }
@@ -981,7 +985,6 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
         TopLevelItem::TypeStructTuple { .. } => item,
-        TopLevelItem::TypeStructUnit { .. } => item,
         TopLevelItem::Module { name, body } => Rc::new(TopLevelItem::Module {
             name: name.clone(),
             body: mt_top_level(body.clone()),
@@ -1650,29 +1653,6 @@ impl TopLevelItem {
                     ],
                 }),
             ])],
-            TopLevelItem::TypeStructUnit { name, ty_params } => {
-                vec![coq::TopLevelItem::Comment(vec![
-                    coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
-                        fields: vec![
-                            coq::Field {
-                                name: "name".to_string(),
-                                args: vec![],
-                                body: coq::Expression::String(name.to_string()),
-                            },
-                            coq::Field {
-                                name: "ty_params".to_string(),
-                                args: vec![],
-                                body: coq::Expression::List {
-                                    exprs: ty_params
-                                        .iter()
-                                        .map(|name| coq::Expression::String(name.to_string()))
-                                        .collect(),
-                                },
-                            },
-                        ],
-                    }),
-                ])]
-            }
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,

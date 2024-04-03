@@ -54,6 +54,7 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
   {
     name := "Topics";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_default_Default_for_custom_environment_Topics.

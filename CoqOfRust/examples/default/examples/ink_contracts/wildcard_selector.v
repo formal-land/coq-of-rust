@@ -12,6 +12,7 @@ Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
   {
     name := "WildcardSelector";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_wildcard_selector_WildcardSelector.

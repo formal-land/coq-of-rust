@@ -131,6 +131,7 @@ End Impl_contract_transfer_Env.
   {
     name := "GiveMe";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_contract_transfer_GiveMe.

@@ -69,6 +69,7 @@ Enum LangError
   {
     name := "Selector";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_call_builder_Selector.
@@ -83,6 +84,7 @@ End Impl_call_builder_Selector.
   {
     name := "CallBuilderTest";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_default_Default_for_call_builder_CallBuilderTest.

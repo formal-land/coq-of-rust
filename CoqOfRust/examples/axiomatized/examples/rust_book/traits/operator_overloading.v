@@ -5,18 +5,21 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Foo";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple
   {
     name := "Bar";
     ty_params := [];
+    fields := [];
   } *)
 
 (* StructTuple
   {
     name := "FooBar";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -36,6 +39,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   {
     name := "BarFoo";
     ty_params := [];
+    fields := [];
   } *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
