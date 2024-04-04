@@ -211,7 +211,7 @@ Definition transfer_from_to
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t (erc20.Result.t unit) :=
+    MS? State.t string (erc20.Result.t unit) :=
   letS? '(storage, events) := readS? in
   let 'Balance.Make value := value in
   let 'Balance.Make from_balance := balance_of_impl storage from in
@@ -250,14 +250,14 @@ Definition transfer
     (env : erc20.Env.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t (erc20.Result.t unit) :=
+    MS? State.t string (erc20.Result.t unit) :=
   transfer_from_to (Env.caller env) to value.
 
 Definition approve
     (env : erc20.Env.t)
     (spender : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t (erc20.Result.t unit) :=
+    MS? State.t string (erc20.Result.t unit) :=
   let owner := Env.caller env in
   letS? '(storage, events) := readS? in
   let event := erc20.Event.Approval {|
@@ -279,7 +279,7 @@ Definition transfer_from
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t (erc20.Result.t unit) :=
+    MS? State.t string (erc20.Result.t unit) :=
   let caller := Env.caller env in
   letS? '(storage, events) := readS? in
   let 'Balance.Make value := value in
