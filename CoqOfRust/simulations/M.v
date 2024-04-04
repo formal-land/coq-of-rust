@@ -100,11 +100,11 @@ End TupleIsToValue.
 (** ** Monads that are useful for the definition of simulations. *)
 
 Module Error.
-  Definition t (A : Set) : Set := A + string.
+  Definition t (Error A : Set) : Set := A + Error.
 
-  Definition return_ {A : Set} (value : A) : t A := inl value.
+  Definition return_ {Error A : Set} (value : A) : t Error A := inl value.
 
-  Definition bind {A B : Set} (value : t A) (f : A -> t B) : t B :=
+  Definition bind {Error A B : Set} (value : t Error A) (f : A -> t Error B) : t Error B :=
     match value with
     | inl value => f value
     | inr error => inr error
@@ -112,12 +112,13 @@ Module Error.
 End Error.
 
 Module StateError.
-  Definition t (State A : Set) : Set := State -> (A + string) * State.
+  Definition t (State Error A : Set) : Set := State -> (A + Error) * State.
 
-  Definition return_ {State A : Set} (value : A) : t State A :=
+  Definition return_ {State Error A : Set} (value : A) : t State Error A :=
     fun state => (inl value, state).
 
-  Definition bind {State A B : Set} (value : t State A) (f : A -> t State B) : t State B :=
+  Definition bind {State Error A B : Set} (value : t State Error A) (f : A -> t State Error B) :
+      t State Error B :=
     fun state =>
       let (value, state) := value state in
       match value with
@@ -125,13 +126,13 @@ Module StateError.
       | inr error => (inr error, state)
       end.
 
-  Definition read {State : Set} : t State State :=
+  Definition read {State Error : Set} : t State Error State :=
     fun state => (inl state, state).
 
-  Definition write {State : Set} (state : State) : t State unit :=
+  Definition write {State Error : Set} (state : State) : t State Error unit :=
     fun _ => (inl tt, state).
 
-  Definition lift_from_error {State A : Set} (value : Error.t A) : t State A :=
+  Definition lift_from_error {State Error A : Set} (value : Error.t Error A) : t State Error A :=
     fun state =>
     (value, state).
 End StateError.
