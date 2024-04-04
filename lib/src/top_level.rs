@@ -1314,7 +1314,8 @@ impl ImplItemKind {
                         },
                     )),
                     Some(body) => {
-                        let body = coq::Expression::just_name("M.run").apply(&body.to_coq());
+                        let body = coq::Expression::just_name("M.run")
+                            .apply(&coq::Expression::monadic(&body.to_coq()));
 
                         coq::TopLevelItem::Definition(coq::Definition::new(
                             &definition_name,
