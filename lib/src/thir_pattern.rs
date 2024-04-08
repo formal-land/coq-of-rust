@@ -103,7 +103,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 // Brutal way to handle the case of rustc_middle::ty::TyKind::Str
                 // Since the type would be erased when it comes down to thir level
                 let kind_name = format!("{:?}", ty.kind());
-                if kind_name == "&ReErased str".to_string() {
+                if kind_name == *"&ReErased str".to_string() {
                     let string_value = format!("{}", constant);
                     // The generated string comes with extra "" so we trim the 1st and last character out
                     let mut chars = string_value.chars();
