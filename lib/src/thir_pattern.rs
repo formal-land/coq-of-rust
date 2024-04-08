@@ -110,7 +110,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                     chars.next();
                     chars.next_back();
                     let string_value = chars.as_str();
-                    return Rc::new(Pattern::Literal(Rc::new(Literal::String(string_value.to_string()))));
+                    return Rc::new(Pattern::Literal(Rc::new(Literal::String(
+                        string_value.to_string(),
+                    ))));
                 }
                 // And for the rest...
                 match &ty.kind() {
