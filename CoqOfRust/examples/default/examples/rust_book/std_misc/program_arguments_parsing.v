@@ -537,7 +537,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), mk_str "increase" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (| "program_arguments_parsing::increase", [] |),
                             [ M.read (| number |) ]
@@ -545,7 +547,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), mk_str "decrease" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (| "program_arguments_parsing::decrease", [] |),
                             [ M.read (| number |) ]

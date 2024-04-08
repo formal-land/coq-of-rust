@@ -100,7 +100,19 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Constant { value } => {
             if let rustc_middle::mir::Const::Ty(constant) = value {
                 let ty = constant.ty();
-
+                // Brutal way to handle the case of rustc_middle::ty::TyKind::Str
+                // Since the type would be erased when it comes down to thir level
+                let kind_name = format!("{:?}", ty.kind());
+                if kind_name == "&ReErased str".to_string() {
+                    let string_value = format!("{}", constant);
+                    // The generated string comes with extra "" so we trim the 1st and last character out
+                    let mut chars = string_value.chars();
+                    chars.next();
+                    chars.next_back();
+                    let string_value = chars.as_str();
+                    return Rc::new(Pattern::Literal(Rc::new(Literal::String(string_value.to_string()))));
+                }
+                // And for the rest...
                 match &ty.kind() {
                     rustc_middle::ty::TyKind::Int(int_ty) => {
                         let uint_value = constant.try_to_scalar().unwrap().assert_int();

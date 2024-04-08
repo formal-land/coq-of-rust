@@ -144,6 +144,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ := M.read (| γ |) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  mk_str "Ferris"
+                                                |) in
                                               M.alloc (|
                                                 M.read (| mk_str "There is a rustacean among us!" |)
                                               |)));
