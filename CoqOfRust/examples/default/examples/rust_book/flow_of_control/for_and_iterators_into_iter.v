@@ -133,6 +133,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            mk_str "Ferris"
+                                          |) in
+                                        let _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_function (| "std::io::stdio::_print", [] |),

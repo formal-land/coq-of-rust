@@ -27,7 +27,8 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (|
+                (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str "798-1364" |) in
+                M.alloc (|
                   M.read (|
                     mk_str
                       "We're sorry, the call cannot be completed as dialed. 
@@ -36,7 +37,8 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (|
+                (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str "645-7689" |) in
+                M.alloc (|
                   M.read (|
                     mk_str
                       "Hello, this is Mr. Awesome's Pizza. My name is Fred.

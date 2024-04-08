@@ -28,6 +28,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::option::Option::Some",
                     0
                   |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), mk_str "lemonade" |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
