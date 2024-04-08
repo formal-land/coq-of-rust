@@ -9,3 +9,5 @@ examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 ink/
 num_traits.v
+examples/default/examples/custom/mutual_loop.v
+examples/axiomatized/examples/custom/mutual_loop.v
