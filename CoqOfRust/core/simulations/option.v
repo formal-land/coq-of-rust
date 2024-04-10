@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import simulations.M.
 Require CoqOfRust.core.simulations.default.
+Import simulations.M.Notations.
 
 Module Option.
   Global Instance IsToValue (A : Set) (_ : ToValue A) : ToValue (option A) := {
@@ -24,6 +25,13 @@ Module Impl_Option_T.
     match self with
     | None => core.simulations.default.Default.default (Self := T)
     | Some x => x
+    end.
+
+  Definition expect {State Error A : Set}
+    (self : option A) (msg : Error) : MS? State Error A :=
+    match self with
+    | None => panicS? msg
+    | Some x => returnS? x
     end.
 End Impl_Option_T.
 
