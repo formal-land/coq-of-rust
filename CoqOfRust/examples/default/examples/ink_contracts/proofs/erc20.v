@@ -2,10 +2,11 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.proofs.lib.
+Require Import CoqOfRust.lib.simulations.lib.
 Require CoqOfRust.core.proofs.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.proofs.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.erc20.
-Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
+Require Import CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
 Import simulations.M.Notations.
 Import Run.
@@ -67,15 +68,12 @@ Module Environment.
 End Environment.
 
 Definition sum_of_money (storage : erc20.Erc20.t) : Z :=
-  simulations.lib.Mapping.sum
-    (fun '(erc20.Balance.Make balance) => balance)
-    storage.(erc20.Erc20.balances).
+  simulations.lib.Mapping.sum u128.get storage.(erc20.Erc20.balances).
 
 Module Balance.
   Module Valid.
     Definition t (x : erc20.Balance.t) : Prop :=
-      let 'erc20.Balance.Make x := x in
-      Integer.Valid.t Integer.U128 x.
+      Integer.Valid.t Integer.U128 (u128.get x).
   End Valid.
 
   Lemma run_Default : default.Default.TraitHasRun erc20.Balance.t.
@@ -85,7 +83,6 @@ Module Balance.
     { unfold IsTraitMethod.
       eexists; split.
       { cbn.
-        rewrite erc20.Balance.
         apply core.default.Impl_core_default_Default_for_u128.Implements.
       }
       { reflexivity. }
@@ -119,7 +116,7 @@ Module Erc20.
       valid_without_sum : Valid_without_sum.t storage;
       sum :
         storage.(erc20.Erc20.total_supply) =
-        erc20.Balance.Make (sum_of_money storage);
+        u128.Make (sum_of_money storage);
     }.
   End Valid.
 End Erc20.
@@ -128,7 +125,7 @@ Module AccountId.
   Lemma eq_or_neq (x y : erc20.AccountId.t) :
     x = y \/ x <> y.
   Proof.
-    destruct x as [x], y as [y].
+    destruct x as [[x]], y as [[y]].
     destruct (Z.eq_dec x y); sfirstorder.
   Qed.
 
@@ -249,14 +246,14 @@ Lemma run_total_supply
   let state := State.of_storage storage in
   let self := Value.Pointer (Pointer.Mutable Address.storage []) in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.total_supply [] [self] ⇓
+    erc20.Impl_erc20_Erc20.total_supply [] [self] ⇓
     inl (φ (simulations.erc20.total_supply storage))
   | state }}.
 Proof.
-  unfold erc20.Impl_erc20_Erc20_2.total_supply.
+  unfold erc20.Impl_erc20_Erc20.total_supply.
   run_symbolic.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.total_supply.
+Opaque erc20.Impl_erc20_Erc20.total_supply.
 
 (** The simulation [balance_of_impl] is equal. *)
 Lemma run_balance_of_impl
@@ -268,13 +265,13 @@ Lemma run_balance_of_impl
   let ref_owner :=
     Value.Pointer (Pointer.Immediate (φ owner)) in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.balance_of_impl [] [self; ref_owner] ⇓
+    erc20.Impl_erc20_Erc20.balance_of_impl [] [self; ref_owner] ⇓
     inl (φ (simulations.erc20.balance_of_impl storage owner))
   | state }}.
 Proof.
   Opaque φ.
   unfold
-    erc20.Impl_erc20_Erc20_2.balance_of_impl,
+    erc20.Impl_erc20_Erc20.balance_of_impl,
     simulations.erc20.balance_of_impl.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
@@ -288,14 +285,14 @@ Proof.
   }
   rewrite proofs.lib.Mapping.run_get.
   eapply Run.CallClosure. {
-    replace (Ty.path "u128") with (Φ erc20.Balance.t) by exact erc20.Balance.
+    replace (Ty.path "u128") with (Φ erc20.Balance.t) by reflexivity.
     apply core.proofs.option.Impl_Option_T.run_unwrap_or_default.
     apply Balance.run_Default.
   }
   run_symbolic.
   Transparent φ.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.balance_of_impl.
+Opaque erc20.Impl_erc20_Erc20.balance_of_impl.
 
 (** The simulation [balance_of_impl] is valid. *)
 Lemma balance_of_impl_is_valid
@@ -304,11 +301,11 @@ Lemma balance_of_impl_is_valid
   (H_storage : Erc20.Valid_without_sum.t storage) :
   Balance.Valid.t (simulations.erc20.balance_of_impl storage owner).
 Proof.
-  unfold simulations.erc20.balance_of_impl, Balance.Valid.t, Integer.Valid.t.
+  unfold simulations.erc20.balance_of_impl, Balance.Valid.t, Integer.Valid.t, u128.get.
   destruct simulations.lib.Mapping.get eqn:H_get; cbn.
   { destruct H_storage.
     unfold lib.Mapping.Forall in *.
-    hauto l: on.
+    sauto q: on.
   }
   { lia. }
 Qed.
@@ -321,23 +318,23 @@ Lemma run_balance_of
   let state := State.of_storage storage in
   let self := Value.Pointer (Pointer.Mutable Address.storage []) in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.balance_of [] [self; φ owner] ⇓
+    erc20.Impl_erc20_Erc20.balance_of [] [self; φ owner] ⇓
     inl (φ (simulations.erc20.balance_of storage owner))
   | state }}.
 Proof.
   unfold
-    erc20.Impl_erc20_Erc20_2.balance_of,
+    erc20.Impl_erc20_Erc20.balance_of,
     simulations.erc20.balance_of.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply erc20.Impl_erc20_Erc20_2.AssociatedFunction_balance_of_impl.
+    apply erc20.Impl_erc20_Erc20.AssociatedFunction_balance_of_impl.
   }
   eapply Run.CallClosure. {
     apply run_balance_of_impl.
   }
   run_symbolic.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.balance_of.
+Opaque erc20.Impl_erc20_Erc20.balance_of.
 
 (** The simulation [allowance_impl] is equal. *)
 Lemma run_allowance_impl
@@ -350,13 +347,13 @@ Lemma run_allowance_impl
   let ref_owner := Value.Pointer (Pointer.Immediate (φ owner)) in
   let ref_spender := Value.Pointer (Pointer.Immediate (φ spender)) in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.allowance_impl [] [self; ref_owner; ref_spender] ⇓
+    erc20.Impl_erc20_Erc20.allowance_impl [] [self; ref_owner; ref_spender] ⇓
     inl (φ (simulations.erc20.allowance_impl storage owner spender))
   | state }}.
 Proof.
   Opaque φ.
   unfold
-    erc20.Impl_erc20_Erc20_2.allowance_impl,
+    erc20.Impl_erc20_Erc20.allowance_impl,
     simulations.erc20.allowance_impl.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
@@ -372,14 +369,14 @@ Proof.
   eapply Run.CallClosure. {
     replace (Value.Tuple _) with (φ (owner, spender)) by reflexivity.
     rewrite proofs.lib.Mapping.run_get.
-    replace (Ty.path "u128") with (Φ erc20.Balance.t) by exact erc20.Balance.
+    replace (Ty.path "u128") with (Φ erc20.Balance.t) by reflexivity.
     apply core.proofs.option.Impl_Option_T.run_unwrap_or_default.
     apply Balance.run_Default.
   }
   run_symbolic.
   Transparent φ.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.allowance_impl.
+Opaque erc20.Impl_erc20_Erc20.allowance_impl.
 
 Lemma allowance_impl_is_valid
   (storage : erc20.Erc20.t)
@@ -392,7 +389,7 @@ Proof.
   destruct simulations.lib.Mapping.get eqn:H_get; simpl.
   { destruct H_storage, valid_without_sum.
     unfold lib.Mapping.Forall in *.
-    hauto l: on.
+    sauto.
   }
   { lia. }
 Qed.
@@ -406,25 +403,28 @@ Lemma run_allowance
   let state := State.of_storage storage in
   let self := Value.Pointer (Pointer.Mutable Address.storage []) in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.allowance self owner spender ⇓
-    inl (simulations.erc20.allowance storage owner spender)
+    erc20.Impl_erc20_Erc20.allowance [] [self; φ owner; φ spender] ⇓
+    inl (φ (simulations.erc20.allowance storage owner spender))
   | state }}.
 Proof.
   unfold
-    erc20.Impl_erc20_Erc20_2.allowance,
+    erc20.Impl_erc20_Erc20.allowance,
     simulations.erc20.allowance.
   run_symbolic.
-  eapply Run.Call. {
+  eapply Run.CallPrimitiveGetAssociatedFunction. {
+    apply erc20.Impl_erc20_Erc20.AssociatedFunction_allowance_impl.
+  }
+  eapply Run.CallClosure. {
     apply run_allowance_impl.
   }
   run_symbolic.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.allowance.
+Opaque erc20.Impl_erc20_Erc20.allowance.
 
-Lemma sub_eq_optimistic (v1 v2 : u128.t) :
+(* Lemma sub_eq_optimistic (v1 v2 : u128.t) :
     Integer.Valid.t v1 ->
     Integer.Valid.t v2 ->
-    v1 <u128 v2 = false ->
+    u128.get v1 <? u128.get v2 = false ->
     BinOp.Panic.make_arithmetic Z.sub v1 v2 =
     M.pure (BinOp.Optimistic.sub v1 v2).
 Proof.
@@ -441,32 +441,29 @@ Proof.
   intros; destruct v1, v2.
   repeat (destruct (_ <? _) eqn:? in |- *; [lia|]).
   reflexivity.
-Qed.
+Qed. *)
 
 Module Output.
-  Record t {A : Set} : Set := {
-    result : A + M.Exception;
+  Record t : Set := {
+    result : Value.t + Exception.t;
     state : State.t;
   }.
   Arguments t : clear implicits.
 End Output.
 
-Definition lift_simulation {A : Set}
-  (simulation : MS? simulations.erc20.State.t A)
-  (storage : erc20.Erc20.t) :
-  Output.t A :=
+Definition lift_simulation {A : Set} `{ToValue A}
+    (simulation : MS? simulations.erc20.State.t string A)
+    (storage : erc20.Erc20.t) :
+    Output.t :=
   let '(result, (storage, events)) := simulation (storage, []) in
   let result :=
     match result with
-    | inl result => inl result
+    | inl result => inl (φ result)
     | inr error => inr (M.Exception.Panic error)
     end in
   {|
     Output.result := result;
-    Output.state := {|
-      State.storage := Some storage;
-      State.events := events;
-    |};
+    Output.state := State.of_simulation (storage, events);
   |}.
 
 (** The simulation [transfer_from_to] is equal. *)
@@ -475,30 +472,36 @@ Lemma run_transfer_from_to
     (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
-    (H_value : Integer.Valid.t value) :
+    (H_value : Balance.Valid.t value) :
   let state := State.of_storage storage in
   let self := Value.Pointer (Pointer.Mutable Address.storage []) in
-  let ref_from : ref erc20.AccountId.t := Ref.Imm from in
-  let ref_to : ref erc20.AccountId.t := Ref.Imm to in
+  let ref_from := Value.Pointer (Pointer.Immediate (φ from)) in
+  let ref_to := Value.Pointer (Pointer.Immediate (φ to)) in
   let simulation :=
     lift_simulation
       (simulations.erc20.transfer_from_to from to value) storage in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.transfer_from_to self ref_from ref_to value ⇓
+    erc20.Impl_erc20_Erc20.transfer_from_to [] [self; ref_from; ref_to; φ value] ⇓
     simulation.(Output.result)
   | simulation.(Output.state) }}.
 Proof.
   unfold
-    erc20.Impl_erc20_Erc20_2.transfer_from_to,
+    erc20.Impl_erc20_Erc20.transfer_from_to,
     simulations.erc20.transfer_from_to,
     lift_simulation.
   run_symbolic.
-  eapply Run.Call. {
+  eapply Run.CallPrimitiveGetAssociatedFunction. {
+    apply erc20.Impl_erc20_Erc20.AssociatedFunction_balance_of_impl.
+  }
+  eapply Run.CallClosure. {
     apply run_balance_of_impl.
   }
   run_symbolic.
+  destruct erc20.balance_of_impl as [balance] eqn:H_eq_balance.
+  destruct value as [value].
+  cbn.
   destruct (_ <? _) eqn:H_lt; simpl.
   { run_symbolic. }
   { run_symbolic.
@@ -533,14 +536,14 @@ Proof.
     run_symbolic.
   }
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.transfer_from_to.
+Opaque erc20.Impl_erc20_Erc20.transfer_from_to.
 
 (** The simulation [transfer] is equal. *)
 Lemma run_transfer
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let state := State.of_storage storage in
@@ -549,11 +552,11 @@ Lemma run_transfer
     lift_simulation
       (simulations.erc20.transfer env to value) storage in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.transfer self to value ⇓
+    erc20.Impl_erc20_Erc20.transfer self to value ⇓
     simulation.(Output.result)
   | simulation.(Output.state) }}.
 Proof.
-  unfold erc20.Impl_erc20_Erc20_2.transfer,
+  unfold erc20.Impl_erc20_Erc20.transfer,
     simulations.erc20.transfer,
     lift_simulation.
   Opaque erc20.transfer_from_to.
@@ -573,25 +576,25 @@ Proof.
   destruct erc20.transfer_from_to as [[] [?storage ?logs]]; run_symbolic.
   Transparent erc20.transfer_from_to.
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.transfer.
+Opaque erc20.Impl_erc20_Erc20.transfer.
 
 (** The simulation [approve] is equal. *)
 Lemma run_approve
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (spender : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance)) :
+    (value : erc20.Balance.t) :
   let state := State.of_storage storage in
   let self := Value.Pointer (Pointer.Mutable Address.storage []) in
   let simulation :=
     lift_simulation
       (simulations.erc20.approve env spender value) storage in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.approve self spender value ⇓
+    erc20.Impl_erc20_Erc20.approve self spender value ⇓
     simulation.(Output.result)
   | simulation.(Output.state) }}.
 Proof.
-  unfold erc20.Impl_erc20_Erc20_2.approve,
+  unfold erc20.Impl_erc20_Erc20.approve,
     simulations.erc20.approve.
   repeat (
     eapply Run.Call ||
@@ -599,7 +602,7 @@ Proof.
     apply run_env
   ).
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.approve.
+Opaque erc20.Impl_erc20_Erc20.approve.
 
 (** The simulation [transfer_from] is equal. *)
 Lemma run_transfer_from
@@ -607,7 +610,7 @@ Lemma run_transfer_from
     (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let state := State.of_storage storage in
@@ -616,11 +619,11 @@ Lemma run_transfer_from
     lift_simulation
       (simulations.erc20.transfer_from env from to value) storage in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.transfer_from self from to value ⇓
+    erc20.Impl_erc20_Erc20.transfer_from self from to value ⇓
     simulation.(Output.result)
   | simulation.(Output.state) }}.
 Proof.
-  unfold erc20.Impl_erc20_Erc20_2.transfer_from,
+  unfold erc20.Impl_erc20_Erc20.transfer_from,
     simulations.erc20.transfer_from,
     lift_simulation.
   repeat (
@@ -660,7 +663,7 @@ Proof.
     run_symbolic.
   }
 Qed.
-Opaque erc20.Impl_erc20_Erc20_2.transfer_from.
+Opaque erc20.Impl_erc20_Erc20.transfer_from.
 
 (** ** Standalone proofs. *)
 
@@ -683,7 +686,7 @@ Lemma balance_of_impl_read_id
   (* The value [owner] is an immediate value *)
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   {{ Environment.of_env env, state |
-    erc20.Impl_erc20_Erc20_2.balance_of_impl self ref_owner ⇓
+    erc20.Impl_erc20_Erc20.balance_of_impl self ref_owner ⇓
     (* expected output *)
     inl balance
     (* the state does not change, there are no new logs *)
@@ -705,24 +708,24 @@ Module ReadMessage.
   (** A message that only read the store. *)
   Inductive t : Set -> Set :=
   | total_supply :
-    t ltac:(erc20.Balance)
+    t erc20.Balance.t
   | balance_of
     (owner : erc20.AccountId.t) :
-    t ltac:(erc20.Balance)
+    t erc20.Balance.t
   | allowance
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
-    t ltac:(erc20.Balance)
+    t erc20.Balance.t
   .
 
   Definition dispatch {A : Set} (message : t A) : M A :=
     let self := Value.Pointer (Pointer.Mutable Address.storage []) in
     match message with
-    | total_supply => erc20.Impl_erc20_Erc20_2.total_supply self
+    | total_supply => erc20.Impl_erc20_Erc20.total_supply self
     | balance_of owner =>
-      erc20.Impl_erc20_Erc20_2.balance_of self owner
+      erc20.Impl_erc20_Erc20.balance_of self owner
     | allowance owner spender =>
-      erc20.Impl_erc20_Erc20_2.allowance
+      erc20.Impl_erc20_Erc20.allowance
         self
         owner
         spender
@@ -768,16 +771,16 @@ Module WriteMessage.
   Inductive t : Set :=
   | transfer
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance)) :
+    (value : erc20.Balance.t) :
     t
   | approve
     (spender : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance)) :
+    (value : erc20.Balance.t) :
     t
   | transfer_from
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance)) :
+    (value : erc20.Balance.t) :
     t
   .
 
@@ -794,17 +797,17 @@ Module WriteMessage.
     let self := Value.Pointer (Pointer.Mutable Address.storage []) in
     match message with
     | transfer to value =>
-      erc20.Impl_erc20_Erc20_2.transfer
+      erc20.Impl_erc20_Erc20.transfer
         self
         to
         value
     | approve spender value =>
-      erc20.Impl_erc20_Erc20_2.approve
+      erc20.Impl_erc20_Erc20.approve
         self
         spender
         value
     | transfer_from from to value =>
-      erc20.Impl_erc20_Erc20_2.transfer_from
+      erc20.Impl_erc20_Erc20.transfer_from
         self
         from
         to
@@ -850,7 +853,7 @@ End WriteMessage.
 (** There are no panics with read messages. *)
 Lemma read_message_no_panic
     (env : erc20.Env.t)
-    (message : ReadMessage.t ltac:(erc20.Balance))
+    (message : ReadMessage.t erc20.Balance.t)
     (storage : erc20.Erc20.t) :
   let state := State.of_storage storage in
   exists result,
@@ -874,7 +877,7 @@ Lemma transfer_from_to_is_valid
     (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let '(result, (storage, _)) :=
@@ -945,7 +948,7 @@ Lemma transfer_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let '(result, (storage, _)) :=
@@ -962,7 +965,7 @@ Lemma approve_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (spender : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let '(result, (storage, _)) :=
@@ -980,7 +983,7 @@ Lemma transfer_from_is_valid
     (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
+    (value : erc20.Balance.t)
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
   let '(result, (storage, _)) :=
@@ -1035,7 +1038,7 @@ Module Sum_of_money_is_constant.
       (storage : erc20.Erc20.t)
       (from : erc20.AccountId.t)
       (to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     let '(result, (storage', _)) :=
       simulations.erc20.transfer_from_to from to value (storage, []) in
     match result with
@@ -1053,7 +1056,7 @@ Module Sum_of_money_is_constant.
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
       (to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     let '(result, (storage', _)) :=
       simulations.erc20.transfer env to value (storage, []) in
     match result with
@@ -1070,7 +1073,7 @@ Module Sum_of_money_is_constant.
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
       (spender : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     let '(result, (storage', _)) :=
       simulations.erc20.approve env spender value (storage, []) in
     match result with
@@ -1088,7 +1091,7 @@ Module Sum_of_money_is_constant.
       (storage : erc20.Erc20.t)
       (from : erc20.AccountId.t)
       (to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     let '(result, (storage', _)) :=
       simulations.erc20.transfer_from env from to value (storage, []) in
     match result with
@@ -1143,8 +1146,8 @@ Module Action_from_log.
   Definition balances_of_transfer
       (storage : erc20.Erc20.t)
       (from to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
-      erc20.Mapping.t erc20.AccountId.t ltac:(erc20.Balance) :=
+      (value : erc20.Balance.t) :
+      erc20.Mapping.t erc20.AccountId.t erc20.Balance.t :=
     if AccountId.eqb from to then
       (* Inserting its own value can be useful to initialize an account *)
       lib.Mapping.insert
@@ -1204,7 +1207,7 @@ Module Action_from_log.
   Lemma transfer_from_to_on_storage
       (storage : erc20.Erc20.t)
       (from to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     match
       simulations.erc20.transfer_from_to from to value (storage, [])
     with
@@ -1261,7 +1264,7 @@ Module Action_from_log.
   Lemma event_from_transfer_from_to
       (storage : erc20.Erc20.t)
       (from to : erc20.AccountId.t)
-      (value : ltac:(erc20.Balance)) :
+      (value : erc20.Balance.t) :
     match
       simulations.erc20.transfer_from_to from to value (storage, [])
     with
@@ -1320,7 +1323,7 @@ Lemma approve_only_changes_owner_allowance
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (spender : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance)) :
+    (value : erc20.Balance.t) :
   let '(result, (storage', _)) :=
     simulations.erc20.approve env spender value (storage, []) in
   match result with
