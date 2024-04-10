@@ -27,12 +27,16 @@ Module Impl_Option_T.
     | Some x => x
     end.
 
-  Definition expect {State Error A : Set}
-    (self : option A) (msg : Error) : MS? State Error A :=
+  Definition expect {State A : Set}
+    (self : option A) (msg : string) : MS? State string A :=
     match self with
     | None => panicS? msg
     | Some x => returnS? x
     end.
+
+  Definition unwrap {State A : Set}
+    (self : option A) : MS? State string A :=
+    expect self "".
 End Impl_Option_T.
 
 Module Impl_Default_for_Option_T.
