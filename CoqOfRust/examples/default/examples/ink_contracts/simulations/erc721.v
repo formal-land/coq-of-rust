@@ -121,9 +121,9 @@ Module Event.
     Φ := Ty.path "erc721::Event";
     φ x :=
       match x with
-      | Transfer x => φ x
-      | Approval x => φ x
-      | ApprovalForAll x => φ x
+      | Transfer x => Value.StructTuple "erc721::Event::Transfer" [φ x]
+      | Approval x => Value.StructTuple "erc721::Event::Approval" [φ x]
+      | ApprovalForAll x => Value.StructTuple "erc721::Event::ApprovalForAll" [φ x]
       end;
   }.
 End Event.
@@ -162,13 +162,13 @@ Module Error.
     Φ := Ty.path "erc721::Error";
     φ x :=
       match x with
-      | NotOwner => Value.StructTuple "erc721::Error" []
-      | NotApproved => Value.StructTuple "erc721::Error" []
-      | TokenExists => Value.StructTuple "erc721::Error" []
-      | TokenNotFound => Value.StructTuple "erc721::Error" []
-      | CannotInsert => Value.StructTuple "erc721::Error" []
-      | CannotFetchValue => Value.StructTuple "erc721::Error" []
-      | NotAllowed => Value.StructTuple "erc721::Error" []
+      | NotOwner => Value.StructTuple "erc721::Error::NotOwner" []
+      | NotApproved => Value.StructTuple "erc721::Error::NotApproved" []
+      | TokenExists => Value.StructTuple "erc721::Error::TokenExists" []
+      | TokenNotFound => Value.StructTuple "erc721::Error::TokenNotFound" []
+      | CannotInsert => Value.StructTuple "erc721::Error::CannotInsert" []
+      | CannotFetchValue => Value.StructTuple "erc721::Error::CannotFetchValue" []
+      | NotAllowed => Value.StructTuple "erc721::Error::NotAllowed" []
       end;
   }.
 End Error.
