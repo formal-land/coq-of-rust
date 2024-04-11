@@ -19,7 +19,15 @@ Section Mapping.
 
   Parameter get : K -> t K V -> option V.
 
+  Definition contains (k : K) (m : t K V) : bool :=
+    match get k m with
+    | Some _ => true
+    | None => false
+    end.
+
   Parameter insert : K -> V -> t K V -> t K V.
+
+  Parameter remove : K -> t K V -> t K V.
 
   Parameter sum : (V -> Z) -> t K V -> Z.
 End Mapping.
