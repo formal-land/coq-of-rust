@@ -31,7 +31,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
               [
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc (| Value.Array [ M.read (| mk_str "Circle of radius " |) ] |));
+                  (M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |));
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|

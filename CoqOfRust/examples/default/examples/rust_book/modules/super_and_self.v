@@ -22,8 +22,10 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "called `function()`
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "called `function()`
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -62,7 +64,7 @@ Module cool.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "called `cool::function()`
+                            Value.Array [ M.read (| Value.String "called `cool::function()`
 " |) ]
                           |))
                       ]
@@ -104,7 +106,7 @@ Module my.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "called `my::function()`
+                            Value.Array [ M.read (| Value.String "called `my::function()`
 " |) ]
                           |))
                       ]
@@ -145,7 +147,8 @@ Module my.
                           (* Unsize *)
                           M.pointer_coercion
                             (M.alloc (|
-                              Value.Array [ M.read (| mk_str "called `my::cool::function()`
+                              Value.Array
+                                [ M.read (| Value.String "called `my::cool::function()`
 " |) ]
                             |))
                         ]
@@ -207,7 +210,7 @@ Module my.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "called `my::indirect_call()`, that
+                              [ M.read (| Value.String "called `my::indirect_call()`, that
 > " |) ]
                           |))
                       ]

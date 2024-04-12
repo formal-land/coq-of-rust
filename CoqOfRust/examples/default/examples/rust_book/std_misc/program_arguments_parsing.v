@@ -24,7 +24,8 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -83,7 +84,8 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -150,7 +152,7 @@ Definition help (τ : list Ty.t) (α : list Value.t) : M :=
                           Value.Array
                             [
                               M.read (|
-                                mk_str
+                                Value.String
                                   "usage:
 match_args <string>
     Check whether given string is the answer.
@@ -278,7 +280,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   Value.Array
                                     [
                                       M.read (|
-                                        mk_str
+                                        Value.String
                                           "My name is 'match_args'. Try passing some arguments!
 "
                                       |)
@@ -359,7 +361,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     (* Unsize *)
                                     M.pointer_coercion
                                       (M.alloc (|
-                                        Value.Array [ M.read (| mk_str "This is the answer!
+                                        Value.Array
+                                          [ M.read (| Value.String "This is the answer!
 " |) ]
                                       |))
                                   ]
@@ -386,7 +389,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.pointer_coercion
                                       (M.alloc (|
                                         Value.Array
-                                          [ M.read (| mk_str "This is not the answer.
+                                          [ M.read (| Value.String "This is not the answer.
 " |) ]
                                       |))
                                   ]
@@ -495,7 +498,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Value.Array
                                                       [
                                                         M.read (|
-                                                          mk_str
+                                                          Value.String
                                                             "error: second argument not an integer
 "
                                                         |)
@@ -537,7 +540,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_constant_or_break_match (|
+                            M.read (| γ |),
+                            Value.String "increase"
+                          |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (| "program_arguments_parsing::increase", [] |),
                             [ M.read (| number |) ]
@@ -545,7 +553,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_constant_or_break_match (|
+                            M.read (| γ |),
+                            Value.String "decrease"
+                          |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (| "program_arguments_parsing::decrease", [] |),
                             [ M.read (| number |) ]
@@ -570,7 +583,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.pointer_coercion
                                         (M.alloc (|
                                           Value.Array
-                                            [ M.read (| mk_str "error: invalid command
+                                            [ M.read (| Value.String "error: invalid command
 " |) ]
                                         |))
                                     ]

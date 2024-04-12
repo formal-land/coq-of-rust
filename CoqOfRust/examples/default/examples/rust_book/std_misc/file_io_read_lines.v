@@ -96,7 +96,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "to_string",
                     []
                   |),
-                  [ M.read (| mk_str "./hosts" |) ]
+                  [ M.read (| Value.String "./hosts" |) ]
                 |)
               ]
             |)
@@ -178,8 +178,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 (M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (| mk_str "" |);
-                                                      M.read (| mk_str "
+                                                      M.read (| Value.String "" |);
+                                                      M.read (| Value.String "
 " |)
                                                     ]
                                                 |));

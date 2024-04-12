@@ -95,7 +95,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let data :=
           M.copy (|
-            mk_str
+            Value.String
               "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
@@ -212,9 +212,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   (M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (| mk_str "data segment " |);
-                                                        M.read (| mk_str " is """ |);
-                                                        M.read (| mk_str """
+                                                        M.read (| Value.String "data segment " |);
+                                                        M.read (| Value.String " is """ |);
+                                                        M.read (| Value.String """
 " |)
                                                       ]
                                                   |));
@@ -389,7 +389,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                   ]
                                                                                                 |);
                                                                                                 M.read (|
-                                                                                                  mk_str
+                                                                                                  Value.String
                                                                                                     "should be a digit"
                                                                                                 |)
                                                                                               ]
@@ -427,15 +427,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                   Value.Array
                                                                                     [
                                                                                       M.read (|
-                                                                                        mk_str
+                                                                                        Value.String
                                                                                           "processed segment "
                                                                                       |);
                                                                                       M.read (|
-                                                                                        mk_str
+                                                                                        Value.String
                                                                                           ", result="
                                                                                       |);
                                                                                       M.read (|
-                                                                                        mk_str "
+                                                                                        Value.String
+                                                                                          "
 "
                                                                                       |)
                                                                                     ]
@@ -618,8 +619,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Final sum result: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Final sum result: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

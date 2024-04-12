@@ -88,9 +88,9 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "I immutably borrowed " |);
-                              M.read (| mk_str " - " |);
-                              M.read (| mk_str " edition
+                              M.read (| Value.String "I immutably borrowed " |);
+                              M.read (| Value.String " - " |);
+                              M.read (| Value.String " edition
 " |)
                             ]
                         |));
@@ -172,9 +172,9 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "I mutably borrowed " |);
-                              M.read (| mk_str " - " |);
-                              M.read (| mk_str " edition
+                              M.read (| Value.String "I mutably borrowed " |);
+                              M.read (| Value.String " - " |);
+                              M.read (| Value.String " edition
 " |)
                             ]
                         |));
@@ -259,8 +259,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
               [
-                ("author", M.read (| mk_str "Douglas Hofstadter" |));
-                ("title", M.read (| mk_str ("G" ++ (String.String "246" "del, Escher, Bach")) |));
+                ("author", M.read (| Value.String "Douglas Hofstadter" |));
+                ("title",
+                  M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
                 ("year", Value.Integer Integer.U32 1979)
               ]
           |) in

@@ -26,12 +26,12 @@ Module Impl_core_fmt_Debug_for_structures_Person.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Person" |);
-            M.read (| mk_str "name" |);
+            M.read (| Value.String "Person" |);
+            M.read (| Value.String "name" |);
             (* Unsize *)
             M.pointer_coercion
               (M.get_struct_record_field (M.read (| self |)) "structures::Person" "name");
-            M.read (| mk_str "age" |);
+            M.read (| Value.String "age" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -148,7 +148,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ M.read (| mk_str "Peter" |) ]
+              [ M.read (| Value.String "Peter" |) ]
             |)
           |) in
         let age := M.alloc (| Value.Integer Integer.U8 27 |) in
@@ -170,7 +170,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -214,9 +215,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "point coordinates: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "point coordinates: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));
@@ -267,9 +268,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "second point: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "second point: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));
@@ -350,9 +351,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "pair contains " |);
-                                      M.read (| mk_str " and " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "pair contains " |);
+                                      M.read (| Value.String " and " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -414,9 +415,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         (M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| mk_str "pair contains " |);
-                                              M.read (| mk_str " and " |);
-                                              M.read (| mk_str "
+                                              M.read (| Value.String "pair contains " |);
+                                              M.read (| Value.String " and " |);
+                                              M.read (| Value.String "
 " |)
                                             ]
                                         |));

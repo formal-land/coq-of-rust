@@ -45,7 +45,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                         "write_str",
                         []
                       |),
-                      [ M.read (| f |); M.read (| mk_str "EmptyVec" |) ]
+                      [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
                     |)
                   |)));
               fun γ =>
@@ -67,7 +67,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       |),
                       [
                         M.read (| f |);
-                        M.read (| mk_str "Parse" |);
+                        M.read (| Value.String "Parse" |);
                         (* Unsize *) M.pointer_coercion __self_0
                       ]
                     |)
@@ -138,7 +138,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                                 Value.Array
                                   [
                                     M.read (|
-                                      mk_str "please use a vector with at least one element"
+                                      Value.String "please use a vector with at least one element"
                                     |)
                                   ]
                               |))
@@ -171,7 +171,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                                 Value.Array
                                   [
                                     M.read (|
-                                      mk_str "the provided string could not be parsed as int"
+                                      Value.String "the provided string could not be parsed as int"
                                     |)
                                   ]
                               |))
@@ -520,8 +520,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "The first doubled is " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "The first doubled is " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -568,8 +568,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "Error: " |); M.read (| mk_str "
-" |) ]
+                                    [
+                                      M.read (| Value.String "Error: " |);
+                                      M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -635,8 +638,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                                         (M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| mk_str "  Caused by: " |);
-                                              M.read (| mk_str "
+                                              M.read (| Value.String "  Caused by: " |);
+                                              M.read (| Value.String "
 " |)
                                             ]
                                         |));
@@ -719,9 +722,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "42" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "42" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]
@@ -770,9 +773,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "tofu" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "tofu" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]

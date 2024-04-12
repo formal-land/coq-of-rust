@@ -122,8 +122,10 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "n is " |); M.read (| mk_str "
-" |) ]
+                                Value.Array
+                                  [ M.read (| Value.String "n is " |); M.read (| Value.String "
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -167,8 +169,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "Error: " |); M.read (| mk_str "
-" |) ]
+                                  [
+                                    M.read (| Value.String "Error: " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -217,7 +222,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::multiply", [] |),
-              [ M.read (| mk_str "10" |); M.read (| mk_str "2" |) ]
+              [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
             |)
           |) in
         let _ :=
@@ -231,7 +236,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::multiply", [] |),
-              [ M.read (| mk_str "t" |); M.read (| mk_str "2" |) ]
+              [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]
             |)
           |) in
         let _ :=

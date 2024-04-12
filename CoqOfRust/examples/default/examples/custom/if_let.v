@@ -176,8 +176,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pointer_coercion
                                   (M.alloc (|
                                     Value.Array
-                                      [ M.read (| mk_str "if: " |); M.read (| mk_str "
-" |) ]
+                                      [
+                                        M.read (| Value.String "if: " |);
+                                        M.read (| Value.String "
+" |)
+                                      ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -240,8 +243,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "match: " |); M.read (| mk_str "
-" |) ]
+                                    [
+                                      M.read (| Value.String "match: " |);
+                                      M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -313,9 +319,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "if and: " |);
-                                        M.read (| mk_str " " |);
-                                        M.read (| mk_str "
+                                        M.read (| Value.String "if and: " |);
+                                        M.read (| Value.String " " |);
+                                        M.read (| Value.String "
 " |)
                                       ]
                                   |));
@@ -399,9 +405,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "match and: " |);
-                                    M.read (| mk_str " " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "match and: " |);
+                                    M.read (| Value.String " " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));

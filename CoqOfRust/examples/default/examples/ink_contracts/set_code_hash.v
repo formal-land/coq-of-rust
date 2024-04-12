@@ -111,9 +111,10 @@ Module Impl_set_code_hash_Incrementer.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "The new count is " |);
+                                M.read (| Value.String "The new count is " |);
                                 M.read (|
-                                  mk_str ", it was modified using the original contract code.
+                                  Value.String
+                                    ", it was modified using the original contract code.
 "
                                 |)
                               ]
@@ -221,7 +222,7 @@ Module Impl_set_code_hash_Incrementer.
                                       |),
                                       [
                                         M.read (|
-                                          mk_str
+                                          Value.String
                                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
                                         |)
                                       ]
@@ -248,8 +249,8 @@ Module Impl_set_code_hash_Incrementer.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Switched code hash to " |);
-                                M.read (| mk_str ".
+                                M.read (| Value.String "Switched code hash to " |);
+                                M.read (| Value.String ".
 " |)
                               ]
                           |));

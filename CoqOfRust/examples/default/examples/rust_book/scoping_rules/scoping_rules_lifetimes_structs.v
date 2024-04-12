@@ -26,7 +26,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Borrowed" |);
+            M.read (| Value.String "Borrowed" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -77,15 +77,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "NamedBorrowed" |);
-            M.read (| mk_str "x" |);
+            M.read (| Value.String "NamedBorrowed" |);
+            M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
               (M.get_struct_record_field
                 (M.read (| self |))
                 "scoping_rules_lifetimes_structs::NamedBorrowed"
                 "x");
-            M.read (| mk_str "y" |);
+            M.read (| Value.String "y" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -160,7 +160,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       |),
                       [
                         M.read (| f |);
-                        M.read (| mk_str "Num" |);
+                        M.read (| Value.String "Num" |);
                         (* Unsize *) M.pointer_coercion __self_0
                       ]
                     |)
@@ -184,7 +184,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       |),
                       [
                         M.read (| f |);
-                        M.read (| mk_str "Ref" |);
+                        M.read (| Value.String "Ref" |);
                         (* Unsize *) M.pointer_coercion __self_0
                       ]
                     |)
@@ -253,8 +253,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "x is borrowed in " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "x is borrowed in " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -291,8 +294,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "x and y are borrowed in " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "x and y are borrowed in " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -330,8 +333,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "x is borrowed in " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "x is borrowed in " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -367,7 +373,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "y is *not* borrowed in " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "y is *not* borrowed in " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

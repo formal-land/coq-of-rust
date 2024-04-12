@@ -26,7 +26,7 @@ Module main.
             "std::panicking::begin_panic",
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           |),
-          [ M.read (| mk_str "This call never returns." |) ]
+          [ M.read (| Value.String "This call never returns." |) ]
         |)))
     | _, _ => M.impossible
     end.

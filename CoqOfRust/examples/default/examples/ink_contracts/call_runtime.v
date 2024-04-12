@@ -196,7 +196,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "CallRuntimeFailed" |) ]
+          [ M.read (| f |); M.read (| Value.String "CallRuntimeFailed" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -329,7 +329,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| mk_str "Unexpected error from `pallet-contracts`." |) ]
+                        [ M.read (| Value.String "Unexpected error from `pallet-contracts`." |) ]
                       |)
                     |)
                   |)))

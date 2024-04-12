@@ -21,7 +21,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion (M.alloc (| Value.Array [ M.read (| mk_str "Hello!
+                    M.pointer_coercion
+                      (M.alloc (| Value.Array [ M.read (| Value.String "Hello!
 " |) ] |))
                   ]
                 |)

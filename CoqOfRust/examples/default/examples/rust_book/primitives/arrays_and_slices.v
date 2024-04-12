@@ -27,8 +27,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "first element of the slice: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "first element of the slice: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -71,7 +71,9 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "the slice has " |); M.read (| mk_str " elements
+                            [
+                              M.read (| Value.String "the slice has " |);
+                              M.read (| Value.String " elements
 " |)
                             ]
                         |));
@@ -192,8 +194,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "first element of the array: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "first element of the array: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -237,8 +239,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "second element of the array: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "second element of the array: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -282,8 +284,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "number of elements in array: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "number of elements in array: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -332,8 +334,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "array occupies " |); M.read (| mk_str " bytes
-" |) ]
+                            [
+                              M.read (| Value.String "array occupies " |);
+                              M.read (| Value.String " bytes
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -378,7 +383,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "borrow the whole array as a slice
+                          Value.Array
+                            [ M.read (| Value.String "borrow the whole array as a slice
 " |) ]
                         |))
                     ]
@@ -407,8 +413,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "borrow a section of the array as a slice
-" |) ]
+                            [ M.read (| Value.String "borrow a section of the array as a slice
+" |)
+                            ]
                         |))
                     ]
                   |)
@@ -716,9 +723,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       (M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (| mk_str "" |);
-                                                            M.read (| mk_str ": " |);
-                                                            M.read (| mk_str "
+                                                            M.read (| Value.String "" |);
+                                                            M.read (| Value.String ": " |);
+                                                            M.read (| Value.String "
 " |)
                                                           ]
                                                       |));
@@ -774,9 +781,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       (M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (| mk_str "Slow down! " |);
-                                                            M.read (| mk_str " is too far!
-" |)
+                                                            M.read (| Value.String "Slow down! " |);
+                                                            M.read (|
+                                                              Value.String " is too far!
+"
+                                                            |)
                                                           ]
                                                       |));
                                                     (* Unsize *)

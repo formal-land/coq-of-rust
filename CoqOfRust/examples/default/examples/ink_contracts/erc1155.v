@@ -1020,7 +1020,9 @@ Module Impl_erc1155_Contract.
                       M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
                     ]
                   |);
-                  M.read (| mk_str "Caller should have ensured that `from` holds `token_id`." |)
+                  M.read (|
+                    Value.String "Caller should have ensured that `from` holds `token_id`."
+                  |)
                 ]
               |)
             |) in
@@ -2669,7 +2671,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                       Value.Array
                         [
                           M.read (|
-                            mk_str
+                            Value.String
                               "not implemented: This smart contract does not accept token transfer."
                           |)
                         ]
@@ -2740,7 +2742,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                       Value.Array
                         [
                           M.read (|
-                            mk_str
+                            Value.String
                               "not implemented: This smart contract does not accept batch token transfers."
                           |)
                         ]

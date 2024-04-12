@@ -28,8 +28,10 @@ Module foo.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.alloc (| Value.Array [ M.read (| mk_str "foo::gre::bar
-" |) ] |))
+                            (M.alloc (|
+                              Value.Array [ M.read (| Value.String "foo::gre::bar
+" |) ]
+                            |))
                         ]
                       |)
                     ]
@@ -68,7 +70,7 @@ Module foo.
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| mk_str "foo::bar
+                          (M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
 " |) ] |))
                       ]
                     |)

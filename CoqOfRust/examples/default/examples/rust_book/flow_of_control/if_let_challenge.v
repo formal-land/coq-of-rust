@@ -54,8 +54,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| mk_str "a is foobar
-" |) ] |))
+                                (M.alloc (|
+                                  Value.Array [ M.read (| Value.String "a is foobar
+" |) ]
+                                |))
                             ]
                           |)
                         ]

@@ -57,7 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let _ :=
-          let static_string := M.copy (| mk_str "I'm in read-only memory" |) in
+          let static_string := M.copy (| Value.String "I'm in read-only memory" |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -71,8 +71,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "static_string: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "static_string: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -121,8 +124,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "coerced_static: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "coerced_static: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -159,7 +165,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "NUM: " |); M.read (| mk_str " stays accessible!
+                            [
+                              M.read (| Value.String "NUM: " |);
+                              M.read (| Value.String " stays accessible!
 " |)
                             ]
                         |));

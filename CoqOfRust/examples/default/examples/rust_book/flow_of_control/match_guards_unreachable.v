@@ -42,7 +42,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "Zero
+                              (M.alloc (| Value.Array [ M.read (| Value.String "Zero
 " |) ] |))
                           ]
                         |)
@@ -71,7 +71,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "Greater than zero
+                                Value.Array [ M.read (| Value.String "Greater than zero
 " |) ]
                               |))
                           ]
@@ -89,7 +89,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::panicking::unreachable_display",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ mk_str "Should never happen." ]
+                      [ Value.String "Should never happen." ]
                     |)
                   |)
                 |)))

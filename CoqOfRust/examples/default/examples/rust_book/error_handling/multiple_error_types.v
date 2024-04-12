@@ -120,9 +120,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "42" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "42" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]
@@ -171,9 +171,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "tofu" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "tofu" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]
@@ -195,8 +195,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "The first doubled is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "The first doubled is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -239,8 +242,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "The first doubled is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "The first doubled is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -283,8 +289,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "The first doubled is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "The first doubled is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

@@ -160,7 +160,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "file_io_read_lines_efficient_method::read_lines",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| mk_str "./hosts" |) ]
+                      [ M.read (| Value.String "./hosts" |) ]
                     |)
                   |) in
                 let γ0_0 :=
@@ -261,8 +261,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 (M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (| mk_str "" |);
-                                                                      M.read (| mk_str "
+                                                                      M.read (| Value.String "" |);
+                                                                      M.read (| Value.String "
 " |)
                                                                     ]
                                                                 |));

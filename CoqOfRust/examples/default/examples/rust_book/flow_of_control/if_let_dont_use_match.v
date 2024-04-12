@@ -58,8 +58,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "This is a really long string and `" |);
-                                        M.read (| mk_str "`
+                                        M.read (|
+                                          Value.String "This is a really long string and `"
+                                        |);
+                                        M.read (| Value.String "`
 " |)
                                       ]
                                   |));

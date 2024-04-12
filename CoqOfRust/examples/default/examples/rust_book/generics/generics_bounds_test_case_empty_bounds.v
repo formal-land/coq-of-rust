@@ -60,7 +60,7 @@ Definition red (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| mk_str "red" |))) ] |)))
+      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "red" |))) ] |)))
   | _, _ => M.impossible
   end.
 
@@ -74,7 +74,7 @@ Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| mk_str "blue" |))) ] |)))
+      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ] |)))
   | _, _ => M.impossible
   end.
 
@@ -116,8 +116,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "A cardinal is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "A cardinal is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -164,8 +167,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "A blue jay is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "A blue jay is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

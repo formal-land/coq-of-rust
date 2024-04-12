@@ -48,9 +48,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Bob" |);
-                              M.read (| mk_str "Frank" |);
-                              M.read (| mk_str "Ferris" |)
+                              M.read (| Value.String "Bob" |);
+                              M.read (| Value.String "Frank" |);
+                              M.read (| Value.String "Ferris" |)
                             ]
                         |)
                       ]
@@ -143,6 +143,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         ltac:(M.monadic
                                           (let γ := M.read (| γ |) in
                                           let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.String "Ferris"
+                                            |) in
+                                          let _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -160,7 +165,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           Value.Array
                                                             [
                                                               M.read (|
-                                                                mk_str
+                                                                Value.String
                                                                   "There is a rustacean among us!
 "
                                                               |)
@@ -191,8 +196,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         (M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (| mk_str "Hello " |);
-                                                              M.read (| mk_str "
+                                                              M.read (| Value.String "Hello " |);
+                                                              M.read (| Value.String "
 " |)
                                                             ]
                                                         |));
@@ -245,7 +250,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "names: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "names: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

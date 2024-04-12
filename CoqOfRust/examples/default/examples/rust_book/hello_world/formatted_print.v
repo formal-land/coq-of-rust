@@ -79,7 +79,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "31 days
+                        (M.alloc (| Value.Array [ M.read (| Value.String "31 days
 " |) ] |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -112,7 +112,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Alice, this is Bob. Bob, this is Alice
+                            [ M.read (| Value.String "Alice, this is Bob. Bob, this is Alice
 " |) ]
                         |));
                       (* Unsize *)
@@ -146,8 +146,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "the quick brown fox jumps over the lazy dog
-" |) ]
+                            [
+                              M.read (|
+                                Value.String "the quick brown fox jumps over the lazy dog
+"
+                              |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -179,7 +183,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Base 10:               69420
+                          Value.Array [ M.read (| Value.String "Base 10:               69420
 " |) ]
                         |));
                       (* Unsize *)
@@ -213,7 +217,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Base 2 (binary):       " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "Base 2 (binary):       " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -251,7 +257,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Base 8 (octal):        " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "Base 8 (octal):        " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -289,7 +297,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Base 16 (hexadecimal): " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "Base 16 (hexadecimal): " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -327,7 +337,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Base 16 (hexadecimal): " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "Base 16 (hexadecimal): " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -368,7 +380,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -440,7 +453,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -512,7 +526,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -588,7 +603,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "My name is Bond, James Bond
+                          Value.Array [ M.read (| Value.String "My name is Bond, James Bond
 " |) ]
                         |));
                       (* Unsize *)
@@ -627,7 +642,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

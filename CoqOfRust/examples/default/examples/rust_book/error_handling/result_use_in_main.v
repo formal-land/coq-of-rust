@@ -17,7 +17,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let number_str := M.copy (| mk_str "10" |) in
+        let number_str := M.copy (| Value.String "10" |) in
         let number :=
           M.copy (|
             M.match_operator (|
@@ -71,7 +71,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

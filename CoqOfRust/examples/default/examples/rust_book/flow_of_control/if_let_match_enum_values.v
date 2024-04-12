@@ -89,8 +89,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "a is foobar
-" |) ] |))
+                                  (M.alloc (|
+                                    Value.Array [ M.read (| Value.String "a is foobar
+" |) ]
+                                  |))
                               ]
                             |)
                           ]
@@ -123,8 +125,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "b is foobar
-" |) ] |))
+                                  (M.alloc (|
+                                    Value.Array [ M.read (| Value.String "b is foobar
+" |) ]
+                                  |))
                               ]
                             |)
                           ]
@@ -166,8 +170,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pointer_coercion
                                   (M.alloc (|
                                     Value.Array
-                                      [ M.read (| mk_str "c is " |); M.read (| mk_str "
-" |) ]
+                                      [
+                                        M.read (| Value.String "c is " |);
+                                        M.read (| Value.String "
+" |)
+                                      ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -228,7 +235,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "c is one hundred
+                                  Value.Array [ M.read (| Value.String "c is one hundred
 " |) ]
                                 |))
                             ]

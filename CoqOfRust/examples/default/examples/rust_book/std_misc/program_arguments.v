@@ -49,8 +49,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "My path is " |); M.read (| mk_str ".
-" |) ]
+                            [
+                              M.read (| Value.String "My path is " |);
+                              M.read (| Value.String ".
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -103,9 +106,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "I got " |);
-                              M.read (| mk_str " arguments: " |);
-                              M.read (| mk_str ".
+                              M.read (| Value.String "I got " |);
+                              M.read (| Value.String " arguments: " |);
+                              M.read (| Value.String ".
 " |)
                             ]
                         |));

@@ -69,7 +69,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Constructor" |);
+            M.read (| Value.String "Constructor" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -206,7 +206,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

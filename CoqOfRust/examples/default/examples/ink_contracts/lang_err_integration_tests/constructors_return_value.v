@@ -136,7 +136,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "ConstructorError" |) ]
+          [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -183,7 +183,7 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
       let return_value := M.alloc (| return_value |) in
       M.call_closure (|
         M.get_function (| "core::panicking::panic", [] |),
-        [ M.read (| mk_str "not implemented" |) ]
+        [ M.read (| Value.String "not implemented" |) ]
       |)))
   | _, _ => M.impossible
   end.

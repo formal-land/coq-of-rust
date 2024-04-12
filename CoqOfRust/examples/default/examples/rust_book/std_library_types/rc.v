@@ -53,7 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "to_string",
                 []
               |),
-              [ M.read (| mk_str "Rc examples" |) ]
+              [ M.read (| Value.String "Rc examples" |) ]
             |)
           |) in
         let _ :=
@@ -68,7 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "--- rc_a is created ---
+                          Value.Array [ M.read (| Value.String "--- rc_a is created ---
 " |) ]
                         |))
                     ]
@@ -104,8 +104,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Reference Count of rc_a: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Reference Count of rc_a: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -163,7 +163,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "--- rc_a is cloned to rc_b ---
+                            Value.Array
+                              [ M.read (| Value.String "--- rc_a is cloned to rc_b ---
 " |) ]
                           |))
                       ]
@@ -201,8 +202,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Reference Count of rc_b: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "Reference Count of rc_b: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -257,8 +258,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Reference Count of rc_a: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "Reference Count of rc_a: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -313,8 +314,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "rc_a and rc_b are equal: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "rc_a and rc_b are equal: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -378,8 +379,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Length of the value inside rc_a: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "Length of the value inside rc_a: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -444,8 +445,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "Value of rc_b: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "Value of rc_b: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -492,7 +496,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "--- rc_b is dropped out of scope ---
+                              [ M.read (| Value.String "--- rc_b is dropped out of scope ---
 " |) ]
                           |))
                       ]
@@ -516,8 +520,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Reference Count of rc_a: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Reference Count of rc_a: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -571,7 +575,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "--- rc_a is dropped out of scope ---
+                            [ M.read (| Value.String "--- rc_a is dropped out of scope ---
 " |) ]
                         |))
                     ]

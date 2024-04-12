@@ -22,8 +22,10 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "called `function()`
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "called `function()`
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -64,7 +66,7 @@ Module deeply.
                           M.pointer_coercion
                             (M.alloc (|
                               Value.Array
-                                [ M.read (| mk_str "called `deeply::nested::function()`
+                                [ M.read (| Value.String "called `deeply::nested::function()`
 " |) ]
                             |))
                         ]
@@ -124,7 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Entering block
+                        (M.alloc (| Value.Array [ M.read (| Value.String "Entering block
 " |) ] |))
                     ]
                   |)
@@ -155,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| mk_str "Leaving block
+                          (M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
 " |) ] |))
                       ]
                     |)

@@ -48,15 +48,15 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "DivisionByZero" |) |)));
+                        M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "NonPositiveLogarithm" |) |)));
+                        M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "NegativeSquareRoot" |) |)))
+                        M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
                   ]
                 |)
               |)
@@ -275,7 +275,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "" |) ] |));
+                              (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
@@ -333,7 +333,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     (* Unsize *)
                                     M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| mk_str "" |) ] |));
+                                      (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
                                     (* Unsize *)
                                     M.pointer_coercion
                                       (M.alloc (|
@@ -396,7 +396,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                                             (* Unsize *)
                                             M.pointer_coercion
                                               (M.alloc (|
-                                                Value.Array [ M.read (| mk_str "" |) ]
+                                                Value.Array [ M.read (| Value.String "" |) ]
                                               |));
                                             (* Unsize *)
                                             M.pointer_coercion
@@ -462,7 +462,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

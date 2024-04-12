@@ -86,9 +86,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "array[0] = 0, array[1] = " |);
-                                    M.read (| mk_str ", array[2] = " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "array[0] = 0, array[1] = " |);
+                                    M.read (| Value.String ", array[2] = " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -149,8 +149,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "array[0] = 1, array[2] = " |);
-                                    M.read (| mk_str " and array[1] was ignored
+                                    M.read (| Value.String "array[0] = 1, array[2] = " |);
+                                    M.read (| Value.String " and array[1] was ignored
 " |)
                                   ]
                               |));
@@ -203,9 +203,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "array[0] = -1, array[1] = " |);
-                                    M.read (| mk_str " and all the other ones were ignored
-" |)
+                                    M.read (| Value.String "array[0] = -1, array[1] = " |);
+                                    M.read (|
+                                      Value.String " and all the other ones were ignored
+"
+                                    |)
                                   ]
                               |));
                             (* Unsize *)
@@ -258,9 +260,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "array[0] = 3, array[1] = " |);
-                                    M.read (| mk_str " and the other elements were " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "array[0] = 3, array[1] = " |);
+                                    M.read (| Value.String " and the other elements were " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -318,10 +320,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "array[0] = " |);
-                                    M.read (| mk_str ", middle = " |);
-                                    M.read (| mk_str ", array[2] = " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "array[0] = " |);
+                                    M.read (| Value.String ", middle = " |);
+                                    M.read (| Value.String ", array[2] = " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));

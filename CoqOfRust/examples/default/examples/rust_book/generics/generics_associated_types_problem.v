@@ -203,10 +203,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Does container contain " |);
-                              M.read (| mk_str " and " |);
-                              M.read (| mk_str ": " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Does container contain " |);
+                              M.read (| Value.String " and " |);
+                              M.read (| Value.String ": " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -273,8 +273,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "First number: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "First number: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -323,8 +326,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Last number: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Last number: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -373,8 +379,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "The difference is: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "The difference is: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

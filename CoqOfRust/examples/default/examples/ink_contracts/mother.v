@@ -1776,7 +1776,7 @@ Module Impl_mother_Mother.
                                 "to_string",
                                 []
                               |),
-                              [ M.read (| mk_str "Reverting instantiation" |) ]
+                              [ M.read (| Value.String "Reverting instantiation" |) ]
                             |)
                           ]
                       ]
@@ -1914,7 +1914,7 @@ Module Impl_mother_Mother.
                                 "to_string",
                                 []
                               |),
-                              [ M.read (| mk_str "Reverting on user demand!" |) ]
+                              [ M.read (| Value.String "Reverting on user demand!" |) ]
                             |)
                           ]
                       ]
@@ -1934,7 +1934,7 @@ Module Impl_mother_Mother.
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| mk_str "Trapping on user demand!" |) ]
+                        [ M.read (| Value.String "Trapping on user demand!" |) ]
                       |)
                     |)
                   |)));
@@ -1975,8 +1975,11 @@ Module Impl_mother_Mother.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "debug_log: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "debug_log: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion

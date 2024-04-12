@@ -26,7 +26,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "EvenNumber" |);
+            M.read (| Value.String "EvenNumber" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|

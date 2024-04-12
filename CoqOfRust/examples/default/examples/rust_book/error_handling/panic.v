@@ -34,7 +34,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                             "eq",
                             []
                           |),
-                          [ beverage; mk_str "lemonade" ]
+                          [ beverage; Value.String "lemonade" ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -45,7 +45,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| mk_str "AAAaaaaa!!!!" |) ]
+                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                       |)
                     |)
                   |)));
@@ -66,8 +66,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Some refreshing " |);
-                              M.read (| mk_str " is all I need.
+                              M.read (| Value.String "Some refreshing " |);
+                              M.read (| Value.String " is all I need.
 " |)
                             ]
                         |));
@@ -112,14 +112,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::drink", [] |),
-              [ M.read (| mk_str "water" |) ]
+              [ M.read (| Value.String "water" |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::drink", [] |),
-              [ M.read (| mk_str "lemonade" |) ]
+              [ M.read (| Value.String "lemonade" |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

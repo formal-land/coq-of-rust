@@ -97,9 +97,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

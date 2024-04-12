@@ -39,8 +39,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.pointer_coercion
                       (M.alloc (|
                         Value.Array
-                          [ M.read (| mk_str "This function returns and you can see this line.
-" |)
+                          [
+                            M.read (|
+                              Value.String "This function returns and you can see this line.
+"
+                            |)
                           ]
                       |))
                   ]

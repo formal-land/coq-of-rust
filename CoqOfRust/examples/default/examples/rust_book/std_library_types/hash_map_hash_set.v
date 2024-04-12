@@ -208,7 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.never_to_any (|
                       M.call_closure (|
                         M.get_function (| "core::panicking::panic", [] |),
-                        [ M.read (| mk_str "assertion failed: a.insert(4)" |) ]
+                        [ M.read (| Value.String "assertion failed: a.insert(4)" |) ]
                       |)
                     |)
                   |)));
@@ -241,7 +241,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.never_to_any (|
                       M.call_closure (|
                         M.get_function (| "core::panicking::panic", [] |),
-                        [ M.read (| mk_str "assertion failed: a.contains(&4)" |) ]
+                        [ M.read (| Value.String "assertion failed: a.contains(&4)" |) ]
                       |)
                     |)
                   |)));
@@ -273,7 +273,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "A: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "A: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -313,7 +314,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "B: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "B: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -353,7 +355,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Union: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "Union: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -434,8 +437,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Difference: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Difference: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -515,8 +521,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Intersection: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Intersection: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -596,7 +605,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Symmetric Difference: " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "Symmetric Difference: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

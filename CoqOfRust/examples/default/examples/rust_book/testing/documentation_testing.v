@@ -51,7 +51,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| mk_str "Divide-by-zero error" |) ]
+                        [ M.read (| Value.String "Divide-by-zero error" |) ]
                       |)
                     |)
                   |)));

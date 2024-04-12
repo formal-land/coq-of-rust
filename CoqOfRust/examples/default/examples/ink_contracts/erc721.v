@@ -917,7 +917,7 @@ Module Impl_erc721_Erc721.
                             "expect",
                             []
                           |),
-                          [ M.read (| owner |); M.read (| mk_str "Error with AccountId" |) ]
+                          [ M.read (| owner |); M.read (| Value.String "Error with AccountId" |) ]
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -927,7 +927,7 @@ Module Impl_erc721_Erc721.
                             "expect",
                             []
                           |),
-                          [ M.read (| from |); M.read (| mk_str "Error with AccountId" |) ]
+                          [ M.read (| from |); M.read (| Value.String "Error with AccountId" |) ]
                         |)
                       ]
                     |)))
@@ -1407,7 +1407,7 @@ Module Impl_erc721_Erc721.
                                       |),
                                       [
                                         M.read (| owner |);
-                                        M.read (| mk_str "Error with AccountId" |)
+                                        M.read (| Value.String "Error with AccountId" |)
                                       ]
                                     |);
                                     M.read (| caller |)

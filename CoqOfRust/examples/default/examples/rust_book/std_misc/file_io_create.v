@@ -5,7 +5,7 @@ Definition value_LOREM_IPSUM : Value.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        mk_str
+        Value.String
           "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -42,7 +42,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
-              [ M.read (| mk_str "lorem_ipsum.txt" |) ]
+              [ M.read (| Value.String "lorem_ipsum.txt" |) ]
             |)
           |) in
         let display :=
@@ -96,8 +96,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "couldn't create " |);
-                                        M.read (| mk_str ": " |)
+                                        M.read (| Value.String "couldn't create " |);
+                                        M.read (| Value.String ": " |)
                                       ]
                                   |));
                                 (* Unsize *)
@@ -184,8 +184,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "couldn't write to " |);
-                                    M.read (| mk_str ": " |)
+                                    M.read (| Value.String "couldn't write to " |);
+                                    M.read (| Value.String ": " |)
                                   ]
                               |));
                             (* Unsize *)
@@ -238,8 +238,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "successfully wrote to " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "successfully wrote to " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));

@@ -65,7 +65,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pointer_coercion
                                   (M.alloc (|
                                     Value.Array
-                                      [ M.read (| mk_str "" |); M.read (| mk_str " is negative" |) ]
+                                      [
+                                        M.read (| Value.String "" |);
+                                        M.read (| Value.String " is negative" |)
+                                      ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -121,8 +124,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           (M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| mk_str "" |);
-                                                M.read (| mk_str " is positive" |)
+                                                M.read (| Value.String "" |);
+                                                M.read (| Value.String " is positive" |)
                                               ]
                                           |));
                                         (* Unsize *)
@@ -167,8 +170,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           (M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| mk_str "" |);
-                                                M.read (| mk_str " is zero" |)
+                                                M.read (| Value.String "" |);
+                                                M.read (| Value.String " is zero" |)
                                               ]
                                           |));
                                         (* Unsize *)
@@ -233,7 +236,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.read (|
-                                            mk_str ", and is a small number, increase ten-fold
+                                            Value.String
+                                              ", and is a small number, increase ten-fold
 "
                                           |)
                                         ]
@@ -268,7 +272,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.read (|
-                                            mk_str ", and is a big number, halve the number
+                                            Value.String ", and is a big number, halve the number
 "
                                           |)
                                         ]
@@ -299,9 +303,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " -> " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " -> " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

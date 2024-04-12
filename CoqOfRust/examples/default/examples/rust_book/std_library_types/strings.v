@@ -48,7 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let pangram := M.copy (| mk_str "the quick brown fox jumps over the lazy dog" |) in
+        let pangram := M.copy (| Value.String "the quick brown fox jumps over the lazy dog" |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -61,7 +61,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Pangram: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "Pangram: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -96,8 +97,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Words in reverse
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "Words in reverse
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -190,8 +193,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   (M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (| mk_str "> " |);
-                                                        M.read (| mk_str "
+                                                        M.read (| Value.String "> " |);
+                                                        M.read (| Value.String "
 " |)
                                                       ]
                                                   |));
@@ -364,7 +367,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "push_str",
                                           []
                                         |),
-                                        [ string; M.read (| mk_str ", " |) ]
+                                        [ string; M.read (| Value.String ", " |) ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
@@ -416,8 +419,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Used characters: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Used characters: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -450,7 +456,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ M.read (| mk_str "I like dogs" |) ]
+              [ M.read (| Value.String "I like dogs" |) ]
             |)
           |) in
         let bob :=
@@ -472,8 +478,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [ alice ]
                 |);
-                M.read (| mk_str "dog" |);
-                M.read (| mk_str "cat" |)
+                M.read (| Value.String "dog" |);
+                M.read (| Value.String "cat" |)
               ]
             |)
           |) in
@@ -490,8 +496,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Alice says: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Alice says: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -526,8 +535,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Bob says: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "Bob says: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

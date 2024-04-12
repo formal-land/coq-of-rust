@@ -56,7 +56,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Matrix" |);
+            M.read (| Value.String "Matrix" |);
             (* Unsize *)
             M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "tuples::Matrix" 0);
             (* Unsize *)
@@ -160,8 +160,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "long tuple first value: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "long tuple first value: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -200,8 +200,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "long tuple second value: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "long tuple second value: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -253,8 +253,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "tuple of tuples: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "tuple of tuples: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -297,7 +300,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "pair is " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "pair is " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -334,8 +338,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "the reversed pair is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "the reversed pair is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -378,8 +385,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "one element tuple: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "one element tuple: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -415,8 +425,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "just an integer: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "just an integer: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -444,7 +457,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.Tuple
               [
                 Value.Integer Integer.I32 1;
-                M.read (| mk_str "hello" |);
+                M.read (| Value.String "hello" |);
                 M.read (| UnsupportedLiteral |);
                 Value.Bool true
               ]
@@ -480,11 +493,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "" |);
-                                      M.read (| mk_str ", " |);
-                                      M.read (| mk_str ", " |);
-                                      M.read (| mk_str ", " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "" |);
+                                      M.read (| Value.String ", " |);
+                                      M.read (| Value.String ", " |);
+                                      M.read (| Value.String ", " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -560,7 +573,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                                 |));
                               (* Unsize *)

@@ -57,23 +57,23 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Apple" |) |)));
+                      M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Orange" |) |)));
+                      M.alloc (| M.read (| Value.String "Orange" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Banana" |) |)));
+                      M.alloc (| M.read (| Value.String "Banana" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Kiwi" |) |)));
+                      M.alloc (| M.read (| Value.String "Kiwi" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Lemon" |) |)))
+                      M.alloc (| M.read (| Value.String "Lemon" |) |)))
                 ]
               |)
             |)
@@ -155,7 +155,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Value.Array
                                                   [
                                                     M.read (|
-                                                      mk_str "Providing kiwi as fallback
+                                                      Value.String "Providing kiwi as fallback
 "
                                                     |)
                                                   ]
@@ -213,7 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Value.Array
                                                   [
                                                     M.read (|
-                                                      mk_str "Providing lemon as fallback
+                                                      Value.String "Providing lemon as fallback
 "
                                                     |)
                                                   ]
@@ -289,7 +289,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "first_available_fruit: " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "first_available_fruit: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

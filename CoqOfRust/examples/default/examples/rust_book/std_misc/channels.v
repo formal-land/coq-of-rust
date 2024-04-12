@@ -239,11 +239,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       Value.Array
                                                                                         [
                                                                                           M.read (|
-                                                                                            mk_str
+                                                                                            Value.String
                                                                                               "thread "
                                                                                           |);
                                                                                           M.read (|
-                                                                                            mk_str
+                                                                                            Value.String
                                                                                               " finished
 "
                                                                                           |)
@@ -524,7 +524,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     [ M.read (| child |) ]
                                                   |);
                                                   M.read (|
-                                                    mk_str "oops! the child thread panicked"
+                                                    Value.String "oops! the child thread panicked"
                                                   |)
                                                 ]
                                               |)
@@ -552,7 +552,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                                 |));
                               (* Unsize *)

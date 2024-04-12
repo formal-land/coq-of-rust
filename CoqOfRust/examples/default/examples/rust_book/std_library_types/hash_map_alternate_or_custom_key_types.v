@@ -249,8 +249,10 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Username: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "Username: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -285,8 +287,10 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Password: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "Password: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -320,8 +324,10 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Attempting logon...
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "Attempting logon...
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -377,7 +383,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "Successful logon!
+                                  Value.Array [ M.read (| Value.String "Successful logon!
 " |) ]
                                 |))
                             ]
@@ -403,8 +409,11 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "Name: " |); M.read (| mk_str "
-" |) ]
+                                    [
+                                      M.read (| Value.String "Name: " |);
+                                      M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -449,8 +458,11 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "Email: " |); M.read (| mk_str "
-" |) ]
+                                    [
+                                      M.read (| Value.String "Email: " |);
+                                      M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -495,8 +507,10 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "Login failed!
-" |) ] |))
+                              (M.alloc (|
+                                Value.Array [ M.read (| Value.String "Login failed!
+" |) ]
+                              |))
                           ]
                         |)
                       ]
@@ -557,8 +571,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
               [
-                ("username", M.read (| mk_str "j.everyman" |));
-                ("password", M.read (| mk_str "password123" |))
+                ("username", M.read (| Value.String "j.everyman" |));
+                ("password", M.read (| Value.String "password123" |))
               ]
           |) in
         let account_info :=
@@ -566,8 +580,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
               [
-                ("name", M.read (| mk_str "John Everyman" |));
-                ("email", M.read (| mk_str "j.everyman@email.com" |))
+                ("name", M.read (| Value.String "John Everyman" |));
+                ("email", M.read (| Value.String "j.everyman@email.com" |))
               ]
           |) in
         let _ :=
@@ -591,14 +605,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
-              [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "psasword123" |) ]
+              [
+                accounts;
+                M.read (| Value.String "j.everyman" |);
+                M.read (| Value.String "psasword123" |)
+              ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
-              [ accounts; M.read (| mk_str "j.everyman" |); M.read (| mk_str "password123" |) ]
+              [
+                accounts;
+                M.read (| Value.String "j.everyman" |);
+                M.read (| Value.String "password123" |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

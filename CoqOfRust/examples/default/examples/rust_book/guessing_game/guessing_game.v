@@ -13,7 +13,7 @@ Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
       (M.never_to_any (|
         M.call_closure (|
           M.get_function (| "core::panicking::panic", [] |),
-          [ M.read (| mk_str "not yet implemented" |) ]
+          [ M.read (| Value.String "not yet implemented" |) ]
         |)
       |)))
   | _, _ => M.impossible
@@ -69,8 +69,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Guess the number!
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "Guess the number!
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -99,7 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (* Unsize *)
                           M.pointer_coercion
                             (M.alloc (|
-                              Value.Array [ M.read (| mk_str "Please input your guess.
+                              Value.Array [ M.read (| Value.String "Please input your guess.
 " |) ]
                             |))
                         ]
@@ -139,7 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         guess
                       ]
                     |);
-                    M.read (| mk_str "Failed to read line" |)
+                    M.read (| Value.String "Failed to read line" |)
                   ]
                 |)
               |) in
@@ -208,8 +210,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.pointer_coercion
                             (M.alloc (|
                               Value.Array
-                                [ M.read (| mk_str "You guessed: " |); M.read (| mk_str "
-" |) ]
+                                [
+                                  M.read (| Value.String "You guessed: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
                             |));
                           (* Unsize *)
                           M.pointer_coercion
@@ -256,8 +261,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "Too small!
-" |) ] |))
+                                  (M.alloc (|
+                                    Value.Array [ M.read (| Value.String "Too small!
+" |) ]
+                                  |))
                               ]
                             |)
                           ]
@@ -280,8 +287,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.alloc (| Value.Array [ M.read (| mk_str "Too big!
-" |) ] |))
+                                  (M.alloc (|
+                                    Value.Array [ M.read (| Value.String "Too big!
+" |) ]
+                                  |))
                               ]
                             |)
                           ]
@@ -309,7 +318,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         (* Unsize *)
                                         M.pointer_coercion
                                           (M.alloc (|
-                                            Value.Array [ M.read (| mk_str "You win!
+                                            Value.Array [ M.read (| Value.String "You win!
 " |) ]
                                           |))
                                       ]

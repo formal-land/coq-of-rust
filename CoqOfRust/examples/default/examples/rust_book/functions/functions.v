@@ -94,8 +94,10 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| mk_str "fizzbuzz
-" |) ] |))
+                                (M.alloc (|
+                                  Value.Array [ M.read (| Value.String "fizzbuzz
+" |) ]
+                                |))
                             ]
                           |)
                         ]
@@ -135,8 +137,10 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       (* Unsize *)
                                       M.pointer_coercion
-                                        (M.alloc (| Value.Array [ M.read (| mk_str "fizz
-" |) ] |))
+                                        (M.alloc (|
+                                          Value.Array [ M.read (| Value.String "fizz
+" |) ]
+                                        |))
                                     ]
                                   |)
                                 ]
@@ -180,7 +184,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                               (* Unsize *)
                                               M.pointer_coercion
                                                 (M.alloc (|
-                                                  Value.Array [ M.read (| mk_str "buzz
+                                                  Value.Array [ M.read (| Value.String "buzz
 " |) ]
                                                 |))
                                             ]
@@ -210,8 +214,8 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                                 (M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (| mk_str "" |);
-                                                      M.read (| mk_str "
+                                                      M.read (| Value.String "" |);
+                                                      M.read (| Value.String "
 " |)
                                                     ]
                                                 |));

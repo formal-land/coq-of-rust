@@ -27,23 +27,28 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (|
+                (let _ :=
+                  M.is_constant_or_break_match (| M.read (| γ |), Value.String "798-1364" |) in
+                M.alloc (|
                   M.read (|
-                    mk_str
+                    Value.String
                       "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
                   |)
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (|
+                (let _ :=
+                  M.is_constant_or_break_match (| M.read (| γ |), Value.String "645-7689" |) in
+                M.alloc (|
                   M.read (|
-                    mk_str
+                    Value.String
                       "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
                   |)
                 |)));
-            fun γ => ltac:(M.monadic (M.alloc (| M.read (| mk_str "Hi! Who is this again?" |) |)))
+            fun γ =>
+              ltac:(M.monadic (M.alloc (| M.read (| Value.String "Hi! Who is this again?" |) |)))
           ]
         |)
       |)))
@@ -119,7 +124,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| mk_str "Daniel" |); M.read (| mk_str "798-1364" |) ]
+              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "798-1364" |) ]
             |)
           |) in
         let _ :=
@@ -136,7 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| mk_str "Ashley" |); M.read (| mk_str "645-7689" |) ]
+              [ contacts; M.read (| Value.String "Ashley" |); M.read (| Value.String "645-7689" |) ]
             |)
           |) in
         let _ :=
@@ -153,7 +158,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| mk_str "Katie" |); M.read (| mk_str "435-8291" |) ]
+              [ contacts; M.read (| Value.String "Katie" |); M.read (| Value.String "435-8291" |) ]
             |)
           |) in
         let _ :=
@@ -170,7 +175,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| mk_str "Robert" |); M.read (| mk_str "956-1745" |) ]
+              [ contacts; M.read (| Value.String "Robert" |); M.read (| Value.String "956-1745" |) ]
             |)
           |) in
         let _ :=
@@ -188,7 +193,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "get",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ contacts; mk_str "Daniel" ]
+                [ contacts; Value.String "Daniel" ]
               |)
             |),
             [
@@ -219,8 +224,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Calling Daniel: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "Calling Daniel: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -269,7 +274,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "Don't have Daniel's number.
+                                  Value.Array
+                                    [ M.read (| Value.String "Don't have Daniel's number.
 " |) ]
                                 |))
                             ]
@@ -294,7 +300,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ contacts; M.read (| mk_str "Daniel" |); M.read (| mk_str "164-6743" |) ]
+              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "164-6743" |) ]
             |)
           |) in
         let _ :=
@@ -312,7 +318,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "get",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ contacts; mk_str "Ashley" ]
+                [ contacts; Value.String "Ashley" ]
               |)
             |),
             [
@@ -343,8 +349,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Calling Ashley: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "Calling Ashley: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -393,7 +399,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "Don't have Ashley's number.
+                                  Value.Array
+                                    [ M.read (| Value.String "Don't have Ashley's number.
 " |) ]
                                 |))
                             ]
@@ -418,7 +425,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "remove",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ contacts; mk_str "Ashley" ]
+              [ contacts; Value.String "Ashley" ]
             |)
           |) in
         M.use
@@ -515,9 +522,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 (M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (| mk_str "Calling " |);
-                                                      M.read (| mk_str ": " |);
-                                                      M.read (| mk_str "
+                                                      M.read (| Value.String "Calling " |);
+                                                      M.read (| Value.String ": " |);
+                                                      M.read (| Value.String "
 " |)
                                                     ]
                                                 |));

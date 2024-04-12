@@ -79,8 +79,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pointer_coercion
                                   (M.alloc (|
                                     Value.Array
-                                      [ M.read (| mk_str "Matched " |); M.read (| mk_str "!
-" |) ]
+                                      [
+                                        M.read (| Value.String "Matched " |);
+                                        M.read (| Value.String "!
+" |)
+                                      ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -138,8 +141,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.pointer_coercion
                                   (M.alloc (|
                                     Value.Array
-                                      [ M.read (| mk_str "Matched " |); M.read (| mk_str "!
-" |) ]
+                                      [
+                                        M.read (| Value.String "Matched " |);
+                                        M.read (| Value.String "!
+" |)
+                                      ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -184,7 +190,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.read (|
-                                          mk_str "Didn't match a number. Let's go with a letter!
+                                          Value.String
+                                            "Didn't match a number. Let's go with a letter!
 "
                                         |)
                                       ]
@@ -229,8 +236,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "Matched " |); M.read (| mk_str "!
-" |) ]
+                                    [
+                                      M.read (| Value.String "Matched " |);
+                                      M.read (| Value.String "!
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -283,7 +293,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           Value.Array
                                             [
                                               M.read (|
-                                                mk_str
+                                                Value.String
                                                   "Didn't match a number. Let's go with a letter!
 "
                                               |)
@@ -317,7 +327,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           Value.Array
                                             [
                                               M.read (|
-                                                mk_str
+                                                Value.String
                                                   "I don't like letters. Let's go with an emoticon :)!
 "
                                               |)

@@ -144,7 +144,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Length" |);
+            M.read (| Value.String "Length" |);
             (* Unsize *)
             M.pointer_coercion
               (M.get_struct_tuple_field
@@ -382,8 +382,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "one foot + one_foot = " |);
-                              M.read (| mk_str " in
+                              M.read (| Value.String "one foot + one_foot = " |);
+                              M.read (| Value.String " in
 " |)
                             ]
                         |));
@@ -427,8 +427,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "one meter + one_meter = " |);
-                              M.read (| mk_str " mm
+                              M.read (| Value.String "one meter + one_meter = " |);
+                              M.read (| Value.String " mm
 " |)
                             ]
                         |));

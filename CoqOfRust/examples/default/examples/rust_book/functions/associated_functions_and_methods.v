@@ -380,9 +380,9 @@ Module Impl_associated_functions_and_methods_Pair.
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "Destroying Pair(" |);
-                                        M.read (| mk_str ", " |);
-                                        M.read (| mk_str ")
+                                        M.read (| Value.String "Destroying Pair(" |);
+                                        M.read (| Value.String ", " |);
+                                        M.read (| Value.String ")
 " |)
                                       ]
                                   |));
@@ -512,8 +512,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Rectangle perimeter: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Rectangle perimeter: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -560,8 +563,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Rectangle area: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Rectangle area: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

@@ -47,15 +47,15 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "CordonBleu" |) |)));
+                      M.alloc (| M.read (| Value.String "CordonBleu" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Steak" |) |)));
+                      M.alloc (| M.read (| Value.String "Steak" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Sushi" |) |)))
+                      M.alloc (| M.read (| Value.String "Sushi" |) |)))
                 ]
               |)
             |)
@@ -118,15 +118,15 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Monday" |) |)));
+                      M.alloc (| M.read (| Value.String "Monday" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Tuesday" |) |)));
+                      M.alloc (| M.read (| Value.String "Tuesday" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Wednesday" |) |)))
+                      M.alloc (| M.read (| Value.String "Wednesday" |) |)))
                 ]
               |)
             |)
@@ -351,9 +351,9 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "Yay! On " |);
-                                    M.read (| mk_str " we get to eat " |);
-                                    M.read (| mk_str ".
+                                    M.read (| Value.String "Yay! On " |);
+                                    M.read (| Value.String " we get to eat " |);
+                                    M.read (| Value.String ".
 " |)
                                   ]
                               |));
@@ -405,8 +405,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "Oh no. We don't get to eat on " |);
-                                    M.read (| mk_str "?
+                                    M.read (| Value.String "Oh no. We don't get to eat on " |);
+                                    M.read (| Value.String "?
 " |)
                                   ]
                               |));

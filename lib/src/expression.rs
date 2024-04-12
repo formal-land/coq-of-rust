@@ -310,7 +310,7 @@ fn string_pieces_to_coq(pieces: &[StringPiece]) -> coq::Expression {
 
 fn string_to_coq(message: &str) -> coq::Expression {
     let pieces = cut_string_in_pieces_for_coq(message);
-    coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(&pieces))
+    coq::Expression::just_name("Value.String").apply(&string_pieces_to_coq(&pieces))
 }
 
 impl LoopControlFlow {
