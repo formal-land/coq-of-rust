@@ -181,7 +181,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "AccountId" |);
+            M.read (| Value.String "AccountId" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "multisig::AccountId" 0 |))
@@ -381,7 +381,7 @@ Definition value_MAX_OWNERS : Value.t :=
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
 Definition value_WRONG_TRANSACTION_ID : Value.t :=
-  M.run ltac:(M.monadic (mk_str "The user specified an invalid transaction id. Abort.")).
+  M.run ltac:(M.monadic (Value.String "The user specified an invalid transaction id. Abort.")).
 
 (* StructTuple
   {
@@ -1053,7 +1053,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
                         M.get_function (| "core::panicking::panic", [] |),
                         [
                           M.read (|
-                            mk_str
+                            Value.String
                               "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
                           |)
                         ]
@@ -1375,7 +1375,7 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              mk_str
+                              Value.String
                                 "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
     self.requirement"
                             |)
@@ -1489,7 +1489,11 @@ Module Impl_multisig_Multisig.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic", [] |),
-                          [ M.read (| mk_str "assertion failed: self.is_owner.contains(owner)" |) ]
+                          [
+                            M.read (|
+                              Value.String "assertion failed: self.is_owner.contains(owner)"
+                            |)
+                          ]
                         |)
                       |)
                     |)));
@@ -1710,7 +1714,11 @@ Module Impl_multisig_Multisig.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic", [] |),
-                          [ M.read (| mk_str "assertion failed: !self.is_owner.contains(owner)" |) ]
+                          [
+                            M.read (|
+                              Value.String "assertion failed: !self.is_owner.contains(owner)"
+                            |)
+                          ]
                         |)
                       |)
                     |)));
@@ -1943,7 +1951,7 @@ Module Impl_multisig_Multisig.
                 ]
               |);
               M.read (|
-                mk_str
+                Value.String
                   "This is only called after it was already verified that the id is
                actually an owner."
               |)
@@ -2911,7 +2919,7 @@ Module Impl_multisig_Multisig.
                       M.read (| M.use (M.alloc (| Value.Integer Integer.U32 1 |)) |)
                     ]
                   |);
-                  M.read (| mk_str "Transaction ids exhausted." |)
+                  M.read (| Value.String "Transaction ids exhausted." |)
                 ]
               |)
             |) in
@@ -3174,7 +3182,8 @@ Module Impl_multisig_Multisig.
                               ]
                             |);
                             M.read (|
-                              mk_str "The transaction exists hence it must also be in the list."
+                              Value.String
+                                "The transaction exists hence it must also be in the list."
                             |)
                           ]
                         |)
@@ -3636,7 +3645,7 @@ Module Impl_multisig_Multisig.
                             ]
                           |);
                           M.read (|
-                            mk_str
+                            Value.String
                               "There is a entry in `self.confirmations`. Hence a count must exit."
                           |)
                         ]
@@ -3815,7 +3824,7 @@ Module Impl_multisig_Multisig.
                           M.get_function (| "core::panicking::panic", [] |),
                           [
                             M.read (|
-                              mk_str
+                              Value.String
                                 "assertion failed: self.env().transferred_value() == t.transferred_value"
                             |)
                           ]
@@ -3830,7 +3839,7 @@ Module Impl_multisig_Multisig.
               M.never_to_any (|
                 M.call_closure (|
                   M.get_function (| "core::panicking::panic", [] |),
-                  [ M.read (| mk_str "not yet implemented" |) ]
+                  [ M.read (| Value.String "not yet implemented" |) ]
                 |)
               |)
             |) in

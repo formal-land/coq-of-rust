@@ -84,8 +84,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Got a value via destructuring: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "Got a value via destructuring: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -136,8 +136,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Got a value via dereferencing: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "Got a value via dereferencing: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -197,8 +197,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         (M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| mk_str "Got a reference to a value: " |);
-                                              M.read (| mk_str "
+                                              M.read (|
+                                                Value.String "Got a reference to a value: "
+                                              |);
+                                              M.read (| Value.String "
 " |)
                                             ]
                                         |));
@@ -255,8 +257,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         (M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| mk_str "We added 10. `mut_value`: " |);
-                                              M.read (| mk_str "
+                                              M.read (|
+                                                Value.String "We added 10. `mut_value`: "
+                                              |);
+                                              M.read (| Value.String "
 " |)
                                             ]
                                         |));

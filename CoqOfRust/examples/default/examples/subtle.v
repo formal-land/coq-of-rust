@@ -59,7 +59,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Choice" |);
+            M.read (| Value.String "Choice" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |))
@@ -152,7 +152,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                     M.get_function (| "core::panicking::panic", [] |),
                                     [
                                       M.read (|
-                                        mk_str
+                                        Value.String
                                           "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
                                       |)
                                     ]
@@ -536,7 +536,8 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_function (| "core::panicking::panic", [] |),
                                   [
                                     M.read (|
-                                      mk_str "assertion failed: (input == 0u8) | (input == 1u8)"
+                                      Value.String
+                                        "assertion failed: (input == 0u8) | (input == 1u8)"
                                     |)
                                   ]
                                 |)
@@ -3038,12 +3039,12 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "CtOption" |);
-            M.read (| mk_str "value" |);
+            M.read (| Value.String "CtOption" |);
+            M.read (| Value.String "value" |);
             (* Unsize *)
             M.pointer_coercion
               (M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value");
-            M.read (| mk_str "is_some" |);
+            M.read (| Value.String "is_some" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -3242,7 +3243,7 @@ Module Impl_subtle_CtOption_T.
                                                 (* Unsize *)
                                                 M.pointer_coercion
                                                   (M.alloc (|
-                                                    Value.Array [ M.read (| mk_str "" |) ]
+                                                    Value.Array [ M.read (| Value.String "" |) ]
                                                   |));
                                                 (* Unsize *)
                                                 M.pointer_coercion

@@ -20,7 +20,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "Unit" |) ]
+          [ M.read (| f |); M.read (| Value.String "Unit" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -138,7 +138,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Pair" |);
+            M.read (| Value.String "Pair" |);
             (* Unsize *)
             M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "clone::Pair" 0);
             (* Unsize *)
@@ -212,8 +212,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "original: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "original: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -248,7 +250,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "copy: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "copy: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -311,8 +314,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "original: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "original: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -348,7 +353,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "moved: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "moved: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -398,7 +404,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "clone: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "clone: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

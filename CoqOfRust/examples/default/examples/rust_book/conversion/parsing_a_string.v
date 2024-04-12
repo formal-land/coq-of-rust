@@ -17,21 +17,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-              [ M.read (| mk_str "12" |) ]
+              [ M.read (| Value.String "12" |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
-              [ M.read (| mk_str "true" |) ]
+              [ M.read (| Value.String "true" |) ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
-              [ M.read (| mk_str "unparsable" |) ]
+              [ M.read (| Value.String "unparsable" |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

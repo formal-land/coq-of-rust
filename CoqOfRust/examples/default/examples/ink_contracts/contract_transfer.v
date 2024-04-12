@@ -214,8 +214,11 @@ Module Impl_contract_transfer_GiveMe.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "requested value: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "requested value: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -251,8 +254,11 @@ Module Impl_contract_transfer_GiveMe.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "contract balance: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "contract balance: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -337,7 +343,7 @@ Module Impl_contract_transfer_GiveMe.
                             "std::panicking::begin_panic",
                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                           |),
-                          [ M.read (| mk_str "insufficient funds!" |) ]
+                          [ M.read (| Value.String "insufficient funds!" |) ]
                         |)
                       |)
                     |)));
@@ -413,7 +419,7 @@ Module Impl_contract_transfer_GiveMe.
                         |),
                         [
                           M.read (|
-                            mk_str
+                            Value.String
                               "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
                           |)
                         ]
@@ -454,8 +460,11 @@ Module Impl_contract_transfer_GiveMe.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "received payment: " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "received payment: " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -540,7 +549,7 @@ Module Impl_contract_transfer_GiveMe.
                             "std::panicking::begin_panic",
                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                           |),
-                          [ M.read (| mk_str "payment was not ten" |) ]
+                          [ M.read (| Value.String "payment was not ten" |) ]
                         |)
                       |)
                     |)));

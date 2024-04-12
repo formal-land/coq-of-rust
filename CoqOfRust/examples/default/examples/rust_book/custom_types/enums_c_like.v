@@ -78,7 +78,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "zero is " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "zero is " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -114,7 +115,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "one is " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "one is " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -154,8 +156,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "roses are #" |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "roses are #" |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -237,8 +241,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "violets are #" |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "violets are #" |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

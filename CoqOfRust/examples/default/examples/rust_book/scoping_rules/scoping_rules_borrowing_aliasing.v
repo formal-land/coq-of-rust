@@ -96,10 +96,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Point has coordinates: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "Point has coordinates: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));
@@ -169,10 +169,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Point has coordinates: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "Point has coordinates: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));
@@ -267,10 +267,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Point has coordinates: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "Point has coordinates: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));
@@ -341,10 +341,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Point now has coordinates: (" |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ", " |);
-                              M.read (| mk_str ")
+                              M.read (| Value.String "Point now has coordinates: (" |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ", " |);
+                              M.read (| Value.String ")
 " |)
                             ]
                         |));

@@ -25,8 +25,11 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "You called " |); M.read (| mk_str "()
-" |) ]
+                            [
+                              M.read (| Value.String "You called " |);
+                              M.read (| Value.String "()
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -39,7 +42,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "foo" ]
+                                [ Value.String "foo" ]
                               |)
                             ]
                         |))
@@ -78,8 +81,11 @@ Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "You called " |); M.read (| mk_str "()
-" |) ]
+                            [
+                              M.read (| Value.String "You called " |);
+                              M.read (| Value.String "()
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -92,7 +98,7 @@ Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "bar" ]
+                                [ Value.String "bar" ]
                               |)
                             ]
                         |))
@@ -149,9 +155,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " = " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " = " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -166,7 +172,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "1u32 + 1" ]
+                                [ Value.String "1u32 + 1" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -205,9 +211,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " = " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " = " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -222,7 +228,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "{ let x = 1u32; x * x + 2 * x - 1 }" ]
+                                [ Value.String "{ let x = 1u32; x * x + 2 * x - 1 }" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|

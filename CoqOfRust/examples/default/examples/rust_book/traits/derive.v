@@ -102,7 +102,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Inches" |);
+            M.read (| Value.String "Inches" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "derive::Inches" 0 |))
@@ -220,8 +220,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "One foot equals " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "One foot equals " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -282,8 +285,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    mk_str "smaller"));
-                fun γ => ltac:(M.monadic (M.alloc (| M.read (| mk_str "bigger" |) |)))
+                    Value.String "smaller"));
+                fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "bigger" |) |)))
               ]
             |)
           |) in
@@ -301,8 +304,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "One foot is " |);
-                              M.read (| mk_str " than one meter.
+                              M.read (| Value.String "One foot is " |);
+                              M.read (| Value.String " than one meter.
 " |)
                             ]
                         |));

@@ -46,7 +46,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "Entered the outer loop
+                                Value.Array [ M.read (| Value.String "Entered the outer loop
 " |) ]
                               |))
                           ]
@@ -78,8 +78,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.pointer_coercion
                                           (M.alloc (|
                                             Value.Array
-                                              [ M.read (| mk_str "Entered the inner loop
-" |) ]
+                                              [ M.read (| Value.String "Entered the inner loop
+" |)
+                                              ]
                                           |))
                                       ]
                                     |)
@@ -109,7 +110,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "This point will never be reached
+                                  [ M.read (| Value.String "This point will never be reached
 " |) ]
                               |))
                           ]
@@ -131,8 +132,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Exited the outer loop
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "Exited the outer loop
+" |) ]
+                        |))
                     ]
                   |)
                 ]

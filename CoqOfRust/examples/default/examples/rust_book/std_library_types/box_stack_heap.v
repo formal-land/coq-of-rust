@@ -26,12 +26,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Point" |);
-            M.read (| mk_str "x" |);
+            M.read (| Value.String "Point" |);
+            M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
               (M.get_struct_record_field (M.read (| self |)) "box_stack_heap::Point" "x");
-            M.read (| mk_str "y" |);
+            M.read (| Value.String "y" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -284,8 +284,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Point occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Point occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));
@@ -334,8 +334,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Rectangle occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Rectangle occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));
@@ -384,8 +384,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Boxed point occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Boxed point occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));
@@ -441,8 +441,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Boxed rectangle occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Boxed rectangle occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));
@@ -498,8 +498,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Boxed box occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Boxed box occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));
@@ -561,8 +561,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Unboxed point occupies " |);
-                              M.read (| mk_str " bytes on the stack
+                              M.read (| Value.String "Unboxed point occupies " |);
+                              M.read (| Value.String " bytes on the stack
 " |)
                             ]
                         |));

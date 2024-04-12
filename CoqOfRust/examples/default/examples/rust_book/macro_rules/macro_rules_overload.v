@@ -26,10 +26,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " and " |);
-                              M.read (| mk_str " is " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " and " |);
+                              M.read (| Value.String " is " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -44,7 +44,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "1i32 + 1 == 2i32" ]
+                                [ Value.String "1i32 + 1 == 2i32" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -52,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "2i32 * 2 == 4i32" ]
+                                [ Value.String "2i32 * 2 == 4i32" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -102,10 +102,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " or " |);
-                              M.read (| mk_str " is " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " or " |);
+                              M.read (| Value.String " is " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -120,7 +120,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "true" ]
+                                [ Value.String "true" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -128,7 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ mk_str "false" ]
+                                [ Value.String "false" ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|

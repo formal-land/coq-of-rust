@@ -194,7 +194,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               M.never_to_any (|
                 M.call_closure (|
                   M.get_function (| "core::panicking::panic", [] |),
-                  [ M.read (| mk_str "not yet implemented" |) ]
+                  [ M.read (| Value.String "not yet implemented" |) ]
                 |)
               |)
             |) in

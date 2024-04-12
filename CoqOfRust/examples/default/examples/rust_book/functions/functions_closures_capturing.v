@@ -84,7 +84,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ M.read (| mk_str "green" |) ]
+              [ M.read (| Value.String "green" |) ]
             |)
           |) in
         let print :=
@@ -117,8 +117,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             (M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (| mk_str "`color`: " |);
-                                                  M.read (| mk_str "
+                                                  M.read (| Value.String "`color`: " |);
+                                                  M.read (| Value.String "
 " |)
                                                 ]
                                             |));
@@ -215,8 +215,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               (M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (| mk_str "`count`: " |);
-                                                    M.read (| mk_str "
+                                                    M.read (| Value.String "`count`: " |);
+                                                    M.read (| Value.String "
 " |)
                                                   ]
                                               |));
@@ -319,8 +319,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               (M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (| mk_str "`movable`: " |);
-                                                    M.read (| mk_str "
+                                                    M.read (| Value.String "`movable`: " |);
+                                                    M.read (| Value.String "
 " |)
                                                   ]
                                               |));

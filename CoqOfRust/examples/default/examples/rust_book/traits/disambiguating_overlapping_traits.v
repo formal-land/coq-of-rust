@@ -120,7 +120,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "to_owned",
                       []
                     |),
-                    [ M.read (| mk_str "rustacean" |) ]
+                    [ M.read (| Value.String "rustacean" |) ]
                   |));
                 ("age", Value.Integer Integer.U8 28)
               ]
@@ -152,7 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "to_string",
                         []
                       |),
-                      [ M.read (| mk_str "rustacean" |) ]
+                      [ M.read (| Value.String "rustacean" |) ]
                     |)
                   |);
                   username

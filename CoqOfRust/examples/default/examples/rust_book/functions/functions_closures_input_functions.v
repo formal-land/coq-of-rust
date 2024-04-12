@@ -45,7 +45,7 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "I'm a function!
+                        (M.alloc (| Value.Array [ M.read (| Value.String "I'm a function!
 " |) ] |))
                     ]
                   |)
@@ -100,7 +100,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           (* Unsize *)
                                           M.pointer_coercion
                                             (M.alloc (|
-                                              Value.Array [ M.read (| mk_str "I'm a closure!
+                                              Value.Array
+                                                [ M.read (| Value.String "I'm a closure!
 " |) ]
                                             |))
                                         ]

@@ -34,7 +34,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "FooBar" |) ]
+          [ M.read (| f |); M.read (| Value.String "FooBar" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -66,7 +66,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "BarFoo" |) ]
+          [ M.read (| f |); M.read (| Value.String "BarFoo" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -115,7 +115,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "> Foo.add(Bar) was called
+                            Value.Array [ M.read (| Value.String "> Foo.add(Bar) was called
 " |) ]
                           |))
                       ]
@@ -173,7 +173,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "> Bar.add(Foo) was called
+                            Value.Array [ M.read (| Value.String "> Bar.add(Foo) was called
 " |) ]
                           |))
                       ]
@@ -219,8 +219,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Foo + Bar = " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Foo + Bar = " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -272,8 +275,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Bar + Foo = " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Bar + Foo = " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

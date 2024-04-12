@@ -38,7 +38,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "ToDrop is being dropped
+                            Value.Array [ M.read (| Value.String "ToDrop is being dropped
 " |) ]
                           |))
                       ]
@@ -83,7 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Made a ToDrop!
+                        (M.alloc (| Value.Array [ M.read (| Value.String "Made a ToDrop!
 " |) ] |))
                     ]
                   |)

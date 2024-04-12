@@ -66,9 +66,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "the square root of " |);
-                              M.read (| mk_str " is " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "the square root of " |);
+                              M.read (| Value.String " is " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -115,9 +115,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "cos(" |);
-                              M.read (| mk_str ") = " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "cos(" |);
+                              M.read (| Value.String ") = " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -260,9 +260,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "" |);
-                                    M.read (| mk_str "-" |);
-                                    M.read (| mk_str "i" |)
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String "-" |);
+                                    M.read (| Value.String "i" |)
                                   ]
                               |));
                             (* Unsize *)
@@ -332,9 +332,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "" |);
-                                    M.read (| mk_str "+" |);
-                                    M.read (| mk_str "i" |)
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String "+" |);
+                                    M.read (| Value.String "i" |)
                                   ]
                               |));
                             (* Unsize *)

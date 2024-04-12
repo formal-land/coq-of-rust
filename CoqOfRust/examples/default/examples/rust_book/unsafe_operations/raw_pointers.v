@@ -35,7 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.never_to_any (|
                       M.call_closure (|
                         M.get_function (| "core::panicking::panic", [] |),
-                        [ M.read (| mk_str "assertion failed: *raw_p == 10" |) ]
+                        [ M.read (| Value.String "assertion failed: *raw_p == 10" |) ]
                       |)
                     |)
                   |)));

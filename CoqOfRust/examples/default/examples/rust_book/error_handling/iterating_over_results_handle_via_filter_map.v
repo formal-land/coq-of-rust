@@ -43,9 +43,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "tofu" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "tofu" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]
@@ -159,7 +159,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Results: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "Results: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

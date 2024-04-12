@@ -743,7 +743,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         "std::panicking::begin_panic",
                                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                       |),
-                                      [ M.read (| mk_str "recover failed: {err:?}" |) ]
+                                      [ M.read (| Value.String "recover failed: {err:?}" |) ]
                                     |)
                                   |)))
                             ]

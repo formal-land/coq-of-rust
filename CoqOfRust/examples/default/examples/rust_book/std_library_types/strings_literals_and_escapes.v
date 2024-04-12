@@ -28,7 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let byte_escape := M.copy (| mk_str "I'm writing Rust!" |) in
+        let byte_escape := M.copy (| Value.String "I'm writing Rust!" |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -43,8 +43,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "What are you doing? (\x3F means ?) " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "What are you doing? (\x3F means ?) " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -69,8 +69,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let unicode_codepoint := M.copy (| mk_str (String.String "029" "") |) in
-        let character_name := M.copy (| mk_str """DOUBLE-STRUCK CAPITAL R""" |) in
+        let unicode_codepoint := M.copy (| Value.String (String.String "029" "") |) in
+        let character_name := M.copy (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -85,9 +85,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Unicode character " |);
-                              M.read (| mk_str " (U+211D) is called " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Unicode character " |);
+                              M.read (| Value.String " (U+211D) is called " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -122,7 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let long_string :=
           M.copy (|
-            mk_str
+            Value.String
               "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!"
@@ -139,7 +139,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

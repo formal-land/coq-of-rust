@@ -31,7 +31,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| mk_str "baaaaah!" |)))
+        M.read (| Value.String "baaaaah!" |)))
     | _, _ => M.impossible
     end.
   
@@ -56,7 +56,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| mk_str "moooooo!" |)))
+        M.read (| Value.String "moooooo!" |)))
     | _, _ => M.impossible
     end.
   
@@ -181,8 +181,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "You've randomly chosen an animal, and it says " |);
-                              M.read (| mk_str "
+                              M.read (|
+                                Value.String "You've randomly chosen an animal, and it says "
+                              |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

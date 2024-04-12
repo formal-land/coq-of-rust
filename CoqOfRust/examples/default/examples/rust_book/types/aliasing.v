@@ -44,10 +44,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " nanoseconds + " |);
-                              M.read (| mk_str " inches = " |);
-                              M.read (| mk_str " unit?
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " nanoseconds + " |);
+                              M.read (| Value.String " inches = " |);
+                              M.read (| Value.String " unit?
 " |)
                             ]
                         |));

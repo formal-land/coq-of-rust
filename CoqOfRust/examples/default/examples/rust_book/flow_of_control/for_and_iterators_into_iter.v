@@ -48,9 +48,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Bob" |);
-                              M.read (| mk_str "Frank" |);
-                              M.read (| mk_str "Ferris" |)
+                              M.read (| Value.String "Bob" |);
+                              M.read (| Value.String "Frank" |);
+                              M.read (| Value.String "Ferris" |)
                             ]
                         |)
                       ]
@@ -135,7 +135,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            mk_str "Ferris"
+                                            Value.String "Ferris"
                                           |) in
                                         let _ :=
                                           M.alloc (|
@@ -155,7 +155,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Value.Array
                                                           [
                                                             M.read (|
-                                                              mk_str
+                                                              Value.String
                                                                 "There is a rustacean among us!
 "
                                                             |)
@@ -186,8 +186,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       (M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (| mk_str "Hello " |);
-                                                            M.read (| mk_str "
+                                                            M.read (| Value.String "Hello " |);
+                                                            M.read (| Value.String "
 " |)
                                                           ]
                                                       |));

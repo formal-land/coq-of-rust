@@ -41,7 +41,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "some
+                              (M.alloc (| Value.Array [ M.read (| Value.String "some
 " |) ] |))
                           ]
                         |)
@@ -65,7 +65,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "nothing
+                              (M.alloc (| Value.Array [ M.read (| Value.String "nothing
 " |) ] |))
                           ]
                         |)
@@ -149,10 +149,10 @@ Module tests.
                           Value.Bool true
                         ]
                       |);
-                      M.read (| mk_str "ferris.txt" |)
+                      M.read (| Value.String "ferris.txt" |)
                     ]
                   |);
-                  M.read (| mk_str "Failed to open ferris.txt" |)
+                  M.read (| Value.String "Failed to open ferris.txt" |)
                 ]
               |)
             |) in
@@ -236,12 +236,12 @@ Module tests.
                                                   "as_bytes",
                                                   []
                                                 |),
-                                                [ M.read (| mk_str "Ferris
+                                                [ M.read (| Value.String "Ferris
 " |) ]
                                               |)
                                             ]
                                           |);
-                                          M.read (| mk_str "Could not write to ferris.txt" |)
+                                          M.read (| Value.String "Could not write to ferris.txt" |)
                                         ]
                                       |)
                                     |) in
@@ -325,10 +325,10 @@ Module tests.
                           Value.Bool true
                         ]
                       |);
-                      M.read (| mk_str "ferris.txt" |)
+                      M.read (| Value.String "ferris.txt" |)
                     ]
                   |);
-                  M.read (| mk_str "Failed to open ferris.txt" |)
+                  M.read (| Value.String "Failed to open ferris.txt" |)
                 ]
               |)
             |) in
@@ -412,12 +412,12 @@ Module tests.
                                                   "as_bytes",
                                                   []
                                                 |),
-                                                [ M.read (| mk_str "Corro
+                                                [ M.read (| Value.String "Corro
 " |) ]
                                               |)
                                             ]
                                           |);
-                                          M.read (| mk_str "Could not write to ferris.txt" |)
+                                          M.read (| Value.String "Could not write to ferris.txt" |)
                                         ]
                                       |)
                                     |) in

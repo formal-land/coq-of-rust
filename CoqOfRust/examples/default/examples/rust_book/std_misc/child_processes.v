@@ -56,10 +56,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "new",
                               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                             |),
-                            [ M.read (| mk_str "rustc" |) ]
+                            [ M.read (| Value.String "rustc" |) ]
                           |)
                         |);
-                        M.read (| mk_str "--version" |)
+                        M.read (| Value.String "--version" |)
                       ]
                     |)
                   ]
@@ -90,7 +90,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.pointer_coercion
                                             (M.alloc (|
                                               Value.Array
-                                                [ M.read (| mk_str "failed to execute process: " |)
+                                                [
+                                                  M.read (|
+                                                    Value.String "failed to execute process: "
+                                                  |)
                                                 ]
                                             |));
                                           (* Unsize *)
@@ -179,7 +182,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "rustc succeeded and stdout was:
+                                    [ M.read (| Value.String "rustc succeeded and stdout was:
 " |) ]
                                 |));
                               (* Unsize *)
@@ -251,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "rustc failed and stderr was:
+                                    [ M.read (| Value.String "rustc failed and stderr was:
 " |) ]
                                 |));
                               (* Unsize *)

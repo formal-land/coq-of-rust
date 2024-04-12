@@ -28,7 +28,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Ref" |);
+            M.read (| Value.String "Ref" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -75,8 +75,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`print`: t is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`print`: t is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -131,8 +134,11 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`print_ref`: t is " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`print_ref`: t is " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

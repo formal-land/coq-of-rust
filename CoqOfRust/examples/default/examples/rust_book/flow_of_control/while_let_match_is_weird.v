@@ -80,8 +80,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.pointer_coercion
                                             (M.alloc (|
                                               Value.Array
-                                                [ M.read (| mk_str "Greater than 9, quit!
-" |) ]
+                                                [ M.read (| Value.String "Greater than 9, quit!
+" |)
+                                                ]
                                             |))
                                         ]
                                       |)
@@ -115,8 +116,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             (M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (| mk_str "`i` is `" |);
-                                                  M.read (| mk_str "`. Try again.
+                                                  M.read (| Value.String "`i` is `" |);
+                                                  M.read (| Value.String "`. Try again.
 " |)
                                                 ]
                                             |));

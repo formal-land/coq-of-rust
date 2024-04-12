@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_PANGRAM : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| mk_str "the quick brown fox jumped over the lazy dog
+  M.run
+    ltac:(M.monadic (M.alloc (| Value.String "the quick brown fox jumped over the lazy dog
 " |))).
 
 (*
@@ -73,7 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new",
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
-                                [ M.read (| mk_str "wc" |) ]
+                                [ M.read (| Value.String "wc" |) ]
                               |)
                             |);
                             M.call_closure (|
@@ -124,7 +125,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (* Unsize *)
                                 M.pointer_coercion
                                   (M.alloc (|
-                                    Value.Array [ M.read (| mk_str "couldn't spawn wc: " |) ]
+                                    Value.Array [ M.read (| Value.String "couldn't spawn wc: " |) ]
                                   |));
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -221,7 +222,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "couldn't write to wc stdin: " |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -267,7 +269,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "sent pangram to wc
+                                  Value.Array [ M.read (| Value.String "sent pangram to wc
 " |) ]
                                 |))
                             ]
@@ -334,7 +336,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "couldn't read wc stdout: " |) ]
+                                Value.Array
+                                  [ M.read (| Value.String "couldn't read wc stdout: " |) ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -376,7 +379,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "wc responded with:
+                                Value.Array [ M.read (| Value.String "wc responded with:
 " |) ]
                               |));
                             (* Unsize *)

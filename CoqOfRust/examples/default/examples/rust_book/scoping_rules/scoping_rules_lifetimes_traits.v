@@ -26,8 +26,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Borrowed" |);
-            M.read (| mk_str "x" |);
+            M.read (| Value.String "Borrowed" |);
+            M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -111,7 +111,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "b is " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "b is " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

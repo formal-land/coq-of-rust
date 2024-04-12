@@ -35,8 +35,11 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                         M.pointer_coercion
                           (M.alloc (|
                             Value.Array
-                              [ M.read (| mk_str "> Dropping " |); M.read (| mk_str "
-" |) ]
+                              [
+                                M.read (| Value.String "> Dropping " |);
+                                M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -115,21 +118,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let _a :=
           M.alloc (|
-            Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "a" |)) ]
+            Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "a" |)) ]
           |) in
         let _ :=
           let _b :=
             M.alloc (|
-              Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "b" |)) ]
+              Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "b" |)) ]
             |) in
           let _ :=
             let _c :=
               M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "c" |)) ]
+                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "c" |)) ]
               |) in
             let _d :=
               M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| mk_str "d" |)) ]
+                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "d" |)) ]
               |) in
             let _ :=
               let _ :=
@@ -146,8 +149,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.alloc (| Value.Array [ M.read (| mk_str "Exiting block B
-" |) ] |))
+                            (M.alloc (|
+                              Value.Array [ M.read (| Value.String "Exiting block B
+" |) ]
+                            |))
                         ]
                       |)
                     ]
@@ -170,8 +175,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| mk_str "Just exited block B
-" |) ] |))
+                          (M.alloc (|
+                            Value.Array [ M.read (| Value.String "Just exited block B
+" |) ]
+                          |))
                       ]
                     |)
                   ]
@@ -193,8 +200,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| mk_str "Exiting block A
-" |) ] |))
+                          (M.alloc (|
+                            Value.Array [ M.read (| Value.String "Exiting block A
+" |) ]
+                          |))
                       ]
                     |)
                   ]
@@ -213,8 +222,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Just exited block A
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "Just exited block A
+" |) ]
+                        |))
                     ]
                   |)
                 ]
@@ -240,7 +251,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "end of the main function
+                          Value.Array [ M.read (| Value.String "end of the main function
 " |) ]
                         |))
                     ]

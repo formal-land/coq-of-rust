@@ -45,7 +45,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Tell me what type of person you are
+                          Value.Array
+                            [ M.read (| Value.String "Tell me what type of person you are
 " |) ]
                         |))
                     ]
@@ -79,7 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.read (|
-                                      mk_str "I haven't celebrated my first birthday yet
+                                      Value.String "I haven't celebrated my first birthday yet
 "
                                     |)
                                   ]
@@ -110,8 +111,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "I'm a child of age " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "I'm a child of age " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -156,8 +157,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "I'm a teen of age " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "I'm a teen of age " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -202,8 +203,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "I'm an old person of age " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "I'm an old person of age " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));

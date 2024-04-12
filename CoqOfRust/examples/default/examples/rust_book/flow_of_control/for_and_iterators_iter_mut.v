@@ -47,9 +47,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Bob" |);
-                              M.read (| mk_str "Frank" |);
-                              M.read (| mk_str "Ferris" |)
+                              M.read (| Value.String "Bob" |);
+                              M.read (| Value.String "Frank" |);
+                              M.read (| Value.String "Ferris" |)
                             ]
                         |)
                       ]
@@ -147,14 +147,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  mk_str "Ferris"
+                                                  Value.String "Ferris"
                                                 |) in
                                               M.alloc (|
-                                                M.read (| mk_str "There is a rustacean among us!" |)
+                                                M.read (|
+                                                  Value.String "There is a rustacean among us!"
+                                                |)
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (| M.read (| mk_str "Hello" |) |)))
+                                              (M.alloc (| M.read (| Value.String "Hello" |) |)))
                                         ]
                                       |)
                                     |)
@@ -177,7 +179,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "names: " |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "names: " |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)

@@ -56,8 +56,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "A byte string: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "A byte string: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -98,8 +101,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Some escaped bytes: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Some escaped bytes: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -139,7 +145,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
@@ -205,8 +212,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "And the same as text: '" |);
-                                        M.read (| mk_str "'
+                                        M.read (| Value.String "And the same as text: '" |);
+                                        M.read (| Value.String "'
 " |)
                                       ]
                                   |));
@@ -272,8 +279,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Conversion successful: '" |);
-                                      M.read (| mk_str "'
+                                      M.read (| Value.String "Conversion successful: '" |);
+                                      M.read (| Value.String "'
 " |)
                                     ]
                                 |));
@@ -324,8 +331,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "Conversion failed: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "Conversion failed: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));

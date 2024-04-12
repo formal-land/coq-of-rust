@@ -25,8 +25,11 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`elided_input`: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`elided_input`: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -78,8 +81,11 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`annotated_input`: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`annotated_input`: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -179,8 +185,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`elided_pass`: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`elided_pass`: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -226,8 +235,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "`annotated_pass`: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "`annotated_pass`: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

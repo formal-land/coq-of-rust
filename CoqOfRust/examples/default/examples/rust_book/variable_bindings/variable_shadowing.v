@@ -41,8 +41,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "before being shadowed: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "before being shadowed: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -67,7 +67,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let shadowed_binding := M.copy (| mk_str "abc" |) in
+          let shadowed_binding := M.copy (| Value.String "abc" |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -82,8 +82,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "shadowed in inner block: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "shadowed in inner block: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -122,8 +122,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "outside inner block: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "outside inner block: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -161,8 +164,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "shadowed in outer block: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "shadowed in outer block: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

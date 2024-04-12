@@ -36,7 +36,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
                         "std::panicking::begin_panic",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| mk_str "division by zero" |) ]
+                      [ M.read (| Value.String "division by zero" |) ]
                     |)
                   |)
                 |)));
@@ -99,7 +99,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "This point won't be reached!
+                          Value.Array [ M.read (| Value.String "This point won't be reached!
 " |) ]
                         |))
                     ]

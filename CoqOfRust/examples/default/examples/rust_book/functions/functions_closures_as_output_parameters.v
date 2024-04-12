@@ -17,7 +17,7 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-              [ M.read (| mk_str "Fn" |) ]
+              [ M.read (| Value.String "Fn" |) ]
             |)
           |) in
         M.alloc (|
@@ -49,8 +49,8 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                                           (M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| mk_str "This is a: " |);
-                                                M.read (| mk_str "
+                                                M.read (| Value.String "This is a: " |);
+                                                M.read (| Value.String "
 " |)
                                               ]
                                           |));
@@ -105,7 +105,7 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-              [ M.read (| mk_str "FnMut" |) ]
+              [ M.read (| Value.String "FnMut" |) ]
             |)
           |) in
         M.alloc (|
@@ -137,8 +137,8 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                                           (M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| mk_str "This is a: " |);
-                                                M.read (| mk_str "
+                                                M.read (| Value.String "This is a: " |);
+                                                M.read (| Value.String "
 " |)
                                               ]
                                           |));
@@ -193,7 +193,7 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-              [ M.read (| mk_str "FnOnce" |) ]
+              [ M.read (| Value.String "FnOnce" |) ]
             |)
           |) in
         M.alloc (|
@@ -225,8 +225,8 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                                           (M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| mk_str "This is a: " |);
-                                                M.read (| mk_str "
+                                                M.read (| Value.String "This is a: " |);
+                                                M.read (| Value.String "
 " |)
                                               ]
                                           |));

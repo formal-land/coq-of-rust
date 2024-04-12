@@ -117,8 +117,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.pointer_coercion
                                                         (M.alloc (|
                                                           Value.Array
-                                                            [ M.read (| mk_str "fizzbuzz
-" |) ]
+                                                            [ M.read (| Value.String "fizzbuzz
+" |)
+                                                            ]
                                                         |))
                                                     ]
                                                   |)
@@ -169,8 +170,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               M.pointer_coercion
                                                                 (M.alloc (|
                                                                   Value.Array
-                                                                    [ M.read (| mk_str "fizz
-" |) ]
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String "fizz
+"
+                                                                      |)
+                                                                    ]
                                                                 |))
                                                             ]
                                                           |)
@@ -224,7 +229,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                           Value.Array
                                                                             [
                                                                               M.read (|
-                                                                                mk_str "buzz
+                                                                                Value.String "buzz
 "
                                                                               |)
                                                                             ]
@@ -261,10 +266,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                           Value.Array
                                                                             [
                                                                               M.read (|
-                                                                                mk_str ""
+                                                                                Value.String ""
                                                                               |);
                                                                               M.read (|
-                                                                                mk_str "
+                                                                                Value.String "
 "
                                                                               |)
                                                                             ]

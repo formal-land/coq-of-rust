@@ -28,7 +28,8 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::option::Option::Some",
                     0
                   |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), mk_str "lemonade" |) in
+                let _ :=
+                  M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.String "lemonade" |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -44,7 +45,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "Yuck! Too sugary.
+                                Value.Array [ M.read (| Value.String "Yuck! Too sugary.
 " |) ]
                               |))
                           ]
@@ -78,8 +79,11 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "" |); M.read (| mk_str "? How nice.
-" |) ]
+                                  [
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String "? How nice.
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -119,7 +123,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "No drink? Oh well.
+                                Value.Array [ M.read (| Value.String "No drink? Oh well.
 " |) ]
                               |))
                           ]
@@ -181,7 +185,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                             "eq",
                             []
                           |),
-                          [ inside; mk_str "lemonade" ]
+                          [ inside; Value.String "lemonade" ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -192,7 +196,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                           "std::panicking::begin_panic",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| mk_str "AAAaaaaa!!!!" |) ]
+                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                       |)
                     |)
                   |)));
@@ -212,8 +216,11 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "I love " |); M.read (| mk_str "s!!!!!
-" |) ]
+                            [
+                              M.read (| Value.String "I love " |);
+                              M.read (| Value.String "s!!!!!
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -265,11 +272,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let water :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| mk_str "water" |) ]
+            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "water" |) ]
           |) in
         let lemonade :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| mk_str "lemonade" |) ]
+            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "lemonade" |) ]
           |) in
         let void := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let _ :=
@@ -295,7 +302,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let coffee :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| mk_str "coffee" |) ]
+            Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "coffee" |) ]
           |) in
         let nothing := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let _ :=

@@ -89,9 +89,9 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "" |);
-                                    M.read (| mk_str " / " |);
-                                    M.read (| mk_str " failed!
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " / " |);
+                                    M.read (| Value.String " failed!
 " |)
                                   ]
                               |));
@@ -150,10 +150,10 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "" |);
-                                    M.read (| mk_str " / " |);
-                                    M.read (| mk_str " = " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " / " |);
+                                    M.read (| Value.String " = " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -261,9 +261,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " unwraps to " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " unwraps to " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -321,9 +321,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "" |);
-                              M.read (| mk_str " unwraps to " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " unwraps to " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

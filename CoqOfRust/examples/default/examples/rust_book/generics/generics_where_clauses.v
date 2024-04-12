@@ -31,7 +31,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                            Value.Array
+                              [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                           |));
                         (* Unsize *)

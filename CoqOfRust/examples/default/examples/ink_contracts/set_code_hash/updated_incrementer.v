@@ -156,7 +156,7 @@ Module Impl_updated_incrementer_Incrementer.
               "core::panicking::unreachable_display",
               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
             |),
-            [ mk_str "Constructors are not called when upgrading using `set_code_hash`." ]
+            [ Value.String "Constructors are not called when upgrading using `set_code_hash`." ]
           |)
         |)))
     | _, _ => M.impossible
@@ -200,9 +200,9 @@ Module Impl_updated_incrementer_Incrementer.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "The new count is " |);
+                                M.read (| Value.String "The new count is " |);
                                 M.read (|
-                                  mk_str
+                                  Value.String
                                     ", it was modified using the updated `new_incrementer` code.
 "
                                 |)
@@ -325,7 +325,7 @@ Module Impl_updated_incrementer_Incrementer.
                                       |),
                                       [
                                         M.read (|
-                                          mk_str
+                                          Value.String
                                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
                                         |)
                                       ]
@@ -352,8 +352,8 @@ Module Impl_updated_incrementer_Incrementer.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Switched code hash to " |);
-                                M.read (| mk_str ".
+                                M.read (| Value.String "Switched code hash to " |);
+                                M.read (| Value.String ".
 " |)
                               ]
                           |));

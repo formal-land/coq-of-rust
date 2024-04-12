@@ -90,7 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "The rich have lots of money!
+                                    [ M.read (| Value.String "The rich have lots of money!
 " |) ]
                                 |))
                             ]
@@ -116,7 +116,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "The poor have no money...
+                                  Value.Array
+                                    [ M.read (| Value.String "The poor have no money...
 " |) ]
                                 |))
                             ]
@@ -146,8 +147,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "Civilians work!
-" |) ] |))
+                              (M.alloc (|
+                                Value.Array [ M.read (| Value.String "Civilians work!
+" |) ]
+                              |))
                           ]
                         |)
                       ]
@@ -170,8 +173,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "Soldiers fight!
-" |) ] |))
+                              (M.alloc (|
+                                Value.Array [ M.read (| Value.String "Soldiers fight!
+" |) ]
+                              |))
                           ]
                         |)
                       ]

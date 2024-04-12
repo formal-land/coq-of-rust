@@ -202,11 +202,11 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "InsufficientBalance" |) |)));
+                      M.alloc (| M.read (| Value.String "InsufficientBalance" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "InsufficientAllowance" |) |)))
+                      M.alloc (| M.read (| Value.String "InsufficientAllowance" |) |)))
                 ]
               |)
             |)

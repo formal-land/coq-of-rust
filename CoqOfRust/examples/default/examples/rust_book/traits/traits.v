@@ -30,9 +30,9 @@ Module Animal.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "" |);
-                                M.read (| mk_str " says " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "" |);
+                                M.read (| Value.String " says " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -184,8 +184,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  mk_str "baaaaah?"));
-              fun γ => ltac:(M.monadic (mk_str "baaaaah!"))
+                  Value.String "baaaaah?"));
+              fun γ => ltac:(M.monadic (Value.String "baaaaah!"))
             ]
           |)
         |)))
@@ -218,9 +218,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "" |);
-                                M.read (| mk_str " pauses briefly... " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "" |);
+                                M.read (| Value.String " pauses briefly... " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));
@@ -344,8 +344,8 @@ Module Impl_traits_Sheep.
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "" |);
-                                        M.read (| mk_str " is already naked...
+                                        M.read (| Value.String "" |);
+                                        M.read (| Value.String " is already naked...
 " |)
                                       ]
                                   |));
@@ -404,8 +404,8 @@ Module Impl_traits_Sheep.
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "" |);
-                                        M.read (| mk_str " gets a haircut!
+                                        M.read (| Value.String "" |);
+                                        M.read (| Value.String " gets a haircut!
 " |)
                                       ]
                                   |));
@@ -472,7 +472,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "new", [] |),
-              [ M.read (| mk_str "Dolly" |) ]
+              [ M.read (| Value.String "Dolly" |) ]
             |)
           |) in
         let _ :=

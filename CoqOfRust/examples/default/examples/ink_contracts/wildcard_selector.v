@@ -102,9 +102,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "Wildcard selector: " |);
-                                        M.read (| mk_str ", message: " |);
-                                        M.read (| mk_str "
+                                        M.read (| Value.String "Wildcard selector: " |);
+                                        M.read (| Value.String ", message: " |);
+                                        M.read (| Value.String "
 " |)
                                       ]
                                   |));
@@ -172,8 +172,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                           (M.alloc (|
                             Value.Array
                               [
-                                M.read (| mk_str "Wildcard complement message: " |);
-                                M.read (| mk_str "
+                                M.read (| Value.String "Wildcard complement message: " |);
+                                M.read (| Value.String "
 " |)
                               ]
                           |));

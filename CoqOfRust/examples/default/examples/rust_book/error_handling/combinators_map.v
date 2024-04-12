@@ -47,15 +47,15 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Apple" |) |)));
+                      M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Carrot" |) |)));
+                      M.alloc (| M.read (| Value.String "Carrot" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Potato" |) |)))
+                      M.alloc (| M.read (| Value.String "Potato" |) |)))
                 ]
               |)
             |)
@@ -97,7 +97,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Peeled" |);
+            M.read (| Value.String "Peeled" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -141,7 +141,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Chopped" |);
+            M.read (| Value.String "Chopped" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -185,7 +185,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
           |),
           [
             M.read (| f |);
-            M.read (| mk_str "Cooked" |);
+            M.read (| Value.String "Cooked" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
@@ -498,8 +498,11 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "Mmm. I love " |); M.read (| mk_str "
-" |) ]
+                                  [
+                                    M.read (| Value.String "Mmm. I love " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -539,7 +542,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                             (* Unsize *)
                             M.pointer_coercion
                               (M.alloc (|
-                                Value.Array [ M.read (| mk_str "Oh no! It wasn't edible.
+                                Value.Array
+                                  [ M.read (| Value.String "Oh no! It wasn't edible.
 " |) ]
                               |))
                           ]

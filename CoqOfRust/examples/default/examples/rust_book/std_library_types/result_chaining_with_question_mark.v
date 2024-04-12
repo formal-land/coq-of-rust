@@ -48,15 +48,15 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "DivisionByZero" |) |)));
+                        M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "NonPositiveLogarithm" |) |)));
+                        M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| mk_str "NegativeSquareRoot" |) |)))
+                        M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
                   ]
                 |)
               |)
@@ -472,14 +472,15 @@ Module checked.
                           M.match_operator (|
                             why,
                             [
-                              fun γ => ltac:(M.monadic (mk_str "logarithm of non-positive number"));
+                              fun γ =>
+                                ltac:(M.monadic (Value.String "logarithm of non-positive number"));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.read (| mk_str "division by zero" |) |)));
+                                  (M.alloc (| M.read (| Value.String "division by zero" |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    M.read (| mk_str "square root of negative number" |)
+                                    M.read (| Value.String "square root of negative number" |)
                                   |)))
                             ]
                           |)
@@ -511,7 +512,8 @@ Module checked.
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                                 |));
                               (* Unsize *)

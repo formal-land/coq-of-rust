@@ -158,11 +158,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                   Value.Array
                                                                                     [
                                                                                       M.read (|
-                                                                                        mk_str
+                                                                                        Value.String
                                                                                           "this is thread number "
                                                                                       |);
                                                                                       M.read (|
-                                                                                        mk_str "
+                                                                                        Value.String
+                                                                                          "
 "
                                                                                       |)
                                                                                     ]

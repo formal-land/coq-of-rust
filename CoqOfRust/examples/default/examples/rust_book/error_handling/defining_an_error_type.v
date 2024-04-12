@@ -20,7 +20,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "DoubleError" |) ]
+          [ M.read (| f |); M.read (| Value.String "DoubleError" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -84,7 +84,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
               [
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.alloc (| Value.Array [ M.read (| mk_str "invalid first item to double" |) ] |))
+                  (M.alloc (|
+                    Value.Array [ M.read (| Value.String "invalid first item to double" |) ]
+                  |))
               ]
             |)
           ]
@@ -304,8 +306,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| mk_str "The first doubled is " |);
-                                    M.read (| mk_str "
+                                    M.read (| Value.String "The first doubled is " |);
+                                    M.read (| Value.String "
 " |)
                                   ]
                               |));
@@ -351,8 +353,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "Error: " |); M.read (| mk_str "
-" |) ]
+                                  [
+                                    M.read (| Value.String "Error: " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -424,9 +429,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "42" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "42" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]
@@ -475,9 +480,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "tofu" |);
-                              M.read (| mk_str "93" |);
-                              M.read (| mk_str "18" |)
+                              M.read (| Value.String "tofu" |);
+                              M.read (| Value.String "93" |);
+                              M.read (| Value.String "18" |)
                             ]
                         |)
                       ]

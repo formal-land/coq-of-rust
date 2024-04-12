@@ -32,8 +32,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "1 + 2 = " |); M.read (| mk_str "
-" |) ]
+                            Value.Array
+                              [ M.read (| Value.String "1 + 2 = " |); M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -74,8 +76,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "3 + 4 = " |); M.read (| mk_str "
-" |) ]
+                            Value.Array
+                              [ M.read (| Value.String "3 + 4 = " |); M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion
@@ -119,8 +123,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "(2 * 3) + 1 = " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "(2 * 3) + 1 = " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

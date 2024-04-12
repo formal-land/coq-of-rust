@@ -58,7 +58,8 @@ Module main.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "arg = " |); M.read (| mk_str "
+                            Value.Array
+                              [ M.read (| Value.String "arg = " |); M.read (| Value.String "
 " |) ]
                           |));
                         (* Unsize *)

@@ -28,8 +28,8 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Destroying a box that contains " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Destroying a box that contains " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -121,9 +121,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "x is " |);
-                              M.read (| mk_str ", and y is " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "x is " |);
+                              M.read (| Value.String ", and y is " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -182,8 +182,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "a contains: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "a contains: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

@@ -25,7 +25,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "Hello World!
+                        (M.alloc (| Value.Array [ M.read (| Value.String "Hello World!
 " |) ] |))
                     ]
                   |)

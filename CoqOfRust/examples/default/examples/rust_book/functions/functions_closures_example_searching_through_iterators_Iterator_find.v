@@ -163,8 +163,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Find 2 in vec1: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Find 2 in vec1: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -252,8 +255,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Find 2 in vec2: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Find 2 in vec2: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -348,8 +354,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Find 2 in array1: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Find 2 in array1: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -446,8 +455,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "Find 2 in array2: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "Find 2 in array2: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

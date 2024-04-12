@@ -69,7 +69,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           Value.Array
                             [
                               M.read (|
-                                mk_str "Find the sum of all the squared odd numbers under 1000
+                                Value.String
+                                  "Find the sum of all the squared odd numbers under 1000
 "
                               |)
                             ]
@@ -218,8 +219,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "imperative style: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "imperative style: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -407,8 +411,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "functional style: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "functional style: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

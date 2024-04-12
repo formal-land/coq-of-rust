@@ -26,8 +26,8 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "Destroying box that contains " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "Destroying box that contains " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -85,8 +85,11 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "This int is: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "This int is: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

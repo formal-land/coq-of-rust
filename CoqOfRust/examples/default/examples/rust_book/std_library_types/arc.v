@@ -37,7 +37,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ M.read (| mk_str "the same apple" |) ]
+              [ M.read (| Value.String "the same apple" |) ]
             |)
           |) in
         let _ :=
@@ -154,10 +154,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                               Value.Array
                                                                                 [
                                                                                   M.read (|
-                                                                                    mk_str ""
+                                                                                    Value.String ""
                                                                                   |);
                                                                                   M.read (|
-                                                                                    mk_str "
+                                                                                    Value.String "
 "
                                                                                   |)
                                                                                 ]

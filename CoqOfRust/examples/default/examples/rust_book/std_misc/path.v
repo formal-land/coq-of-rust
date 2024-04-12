@@ -36,7 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
-              [ M.read (| mk_str "." |) ]
+              [ M.read (| Value.String "." |) ]
             |)
           |) in
         let _display :=
@@ -71,12 +71,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           "join",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| path |); M.read (| mk_str "a" |) ]
+                        [ M.read (| path |); M.read (| Value.String "a" |) ]
                       |)
                     |)
                   ]
                 |);
-                M.read (| mk_str "b" |)
+                M.read (| Value.String "b" |)
               ]
             |)
           |) in
@@ -88,7 +88,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| mk_str "c" |) ]
+              [ new_path; M.read (| Value.String "c" |) ]
             |)
           |) in
         let _ :=
@@ -99,7 +99,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| mk_str "myfile.tar.gz" |) ]
+              [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
             |)
           |) in
         let _ :=
@@ -110,7 +110,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "set_file_name",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| mk_str "package.tgz" |) ]
+              [ new_path; M.read (| Value.String "package.tgz" |) ]
             |)
           |) in
         M.match_operator (|
@@ -141,7 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "std::panicking::begin_panic",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| mk_str "new path is not a valid UTF-8 sequence" |) ]
+                      [ M.read (| Value.String "new path is not a valid UTF-8 sequence" |) ]
                     |)
                   |)
                 |)));
@@ -170,8 +170,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "new path is " |); M.read (| mk_str "
-" |) ]
+                                  [
+                                    M.read (| Value.String "new path is " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion

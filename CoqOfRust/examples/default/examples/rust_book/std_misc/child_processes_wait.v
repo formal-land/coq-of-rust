@@ -42,10 +42,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "new",
                               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                             |),
-                            [ M.read (| mk_str "sleep" |) ]
+                            [ M.read (| Value.String "sleep" |) ]
                           |)
                         |);
-                        M.read (| mk_str "5" |)
+                        M.read (| Value.String "5" |)
                       ]
                     |)
                   ]
@@ -82,8 +82,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "reached end of main
-" |) ] |))
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "reached end of main
+" |) ]
+                        |))
                     ]
                   |)
                 ]

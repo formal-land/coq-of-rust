@@ -59,8 +59,10 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            Value.Array [ M.read (| mk_str "`print`: " |); M.read (| mk_str "
-" |) ]
+                            Value.Array
+                              [ M.read (| Value.String "`print`: " |); M.read (| Value.String "
+" |)
+                              ]
                           |));
                         (* Unsize *)
                         M.pointer_coercion

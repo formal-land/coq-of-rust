@@ -47,7 +47,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "from",
                       []
                     |),
-                    [ M.read (| mk_str "Alice" |) ]
+                    [ M.read (| Value.String "Alice" |) ]
                   |));
                 ("age",
                   M.call_closure (|
@@ -99,8 +99,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "The person's age is " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "The person's age is " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -151,8 +151,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "The person's name is " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "The person's name is " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -195,8 +195,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "The person's age from person struct is " |);
-                                      M.read (| mk_str "
+                                      M.read (|
+                                        Value.String "The person's age from person struct is "
+                                      |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -269,15 +271,15 @@ Module main.
             |),
             [
               M.read (| f |);
-              M.read (| mk_str "Person" |);
-              M.read (| mk_str "name" |);
+              M.read (| Value.String "Person" |);
+              M.read (| Value.String "name" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.get_struct_record_field
                   (M.read (| self |))
                   "scoping_rules_ownership_and_rules_partial_moves::main::Person"
                   "name");
-              M.read (| mk_str "age" |);
+              M.read (| Value.String "age" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|

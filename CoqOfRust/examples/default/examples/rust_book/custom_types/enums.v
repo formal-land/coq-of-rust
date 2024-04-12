@@ -80,7 +80,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.read (|
-                                      mk_str
+                                      Value.String
                                         ("page loaded, r"
                                           ++
                                           (String.String "233" ("f" ++ (String.String "233" "
@@ -110,8 +110,10 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| mk_str "page unloaded
-" |) ] |))
+                              (M.alloc (|
+                                Value.Array [ M.read (| Value.String "page unloaded
+" |) ]
+                              |))
                           ]
                         |)
                       ]
@@ -139,8 +141,11 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "pressed '" |); M.read (| mk_str "'.
-" |) ]
+                                  [
+                                    M.read (| Value.String "pressed '" |);
+                                    M.read (| Value.String "'.
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -184,8 +189,11 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "pasted """ |); M.read (| mk_str """.
-" |) ]
+                                  [
+                                    M.read (| Value.String "pasted """ |);
+                                    M.read (| Value.String """.
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -234,9 +242,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "clicked at x=" |);
-                                      M.read (| mk_str ", y=" |);
-                                      M.read (| mk_str ".
+                                      M.read (| Value.String "clicked at x=" |);
+                                      M.read (| Value.String ", y=" |);
+                                      M.read (| Value.String ".
 " |)
                                     ]
                                 |));
@@ -312,7 +320,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "to_owned",
                     []
                   |),
-                  [ M.read (| mk_str "my text" |) ]
+                  [ M.read (| Value.String "my text" |) ]
                 |)
               ]
           |) in

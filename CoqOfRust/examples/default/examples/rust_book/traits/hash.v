@@ -153,7 +153,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "to_string",
                       []
                     |),
-                    [ M.read (| mk_str "Janet" |) ]
+                    [ M.read (| Value.String "Janet" |) ]
                   |));
                 ("phone", Value.Integer Integer.U64 5556667777)
               ]
@@ -173,7 +173,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "to_string",
                       []
                     |),
-                    [ M.read (| mk_str "Bob" |) ]
+                    [ M.read (| Value.String "Bob" |) ]
                   |));
                 ("phone", Value.Integer Integer.U64 5556667777)
               ]
@@ -211,7 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_function (| "core::panicking::panic", [] |),
                         [
                           M.read (|
-                            mk_str
+                            Value.String
                               "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
                           |)
                         ]

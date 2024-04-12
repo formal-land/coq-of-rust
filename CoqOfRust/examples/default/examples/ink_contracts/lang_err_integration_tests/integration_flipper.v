@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| mk_str "FlipperError" |) ]
+          [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
         |)))
     | _, _ => M.impossible
     end.

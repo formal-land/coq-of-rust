@@ -57,23 +57,23 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Apple" |) |)));
+                      M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Orange" |) |)));
+                      M.alloc (| M.read (| Value.String "Orange" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Banana" |) |)));
+                      M.alloc (| M.read (| Value.String "Banana" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Kiwi" |) |)));
+                      M.alloc (| M.read (| Value.String "Kiwi" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| mk_str "Lemon" |) |)))
+                      M.alloc (| M.read (| Value.String "Lemon" |) |)))
                 ]
               |)
             |)
@@ -152,7 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Value.Array
                                                   [
                                                     M.read (|
-                                                      mk_str "Providing lemon as fallback
+                                                      Value.String "Providing lemon as fallback
 "
                                                     |)
                                                   ]
@@ -204,8 +204,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "my_fruit is: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "my_fruit is: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -249,8 +252,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "first_available_fruit is: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "first_available_fruit is: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -322,8 +325,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "should_be_apple is: " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "should_be_apple is: " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -366,7 +372,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "my_apple is unchanged: " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "my_apple is unchanged: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

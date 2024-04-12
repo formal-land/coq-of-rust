@@ -129,8 +129,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "ref_c1 equals ref_c2: " |);
-                                      M.read (| mk_str "
+                                      M.read (| Value.String "ref_c1 equals ref_c2: " |);
+                                      M.read (| Value.String "
 " |)
                                     ]
                                 |));
@@ -234,9 +234,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "point is (" |);
-                                      M.read (| mk_str ", " |);
-                                      M.read (| mk_str ")
+                                      M.read (| Value.String "point is (" |);
+                                      M.read (| Value.String ", " |);
+                                      M.read (| Value.String ")
 " |)
                                     ]
                                 |));
@@ -297,9 +297,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (| mk_str "mutable_point is (" |);
-                                      M.read (| mk_str ", " |);
-                                      M.read (| mk_str ")
+                                      M.read (| Value.String "mutable_point is (" |);
+                                      M.read (| Value.String ", " |);
+                                      M.read (| Value.String ")
 " |)
                                     ]
                                 |));
@@ -389,8 +389,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.pointer_coercion
                                 (M.alloc (|
                                   Value.Array
-                                    [ M.read (| mk_str "tuple is " |); M.read (| mk_str "
-" |) ]
+                                    [
+                                      M.read (| Value.String "tuple is " |);
+                                      M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion

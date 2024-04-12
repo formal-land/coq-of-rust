@@ -103,12 +103,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let greeting := M.copy (| mk_str "hello" |) in
+        let greeting := M.copy (| Value.String "hello" |) in
         let farewell :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-              [ M.read (| mk_str "goodbye" |) ]
+              [ M.read (| Value.String "goodbye" |) ]
             |)
           |) in
         let diary :=
@@ -142,8 +142,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               (M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (| mk_str "I said " |);
-                                                    M.read (| mk_str ".
+                                                    M.read (| Value.String "I said " |);
+                                                    M.read (| Value.String ".
 " |)
                                                   ]
                                               |));
@@ -176,7 +176,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "push_str",
                                       []
                                     |),
-                                    [ farewell; M.read (| mk_str "!!!" |) ]
+                                    [ farewell; M.read (| Value.String "!!!" |) ]
                                   |)
                                 |) in
                               let _ :=
@@ -197,8 +197,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               (M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (| mk_str "Then I screamed " |);
-                                                    M.read (| mk_str ".
+                                                    M.read (| Value.String "Then I screamed " |);
+                                                    M.read (| Value.String ".
 " |)
                                                   ]
                                               |));
@@ -240,8 +240,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.pointer_coercion
                                               (M.alloc (|
                                                 Value.Array
-                                                  [ M.read (| mk_str "Now I can sleep. zzzzz
-" |) ]
+                                                  [
+                                                    M.read (|
+                                                      Value.String "Now I can sleep. zzzzz
+"
+                                                    |)
+                                                  ]
                                               |))
                                           ]
                                         |)
@@ -307,8 +311,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "3 doubled: " |); M.read (| mk_str "
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "3 doubled: " |); M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion

@@ -25,7 +25,8 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Debug: `" |); M.read (| mk_str "`
+                          Value.Array
+                            [ M.read (| Value.String "Debug: `" |); M.read (| Value.String "`
 " |) ]
                         |));
                       (* Unsize *)
@@ -61,8 +62,10 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "Display: `" |); M.read (| mk_str "`
-" |) ]
+                          Value.Array
+                            [ M.read (| Value.String "Display: `" |); M.read (| Value.String "`
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -115,7 +118,8 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "t: `" |); M.read (| mk_str "`
+                          Value.Array
+                            [ M.read (| Value.String "t: `" |); M.read (| Value.String "`
 " |) ]
                         |));
                       (* Unsize *)
@@ -151,7 +155,8 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "u: `" |); M.read (| mk_str "`
+                          Value.Array
+                            [ M.read (| Value.String "u: `" |); M.read (| Value.String "`
 " |) ]
                         |));
                       (* Unsize *)
@@ -198,7 +203,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let string := M.copy (| mk_str "words" |) in
+        let string := M.copy (| Value.String "words" |) in
         let array :=
           M.alloc (|
             Value.Array

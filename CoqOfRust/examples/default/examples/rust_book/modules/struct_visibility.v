@@ -75,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
-              [ ("contents", M.read (| mk_str "public information" |)) ]
+              [ ("contents", M.read (| Value.String "public information" |)) ]
           |) in
         let _ :=
           let _ :=
@@ -90,7 +90,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "The open box contains: " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "The open box contains: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -130,7 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ M.read (| mk_str "classified information" |) ]
+              [ M.read (| Value.String "classified information" |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

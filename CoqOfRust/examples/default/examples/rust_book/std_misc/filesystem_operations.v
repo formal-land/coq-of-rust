@@ -385,7 +385,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`mkdir a`
+                        (M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
 " |) ] |))
                     ]
                   |)
@@ -401,7 +401,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "std::fs::create_dir",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ M.read (| mk_str "a" |) ]
+                [ M.read (| Value.String "a" |) ]
               |)
             |),
             [
@@ -429,8 +429,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
-" |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -487,7 +489,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "`echo hello > a/b.txt`
+                          Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
 " |) ]
                         |))
                     ]
@@ -510,14 +512,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (| "filesystem_operations::echo", [] |),
                   [
-                    M.read (| mk_str "hello" |);
+                    M.read (| Value.String "hello" |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "std::path::Path",
                         "new",
                         [ Ty.path "str" ]
                       |),
-                      [ M.read (| mk_str "a/b.txt" |) ]
+                      [ M.read (| Value.String "a/b.txt" |) ]
                     |)
                   ]
                 |);
@@ -551,240 +553,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   (M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (| mk_str "! " |);
-                                                        M.read (| mk_str "
-" |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)
-          |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`mkdir -p a/c/d`
-" |) ] |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                "unwrap_or_else",
-                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_function (|
-                    "std::fs::create_dir_all",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                  |),
-                  [ M.read (| mk_str "a/c/d" |) ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
-                                M.read (|
-                                  let _ :=
-                                    let _ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_function (| "std::io::stdio::_print", [] |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                []
-                                              |),
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| mk_str "! " |);
-                                                        M.read (| mk_str "
-" |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)
-          |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`touch a/c/e.txt`
-" |) ] |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                "unwrap_or_else",
-                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_function (| "filesystem_operations::touch", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::path::Path",
-                        "new",
-                        [ Ty.path "str" ]
-                      |),
-                      [ M.read (| mk_str "a/c/e.txt" |) ]
-                    |)
-                  ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
-                                M.read (|
-                                  let _ :=
-                                    let _ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_function (| "std::io::stdio::_print", [] |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                []
-                                              |),
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| mk_str "! " |);
-                                                        M.read (| mk_str "
+                                                        M.read (| Value.String "! " |);
+                                                        M.read (| Value.String "
 " |)
                                                       ]
                                                   |));
@@ -841,7 +611,243 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "`ln -s ../b.txt a/c/b.txt`
+                          Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
+" |) ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (|
+                    "std::fs::create_dir_all",
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  |),
+                  [ M.read (| Value.String "a/c/d" |) ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "! " |);
+                                                        M.read (| Value.String "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
+" |) ]
+                        |))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
+        let _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                "unwrap_or_else",
+                [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_function (| "filesystem_operations::touch", [] |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "std::path::Path",
+                        "new",
+                        [ Ty.path "str" ]
+                      |),
+                      [ M.read (| Value.String "a/c/e.txt" |) ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let why := M.copy (| γ |) in
+                                M.read (|
+                                  let _ :=
+                                    let _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "std::io::stdio::_print", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "! " |);
+                                                        M.read (| Value.String "
+" |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [ Ty.path "std::io::error::ErrorKind" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "std::io::error::Error",
+                                                                  "kind",
+                                                                  []
+                                                                |),
+                                                                [ why ]
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)
+                      | _ => M.impossible (||)
+                      end))
+              ]
+            |)
+          |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.alloc (|
+                          Value.Array [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
 " |) ]
                         |))
                     ]
@@ -881,7 +887,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 Ty.apply (Ty.path "&") [ Ty.path "str" ]
                               ]
                             |),
-                            [ M.read (| mk_str "../b.txt" |); M.read (| mk_str "a/c/b.txt" |) ]
+                            [
+                              M.read (| Value.String "../b.txt" |);
+                              M.read (| Value.String "a/c/b.txt" |)
+                            ]
                           |);
                           M.closure
                             (fun γ =>
@@ -916,8 +925,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             (M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (| mk_str "! " |);
-                                                                  M.read (| mk_str "
+                                                                  M.read (| Value.String "! " |);
+                                                                  M.read (| Value.String "
 " |)
                                                                 ]
                                                             |));
@@ -982,7 +991,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`cat a/c/b.txt`
+                        (M.alloc (| Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
 " |) ] |))
                     ]
                   |)
@@ -1002,7 +1011,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       [ Ty.path "str" ]
                     |),
-                    [ M.read (| mk_str "a/c/b.txt" |) ]
+                    [ M.read (| Value.String "a/c/b.txt" |) ]
                   |)
                 ]
               |)
@@ -1032,8 +1041,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
-" |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -1091,8 +1102,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "> " |); M.read (| mk_str "
-" |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "> " |); M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -1128,7 +1141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`ls a`
+                        (M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
 " |) ] |))
                     ]
                   |)
@@ -1144,7 +1157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "std::fs::read_dir",
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                 |),
-                [ M.read (| mk_str "a" |) ]
+                [ M.read (| Value.String "a" |) ]
               |)
             |),
             [
@@ -1172,8 +1185,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "! " |); M.read (| mk_str "
-" |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |)
+                                    ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -1283,8 +1298,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           (M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (| mk_str "> " |);
-                                                                M.read (| mk_str "
+                                                                M.read (| Value.String "> " |);
+                                                                M.read (| Value.String "
 " |)
                                                               ]
                                                           |));
@@ -1361,7 +1376,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`rm a/c/e.txt`
+                        (M.alloc (| Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
 " |) ] |))
                     ]
                   |)
@@ -1385,7 +1400,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "std::fs::remove_file",
                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                   |),
-                  [ M.read (| mk_str "a/c/e.txt" |) ]
+                  [ M.read (| Value.String "a/c/e.txt" |) ]
                 |);
                 M.closure
                   (fun γ =>
@@ -1417,8 +1432,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   (M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (| mk_str "! " |);
-                                                        M.read (| mk_str "
+                                                        M.read (| Value.String "! " |);
+                                                        M.read (| Value.String "
 " |)
                                                       ]
                                                   |));
@@ -1474,7 +1489,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| mk_str "`rmdir a/c/d`
+                        (M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
 " |) ] |))
                     ]
                   |)
@@ -1498,7 +1513,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "std::fs::remove_dir",
                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                   |),
-                  [ M.read (| mk_str "a/c/d" |) ]
+                  [ M.read (| Value.String "a/c/d" |) ]
                 |);
                 M.closure
                   (fun γ =>
@@ -1530,8 +1545,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   (M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (| mk_str "! " |);
-                                                        M.read (| mk_str "
+                                                        M.read (| Value.String "! " |);
+                                                        M.read (| Value.String "
 " |)
                                                       ]
                                                   |));

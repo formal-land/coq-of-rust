@@ -32,7 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
-              [ M.read (| mk_str "hello.txt" |) ]
+              [ M.read (| Value.String "hello.txt" |) ]
             |)
           |) in
         let display :=
@@ -86,8 +86,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| mk_str "couldn't open " |);
-                                        M.read (| mk_str ": " |)
+                                        M.read (| Value.String "couldn't open " |);
+                                        M.read (| Value.String ": " |)
                                       ]
                                   |));
                                 (* Unsize *)
@@ -174,7 +174,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "couldn't read " |); M.read (| mk_str ": " |) ]
+                                  [
+                                    M.read (| Value.String "couldn't read " |);
+                                    M.read (| Value.String ": " |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion
@@ -225,8 +228,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.pointer_coercion
                               (M.alloc (|
                                 Value.Array
-                                  [ M.read (| mk_str "" |); M.read (| mk_str " contains:
-" |) ]
+                                  [
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " contains:
+" |)
+                                  ]
                               |));
                             (* Unsize *)
                             M.pointer_coercion

@@ -52,7 +52,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "immutable_box contains " |); M.read (| mk_str "
+                            [
+                              M.read (| Value.String "immutable_box contains " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -95,8 +97,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.pointer_coercion
                         (M.alloc (|
                           Value.Array
-                            [ M.read (| mk_str "mutable_box contains " |); M.read (| mk_str "
-" |) ]
+                            [
+                              M.read (| Value.String "mutable_box contains " |);
+                              M.read (| Value.String "
+" |)
+                            ]
                         |));
                       (* Unsize *)
                       M.pointer_coercion
@@ -138,8 +143,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "mutable_box now contains " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "mutable_box now contains " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));

@@ -195,7 +195,8 @@ Module Impl_enums_testcase_linked_list_List.
                               (* Unsize *)
                               M.pointer_coercion
                                 (M.alloc (|
-                                  Value.Array [ M.read (| mk_str "" |); M.read (| mk_str ", " |) ]
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String ", " |) ]
                                 |));
                               (* Unsize *)
                               M.pointer_coercion
@@ -253,7 +254,7 @@ Module Impl_enums_testcase_linked_list_List.
                             [
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| mk_str "Nil" |) ] |))
+                                (M.alloc (| Value.Array [ M.read (| Value.String "Nil" |) ] |))
                             ]
                           |)
                         ]
@@ -346,8 +347,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (M.alloc (|
                           Value.Array
                             [
-                              M.read (| mk_str "linked list has length: " |);
-                              M.read (| mk_str "
+                              M.read (| Value.String "linked list has length: " |);
+                              M.read (| Value.String "
 " |)
                             ]
                         |));
@@ -395,7 +396,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       (* Unsize *)
                       M.pointer_coercion
                         (M.alloc (|
-                          Value.Array [ M.read (| mk_str "" |); M.read (| mk_str "
+                          Value.Array
+                            [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
                         |));
                       (* Unsize *)
