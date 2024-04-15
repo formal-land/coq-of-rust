@@ -109,6 +109,10 @@ pub(crate) enum Expr {
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
+    Match {
+        scrutinee: Rc<Expr>,
+        arms: Vec<Rc<Expr>>,
+    },
     Loop {
         body: Rc<Expr>,
     },
@@ -492,6 +496,13 @@ impl Expr {
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
+            Expr::Match { scrutinee, arms } => coq::Expression::just_name("M.match_operator")
+                .monadic_apply_many(&[
+                    scrutinee.to_coq(),
+                    coq::Expression::List {
+                        exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
+                    },
+                ]),
             Expr::Loop { body } => coq::Expression::just_name("M.loop")
                 .monadic_apply(&Rc::new(coq::Expression::monadic(&body.to_coq()))),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
