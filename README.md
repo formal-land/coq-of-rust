@@ -62,7 +62,7 @@ The [build tutorial](./docs/BUILD.md) provides detailed instructions on building
 ## Language features
 The translation works at the level of the [THIR](https://rustc-dev-guide.rust-lang.org/thir.html) intermediate representation of Rust.
 
-We support 80% of the Rust examples from the [Rust Book by Examples](https://doc.rust-lang.org/rust-by-example/). This includes:
+We support 99% of the Rust examples from the [Rust Book by Examples](https://doc.rust-lang.org/rust-by-example/). This includes:
 
 - basic control structures (like&nbsp;`if` and&nbsp;`match`)
 - loops (`while` and&nbsp;`for`)
