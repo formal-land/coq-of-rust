@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 Require CoqOfRust.core.simulations.default.
 Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
