@@ -4,6 +4,11 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 Module Bool.
+  Global Instance IsToValue : ToValue bool := {
+    Φ := Ty.path "bool";
+    φ := Value.Bool;
+  }.
+
   Definition and {State Error} (x y : MS? State Error bool) : MS? State Error bool :=
     letS? a := x in
     if negb a
