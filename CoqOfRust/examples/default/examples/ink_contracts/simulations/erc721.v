@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.examples.default.examples.ink_contracts.erc721.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.integer.
@@ -361,11 +360,172 @@ Definition approve
   letS? _ := approve_for env to token_id in
   returnS? (inr tt).
 
-(* TODO: *)
-(* remove_token_from *)
-(* add_token_to *)
-(* transfer_token_from *)
-(* transfer *)
-(* transfer_from *)
-(* mint *)
-(* burn *)
+Definition remove_token_from
+    (from : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  letS? '(storage, events) := readS? in
+  let token_owner :=  storage.(erc721.Erc721.token_owner) in
+  let owned_tokens_count := storage.(erc721.Erc721.owned_tokens_count) in
+  if
+    negb (simulations.lib.Mapping.contains token_id token_owner)
+  then
+    returnS? (inl erc721.Error.TokenNotFound)
+  else
+    match simulations.lib.Mapping.get from owned_tokens_count with
+    | None => returnS? (inl erc721.Error.CannotFetchValue)
+    | Some (U32.Make c) =>
+      let count := U32.Make (c - 1) in
+      letS? _ := writeS? (
+        storage <|
+          erc721.Erc721.owned_tokens_count :=
+            simulations.lib.Mapping.insert from count storage.(erc721.Erc721.owned_tokens_count)
+        |>,
+        events) in
+      letS? _ := writeS? (
+        storage <|
+          erc721.Erc721.token_owner :=
+            simulations.lib.Mapping.remove token_id token_owner
+        |>,
+        events) in
+      returnS? (inr tt)
+    end.
+
+Definition add_token_to
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  letS? '(storage, events) := readS? in
+  let token_owner := storage.(erc721.Erc721.token_owner) in
+  let owned_tokens_count := storage.(erc721.Erc721.owned_tokens_count) in
+  if
+    simulations.lib.Mapping.contains token_id token_owner
+  then
+    returnS? (inl erc721.Error.TokenExists)
+  else
+    if
+      AccountId.eq to AccountId.from_zero
+    then
+      returnS? (inl erc721.Error.NotAllowed)
+    else 
+      let count :=
+        match simulations.lib.Mapping.get to owned_tokens_count with
+        | None => U32.Make 1
+        | Some (U32.Make c) => U32.Make (c + 1)
+        end in
+      letS? _ := writeS? (
+        storage <|
+          erc721.Erc721.owned_tokens_count :=
+            simulations.lib.Mapping.insert to count storage.(erc721.Erc721.owned_tokens_count)
+        |>,
+        events) in
+      letS? _ := writeS? (
+        storage <|
+          erc721.Erc721.token_owner :=
+            simulations.lib.Mapping.insert token_id to token_owner
+        |>,
+        events) in
+      returnS? (inr tt).
+
+Definition transfer_token_from
+    (env : erc721.Env.t)
+    (from : erc721.AccountId.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  letS? '(storage, events) := readS? in
+  let caller := Env.caller env in
+  if negb (exists_ storage token_id)
+  then
+    returnS? (inl erc721.Error.TokenNotFound)
+  else
+    ifS? notS? (approved_or_owner (Some from) token_id)
+    then
+      returnS? (inl erc721.Error.NotOwner)
+    else
+      letS? _ := clear_approval token_id in
+      letS? _ := remove_token_from from token_id in
+      letS? _ := add_token_to to token_id in
+      let event := erc721.Event.Transfer {|
+          erc721.Transfer.from := Some from;
+          erc721.Transfer.to := Some to;
+          erc721.Transfer.id := token_id
+        |} in
+      letS? _ := writeS? (storage, event :: events) in
+      returnS? (inr tt).
+
+Definition transfer
+    (env : erc721.Env.t)
+    (destination : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  let caller := Env.caller env in
+  letS? _ := transfer_token_from env caller destination token_id in
+  returnS? (inr tt).
+
+Definition tansfer_from
+    (env : erc721.Env.t)
+    (from : erc721.AccountId.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  letS? _ := transfer_token_from env from to token_id in
+  returnS? (inr tt).
+
+Definition mint
+    (env : erc721.Env.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  let caller := Env.caller env in
+  letS? '(storage, events) := readS? in
+  letS? _ := add_token_to caller token_id in
+  let event :=
+    erc721.Event.Transfer {|
+      erc721.Transfer.from := Some (AccountId.from_zero);
+      erc721.Transfer.to := Some caller;
+      erc721.Transfer.id := token_id
+    |} in
+  letS? _ := writeS? (storage, event :: events) in
+  returnS? (inr tt).
+
+Definition burn
+    (env : erc721.Env.t)
+    (token_id : erc721.TokenId.t) :
+    MS? State.t string (erc721.Error.t + unit) :=
+  let caller := Env.caller env in
+  letS? '(storage, events) := readS? in
+  let token_owner := storage.(erc721.Erc721.token_owner) in
+  let owned_tokens_count := storage.(erc721.Erc721.owned_tokens_count) in
+  match simulations.lib.Mapping.get token_id token_owner with
+  | None => returnS? (inl erc721.Error.TokenNotFound)
+  | Some owner =>
+    if negb (AccountId.eq owner caller)
+    then
+      returnS? (inl erc721.Error.NotOwner)
+    else
+      match simulations.lib.Mapping.get owner owned_tokens_count with
+      | None => returnS? (inl erc721.Error.CannotFetchValue)
+      | Some (U32.Make c) =>
+        let count := U32.Make (c - 1) in
+        letS? _ := writeS? (
+          storage <|
+            erc721.Erc721.owned_tokens_count :=
+              simulations.lib.Mapping.insert caller count owned_tokens_count
+          |>,
+          events) in
+        letS? _ := writeS? (
+          storage <|
+            erc721.Erc721.token_owner :=
+              simulations.lib.Mapping.remove token_id token_owner
+          |>,
+          events) in
+        let event := erc721.Event.Transfer {|
+          erc721.Transfer.from := Some caller;
+          erc721.Transfer.to := Some AccountId.from_zero;
+          erc721.Transfer.id := token_id
+        |} in
+        letS? _ := writeS? (storage, event :: events) in
+        returnS? (inr tt)
+      end
+  end.
+
