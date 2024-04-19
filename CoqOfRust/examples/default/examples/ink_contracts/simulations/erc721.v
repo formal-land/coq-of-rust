@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
+Require Import CoqOfRust.core.simulations.result.
 Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.bool.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
@@ -463,7 +464,7 @@ Definition transfer
   letS? _ := transfer_token_from env caller destination token_id in
   returnS? (inr tt).
 
-Definition tansfer_from
+Definition transfer_from
     (env : erc721.Env.t)
     (from : erc721.AccountId.t)
     (to : erc721.AccountId.t)
