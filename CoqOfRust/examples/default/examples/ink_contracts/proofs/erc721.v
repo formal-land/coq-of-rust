@@ -266,3 +266,236 @@ Lemma run_is_approved_for_all
 Proof.
   admit.
 Admitted.
+
+Module Output.
+  Record t : Set := {
+    result : Value.t + Exception.t;
+    state : State.t;
+  }.
+  Arguments t : clear implicits.
+End Output.
+
+Definition lift_simulation {A : Set} `{ToValue A}
+  (simulation : MS? simulations.erc721.State.t string A)
+  (storage : erc721.Erc721.t) :
+  Output.t :=
+  let '(result, (storage, events)) := simulation (storage, []) in
+  let result :=
+    match result with
+    | inl result => inl (φ result)
+    | inr error => inr (M.Exception.Panic error)
+    end in
+  {|
+    Output.result := result;
+    Output.state := State.of_simulation (storage, events);
+  |}.
+
+(** The simulation [clear_approval] is equal. *)
+Lemma run_clear_approval
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.clear_approval token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.clear_approval [] [self; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [set_approval_for_all] is equal. *)
+Lemma run_set_approval_for_all
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (approved : bool) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.set_approval_for_all env to approved) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.set_approval_for_all [] [self; φ to; φ approved] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [approve_for] is equal. *)
+Lemma run_approve_for
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.approve_for env to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.approve_for [] [self; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+
+(** The simulation [approve] is equal. *)
+Lemma run_approve
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.approve env to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.approve [] [self; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [remove_token_from] is equal. *)
+Lemma run_remove_token_from
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (from : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.remove_token_from from token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.remove_token_from [] [self; φ from; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [add_token_to] is equal. *)
+Lemma run_add_token_to
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.add_token_to to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.add_token_to [] [self; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [transfer_token_from] is equal. *)
+Lemma run_transfer_token_from
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (from : erc721.AccountId.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.transfer_token_from env from to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.transfer_token_from [] [self; φ from; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [transfer] is equal. *)
+Lemma run_transfer
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.transfer env to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.transfer [] [self; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [tansfer_from] is equal. *)
+Lemma run_transfer_from
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (from : erc721.AccountId.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.transfer_from env from to token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.transfer_from [] [self; φ from; φ to; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [mint] is equal. *)
+Lemma run_mint
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (to : erc721.AccountId.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.mint env token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.mint [] [self; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
+
+(** The simulation [burn] is equal. *)
+Lemma run_burn
+    (env : erc721.Env.t)
+    (storage : erc721.Erc721.t)
+    (token_id : erc721.TokenId.t) :
+  let state := State.of_storage storage in
+  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let simulation :=
+    lift_simulation
+      (simulations.erc721.burn env token_id) storage in
+  {{ Environment.of_env env, state |
+    erc721.Impl_erc721_Erc721.burn [] [self; φ token_id] ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state) }}.
+Proof.
+  admit.
+Admitted.
