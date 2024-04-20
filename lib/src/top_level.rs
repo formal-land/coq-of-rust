@@ -1286,7 +1286,7 @@ impl ImplItemKind {
     /// polymorphic type variables.
     fn to_definition_name(&self, name: String) -> String {
         match self {
-            ImplItemKind::Type { .. } => format!("_{name}",),
+            ImplItemKind::Type { .. } => format!("_{name}"),
             _ => name,
         }
     }

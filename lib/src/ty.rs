@@ -179,7 +179,9 @@ impl CoqType {
         }
     }
 
-    // We use this function when we need a quick and recognizable name for a type
+    /// We use this function to get a name for a type for the `impl` sections. This function should
+    /// be injective, so that there is no confusion on the `Self` type that might be merged when we
+    /// merge multiple modules with the same name.
     pub(crate) fn to_name(&self) -> String {
         match self {
             CoqType::Var(name) => name.clone(),
