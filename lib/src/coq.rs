@@ -1,5 +1,3 @@
-use rpds::HashTrieMap;
-
 use crate::path::Path;
 use crate::render::{
     self, concat, curly_brackets, group, hardline, intersperse, line, list, nest, nil,
@@ -225,32 +223,83 @@ impl<'a> TopLevel {
         }
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        self.items
-            .iter()
-            .enumerate()
-            .fold(
-                (HashTrieMap::new(), nil()),
-                |(previous_module_names, doc), (index, item)| {
-                    let doc = concat([
-                        doc,
-                        if index != 0 { hardline() } else { nil() },
-                        item.to_doc(previous_module_names.clone()),
-                    ]);
-                    let previous_module_names = match item {
-                        TopLevelItem::Module(Module { name, items }) if !items.items.is_empty() => {
-                            previous_module_names.insert(
-                                name.clone(),
-                                *previous_module_names.get(name).unwrap_or(&0) + 1,
-                            )
-                        }
-                        _ => previous_module_names,
-                    };
+    /// Get the list of modules that have a given name, as well as the remaining items once we
+    /// remove those.
+    fn get_modules_of_name(
+        top_level_items: &[TopLevelItem],
+        name: &str,
+    ) -> (Vec<Module>, Vec<TopLevelItem>) {
+        top_level_items.iter().fold(
+            (vec![], vec![]),
+            |(mut matching_modules, mut other_items), item| {
+                match item {
+                    TopLevelItem::Module(module) if module.name == name => {
+                        matching_modules.push(module.clone());
+                    }
+                    _ => {
+                        other_items.push(item.clone());
+                    }
+                };
 
-                    (previous_module_names, doc)
-                },
-            )
-            .1
+                (matching_modules, other_items)
+            },
+        )
+    }
+
+    /// Remove a potential leading `Self` in the module, as this would collide with previous
+    /// definitions.
+    fn remove_self_ty(&self) -> Self {
+        match self.items.as_slice() {
+            [TopLevelItem::Definition(definition), TopLevelItem::Line, rest @ ..]
+                if definition.name == "Self" =>
+            {
+                TopLevel {
+                    items: rest.to_vec(),
+                }
+            }
+            _ => self.clone(),
+        }
+    }
+
+    /// A same module can be implemented in many small bits, for example with the `impl` of a same
+    /// type but split in many places in a file. With this method we group the modules with the same
+    /// name together. We take care of de-duplicating the `Self` definition if there is one.
+    /// We do so because in Coq we cannot have two separate modules with the same name.
+    fn group_modules(top_level_items: &[TopLevelItem]) -> Vec<TopLevelItem> {
+        match top_level_items {
+            [] => vec![],
+            [TopLevelItem::Module(module), rest @ ..] => {
+                let (matching_modules, other_items) = Self::get_modules_of_name(rest, &module.name);
+
+                [
+                    vec![TopLevelItem::Module(Module::new(
+                        &module.name,
+                        Self::concat(
+                            &[
+                                vec![module.items.clone()],
+                                matching_modules
+                                    .into_iter()
+                                    .map(|matching_module| matching_module.items.remove_self_ty())
+                                    .collect(),
+                            ]
+                            .concat(),
+                        ),
+                    ))],
+                    Self::group_modules(&other_items),
+                ]
+                .concat()
+            }
+            [item, rest @ ..] => [vec![item.clone()], Self::group_modules(rest)].concat(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        intersperse(
+            Self::group_modules(&self.items)
+                .iter()
+                .map(|item| item.to_doc()),
+            [hardline()],
+        )
     }
 
     /// joins a list of lists of items into one list
@@ -262,7 +311,7 @@ impl<'a> TopLevel {
 }
 
 impl<'a> TopLevelItem {
-    pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self {
             TopLevelItem::Comment(expression) => {
                 let expression: Vec<_> = expression.iter().map(|e| e.to_doc(false)).collect();
@@ -277,7 +326,7 @@ impl<'a> TopLevelItem {
             }
             TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Line => nil(),
-            TopLevelItem::Module(module) => module.to_doc(previous_module_names),
+            TopLevelItem::Module(module) => module.to_doc(),
         }
     }
 }
@@ -291,26 +340,12 @@ impl<'a> Module {
         }
     }
 
-    pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
         if self.items.items.is_empty() {
             return text(format!("(* Empty module '{}' *)", self.name));
         }
 
-        let items = self.items.to_doc();
-        let inner_module = render::enclose("Module", self.name.to_owned(), true, items);
-        let nb_repeat = *previous_module_names.get(&self.name).unwrap_or(&0);
-
-        if nb_repeat == 0 {
-            inner_module
-        } else {
-            let wrap_name = format!("Wrap_{}_{}", self.name, nb_repeat + 1);
-
-            concat([
-                render::enclose("Module", wrap_name.clone(), false, inner_module),
-                hardline(),
-                nest([text("Import"), line(), text(wrap_name), text(".")]),
-            ])
-        }
+        render::enclose("Module", self.name.clone(), true, self.items.to_doc())
     }
 }
 
