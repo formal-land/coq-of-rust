@@ -165,6 +165,7 @@ fn build_inner_match(
                                     .iter()
                                     .map(|pattern| {
                                         Rc::new(Expr::Lambda {
+                                            is_for_match: true,
                                             is_internal: true,
                                             args: vec![("γ".to_string(), None)],
                                             body: build_inner_match(
@@ -182,6 +183,7 @@ fn build_inner_match(
                                     .collect(),
                             }),
                             Rc::new(Expr::Lambda {
+                                is_for_match: true,
                                 is_internal: false,
                                 args: free_vars.iter().map(|name| (name.clone(), None)).collect(),
                                 body,
@@ -345,6 +347,7 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
                         });
 
                     Rc::new(Expr::Lambda {
+                        is_for_match: true,
                         is_internal: true,
                         args: vec![("γ".to_string(), None)],
                         body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
@@ -874,6 +877,7 @@ pub(crate) fn compile_expr<'a>(
                 Rc::new(Expr::Lambda {
                     args,
                     body,
+                    is_for_match: false,
                     is_internal: false,
                 })
                 .alloc()

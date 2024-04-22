@@ -18,30 +18,33 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let lhs := M.alloc (| lhs |) in
       let rhs := M.alloc (| rhs |) in
-      M.read (|
-        let _ :=
-          M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer Integer.U32 0)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        M.alloc (|
-          BinOp.Pure.eq
-            (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
-            (Value.Integer Integer.U32 0)
-        |)
+      M.catch_return (|
+        ltac:(M.monadic
+          (M.read (|
+            let _ :=
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer Integer.U32 0)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |) in
+            M.alloc (|
+              BinOp.Pure.eq
+                (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
+                (Value.Integer Integer.U32 0)
+            |)
+          |)))
       |)))
   | _, _ => M.impossible
   end.

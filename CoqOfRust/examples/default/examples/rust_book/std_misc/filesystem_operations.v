@@ -16,31 +16,106 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ path ] =>
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
-      M.read (|
-        let f :=
-          M.copy (|
+      M.catch_return (|
+        ltac:(M.monadic
+          (M.read (|
+            let f :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                        [],
+                        "branch",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "std::fs::File",
+                            "open",
+                            [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                          |),
+                          [ M.read (| path |) ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::FromResidual",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [
+                                        Ty.path "alloc::string::String";
+                                        Ty.path "std::io::error::Error"
+                                      ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "std::io::error::Error"
+                                        ]
+                                    ],
+                                    "from_residual",
+                                    []
+                                  |),
+                                  [ M.read (| residual |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val))
+                  ]
+                |)
+              |) in
+            let s :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  []
+                |)
+              |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
-                    "core::ops::try_trait::Try",
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                    "std::io::Read",
+                    Ty.path "std::fs::File",
                     [],
-                    "branch",
+                    "read_to_string",
                     []
                   |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::fs::File",
-                        "open",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-                      |),
-                      [ M.read (| path |) ]
-                    |)
-                  ]
+                  [ f; s ]
                 |)
               |),
               [
@@ -49,85 +124,23 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                     (let γ0_0 :=
                       M.get_struct_tuple_field_or_break_match (|
                         γ,
-                        "core::ops::control_flow::ControlFlow::Break",
+                        "core::result::Result::Ok",
                         0
                       |) in
-                    let residual := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::try_trait::FromResidual",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error"
-                                  ],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "std::io::error::Error"
-                                    ]
-                                ],
-                                "from_residual",
-                                []
-                              |),
-                              [ M.read (| residual |) ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)));
+                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.get_struct_tuple_field_or_break_match (|
                         γ,
-                        "core::ops::control_flow::ControlFlow::Continue",
+                        "core::result::Result::Err",
                         0
                       |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val))
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
               ]
             |)
-          |) in
-        let s :=
-          M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
-              []
-            |)
-          |) in
-        M.match_operator (|
-          M.alloc (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "std::io::Read",
-                Ty.path "std::fs::File",
-                [],
-                "read_to_string",
-                []
-              |),
-              [ f; s ]
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| γ0_0 |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
-          ]
-        |)
+          |)))
       |)))
   | _, _ => M.impossible
   end.
@@ -145,95 +158,104 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let s := M.alloc (| s |) in
       let path := M.alloc (| path |) in
-      M.read (|
-        let f :=
-          M.copy (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::try_trait::Try",
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                    [],
-                    "branch",
-                    []
+      M.catch_return (|
+        ltac:(M.monadic
+          (M.read (|
+            let f :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                        [],
+                        "branch",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "std::fs::File",
+                            "create",
+                            [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                          |),
+                          [ M.read (| path |) ]
+                        |)
+                      ]
+                    |)
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::fs::File",
-                        "create",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
-                      |),
-                      [ M.read (| path |) ]
-                    |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Break",
-                        0
-                      |) in
-                    let residual := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::try_trait::FromResidual",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::FromResidual",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                     [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "std::io::error::Error"
-                                    ]
-                                ],
-                                "from_residual",
-                                []
-                              |),
-                              [ M.read (| residual |) ]
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "std::io::error::Error"
+                                        ]
+                                    ],
+                                    "from_residual",
+                                    []
+                                  |),
+                                  [ M.read (| residual |) ]
+                                |)
+                              |)
                             |)
                           |)
-                        |)
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Continue",
-                        0
-                      |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val))
-              ]
-            |)
-          |) in
-        M.alloc (|
-          M.call_closure (|
-            M.get_trait_method (| "std::io::Write", Ty.path "std::fs::File", [], "write_all", [] |),
-            [
-              f;
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val))
+                  ]
+                |)
+              |) in
+            M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                [ M.read (| s |) ]
+                M.get_trait_method (|
+                  "std::io::Write",
+                  Ty.path "std::fs::File",
+                  [],
+                  "write_all",
+                  []
+                |),
+                [
+                  f;
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    [ M.read (| s |) ]
+                  |)
+                ]
               |)
-            ]
-          |)
-        |)
+            |)
+          |)))
       |)))
   | _, _ => M.impossible
   end.

@@ -730,6 +730,20 @@ fn compile_function_body(
         return None;
     }
 
+    let body_without_bindings = if body_without_bindings.has_return() {
+        Rc::new(Expr::Call {
+            func: Expr::local_var("M.catch_return"),
+            args: vec![Rc::new(Expr::Lambda {
+                args: vec![],
+                body: body_without_bindings,
+                is_for_match: false,
+                is_internal: true,
+            })],
+            kind: CallKind::Effectful,
+        })
+    } else {
+        body_without_bindings
+    };
     let body_with_patterns = args.iter().rfold(
         body_without_bindings,
         |body, (name, _, pattern)| match pattern {

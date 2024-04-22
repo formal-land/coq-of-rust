@@ -94,6 +94,7 @@ pub(crate) enum Expr {
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Rc<Expr>,
+        is_for_match: bool,
         is_internal: bool,
     },
     Array {
@@ -223,6 +224,60 @@ impl Expr {
                     })],
                 })],
             }
+    }
+
+    pub(crate) fn has_return(&self) -> bool {
+        match self {
+            Expr::LocalVar(_) => false,
+            Expr::GetConst(_) => false,
+            Expr::GetFunction { .. } => false,
+            Expr::GetTraitMethod { .. } => false,
+            Expr::GetAssociatedFunction { .. } => false,
+            Expr::Literal(_) => false,
+            Expr::Call {
+                func,
+                args,
+                kind: _,
+            } => func.has_return() || args.iter().any(|arg| arg.has_return()),
+            Expr::LogicalOperator { name: _, lhs, rhs } => lhs.has_return() || rhs.has_return(),
+            Expr::Lambda {
+                args: _,
+                body,
+                is_for_match,
+                is_internal: _,
+            } => *is_for_match && body.has_return(),
+            Expr::Array {
+                elements,
+                is_internal: _,
+            } => elements.iter().any(|element| element.has_return()),
+            Expr::Tuple { elements } => elements.iter().any(|element| element.has_return()),
+            Expr::Let {
+                is_monadic: _,
+                name: _,
+                init,
+                body,
+            } => init.has_return() || body.has_return(),
+            Expr::Loop { body } => body.has_return(),
+            Expr::Match { scrutinee, arms } => {
+                scrutinee.has_return() || arms.iter().any(|arm| arm.has_return())
+            }
+            Expr::Index { base, index } => base.has_return() || index.has_return(),
+            Expr::ControlFlow(_) => false,
+            Expr::StructStruct {
+                path: _,
+                fields,
+                base,
+            } => {
+                fields.iter().any(|(_, field)| field.has_return())
+                    || base.iter().any(|base| base.has_return())
+            }
+            Expr::StructTuple { path: _, fields } => fields.iter().any(|field| field.has_return()),
+            Expr::Use(expr) => expr.has_return(),
+            Expr::InternalString(_) => false,
+            Expr::InternalInteger(_) => false,
+            Expr::Return(_) => true,
+            Expr::Comment(_, expr) => expr.has_return(),
+        }
     }
 }
 
@@ -425,6 +480,7 @@ impl Expr {
             Expr::Lambda {
                 args,
                 body,
+                is_for_match: _,
                 is_internal,
             } => {
                 if *is_internal {
@@ -435,7 +491,7 @@ impl Expr {
                             .collect_vec(),
                         body: Rc::new(coq::Expression::monadic(&body.to_coq())),
                     };
-                };
+                }
 
                 coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
                     parameters: vec![coq::Expression::just_name("γ")],

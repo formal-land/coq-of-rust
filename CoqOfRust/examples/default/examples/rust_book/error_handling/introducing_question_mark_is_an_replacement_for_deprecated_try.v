@@ -15,120 +15,123 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let first_number_str := M.alloc (| first_number_str |) in
       let second_number_str := M.alloc (| second_number_str |) in
-      M.read (|
-        let first_number :=
-          M.copy (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-                  [ M.read (| first_number_str |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
-                    let err := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "core::num::error::ParseIntError",
-                                    [ Ty.path "core::num::error::ParseIntError" ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| err |) ]
-                                |)
-                              ]
+      M.catch_return (|
+        ltac:(M.monadic
+          (M.read (|
+            let first_number :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                      [ M.read (| first_number_str |) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        let err := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::From",
+                                        Ty.path "core::num::error::ParseIntError",
+                                        [ Ty.path "core::num::error::ParseIntError" ],
+                                        "from",
+                                        []
+                                      |),
+                                      [ M.read (| err |) ]
+                                    |)
+                                  ]
+                              |)
+                            |)
                           |)
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
-          |) in
-        let second_number :=
-          M.copy (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-                  [ M.read (| second_number_str |) ]
+                        |)))
+                  ]
                 |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
-                    let err := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "core::num::error::ParseIntError",
-                                    [ Ty.path "core::num::error::ParseIntError" ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| err |) ]
-                                |)
-                              ]
+              |) in
+            let second_number :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                      [ M.read (| second_number_str |) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        let err := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::From",
+                                        Ty.path "core::num::error::ParseIntError",
+                                        [ Ty.path "core::num::error::ParseIntError" ],
+                                        "from",
+                                        []
+                                      |),
+                                      [ M.read (| err |) ]
+                                    |)
+                                  ]
+                              |)
+                            |)
                           |)
-                        |)
-                      |)
-                    |)))
-              ]
+                        |)))
+                  ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ BinOp.Panic.mul (| M.read (| first_number |), M.read (| second_number |) |) ]
             |)
-          |) in
-        M.alloc (|
-          Value.StructTuple
-            "core::result::Result::Ok"
-            [ BinOp.Panic.mul (| M.read (| first_number |), M.read (| second_number |) |) ]
-        |)
+          |)))
       |)))
   | _, _ => M.impossible
   end.
