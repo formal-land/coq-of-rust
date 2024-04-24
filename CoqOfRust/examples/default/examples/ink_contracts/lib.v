@@ -50,5 +50,5 @@ Module Impl_Mapping_t_K_V.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (get K V).
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
 End Impl_Mapping_t_K_V.

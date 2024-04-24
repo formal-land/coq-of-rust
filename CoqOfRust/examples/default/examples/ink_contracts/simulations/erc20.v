@@ -74,8 +74,8 @@ Module Event.
     Φ := Ty.path "erc20::Event";
     φ x :=
       match x with
-      | Transfer x => φ x
-      | Approval x => φ x
+      | Transfer x => Value.StructTuple "erc20::Event::Transfer" [φ x]
+      | Approval x => Value.StructTuple "erc20::Event::Approval" [φ x]
       end;
   }.
 End Event.
@@ -109,23 +109,14 @@ Module Error.
     Φ := Ty.path "erc20::Error";
     φ x :=
       match x with
-      | InsufficientBalance => Value.StructTuple "erc20::Error" []
-      | InsufficientAllowance => Value.StructTuple "erc20::Error" []
+      | InsufficientBalance => Value.StructTuple "erc20::Error::InsufficientBalance" []
+      | InsufficientAllowance => Value.StructTuple "erc20::Error::InsufficientAllowance" []
       end;
   }.
 End Error.
 
 Module Result.
   Definition t (A : Set) : Set := A + Error.t.
-
-  Global Instance IsToValue (A : Set) (_ : ToValue A) : ToValue (t A) := {
-    Φ := Ty.path "erc20::Result";
-    φ x :=
-      match x with
-      | inl ok => Value.StructTuple "erc20::Result::OK" [φ ok]
-      | inr err => φ err
-      end;
-  }.
 End Result.
 
 Definition init_env (env : erc20.Env.t) : erc20.Env.t :=
@@ -197,7 +188,10 @@ Definition allowance
 (** ** Simulations modifying the state. *)
 
 Module State.
-  Definition t : Set := erc20.Erc20.t * list erc20.Event.t.
+  Record t : Set := {
+    storage : erc20.Erc20.t;
+    events : list erc20.Event.t;
+  }.
 End State.
 
 Definition transfer_from_to
@@ -205,20 +199,20 @@ Definition transfer_from_to
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
     MS? State.t string (erc20.Result.t unit) :=
-  letS? '(storage, events) := readS? in
+  letS? '{| State.storage := storage; State.events := events |} := readS? in
   let from_balance := u128.get (balance_of_impl storage from) in
   if from_balance <? u128.get value then
     returnS? (inr erc20.Error.InsufficientBalance)
   else
     let new_from_balance := u128.Make (from_balance - u128.get value) in
-    letS? _ := writeS? (
-      storage <| erc20.Erc20.balances :=
+    letS? _ := writeS? {|
+      State.storage := storage <| erc20.Erc20.balances :=
         simulations.lib.Mapping.insert from new_from_balance
           storage.(erc20.Erc20.balances)
-      |>,
-      events
-    ) in
-    letS? '(storage, events) := readS? in
+      |>;
+      State.events := events;
+    |} in
+    letS? '{| State.storage := storage; State.events := events |} := readS? in
     let 'u128.Make to_balance := balance_of_impl storage to in
     letS? new_to_balance :=
       return?toS? (
@@ -229,13 +223,13 @@ Definition transfer_from_to
       erc20.Transfer.to := Some to;
       erc20.Transfer.value := value
     |} in
-    letS? _ := writeS? (
-      storage <| erc20.Erc20.balances :=
+    letS? _ := writeS? {|
+      State.storage := storage <| erc20.Erc20.balances :=
         simulations.lib.Mapping.insert to (u128.Make new_to_balance)
           storage.(erc20.Erc20.balances)
-      |>,
-      event :: events
-    ) in
+      |>;
+      State.events := event :: events;
+    |} in
     returnS? (inl tt).
 
 Definition transfer
@@ -251,19 +245,19 @@ Definition approve
     (value : erc20.Balance.t) :
     MS? State.t string (erc20.Result.t unit) :=
   let owner := Env.caller env in
-  letS? '(storage, events) := readS? in
+  letS? '{| State.storage := storage; State.events := events |} := readS? in
   let event := erc20.Event.Approval {|
     erc20.Approval.owner := (erc20.env env).(erc20.Env.caller);
     erc20.Approval.spender := spender;
     erc20.Approval.value := value
   |} in
-  letS? _ := writeS? (
-    storage <| erc20.Erc20.allowances :=
+  letS? _ := writeS? {|
+    State.storage :=  storage <| erc20.Erc20.allowances :=
       simulations.lib.Mapping.insert (owner, spender) value
         storage.(erc20.Erc20.allowances)
-    |>,
-    event :: events
-  ) in
+    |>;
+    State.events := event :: events;
+  |} in
   returnS? (inl tt).
 
 Definition transfer_from
@@ -273,7 +267,7 @@ Definition transfer_from
     (value : erc20.Balance.t) :
     MS? State.t string (erc20.Result.t unit) :=
   let caller := Env.caller env in
-  letS? '(storage, events) := readS? in
+  letS? '{| State.storage := storage; State.events := events |} := readS? in
   let 'u128.Make value := value in
   let 'u128.Make allowance := allowance_impl storage from caller in
   if allowance <? value then
@@ -281,16 +275,16 @@ Definition transfer_from
   else
     letS? result_from_to := transfer_from_to from to (u128.Make value) in
     match result_from_to with
-    | inr _ => returnS? (result_from_to)
+    | inr _ => returnS? result_from_to
     | inl _ =>
       let new_allowance := u128.Make (allowance - value) in
-      letS? '(storage, events) := readS? in
-      letS? _ := writeS? (
-        storage <| erc20.Erc20.allowances :=
+      letS? '{| State.storage := storage; State.events := events |} := readS? in
+      letS? _ := writeS? {|
+        State.storage := storage <| erc20.Erc20.allowances :=
           simulations.lib.Mapping.insert (from, caller) new_allowance
             storage.(erc20.Erc20.allowances)
-        |>,
-        events
-      ) in
+        |>;
+        State.events := events;
+      |} in
       returnS? (inl tt)
     end.

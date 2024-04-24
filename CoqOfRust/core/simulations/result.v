@@ -10,8 +10,8 @@ Module Result.
     Φ := Ty.apply (Ty.path "core::result::Result") [Φ A; Φ B];
     φ x :=
       match x with
-      | inl e => Value.StructTuple "core::result::Result::Err" [φ e]
-      | inr x => Value.StructTuple "core::result::Result::Ok" [φ x]
+      | inl x => Value.StructTuple "core::result::Result::Ok" [φ x]
+      | inr e => Value.StructTuple "core::result::Result::Err" [φ e]
       end;
   }.
 End Result.
