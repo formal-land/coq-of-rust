@@ -128,7 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ := M.assign (| M.read (| mutable_box |), Value.Integer Integer.U32 4 |) in
+        let _ := M.write (| M.read (| mutable_box |), Value.Integer Integer.U32 4 |) in
         let _ :=
           let _ :=
             M.alloc (|

@@ -306,7 +306,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "conditional_compilation::ConditionalCompilation"
@@ -450,7 +450,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "conditional_compilation::ConditionalCompilation"
@@ -526,7 +526,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "conditional_compilation::ConditionalCompilation"
@@ -632,7 +632,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "conditional_compilation::ConditionalCompilation"

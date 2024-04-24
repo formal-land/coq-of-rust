@@ -251,7 +251,7 @@ Module Impl_contract_ref_FlipperRef.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "contract_ref::FlipperRef" "value",
               UnOp.Pure.not
                 (M.read (|

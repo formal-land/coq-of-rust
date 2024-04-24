@@ -1454,7 +1454,7 @@ Module Impl_payment_channel_PaymentChannel.
                   |)
                 |) in
               let _ :=
-                M.assign (|
+                M.write (|
                   M.get_struct_record_field
                     (M.read (| self |))
                     "payment_channel::PaymentChannel"
@@ -1811,7 +1811,7 @@ Module Impl_payment_channel_PaymentChannel.
                     (M.read (| self |))
                     "payment_channel::PaymentChannel"
                     "withdrawn" in
-                M.assign (|
+                M.write (|
                   β,
                   BinOp.Panic.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
                 |) in

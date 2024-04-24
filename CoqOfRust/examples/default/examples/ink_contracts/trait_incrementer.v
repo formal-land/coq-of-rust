@@ -51,7 +51,7 @@ Module Impl_trait_incrementer_Incrementer.
                 (M.read (| self |))
                 "trait_incrementer::Incrementer"
                 "value" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -119,7 +119,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "trait_incrementer::Incrementer"

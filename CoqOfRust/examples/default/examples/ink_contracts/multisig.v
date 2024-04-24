@@ -1277,12 +1277,12 @@ Module Impl_multisig_Multisig.
                 ]
               |)) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field contract "multisig::Multisig" "owners",
               M.read (| owners |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field contract "multisig::Multisig" "transaction_list",
               M.call_closure (|
                 M.get_trait_method (|
@@ -1296,7 +1296,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field contract "multisig::Multisig" "requirement",
               M.read (| requirement |)
             |) in
@@ -2150,7 +2150,7 @@ Module Impl_multisig_Multisig.
                                             |) in
                                           let _ :=
                                             let β := count in
-                                            M.assign (|
+                                            M.write (|
                                               β,
                                               BinOp.Panic.sub (|
                                                 M.read (| β |),
@@ -2312,7 +2312,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement",
               M.read (| requirement |)
             |) in
@@ -2409,7 +2409,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",
@@ -2572,7 +2572,7 @@ Module Impl_multisig_Multisig.
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement",
               M.read (| new_requirement |)
             |) in
@@ -2706,7 +2706,7 @@ Module Impl_multisig_Multisig.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       let β := count in
-                      M.assign (|
+                      M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |)
                       |) in
@@ -2897,7 +2897,7 @@ Module Impl_multisig_Multisig.
                 "next_id"
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.get_struct_record_field
                   (M.read (| self |))
@@ -3653,7 +3653,7 @@ Module Impl_multisig_Multisig.
                     |) in
                   let _ :=
                     let β := confirmation_count in
-                    M.assign (|
+                    M.write (|
                       β,
                       BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.U32 1 |)
                     |) in

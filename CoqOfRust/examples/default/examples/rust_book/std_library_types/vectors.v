@@ -808,7 +808,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   let x := M.copy (| γ0_0 |) in
                                   let _ :=
                                     let β := M.read (| x |) in
-                                    M.assign (|
+                                    M.write (|
                                       β,
                                       BinOp.Panic.mul (|
                                         M.read (| β |),

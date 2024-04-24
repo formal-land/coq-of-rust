@@ -259,7 +259,7 @@ Module Impl_traits_Sheep.
                       |) in
                     M.alloc (| Value.Tuple [] |) in
                   let _ :=
-                    M.assign (|
+                    M.write (|
                       M.get_struct_record_field (M.read (| self |)) "traits::Sheep" "naked",
                       Value.Bool true
                     |) in

@@ -185,7 +185,7 @@ Module Impl_updated_incrementer_Incrementer.
                 (M.read (| self |))
                 "updated_incrementer::Incrementer"
                 "count" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 4 |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 4 |) |) in
           let _ :=
             let _ :=
               M.alloc (|

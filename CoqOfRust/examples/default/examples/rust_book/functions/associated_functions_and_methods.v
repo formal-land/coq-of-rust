@@ -274,7 +274,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "p1")
                 "associated_functions_and_methods::Point"
                 "x" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
               M.get_struct_record_field
@@ -284,7 +284,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "p2")
                 "associated_functions_and_methods::Point"
                 "x" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
               M.get_struct_record_field
@@ -294,7 +294,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "p1")
                 "associated_functions_and_methods::Point"
                 "y" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
           let _ :=
             let β :=
               M.get_struct_record_field
@@ -304,7 +304,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   "p2")
                 "associated_functions_and_methods::Point"
                 "y" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible

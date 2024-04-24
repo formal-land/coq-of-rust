@@ -629,7 +629,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
-            let func = Expr::local_var("M.assign");
+            let func = Expr::local_var("M.write");
             let args = vec![
                 compile_expr(env, generics, thir, lhs),
                 compile_expr(env, generics, thir, rhs).read(),
@@ -651,7 +651,7 @@ pub(crate) fn compile_expr<'a>(
                 name: Some("β".to_string()),
                 init: lhs,
                 body: Rc::new(Expr::Call {
-                    func: Expr::local_var("M.assign"),
+                    func: Expr::local_var("M.write"),
                     args: vec![
                         Expr::local_var("β"),
                         Rc::new(Expr::Call {

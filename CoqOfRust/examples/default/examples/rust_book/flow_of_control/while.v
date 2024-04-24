@@ -254,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |) in
                     let _ :=
                       let β := n in
-                      M.assign (|
+                      M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
                       |) in

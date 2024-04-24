@@ -60,7 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ltac:(M.monadic
             (let _ :=
               let β := count in
-              M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+              M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
             let _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),

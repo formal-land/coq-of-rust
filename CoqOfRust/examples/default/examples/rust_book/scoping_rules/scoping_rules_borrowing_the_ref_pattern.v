@@ -212,7 +212,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |) in
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
                           let _ :=
-                            M.assign (| M.read (| mut_ref_to_y |), Value.Integer Integer.I32 1 |) in
+                            M.write (| M.read (| mut_ref_to_y |), Value.Integer Integer.I32 1 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
@@ -368,7 +368,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ0_0 := M.get_tuple_field γ 0 in
                           let γ0_1 := M.get_tuple_field γ 1 in
                           let last := M.alloc (| γ0_1 |) in
-                          let _ := M.assign (| M.read (| last |), Value.Integer Integer.U32 2 |) in
+                          let _ := M.write (| M.read (| last |), Value.Integer Integer.U32 2 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in

@@ -298,7 +298,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|
@@ -310,7 +310,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|
@@ -322,7 +322,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|

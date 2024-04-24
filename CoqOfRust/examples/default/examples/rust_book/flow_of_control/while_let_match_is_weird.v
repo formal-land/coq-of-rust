@@ -91,7 +91,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
                             let _ :=
-                              M.assign (|
+                              M.write (|
                                 optional,
                                 Value.StructTuple "core::option::Option::None" []
                               |) in
@@ -143,7 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
                             let _ :=
-                              M.assign (|
+                              M.write (|
                                 optional,
                                 Value.StructTuple
                                   "core::option::Option::Some"

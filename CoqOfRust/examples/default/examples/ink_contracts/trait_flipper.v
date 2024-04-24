@@ -61,7 +61,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "trait_flipper::Flipper" "value",
               UnOp.Pure.not
                 (M.read (|
