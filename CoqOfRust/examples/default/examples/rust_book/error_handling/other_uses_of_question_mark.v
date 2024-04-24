@@ -105,207 +105,213 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ vec ] =>
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
-      M.read (|
-        let first :=
-          M.copy (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::try_trait::Try",
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
-                        Ty.path "other_uses_of_question_mark::EmptyVec"
-                      ],
-                    [],
-                    "branch",
-                    []
-                  |),
-                  [
+      M.catch_return (|
+        ltac:(M.monadic
+          (M.read (|
+            let first :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
                         Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ],
-                        "ok_or",
-                        [ Ty.path "other_uses_of_question_mark::EmptyVec" ]
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.path "other_uses_of_question_mark::EmptyVec"
+                          ],
+                        [],
+                        "branch",
+                        []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
-                            "first",
-                            []
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              ],
+                            "ok_or",
+                            [ Ty.path "other_uses_of_question_mark::EmptyVec" ]
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
+                              M.get_associated_function (|
                                 Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  [
-                                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "deref",
+                                  (Ty.path "slice")
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                "first",
                                 []
                               |),
-                              [ vec ]
-                            |)
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      [
+                                        Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "deref",
+                                    []
+                                  |),
+                                  [ vec ]
+                                |)
+                              ]
+                            |);
+                            Value.StructTuple "other_uses_of_question_mark::EmptyVec" []
                           ]
-                        |);
-                        Value.StructTuple "other_uses_of_question_mark::EmptyVec" []
+                        |)
                       ]
                     |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Break",
-                        0
-                      |) in
-                    let residual := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::try_trait::FromResidual",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [
-                                    Ty.path "i32";
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "other_uses_of_question_mark::EmptyVec"
-                                    ]
-                                ],
-                                "from_residual",
-                                []
-                              |),
-                              [ M.read (| residual |) ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Continue",
-                        0
-                      |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val))
-              ]
-            |)
-          |) in
-        let parsed :=
-          M.copy (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::try_trait::Try",
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                    [],
-                    "branch",
-                    []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-                      [ M.read (| M.read (| first |) |) ]
-                    |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Break",
-                        0
-                      |) in
-                    let residual := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::try_trait::FromResidual",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  [
-                                    Ty.path "i32";
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::FromResidual",
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "core::result::Result")
                                       [
-                                        Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
+                                        Ty.path "i32";
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
                                     [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "core::num::error::ParseIntError"
-                                    ]
-                                ],
-                                "from_residual",
-                                []
-                              |),
-                              [ M.read (| residual |) ]
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "other_uses_of_question_mark::EmptyVec"
+                                        ]
+                                    ],
+                                    "from_residual",
+                                    []
+                                  |),
+                                  [ M.read (| residual |) ]
+                                |)
+                              |)
                             |)
                           |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val))
+                  ]
+                |)
+              |) in
+            let parsed :=
+              M.copy (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                        [],
+                        "branch",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                          [ M.read (| M.read (| first |) |) ]
                         |)
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::ops::control_flow::ControlFlow::Continue",
-                        0
-                      |) in
-                    let val := M.copy (| γ0_0 |) in
-                    val))
-              ]
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::FromResidual",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [
+                                        Ty.path "i32";
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::ParseIntError"
+                                        ]
+                                    ],
+                                    "from_residual",
+                                    []
+                                  |),
+                                  [ M.read (| residual |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| γ0_0 |) in
+                        val))
+                  ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ BinOp.Panic.mul (| Value.Integer Integer.I32 2, M.read (| parsed |) |) ]
             |)
-          |) in
-        M.alloc (|
-          Value.StructTuple
-            "core::result::Result::Ok"
-            [ BinOp.Panic.mul (| Value.Integer Integer.I32 2, M.read (| parsed |) |) ]
-        |)
+          |)))
       |)))
   | _, _ => M.impossible
   end.

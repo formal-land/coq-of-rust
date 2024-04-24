@@ -648,193 +648,199 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
-        M.read (|
-          let len :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
-                [ M.read (| self |) ]
-              |)
-            |) in
-          let _ :=
-            M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.Pure.ne
-                            (M.read (| len |))
-                            (M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
-                                "len",
-                                []
-                              |),
-                              [ M.read (| _rhs |) ]
-                            |))
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.read (|
-                          M.return_ (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::convert::From",
-                                Ty.path "subtle::Choice",
-                                [ Ty.path "u8" ],
-                                "from",
-                                []
-                              |),
-                              [ Value.Integer Integer.U8 0 ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
-            |) in
-          let x := M.alloc (| Value.Integer Integer.U8 1 |) in
-          let _ :=
-            M.use
-              (M.match_operator (|
+        M.catch_return (|
+          ltac:(M.monadic
+            (M.read (|
+              let len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::collect::IntoIterator",
-                      Ty.apply
-                        (Ty.path "core::iter::adapters::zip::Zip")
-                        [
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-                        ],
-                      [],
-                      "into_iter",
-                      []
-                    |),
-                    [
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                    [ M.read (| self |) ]
+                  |)
+                |) in
+              let _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.ne
+                                (M.read (| len |))
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [ T ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| _rhs |) ]
+                                |))
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    Ty.path "subtle::Choice",
+                                    [ Ty.path "u8" ],
+                                    "from",
+                                    []
+                                  |),
+                                  [ Value.Integer Integer.U8 0 ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let x := M.alloc (| Value.Integer Integer.U8 1 |) in
+              let _ :=
+                M.use
+                  (M.match_operator (|
+                    M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::zip::Zip")
+                            [
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                            ],
                           [],
-                          "zip",
-                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                          "into_iter",
+                          []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
-                              "iter",
-                              []
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                              [],
+                              "zip",
+                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
                             |),
-                            [ M.read (| self |) ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
-                              "iter",
-                              []
-                            |),
-                            [ M.read (| _rhs |) ]
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [ T ],
+                                  "iter",
+                                  []
+                                |),
+                                [ M.read (| self |) ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [ T ],
+                                  "iter",
+                                  []
+                                |),
+                                [ M.read (| _rhs |) ]
+                              |)
+                            ]
                           |)
                         ]
                       |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
-                      M.loop (|
+                    |),
+                    [
+                      fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
-                            M.match_operator (|
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::zip::Zip")
-                                      [
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-                                      ],
-                                    [],
-                                    "next",
-                                    []
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (let _ :=
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::zip::Zip")
+                                          [
+                                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                                          ],
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [ iter ]
+                                    |)
                                   |),
-                                  [ iter ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                    let γ1_1 := M.get_tuple_field γ0_0 1 in
-                                    let ai := M.copy (| γ1_0 |) in
-                                    let bi := M.copy (| γ1_1 |) in
-                                    let _ :=
-                                      let β := x in
-                                      M.assign (|
-                                        β,
-                                        BinOp.Pure.bit_and
-                                          (M.read (| β |))
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "subtle::Choice",
-                                              "unwrap_u8",
-                                              []
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "subtle::ConstantTimeEq",
-                                                    T,
-                                                    [],
-                                                    "ct_eq",
-                                                    []
-                                                  |),
-                                                  [ M.read (| ai |); M.read (| bi |) ]
-                                                |)
-                                              |)
-                                            ]
-                                          |))
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)))
-                      |)))
-                ]
-              |)) in
-          M.alloc (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::Into",
-                Ty.path "u8",
-                [ Ty.path "subtle::Choice" ],
-                "into",
-                []
-              |),
-              [ M.read (| x |) ]
-            |)
-          |)
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.get_struct_tuple_field_or_break_match (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
+                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let ai := M.copy (| γ1_0 |) in
+                                        let bi := M.copy (| γ1_1 |) in
+                                        let _ :=
+                                          let β := x in
+                                          M.assign (|
+                                            β,
+                                            BinOp.Pure.bit_and
+                                              (M.read (| β |))
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "subtle::Choice",
+                                                  "unwrap_u8",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "subtle::ConstantTimeEq",
+                                                        T,
+                                                        [],
+                                                        "ct_eq",
+                                                        []
+                                                      |),
+                                                      [ M.read (| ai |); M.read (| bi |) ]
+                                                    |)
+                                                  |)
+                                                ]
+                                              |))
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |)) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::Into",
+                    Ty.path "u8",
+                    [ Ty.path "subtle::Choice" ],
+                    "into",
+                    []
+                  |),
+                  [ M.read (| x |) ]
+                |)
+              |)
+            |)))
         |)))
     | _, _ => M.impossible
     end.

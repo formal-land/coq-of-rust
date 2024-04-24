@@ -251,173 +251,182 @@ Module checked.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
-        M.read (|
-          let ratio :=
-            M.copy (|
-              M.match_operator (|
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::try_trait::Try",
-                      Ty.apply
-                        (Ty.path "core::result::Result")
+        M.catch_return (|
+          ltac:(M.monadic
+            (M.read (|
+              let ratio :=
+                M.copy (|
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::try_trait::Try",
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "f64";
+                              Ty.path "result_chaining_with_question_mark::checked::MathError"
+                            ],
+                          [],
+                          "branch",
+                          []
+                        |),
                         [
-                          Ty.path "f64";
-                          Ty.path "result_chaining_with_question_mark::checked::MathError"
-                        ],
-                      [],
-                      "branch",
-                      []
+                          M.call_closure (|
+                            M.get_function (|
+                              "result_chaining_with_question_mark::checked::div",
+                              []
+                            |),
+                            [ M.read (| x |); M.read (| y |) ]
+                          |)
+                        ]
+                      |)
                     |),
                     [
-                      M.call_closure (|
-                        M.get_function (| "result_chaining_with_question_mark::checked::div", [] |),
-                        [ M.read (| x |); M.read (| y |) ]
-                      |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.read (|
-                            M.return_ (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::FromResidual",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "f64";
-                                      Ty.path
-                                        "result_chaining_with_question_mark::checked::MathError"
-                                    ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
+                            |) in
+                          let residual := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "f64";
+                                          Ty.path
+                                            "result_chaining_with_question_mark::checked::MathError"
+                                        ],
                                       [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "result_chaining_with_question_mark::checked::MathError"
-                                      ]
-                                  ],
-                                  "from_residual",
-                                  []
-                                |),
-                                [ M.read (| residual |) ]
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "result_chaining_with_question_mark::checked::MathError"
+                                          ]
+                                      ],
+                                      "from_residual",
+                                      []
+                                    |),
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
                               |)
                             |)
-                          |)
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let val := M.copy (| γ0_0 |) in
-                      val))
-                ]
-              |)
-            |) in
-          let ln :=
-            M.copy (|
-              M.match_operator (|
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::try_trait::Try",
-                      Ty.apply
-                        (Ty.path "core::result::Result")
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
+                            |) in
+                          let val := M.copy (| γ0_0 |) in
+                          val))
+                    ]
+                  |)
+                |) in
+              let ln :=
+                M.copy (|
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::try_trait::Try",
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "f64";
+                              Ty.path "result_chaining_with_question_mark::checked::MathError"
+                            ],
+                          [],
+                          "branch",
+                          []
+                        |),
                         [
-                          Ty.path "f64";
-                          Ty.path "result_chaining_with_question_mark::checked::MathError"
-                        ],
-                      [],
-                      "branch",
-                      []
+                          M.call_closure (|
+                            M.get_function (|
+                              "result_chaining_with_question_mark::checked::ln",
+                              []
+                            |),
+                            [ M.read (| ratio |) ]
+                          |)
+                        ]
+                      |)
                     |),
                     [
-                      M.call_closure (|
-                        M.get_function (| "result_chaining_with_question_mark::checked::ln", [] |),
-                        [ M.read (| ratio |) ]
-                      |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.read (|
-                            M.return_ (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::FromResidual",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "f64";
-                                      Ty.path
-                                        "result_chaining_with_question_mark::checked::MathError"
-                                    ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
+                            |) in
+                          let residual := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        [
+                                          Ty.path "f64";
+                                          Ty.path
+                                            "result_chaining_with_question_mark::checked::MathError"
+                                        ],
                                       [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path
-                                          "result_chaining_with_question_mark::checked::MathError"
-                                      ]
-                                  ],
-                                  "from_residual",
-                                  []
-                                |),
-                                [ M.read (| residual |) ]
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "result_chaining_with_question_mark::checked::MathError"
+                                          ]
+                                      ],
+                                      "from_residual",
+                                      []
+                                    |),
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
                               |)
                             |)
-                          |)
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let val := M.copy (| γ0_0 |) in
-                      val))
-                ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
+                            |) in
+                          let val := M.copy (| γ0_0 |) in
+                          val))
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "result_chaining_with_question_mark::checked::sqrt", [] |),
+                  [ M.read (| ln |) ]
+                |)
               |)
-            |) in
-          M.alloc (|
-            M.call_closure (|
-              M.get_function (| "result_chaining_with_question_mark::checked::sqrt", [] |),
-              [ M.read (| ln |) ]
-            |)
-          |)
+            |)))
         |)))
     | _, _ => M.impossible
     end.
