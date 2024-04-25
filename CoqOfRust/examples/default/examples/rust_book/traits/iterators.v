@@ -37,14 +37,14 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
               M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "curr"
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "curr",
               M.read (|
                 M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "next"
               |)
             |) in
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field (M.read (| self |)) "iterators::Fibonacci" "next",
               BinOp.Panic.add (|
                 M.read (| current |),

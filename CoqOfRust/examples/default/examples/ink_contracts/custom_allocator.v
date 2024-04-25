@@ -98,7 +98,7 @@ Module Impl_custom_allocator_CustomAllocator.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",

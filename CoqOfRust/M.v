@@ -773,8 +773,6 @@ Definition get_struct_record_field
 
 Parameter pointer_coercion : Value.t -> Value.t.
 
-Parameter assign : Value.t -> Value.t -> M.
-
 Definition get_struct_tuple_field_or_break_match
     (value : Value.t) (constructor : string) (index : Z) :
     M :=

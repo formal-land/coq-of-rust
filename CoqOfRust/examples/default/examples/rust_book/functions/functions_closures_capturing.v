@@ -193,7 +193,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (M.read (|
                               let _ :=
                                 let β := count in
-                                M.assign (|
+                                M.write (|
                                   β,
                                   BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
                                 |) in

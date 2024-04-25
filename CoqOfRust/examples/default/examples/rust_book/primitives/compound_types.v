@@ -39,9 +39,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let default_float := M.copy (| UnsupportedLiteral |) in
         let default_integer := M.alloc (| Value.Integer Integer.I32 7 |) in
         let inferred_type := M.alloc (| Value.Integer Integer.I64 12 |) in
-        let _ := M.assign (| inferred_type, Value.Integer Integer.I64 4294967296 |) in
+        let _ := M.write (| inferred_type, Value.Integer Integer.I64 4294967296 |) in
         let mutable := M.alloc (| Value.Integer Integer.I32 12 |) in
-        let _ := M.assign (| mutable, Value.Integer Integer.I32 21 |) in
+        let _ := M.write (| mutable, Value.Integer Integer.I32 21 |) in
         let mutable := M.alloc (| Value.Bool true |) in
         M.alloc (| Value.Tuple [] |)
       |)))

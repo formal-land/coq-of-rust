@@ -34,7 +34,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let a_binding := M.copy (| Value.DeclaredButUndefined |) in
         let _ :=
           let x := M.alloc (| Value.Integer Integer.I32 2 |) in
-          let _ := M.assign (| a_binding, BinOp.Panic.mul (| M.read (| x |), M.read (| x |) |) |) in
+          let _ := M.write (| a_binding, BinOp.Panic.mul (| M.read (| x |), M.read (| x |) |) |) in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           let _ :=
@@ -75,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let another_binding := M.copy (| Value.DeclaredButUndefined |) in
-        let _ := M.assign (| another_binding, Value.Integer Integer.I32 1 |) in
+        let _ := M.write (| another_binding, Value.Integer Integer.I32 1 |) in
         let _ :=
           let _ :=
             M.alloc (|

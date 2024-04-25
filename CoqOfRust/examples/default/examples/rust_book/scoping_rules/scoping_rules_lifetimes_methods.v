@@ -28,7 +28,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                 (M.read (| self |))
                 "scoping_rules_lifetimes_methods::Owner"
                 0 in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible

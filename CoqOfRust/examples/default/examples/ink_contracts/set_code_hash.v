@@ -96,7 +96,7 @@ Module Impl_set_code_hash_Incrementer.
           let _ :=
             let β :=
               M.get_struct_record_field (M.read (| self |)) "set_code_hash::Incrementer" "count" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
           let _ :=
             let _ :=
               M.alloc (|

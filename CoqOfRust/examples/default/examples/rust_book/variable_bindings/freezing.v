@@ -29,7 +29,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let _ :=
           let _mutable_integer := M.copy (| _mutable_integer |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ := M.assign (| _mutable_integer, Value.Integer Integer.I32 3 |) in
+        let _ := M.write (| _mutable_integer, Value.Integer Integer.I32 3 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

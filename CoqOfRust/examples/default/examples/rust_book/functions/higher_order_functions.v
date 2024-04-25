@@ -186,7 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     |) in
                                                   let _ :=
                                                     let β := acc in
-                                                    M.assign (|
+                                                    M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
                                                         M.read (| β |),

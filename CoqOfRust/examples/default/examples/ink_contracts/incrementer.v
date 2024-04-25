@@ -65,7 +65,7 @@ Module Impl_incrementer_Incrementer.
           let _ :=
             let β :=
               M.get_struct_record_field (M.read (| self |)) "incrementer::Incrementer" "value" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| by_ |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| by_ |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible

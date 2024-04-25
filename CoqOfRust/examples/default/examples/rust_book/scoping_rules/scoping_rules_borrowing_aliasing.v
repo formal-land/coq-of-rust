@@ -230,7 +230,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let mutable_borrow := M.alloc (| point |) in
         let _ :=
-          M.assign (|
+          M.write (|
             M.get_struct_record_field
               (M.read (| mutable_borrow |))
               "scoping_rules_borrowing_aliasing::Point"
@@ -238,7 +238,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.Integer Integer.I32 5
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             M.get_struct_record_field
               (M.read (| mutable_borrow |))
               "scoping_rules_borrowing_aliasing::Point"
@@ -246,7 +246,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.Integer Integer.I32 2
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             M.get_struct_record_field
               (M.read (| mutable_borrow |))
               "scoping_rules_borrowing_aliasing::Point"

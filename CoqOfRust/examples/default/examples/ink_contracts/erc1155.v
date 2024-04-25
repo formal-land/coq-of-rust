@@ -720,7 +720,7 @@ Module Impl_erc1155_Contract.
           let _ :=
             let β :=
               M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "token_id_nonce" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U128 1 |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U128 1 |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1037,7 +1037,7 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β := sender_balance in
-            M.assign (| β, BinOp.Panic.sub (| M.read (| β |), M.read (| value |) |) |) in
+            M.write (| β, BinOp.Panic.sub (| M.read (| β |), M.read (| value |) |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1084,7 +1084,7 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β := recipient_balance in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| value |) |) |) in
+            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| value |) |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|

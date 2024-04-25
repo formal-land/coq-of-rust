@@ -28,7 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let _ :=
                   let β := counter in
-                  M.assign (|
+                  M.write (|
                     β,
                     BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
                   |) in

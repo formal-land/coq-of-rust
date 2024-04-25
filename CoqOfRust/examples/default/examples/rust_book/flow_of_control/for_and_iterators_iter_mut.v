@@ -135,7 +135,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let name := M.copy (| γ0_0 |) in
-                                  M.assign (|
+                                  M.write (|
                                     M.read (| name |),
                                     M.read (|
                                       M.match_operator (|

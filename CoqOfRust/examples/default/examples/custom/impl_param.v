@@ -24,7 +24,7 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let x := M.copy (| func |) in
         let _ :=
-          M.assign (|
+          M.write (|
             x,
             M.call_closure (|
               M.get_trait_method (| "core::default::Default", impl_Default, [], "default", [] |),
@@ -33,7 +33,7 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let y := M.copy (| func2 |) in
         let _ :=
-          M.assign (|
+          M.write (|
             y,
             M.call_closure (|
               M.get_trait_method (| "core::default::Default", impl_Default'1, [], "default", [] |),

@@ -242,7 +242,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -327,7 +327,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -412,7 +412,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -795,7 +795,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                         let bi := M.copy (| γ1_1 |) in
                                         let _ :=
                                           let β := x in
-                                          M.assign (|
+                                          M.write (|
                                             β,
                                             BinOp.Pure.bit_and
                                               (M.read (| β |))
@@ -1468,7 +1468,7 @@ Module ConditionallySelectable.
         let choice := M.alloc (| choice |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -1621,7 +1621,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -1673,10 +1673,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -1788,7 +1788,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -1842,10 +1842,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -1953,7 +1953,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2005,10 +2005,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2120,7 +2120,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2174,10 +2174,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2285,7 +2285,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2337,10 +2337,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2452,7 +2452,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2506,10 +2506,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2617,7 +2617,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2669,10 +2669,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2784,7 +2784,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2838,10 +2838,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -4026,7 +4026,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4034,10 +4034,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4075,7 +4072,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4083,10 +4080,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4234,7 +4228,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4242,10 +4236,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4283,7 +4274,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4291,10 +4282,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4435,7 +4423,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4443,10 +4431,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4484,7 +4469,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4492,10 +4477,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4636,7 +4618,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4644,10 +4626,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4685,7 +4664,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4693,10 +4672,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
-                            β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
-                          |) in
+                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic

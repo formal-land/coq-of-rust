@@ -151,7 +151,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
       (let book := M.alloc (| book |) in
       M.read (|
         let _ :=
-          M.assign (|
+          M.write (|
             M.get_struct_record_field
               (M.read (| book |))
               "scoping_rules_borrowing_mutablity::Book"

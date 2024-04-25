@@ -119,7 +119,7 @@ Module Impl_basic_contract_caller_OtherContract.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.get_struct_record_field
                 (M.read (| self |))
                 "basic_contract_caller::OtherContract"
