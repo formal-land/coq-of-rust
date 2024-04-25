@@ -15,6 +15,19 @@ impl ToCoq {
     }
 }
 
+fn get_index_coq_file_content(file_names: Vec<String>) -> String {
+    let mut index_content = String::new();
+
+    for file_name in file_names {
+        index_content.push_str(&format!(
+            "Require Export {}.\n",
+            file_name.replace(".rs", "").replace('/', "."),
+        ));
+    }
+
+    index_content
+}
+
 impl Callbacks for ToCoq {
     fn after_expansion<'tcx>(
         &mut self,
@@ -25,7 +38,7 @@ impl Callbacks for ToCoq {
 
         queries.global_ctxt().unwrap();
 
-        let (_crate_name, coq_output) = queries.global_ctxt().unwrap().enter(|ctxt| {
+        let (crate_name, coq_output) = queries.global_ctxt().unwrap().enter(|ctxt| {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             let current_crate_name_string = current_crate_name.to_string();
 
@@ -37,12 +50,17 @@ impl Callbacks for ToCoq {
             )
         });
 
-        for (file_name, coq_output) in coq_output {
+        for (file_name, coq_output) in coq_output.clone() {
             let coq_file_name = file_name.replace(".rs", ".v");
             let mut file = File::create(coq_file_name).unwrap();
 
             file.write_all(coq_output.as_bytes()).unwrap();
         }
+
+        let mut file = File::create(format!("{crate_name}.v")).unwrap();
+        let index_content = get_index_coq_file_content(coq_output.keys().cloned().collect());
+
+        file.write_all(index_content.as_bytes()).unwrap();
 
         compiler.sess.abort_if_errors();
 
