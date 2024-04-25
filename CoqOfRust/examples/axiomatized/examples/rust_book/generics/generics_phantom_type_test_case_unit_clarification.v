@@ -90,7 +90,7 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
     fields := [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ] ];
   } *)
 
-Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
@@ -103,9 +103,9 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (Self Unit)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt Unit)) ].
-End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
-Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
@@ -118,9 +118,9 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (Self Unit)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method (clone Unit)) ].
-End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
-Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Module Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
   
@@ -131,7 +131,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       (Self Unit)
       (* Trait polymorphic types *) []
       (* Instance *) [].
-End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
