@@ -13,6 +13,7 @@ use rustc_hir::{
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
+use std::collections::HashMap;
 use std::iter::repeat;
 use std::rc::Rc;
 use std::string::ToString;
@@ -177,7 +178,13 @@ struct TypeStructStruct {
 }
 
 #[derive(Debug)]
-pub struct TopLevel(Vec<Rc<TopLevelItem>>);
+struct TopLevelEntry {
+    file_name: String,
+    item: Rc<TopLevelItem>,
+}
+
+#[derive(Debug)]
+struct TopLevel(Vec<Rc<TopLevelEntry>>);
 
 impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
     fn from(val: &'a FieldWithDefault<Rc<A>>) -> Self {
@@ -348,14 +355,15 @@ fn compile_top_level_item_without_local_items<'a>(
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let items: Vec<_> = module
+            let items = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
                     let item = env.tcx.hir().item(*item_id);
-                    compile_top_level_item(env, item)
+
+                    compile_top_level_item_with_file_name(env, item)
                 })
-                .collect();
+                .collect_vec();
 
             vec![Rc::new(TopLevelItem::Module {
                 name,
@@ -614,7 +622,8 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
         .into_iter()
         .flat_map(|item_id| {
             let item = env.tcx.hir().item(item_id);
-            compile_top_level_item(env, item)
+
+            compile_top_level_item_with_file_name(env, item)
         })
         .collect_vec();
 
@@ -632,6 +641,72 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
         },
     ]
     .concat()
+}
+
+fn compile_top_level_item_with_file_name<'a>(
+    env: &Env<'a>,
+    item: &'a Item,
+) -> Vec<Rc<TopLevelEntry>> {
+    compile_top_level_item(env, item)
+        .into_iter()
+        .map(|translated_item| {
+            Rc::new(TopLevelEntry {
+                file_name: env
+                    .tcx
+                    .sess
+                    .source_map()
+                    .lookup_source_file(item.span.lo())
+                    .name
+                    .prefer_remapped_unconditionaly()
+                    .to_string_lossy()
+                    .to_string(),
+                item: translated_item,
+            })
+        })
+        .collect()
+}
+
+fn group_top_level_items_by_file_name(
+    items: &[Rc<TopLevelEntry>],
+) -> HashMap<String, Vec<Rc<TopLevelEntry>>> {
+    let mut groups: HashMap<String, Vec<Rc<TopLevelEntry>>> = HashMap::new();
+
+    for item in items {
+        match item.item.as_ref() {
+            TopLevelItem::Module { name, body } => {
+                let sub_groups = group_top_level_items_by_file_name(&body.0);
+
+                for (file_name, sub_group) in sub_groups {
+                    let group = groups.entry(file_name.clone()).or_default();
+
+                    group.push(Rc::new(TopLevelEntry {
+                        file_name,
+                        item: Rc::new(TopLevelItem::Module {
+                            name: name.clone(),
+                            body: Rc::new(TopLevel(sub_group)),
+                        }),
+                    }))
+                }
+            }
+            _ => {
+                let file_name = item.file_name.clone();
+                let group = groups.entry(file_name).or_default();
+
+                group.push(item.clone());
+            }
+        }
+    }
+
+    groups
+}
+
+fn group_top_level_by_file_name(top_level: Rc<TopLevel>) -> HashMap<String, Rc<TopLevel>> {
+    let groups = group_top_level_items_by_file_name(&top_level.0);
+
+    groups
+        .into_iter()
+        .map(|(file_name, items)| (file_name, Rc::new(TopLevel(items))))
+        .collect()
 }
 
 /// returns a pair of function signature and its body
@@ -922,7 +997,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         .iter()
         .flat_map(|item_id| {
             let item = tcx.hir().item(*item_id);
-            compile_top_level_item(&env, item)
+            compile_top_level_item_with_file_name(&env, item)
         })
         .collect();
 
@@ -931,10 +1006,14 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
 
 const LINE_WIDTH: usize = 100;
 
-pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> HashMap<String, String> {
     let top_level = compile_top_level(tcx, opts);
+    let top_level_groups = group_top_level_by_file_name(top_level);
 
-    top_level.to_pretty(LINE_WIDTH)
+    top_level_groups
+        .into_iter()
+        .map(|(file_name, top_level)| (file_name, top_level.to_pretty(LINE_WIDTH)))
+        .collect()
 }
 
 #[derive(Debug)]
@@ -1865,7 +1944,7 @@ impl TopLevel {
     fn to_coq(&self) -> coq::TopLevel {
         coq::TopLevel::new(
             &itertools::Itertools::intersperse(
-                self.0.iter().map(|item| item.to_coq()),
+                self.0.iter().map(|item| item.item.to_coq()),
                 vec![coq::TopLevelItem::Line],
             )
             .flatten()
