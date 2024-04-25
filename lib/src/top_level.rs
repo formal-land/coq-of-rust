@@ -179,19 +179,6 @@ struct TypeStructStruct {
 #[derive(Debug)]
 pub struct TopLevel(Vec<Rc<TopLevelItem>>);
 
-impl<A> FieldWithDefault<A> {
-    fn map<B, F>(&self, f: F) -> FieldWithDefault<B>
-    where
-        F: FnOnce(&A) -> B,
-    {
-        match self {
-            FieldWithDefault::RequiredValue(a) => FieldWithDefault::RequiredValue(f(a)),
-            FieldWithDefault::OptionalValue(a) => FieldWithDefault::OptionalValue(f(a)),
-            FieldWithDefault::Default => FieldWithDefault::Default,
-        }
-    }
-}
-
 impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
     fn from(val: &'a FieldWithDefault<Rc<A>>) -> Self {
         match val {
@@ -946,128 +933,8 @@ const LINE_WIDTH: usize = 100;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     let top_level = compile_top_level(tcx, opts);
-    let top_level = mt_top_level(top_level);
+
     top_level.to_pretty(LINE_WIDTH)
-}
-
-fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
-    match item.as_ref() {
-        ImplItemKind::Const { ty, body } => Rc::new(ImplItemKind::Const {
-            ty: ty.clone(),
-            body: body.clone(),
-        }),
-        ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
-            definition: definition.clone(),
-        }),
-        ImplItemKind::Type { .. } => item,
-    }
-}
-
-fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
-    match body.as_ref() {
-        TraitItem::Definition { .. } => body,
-        TraitItem::Type() => body,
-        TraitItem::DefinitionWithDefault(fun_definition) => {
-            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.clone()))
-        }
-    }
-}
-
-fn mt_trait_items(body: Vec<(String, Rc<TraitItem>)>) -> Vec<(String, Rc<TraitItem>)> {
-    body.into_iter()
-        .map(|(s, item)| (s, mt_trait_item(item)))
-        .collect()
-}
-
-/// Monad transform for [TopLevelItem]
-fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
-    match item.as_ref() {
-        TopLevelItem::Const { name, value } => Rc::new(TopLevelItem::Const {
-            name: name.clone(),
-            value: value.clone(),
-        }),
-        TopLevelItem::Definition {
-            name,
-            snippet,
-            definition,
-        } => Rc::new(TopLevelItem::Definition {
-            name: name.clone(),
-            snippet: snippet.clone(),
-            definition: definition.clone(),
-        }),
-        TopLevelItem::TypeAlias { .. } => item,
-        TopLevelItem::TypeEnum { .. } => item,
-        TopLevelItem::TypeStructStruct { .. } => item,
-        TopLevelItem::TypeStructTuple { .. } => item,
-        TopLevelItem::Module { name, body } => Rc::new(TopLevelItem::Module {
-            name: name.clone(),
-            body: mt_top_level(body.clone()),
-        }),
-        TopLevelItem::ForeignModule => item,
-        TopLevelItem::Impl {
-            generic_tys,
-            self_ty,
-            items,
-        } => Rc::new(TopLevelItem::Impl {
-            generic_tys: generic_tys.clone(),
-            self_ty: self_ty.clone(),
-            items: items
-                .iter()
-                .map(|item| {
-                    Rc::new(ImplItem {
-                        name: item.name.clone(),
-                        snippet: item.snippet.clone(),
-                        kind: mt_impl_item(item.kind.clone()),
-                    })
-                })
-                .collect(),
-        }),
-        TopLevelItem::Trait {
-            name,
-            path,
-            ty_params,
-            body,
-        } => Rc::new(TopLevelItem::Trait {
-            name: name.clone(),
-            path: path.clone(),
-            ty_params: ty_params.clone(),
-            body: mt_trait_items(body.clone()),
-        }),
-        TopLevelItem::TraitImpl {
-            generic_tys,
-            self_ty,
-            of_trait,
-            trait_ty_params,
-            items,
-        } => Rc::new(TopLevelItem::TraitImpl {
-            generic_tys: generic_tys.clone(),
-            self_ty: self_ty.clone(),
-            of_trait: of_trait.clone(),
-            trait_ty_params: trait_ty_params.clone(),
-            items: items
-                .iter()
-                .map(|item| {
-                    Rc::new(TraitImplItem {
-                        name: item.name.clone(),
-                        snippet: item.snippet.clone(),
-                        kind: Rc::new(item.kind.map(|item| mt_impl_item(item.clone()))),
-                    })
-                })
-                .collect(),
-        }),
-        TopLevelItem::Error(_) => item,
-    }
-}
-
-fn mt_top_level(top_level: Rc<TopLevel>) -> Rc<TopLevel> {
-    Rc::new(TopLevel(
-        top_level
-            .0
-            .clone()
-            .into_iter()
-            .map(mt_top_level_item)
-            .collect(),
-    ))
 }
 
 #[derive(Debug)]
