@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.proofs.lib.
+Require CoqOfRust.core.default.
 Require CoqOfRust.core.proofs.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.proofs.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.erc721.
@@ -81,7 +82,7 @@ Module Balance.
       eexists; split.
       { cbn.
         rewrite erc721.Balance.
-        apply core.default.Impl_core_default_Default_for_u128.Implements.
+        apply core.default.default.Impl_core_default_Default_for_u128.Implements.
       }
       { reflexivity. }
     }
