@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
+Require CoqOfRust.core.option.
 Require CoqOfRust.core.proofs.default.
 Require CoqOfRust.core.simulations.option.
 
@@ -13,7 +14,7 @@ Module Impl_Option_T.
     (self : option T) :
     core.proofs.default.Default.TraitHasRun T ->
     Run.pure
-      (core.option.Impl_Option_T.unwrap_or_default (Φ T) [] [φ self])
+      (core.option.option.Impl_core_option_Option_T.unwrap_or_default (Φ T) [] [φ self])
       (inl (φ (core.simulations.option.Impl_Option_T.unwrap_or_default self))).
   Proof.
     intros H_Default.
