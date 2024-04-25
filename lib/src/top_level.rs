@@ -7,9 +7,10 @@ use crate::pattern::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
+use rustc_hir::def_id::LocalDefId;
 use rustc_hir::{
-    GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind, PatKind, QPath, TraitFn,
-    TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind,
+    PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -69,6 +70,18 @@ enum ImplItemKind {
     Type {
         ty: Rc<CoqType>,
     },
+}
+
+#[derive(Debug)]
+struct WherePredicate {
+    bound: Rc<TraitBound>,
+    ty: Rc<CoqType>,
+}
+
+#[derive(Debug)]
+struct TraitBound {
+    name: Path,
+    ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
 }
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
@@ -162,6 +175,7 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
+        predicates: Vec<Rc<WherePredicate>>,
         self_ty: Rc<CoqType>,
         of_trait: Path,
         trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
@@ -527,6 +541,7 @@ fn compile_top_level_item_without_local_items<'a>(
             ..
         }) => {
             let generic_tys = get_ty_params(env, generics);
+            let predicates = get_where_predicates(env, &item.owner_id.def_id, generics);
             let self_ty = compile_type(env, &item.owner_id.def_id, self_ty);
             let items = compile_impl_item_refs(env, items);
 
@@ -580,6 +595,7 @@ fn compile_top_level_item_without_local_items<'a>(
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_tys,
+                        predicates,
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
                         trait_ty_params: get_ty_params_with_default_status(
@@ -882,10 +898,69 @@ fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
         .collect()
 }
 
+/// extracts where predicates from the generics
+fn get_where_predicates(
+    env: &Env,
+    local_def_id: &LocalDefId,
+    generics: &rustc_hir::Generics,
+) -> Vec<Rc<WherePredicate>> {
+    generics
+        .predicates
+        .iter()
+        .flat_map(|predicate| match predicate {
+            rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                let names_and_ty_params =
+                    compile_generic_bounds(env, local_def_id, predicate.bounds);
+
+                names_and_ty_params
+                    .into_iter()
+                    .map(|bound| {
+                        trait_bound_to_where_predicate(
+                            bound,
+                            compile_type(env, local_def_id, predicate.bounded_ty),
+                        )
+                    })
+                    .collect()
+            }
+            _ => vec![],
+        })
+        .collect()
+}
+
+/// converts a trait bound to a where predicate
+fn trait_bound_to_where_predicate(bound: Rc<TraitBound>, ty: Rc<CoqType>) -> Rc<WherePredicate> {
+    Rc::new(WherePredicate { bound, ty })
+}
+
+/// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
+fn compile_generic_bounds(
+    env: &Env,
+    local_def_id: &LocalDefId,
+    generic_bounds: GenericBounds,
+) -> Vec<Rc<TraitBound>> {
+    generic_bounds
+        .iter()
+        .filter_map(|generic_bound| match generic_bound {
+            GenericBound::Trait(ptraitref, _) => {
+                Some(TraitBound::compile(env, local_def_id, ptraitref))
+            }
+            GenericBound::LangItemTrait { .. } => {
+                let warning_msg = "LangItem trait bounds are not supported yet.";
+                let note_msg = "It will change in the future.";
+                let span = &generic_bound.span();
+                emit_warning_with_note(env, span, warning_msg, Some(note_msg));
+                None
+            }
+            // we ignore lifetimes
+            GenericBound::Outlives { .. } => None,
+        })
+        .collect()
+}
+
 /// computes the list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &Env,
-    local_def_id: &rustc_hir::def_id::LocalDefId,
+    local_def_id: &LocalDefId,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
@@ -1336,6 +1411,26 @@ impl ImplItemKind {
     }
 }
 
+impl TraitBound {
+    /// Get the generics for the trait
+    fn compile(
+        env: &Env,
+        local_def_id: &LocalDefId,
+        ptraitref: &rustc_hir::PolyTraitRef,
+    ) -> Rc<TraitBound> {
+        Rc::new(TraitBound {
+            name: compile_path(env, ptraitref.trait_ref.path),
+            ty_params: get_ty_params_with_default_status(
+                env,
+                local_def_id,
+                env.tcx
+                    .generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
+                ptraitref.trait_ref.path,
+            ),
+        })
+    }
+}
+
 impl Snippet {
     fn of_span(env: &Env, span: &rustc_span::Span) -> Option<Rc<Self>> {
         if env.axiomatize {
@@ -1483,6 +1578,7 @@ impl TypeStructStruct {
 }
 
 impl TopLevelItem {
+    #[allow(clippy::format_collect)]
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
         match self {
             TopLevelItem::Const { name, value } => match value {
@@ -1782,6 +1878,7 @@ impl TopLevelItem {
             }
             TopLevelItem::TraitImpl {
                 generic_tys,
+                predicates,
                 self_ty,
                 of_trait,
                 trait_ty_params,
@@ -1789,8 +1886,30 @@ impl TopLevelItem {
                 ..
             } => {
                 let module_name = format!(
-                    "Impl_{}{}_for_{}",
+                    "Impl_{}{}{}_for_{}",
                     of_trait.to_name(),
+                    predicates
+                        .iter()
+                        .map(|where_predicate| {
+                            let WherePredicate { bound, ty } = where_predicate.as_ref();
+                            let TraitBound { name, ty_params } = bound.as_ref();
+
+                            format!(
+                                "_where_{}_{}{}",
+                                name.to_name(),
+                                ty.to_name(),
+                                ty_params
+                                    .iter()
+                                    .filter_map(|(_, ty_param)| match ty_param.as_ref() {
+                                        FieldWithDefault::RequiredValue(ty)
+                                        | FieldWithDefault::OptionalValue(ty) =>
+                                            Some(format!("_{}", ty.to_name())),
+                                        FieldWithDefault::Default => None,
+                                    })
+                                    .join(""),
+                            )
+                        })
+                        .collect::<String>(),
                     trait_ty_params
                         .iter()
                         .filter_map(|(_, trait_ty_param)| match trait_ty_param.as_ref() {
