@@ -33,12 +33,9 @@ Definition assign (target : Value.t) (source : Value.t) : M :=
 (** ** Integer types *)
 
 (** A value with an address of type `ref str`. *)
-Definition mk_str (s : string) : Value.t :=
-  Value.Pointer (Pointer.Immediate (
-    Value.Pointer (Pointer.Immediate (
-      Value.String s
-    ))
-  )).
+Definition mk_str (s : string) : M :=
+  let* p := M.alloc (Value.String s) in
+  alloc p.
 
 Module IntegerDescription.
   Class C (Self : M.Integer.t) : Set := {

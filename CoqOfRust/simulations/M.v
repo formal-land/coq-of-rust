@@ -6,6 +6,20 @@ Class ToValue (A : Set) : Set := {
 }.
 Arguments Φ _ {_}.
 
+Module Empty_setIsToValue.
+  Global Instance I : ToValue Empty_set := {
+    Φ := Ty.path "never";
+    φ v := match v with end;
+  }.
+End Empty_setIsToValue.
+
+Module StringIsToValue.
+  Global Instance I : ToValue string := {
+    Φ := Ty.path "str";
+    φ v := Value.String v;
+  }.
+End StringIsToValue.
+
 (** For tuples we provide a canonical way to convert to values. *)
 Module TupleIsToValue.
   Global Instance I0 : ToValue unit := {

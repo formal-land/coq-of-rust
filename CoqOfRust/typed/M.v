@@ -1,46 +1,29 @@
 (** * The definition of a Rust monad with high-level types, for the simulations. *)
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.simulations.M.
 
 Module Pointer.
   Inductive t (A : Set) : Set :=
   | Immediate (value : A)
-  | Mutable {Address Big_A : Set}
-      (address : Address)
-      (projection : Big_A -> option A)
-      (injection : A -> Big_A -> option Big_A).
+  | Mutable {Address : Set} (address : Address) (path : Pointer.Path.t).
   Arguments Immediate {_}.
-  Arguments Mutable {_ _ _}.
+  Arguments Mutable {_ _}.
+
+  Definition to_value_pointer {A : Set} (to_value : A -> Value.t) (pointer : t A) :
+      CoqOfRust.M.Pointer.t Value.t :=
+    match pointer with
+    | Immediate v => CoqOfRust.M.Pointer.Immediate (to_value v)
+    | Mutable address path => CoqOfRust.M.Pointer.Mutable address path
+    end.
 End Pointer.
 
 Module Primitive.
   Inductive t : Set -> Set :=
-  | StateAlloc {A : Set} (value : A) : t (Pointer.t A)
-  | StateRead {Address A : Set} (address : Address) : t A
-  | StateWrite {Address A : Set} (address : Address) (value : A) : t unit
+  | StateAlloc {A : Set} (to_value : A -> Value.t) (value : A) : t (Pointer.t A)
+  | StateRead {A : Set} (pointer : Pointer.t A) : t A
+  | StateWrite {A : Set} (pointer : Pointer.t A) (update : A) : t unit
   | EnvRead {A : Set} : t A.
 End Primitive.
-
-Module LowM.
-  Inductive t (A : Set) : Set :=
-  | Pure (value : A)
-  | CallPrimitive {B : Set} (primitive : Primitive.t B) (k : B -> t A)
-  | CallClosure {B : Set} (body : t B) (k : B -> t A)
-  | Impossible.
-  Arguments Pure {_}.
-  Arguments CallPrimitive {_ _}.
-  Arguments CallClosure {_ _}.
-  Arguments Impossible {_}.
-
-  Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
-    match e1 with
-    | Pure v => e2 v
-    | CallPrimitive primitive k =>
-      CallPrimitive primitive (fun v => let_ (k v) e2)
-    | CallClosure body k =>
-      CallClosure body (fun v => let_ (k v) e2)
-    | Impossible => Impossible
-    end.
-End LowM.
 
 Module Exception.
   Inductive t (R : Set) : Set :=
@@ -60,6 +43,55 @@ Module Exception.
   Arguments Panic {_}.
 End Exception.
 
+Module ClosureParams.
+  Inductive t : Set :=
+  | Empty
+  | Cons {A : Set} `{ToValue A} (param : A) (params : t).
+
+  Notation "<[ ]>" := Empty.
+  Notation "<[ x ; .. ; y ]>" := (Cons x .. (Cons y Empty) ..).
+
+  Fixpoint to_value (params : t) : list Value.t :=
+    match params with
+    | <[]> => []
+    | Cons param params => φ param :: to_value params
+    end.
+
+  Module HasSetValue.
+    Inductive t : ClosureParams.t -> forall {A : Set}, A -> Prop :=
+    | Empty : t ClosureParams.Empty tt
+    | Cons {A As : Set} `{ToValue A} (value : A) (params : ClosureParams.t) (values : As) :
+        t params values ->
+        t (ClosureParams.Cons value params) (value, values).
+  End HasSetValue.
+End ClosureParams.
+
+Module LowM.
+  Inductive t (A : Set) : Set :=
+  | Pure (value : A)
+  | CallPrimitive {B : Set} (primitive : Primitive.t B) (k : B -> t A)
+  | CallClosure {B : Set}
+      (to_value : B -> Value.t)
+      (params : ClosureParams.t)
+      (body : t (B + Exception.t Empty_set))
+      (k : (B + Exception.t Empty_set) -> t A)
+  | Impossible.
+  Arguments Pure {_}.
+  Arguments CallPrimitive {_ _}.
+  Arguments CallClosure {_ _}.
+  Arguments Impossible {_}.
+
+  Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
+    match e1 with
+    | Pure v => e2 v
+    | CallPrimitive primitive k =>
+      CallPrimitive primitive (fun v => let_ (k v) e2)
+    | CallClosure to_value params body k =>
+      CallClosure to_value params body (fun v => let_ (k v) e2)
+    | Impossible => Impossible
+    end.
+End LowM.
+
 (** In the body of a function we can have a type for the parameter of the `return` keyword. *)
 Definition MBody (A R : Set) : Set :=
   LowM.t (A + Exception.t R).
@@ -78,6 +110,20 @@ Definition let_ {A B R : Set} (e1 : MBody A R) (e2 : A -> MBody B R) : MBody B R
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
   end).
+
+Definition result_to_value {A R : Set} `{ToValue A} `{ToValue R} (result : A + Exception.t R) :
+    Value.t + CoqOfRust.M.Exception.t :=
+  match result with
+  | inl v => inl (φ v)
+  | inr exception =>
+    inr match exception with
+    | Exception.Return r => CoqOfRust.M.Exception.Return (φ r)
+    | Exception.Continue => CoqOfRust.M.Exception.Continue
+    | Exception.Break => CoqOfRust.M.Exception.Break
+    | Exception.BreakMatch => CoqOfRust.M.Exception.BreakMatch
+    | Exception.Panic message => CoqOfRust.M.Exception.Panic message
+    end
+  end.
 
 (** This parameter is used as a marker to allow a monadic notation
     without naming all intermediate results. Computation represented using
@@ -172,32 +218,16 @@ Definition call_primitive {A R : Set} (primitive : Primitive.t A) : MBody A R :=
   LowM.CallPrimitive primitive (fun result =>
   LowM.Pure (inl result)).
 
-Definition alloc {A R : Set} (value : A) : MBody (Pointer.t A) R :=
-  call_primitive (Primitive.StateAlloc value).
+Definition alloc {A R : Set} `{ToValue A} (value : A) : MBody (Pointer.t A) R :=
+  call_primitive (Primitive.StateAlloc φ value).
 
-Definition read {A R : Set} (p : Pointer.t A) : MBody A R :=
-  match p with
-  | Pointer.Immediate v => LowM.Pure (inl v)
-  | Pointer.Mutable address projection injection =>
-    let* v := call_primitive (Primitive.StateRead address) in
-    match projection v with
-    | Some v => LowM.Pure (inl v)
-    | None => LowM.Impossible
-    end
-  end.
+Definition read {A R : Set} (pointer : Pointer.t A) : MBody A R :=
+  call_primitive (Primitive.StateRead pointer).
 
-Definition write {A R : Set} (p : Pointer.t A) (update : A) : MBody unit R :=
-  match p with
-  | Pointer.Immediate _ => LowM.Impossible
-  | Pointer.Mutable address projection injection =>
-    let* value := call_primitive (Primitive.StateRead address) in
-    match injection update value with
-    | Some value => call_primitive (Primitive.StateWrite address value)
-    | None => LowM.Impossible
-    end
-  end.
+Definition write {A R : Set} (pointer : Pointer.t A) (update : A) : MBody unit R :=
+  call_primitive (Primitive.StateWrite pointer update).
 
-Definition copy {A R : Set} (p : Pointer.t A) : MBody (Pointer.t A) R :=
+Definition copy {A R : Set} `{ToValue A} (p : Pointer.t A) : MBody (Pointer.t A) R :=
   let* v := read p in
   alloc v.
 
@@ -242,8 +272,8 @@ Definition catch_break {R : Set} (body : MBody (Pointer.t unit) R) : MBody (Poin
       end
     ).
 
-Definition call_closure {A R : Set} (body : M A) : MBody A R :=
-  catch (LowM.CallClosure body LowM.Pure) (fun exception =>
+Definition call_closure {A R : Set} {H : ToValue A} (body : M A) : MBody A R :=
+  catch (LowM.CallClosure φ body LowM.Pure) (fun exception =>
     match exception with
     | Exception.Return r => match r with end
     | Exception.Continue => raise Exception.Continue
@@ -259,42 +289,138 @@ Definition read_env {A R : Set} : MBody A R :=
 Definition impossible {A R : Set} : MBody A R :=
   LowM.Impossible.
 
-(* Definition loop (body : M) : M :=
-  LowM.Loop
-    (catch_continue body)
-    (fun result =>
-      catch_break (LowM.Pure result)). *)
-
-Module State.
-  Class Trait (State Address : Set) : Type := {
-    get_Set : Address -> Set;
-    read (a : Address) : State -> option (get_Set a);
-    alloc_write (a : Address) : State -> get_Set a -> option State;
+(* Module EnvStateToValue.
+  Record t (Env Address : Set) (get_Set : Address -> Set) : Set := {
+    env_to_value : Env -> Value.t;
+    cell_to_value : forall (address : Address), get_Set address -> Value.t;
   }.
+End EnvStateToValue. *)
 
-  Module Valid.
-    (** A valid state should behave as map from address to optional values
-        of the type given by the address. A value is [None] while not
-        allocated, and [Some] once allocated. It is impossible to free
-        allocated values. *)
-    Record t `(Trait) : Prop := {
-      (* [alloc_write] can only fail on new cells *)
-      not_allocated (a : Address) (s : State) (v : get_Set a) :
-        match alloc_write a s v with
-        | Some _ => True
-        | None => read a s = None
-        end;
-      same (a : Address) (s : State) (v : get_Set a) :
-        match alloc_write a s v with
-        | Some s => read a s = Some v
-        | None => True
-        end;
-      different (a1 a2 : Address) (s : State) (v2 : get_Set a2) :
-        a1 <> a2 ->
-        match alloc_write a2 s v2 with
-        | Some s' => read a1 s' = read a1 s
-        | None => True
-        end;
-        }.
-  End Valid.
-End State.
+Module Run.
+  Reserved Notation "{{ Address , env_to_value | e ~ result }}".
+
+  Inductive t (Address : Set) {Env : Set} (env_to_value : Env -> Value.t)
+      {A R : Set} `{ToValue A} `{ToValue R} :
+      CoqOfRust.M.M -> MBody A R -> Prop :=
+  | Pure (result : A + Exception.t R) :
+    {{ Address, env_to_value |
+      CoqOfRust.M.LowM.Pure (result_to_value result) ~
+      LowM.Pure result
+    }}
+  | CallPrimitiveStateAlloc {B : Set} `{ToValue B}
+      (value : B)
+      (k' : Value.t -> CoqOfRust.M.M)
+      (k : Pointer.t B -> MBody A R) :
+    (forall (pointer : Pointer.t B),
+      {{ Address, env_to_value |
+        k' (Value.Pointer φ (Pointer.to_value_pointer φ pointer)) ~
+        k pointer
+      }}
+    ) ->
+    {{ Address, env_to_value |
+      CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.StateAlloc (φ value)) k' ~
+      LowM.CallPrimitive (Primitive.StateAlloc φ value) k
+    }}
+  | CallPrimitiveStateRead {B : Set}
+      (to_value : B -> Value.t)
+      (pointer : Pointer.t B)
+      (k' : Value.t -> CoqOfRust.M.M)
+      (k : B -> MBody A R) :
+    (forall (value : B),
+      {{ Address, env_to_value |
+        k' (to_value value) ~
+        k value
+      }}
+    ) ->
+    {{ Address, env_to_value |
+      CoqOfRust.M.LowM.CallPrimitive
+        (CoqOfRust.M.Primitive.StateRead to_value (Pointer.to_value_pointer to_value pointer))
+        k' ~
+      LowM.CallPrimitive (Primitive.StateRead pointer) k
+    }}
+  | CallPrimitiveStateWrite {B : Set}
+      (to_value : B -> Value.t)
+      (pointer : Pointer.t B)
+      (update : B)
+      (k' : Value.t -> CoqOfRust.M.M)
+      (k : unit -> MBody A R) :
+    {{ Address, env_to_value |
+      k' (Value.Tuple []) ~
+      k tt
+    }} ->
+    {{ Address, env_to_value |
+      CoqOfRust.M.LowM.CallPrimitive
+        (CoqOfRust.M.Primitive.StateWrite
+          to_value
+          (Pointer.to_value_pointer to_value pointer)
+          (to_value update)
+        )
+        k' ~
+      LowM.CallPrimitive (Primitive.StateWrite pointer update) k
+    }}
+  | CallPrimitiveEnvRead
+      (k' : Value.t -> CoqOfRust.M.M)
+      (k : Env -> MBody A R) :
+    (forall (env : Env),
+      {{ Address, env_to_value |
+        k' (env_to_value env) ~
+        k env
+      }}
+    ) ->
+    {{ Address, env_to_value |
+      CoqOfRust.M.LowM.CallPrimitive CoqOfRust.M.Primitive.EnvRead k' ~
+      LowM.CallPrimitive Primitive.EnvRead k
+    }}
+  | CallClosure {B : Set}
+      (to_value : B -> Value.t)
+      (body : M B)
+      (k : B + Exception.t Empty_set -> MBody A R) :
+    {{ Address, env_to_value |
+      LowM.CallClosure e k ~
+      LowM.CallClosure to_value body k
+    }}
+
+  where "{{ Address , env_to_value | untyped ~ typed }}" :=
+    (t Address env_to_value untyped typed).
+End Run.
+
+
+Ltac run_symbolic_state_read :=
+  match goal with
+  | |- Run.t _ _ _ (LowM.CallPrimitive (Primitive.StateRead ?address) _) _ =>
+    let H := fresh "H" in
+    epose proof (H := Run.CallPrimitiveStateRead _ _ _ address);
+    eapply H; [reflexivity|];
+    clear H
+  end.
+
+Ltac run_symbolic_state_write :=
+  match goal with
+  | |- Run.t ?env ?result ?state'
+      (LowM.CallPrimitive (Primitive.StateWrite ?address ?value) ?k)
+      ?state =>
+    let H := fresh "H" in
+    epose proof (H :=
+      Run.CallPrimitiveStateWrite
+        env result state' address value state _ k);
+    apply H; [reflexivity|];
+    clear H
+  end.
+
+Ltac run_symbolic_one_step :=
+  match goal with
+  | |- Run.t _ _ _ _ _ =>
+    (* We do not use [Run.CallClosure] and intentionally let the user use existing lemma for this
+       case. *)
+    apply Run.Pure ||
+    apply Run.CallPrimitiveStateAllocNone ||
+    apply Run.CallPrimitiveEnvRead ||
+    run_symbolic_state_read ||
+    run_symbolic_state_write
+  end.
+
+Ltac run_symbolic :=
+  repeat (
+    cbn ||
+    run_symbolic_one_step
+  ).

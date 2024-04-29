@@ -134,7 +134,13 @@ Module Value.
   | Array : list t -> t
   | StructRecord : string -> list (string * t) -> t
   | StructTuple : string -> list t -> t
-  | Pointer : Pointer.t t -> t
+  (** The field [to_value] does not change the runtime semantics, but is here for instrumentation to
+      relate the semantics of the untyped mode to the semantics of the type mode. This is the
+      function to go from the typed space to the untyped [Value.t] space.
+
+      It is set once and for all at the creation of the pointer (allocation). When creating a
+      pointer to a sub-field (extending the [path]) we keep the same [to_value] function. *)
+  | Pointer {A : Set} (to_value : A -> t) : Pointer.t t -> t
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
@@ -284,7 +290,7 @@ Module Value.
       | Value.Array _, Value.Array _
       | Value.StructRecord _ _, Value.StructRecord _ _
       | Value.StructTuple _ _, Value.StructTuple _ _
-      | Value.Pointer _, Value.Pointer _
+      | Value.Pointer _ _, Value.Pointer _ _
       | Value.Closure _, Value.Closure _
       | Value.Error _, Value.Error _
       | Value.DeclaredButUndefined, Value.DeclaredButUndefined =>
@@ -305,8 +311,8 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {Address : Set} (address : Address)
-  | StateWrite {Address : Set} (address : Address) (value : Value.t)
+  | StateRead {A : Set} (to_value : A -> Value.t) (pointer : Pointer.t Value.t)
+  | StateWrite {A : Set} (to_value : A -> Value.t) (pointer : Pointer.t Value.t) (update : Value.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -518,10 +524,10 @@ Definition call_primitive (primitive : Primitive.t) : M :=
 Definition alloc (v : Value.t) : M :=
   call_primitive (Primitive.StateAlloc v).
 
-Definition read (r : Value.t) : M :=
+(* Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
-  | Value.Pointer (Pointer.Mutable address path) =>
+  | Value.Pointer _ (Pointer.Immediate v) => LowM.Pure (inl v)
+  | Value.Pointer _ (Pointer.Mutable address path) =>
     let* v := call_primitive (Primitive.StateRead address) in
     match Value.read_path v path with
     | Some v => LowM.Pure (inl v)
@@ -532,13 +538,25 @@ Definition read (r : Value.t) : M :=
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => LowM.Impossible
-  | Value.Pointer (Pointer.Mutable address path) =>
+  | Value.Pointer _ (Pointer.Immediate _) => LowM.Impossible
+  | Value.Pointer _ (Pointer.Mutable address path) =>
     let* value := call_primitive (Primitive.StateRead address) in
     match Value.write_value value path update with
     | Some value => call_primitive (Primitive.StateWrite address value)
     | None => LowM.Impossible
     end
+  | _ => LowM.Impossible
+  end. *)
+
+Definition read (r : Value.t) : M :=
+  match r with
+  | Value.Pointer to_value pointer => call_primitive (Primitive.StateRead to_value pointer)
+  | _ => LowM.Impossible
+  end.
+
+Definition write (r : Value.t) (update : Value.t) : M :=
+  match r with
+  | Value.Pointer to_value pointer => call_primitive (Primitive.StateWrite to_value pointer update)
   | _ => LowM.Impossible
   end.
 
@@ -677,20 +695,20 @@ Definition use (x : Value.t) : Value.t :=
     debugging reasons. *)
 Definition get_tuple_field (value : Value.t) (index : Z) : Value.t :=
   match value with
-  | Value.Pointer pointer =>
+  | Value.Pointer to_value pointer =>
     match pointer with
     | Pointer.Immediate value =>
       match value with
       | Value.Tuple fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some field => Value.Pointer (Pointer.Immediate field)
+        | Some field => Value.Pointer to_value (Pointer.Immediate field)
         | None => Value.Error "invalid tuple index"
         end
       | _ => Value.Error "expected a tuple"
       end
     | Pointer.Mutable address path =>
       let new_path := path ++ [Pointer.Index.Tuple index] in
-      Value.Pointer (Pointer.Mutable address new_path)
+      Value.Pointer to_value (Pointer.Mutable address new_path)
     end
   | _ => Value.Error "expected an address"
   end.
@@ -701,21 +719,21 @@ Definition get_array_field (value : Value.t) (index : Value.t) : M :=
   match index with
   | Value.Integer Integer.Usize index =>
     match value with
-    | Value.Pointer pointer =>
+    | Value.Pointer to_value pointer =>
       match pointer with
       | Pointer.Immediate value =>
         match value with
         | Value.Array fields =>
           (* As this is in `usize`, the index is necessarily positive. *)
           match List.nth_error fields (Z.to_nat index) with
-          | Some field => pure (Value.Pointer (Pointer.Immediate field))
+          | Some field => pure (Value.Pointer to_value (Pointer.Immediate field))
           | None => panic "invalid array index"
           end
         | _ => pure (Value.Error "expected an array")
         end
       | Pointer.Mutable address path =>
         let new_path := path ++ [Pointer.Index.Array index] in
-        pure (Value.Pointer (Pointer.Mutable address new_path))
+        pure (Value.Pointer to_value (Pointer.Mutable address new_path))
       end
     | _ => pure (Value.Error "expected an address")
     end
@@ -727,14 +745,14 @@ Definition get_struct_tuple_field
     (value : Value.t) (constructor : string) (index : Z) :
     Value.t :=
   match value with
-  | Value.Pointer pointer =>
+  | Value.Pointer to_value pointer =>
     match pointer with
     | Pointer.Immediate value =>
       match value with
       | Value.StructTuple current_constructor fields =>
         if String.eqb current_constructor constructor then
           match List.nth_error fields (Z.to_nat index) with
-          | Some value => Value.Pointer (Pointer.Immediate value)
+          | Some value => Value.Pointer to_value (Pointer.Immediate value)
           | None => Value.Error "field not found"
           end
         else
@@ -743,7 +761,7 @@ Definition get_struct_tuple_field
       end
     | Pointer.Mutable address path =>
       let new_path := path ++ [Pointer.Index.StructTuple constructor index] in
-      Value.Pointer (Pointer.Mutable address new_path)
+      Value.Pointer to_value (Pointer.Mutable address new_path)
     end
   | _ => Value.Error "expected an address"
   end.
@@ -753,21 +771,21 @@ Definition get_struct_record_field
     (value : Value.t) (constructor field : string) :
     Value.t :=
   match value with
-  | Value.Pointer (Pointer.Immediate value) =>
+  | Value.Pointer to_value (Pointer.Immediate value) =>
     match value with
     | Value.StructRecord current_constructor fields =>
       if String.eqb current_constructor constructor then
         match List.assoc fields field with
-        | Some value => Value.Pointer (Pointer.Immediate value)
+        | Some value => Value.Pointer to_value (Pointer.Immediate value)
         | None => Value.Error "field not found"
         end
       else
         Value.Error "different values of constructor"
     | _ => Value.Error "not a struct record"
     end
-  | Value.Pointer (Pointer.Mutable address path) =>
+  | Value.Pointer to_value (Pointer.Mutable address path) =>
     let new_path := path ++ [Pointer.Index.StructRecord constructor field] in
-    Value.Pointer (Pointer.Mutable address new_path)
+    Value.Pointer to_value (Pointer.Mutable address new_path)
   | _ => Value.Error "expected an address"
   end.
 
@@ -777,14 +795,14 @@ Definition get_struct_tuple_field_or_break_match
     (value : Value.t) (constructor : string) (index : Z) :
     M :=
   match value with
-  | Value.Pointer pointer =>
+  | Value.Pointer to_value pointer =>
     match pointer with
     | Pointer.Immediate value =>
       match value with
       | Value.StructTuple current_constructor fields =>
         if String.eqb current_constructor constructor then
           match List.nth_error fields (Z.to_nat index) with
-          | Some value => pure (Value.Pointer (Pointer.Immediate value))
+          | Some value => pure (Value.Pointer to_value (Pointer.Immediate value))
           | None => M.impossible
           end
         else
@@ -800,7 +818,7 @@ Definition get_struct_tuple_field_or_break_match
           if String.eqb current_constructor constructor then
             let new_path :=
               path ++ [Pointer.Index.StructTuple constructor index] in
-            pure (Value.Pointer (Pointer.Mutable address new_path))
+            pure (Value.Pointer to_value (Pointer.Mutable address new_path))
           else
             break_match
         | _ => M.impossible
@@ -814,14 +832,14 @@ Definition get_struct_record_field_or_break_match
     (value : Value.t) (constructor field : string) :
     M :=
   match value with
-  | Value.Pointer pointer =>
+  | Value.Pointer to_value pointer =>
     match pointer with
     | Pointer.Immediate value =>
       match value with
       | Value.StructRecord current_constructor fields =>
         if String.eqb current_constructor constructor then
           match List.assoc fields field with
-          | Some value => pure (Value.Pointer (Pointer.Immediate value))
+          | Some value => pure (Value.Pointer to_value (Pointer.Immediate value))
           | None => M.impossible
           end
         else
@@ -837,7 +855,7 @@ Definition get_struct_record_field_or_break_match
           if String.eqb current_constructor constructor then
             let new_path :=
               path ++ [Pointer.Index.StructRecord constructor field] in
-            pure (Value.Pointer (Pointer.Mutable address new_path))
+            pure (Value.Pointer to_value (Pointer.Mutable address new_path))
           else
             break_match
         | _ => M.impossible
