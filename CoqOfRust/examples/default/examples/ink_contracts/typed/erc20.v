@@ -1,11 +1,152 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.typed.M.
+Require Import CoqOfRust.lib.typed.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
-Module Impl_erc20_Mapping_K_V.
+Import M.Notations.
+Import Run.
+
+Module Mapping.
   Parameter t : Set -> Set -> Set.
 
-  Parameter get : forall {K V : Set}, Pointer.t (t K V) -> Pointer.t K -> M (option V).
+  Parameter to_value : forall {K V : Set} `{ToValue K} `{ToValue V}, t K V -> Value.t.
 
-  Parameter insert : forall {K V : Set}, Pointer.t (t K V) -> K -> V -> M unit.
+  Global Instance IsToValue (K V : Set) `{ToValue K} `{ToValue V} : ToValue (t K V) := {
+    Φ := Ty.apply (Ty.path "erc20::Mapping") [Φ K; Φ V];
+    φ := to_value;
+  }.
+End Mapping.
+
+Module Impl_erc20_Mapping_K_V.
+  Parameter get : forall {K V : Set}, Pointer.t (Mapping.t K V) -> Pointer.t K -> M (option V).
+
+  Parameter insert : forall {K V : Set}, Pointer.t (Mapping.t K V) -> K -> V -> M unit.
 End Impl_erc20_Mapping_K_V.
+
+Module Balance.
+  Definition t : Set := u128.t.
+End Balance.
+
+Module AccountId.
+  Inductive t : Set :=
+  | Make (account_id : u128.t).
+
+  Global Instance IsToValue : ToValue t := {
+    Φ := Ty.path "erc20::AccountId";
+    φ '(Make x) := Value.StructTuple "erc20::AccountId" [φ x];
+  }.
+End AccountId.
+
+(* TODO: move to the right place *)
+Module Pointer.
+  Global Instance IsToValue {T : Set} `{ToValue T} : ToValue (Pointer.t T) := {
+    Φ := Ty.path "erc20::Pointer";
+    φ x :=
+      let '(Pointer.Make to_value address path _ _) := x in
+      Value.Pointer (CoqOfRust.M.Pointer.Make
+        to_value
+        (Pointer.Address.to_address to_value address)
+        path
+      );
+  }.
+
+  Module Valid.
+    Inductive t {A : Set} `{ToValue A} : Pointer.t A -> Prop :=
+    | Intro {Big_A : Set}
+        (to_value : Big_A -> Value.t)
+        (address : Pointer.Address.t Big_A)
+        (path : Pointer.Path.t)
+        (projection : Big_A -> option A)
+        (injection : Big_A -> A -> option Big_A) :
+      (forall (value : Big_A),
+        Value.read_path (to_value value) path =
+        Option.map (projection value) φ
+      ) ->
+      t (Pointer.Make to_value address path projection injection).
+  End Valid.
+End Pointer.
+
+Module Erc20.
+  Record t : Set := {
+    total_supply : Balance.t;
+    balances : Mapping.t AccountId.t Balance.t;
+    allowances : Mapping.t (AccountId.t * AccountId.t) Balance.t;
+  }.
+
+  Global Instance IsToValue : ToValue t := {
+    Φ := Ty.path "erc20::Erc20";
+    φ x :=
+      Value.StructRecord "erc20::Erc20" [
+        ("total_supply", φ x.(total_supply));
+        ("balances", φ x.(balances));
+        ("allowances", φ x.(allowances))
+      ];
+  }.
+
+  Definition get_total_supply (self : Pointer.t t) : Pointer.t Balance.t :=
+    Pointer.map self (Pointer.Index.StructRecord "erc20::Erc20" "total_supply")
+      (fun x => Some x.(total_supply))
+      (fun x v => Some (x <| total_supply := v |>)).
+
+  Lemma get_total_supply_is_valid (self : Pointer.t t)
+      (H_self : Pointer.Valid.t self) :
+      Pointer.Valid.t (get_total_supply self).
+  Proof.
+    destruct H_self.
+    constructor.
+    intros.
+    rewrite Value.read_path_suffix_eq.
+    rewrite H.
+    now destruct (projection value).
+  Qed.
+End Erc20.
+
+Module Impl_erc20_Erc20.
+  Definition Self : Set := Erc20.t.
+
+  Definition total_supply (self : Pointer.t Self) : M Balance.t :=
+    let* self := M.alloc self in
+    let* self := M.read self in
+    M.read (Erc20.get_total_supply self).
+
+  Lemma total_supply_run {Address Env : Set} (env_to_value : Env -> Value.t)
+      (self : Pointer.t Self)
+      (H_self : Pointer.Valid.t self) :
+    {{ Address, env_to_value |
+      ink_contracts.erc20.Impl_erc20_Erc20.total_supply [] [φ self] ~
+      total_supply self
+    }}.
+  Proof.
+    Opaque φ.
+    cbn.
+    (* destruct self. *)
+    apply Run.CallPrimitiveStateAlloc.
+    intros; cbn.
+    apply Run.CallPrimitiveStateRead.
+    intros.
+    unfold M.get_struct_record_field.
+    unfold M.read.
+    assert (H_total_supply := Erc20.get_total_supply_is_valid self H_self).
+    unfold Erc20.get_total_supply in *.
+    cbn.
+    unfold Pointer.map.
+    Transparent φ.
+    cbn.
+    destruct H_self.
+    (* destruct value. *)
+    apply Run.CallPrimitiveStateRead.
+    intros.
+    rewrite Value.read_path_suffix_eq.
+    destruct H_self.
+    rewrite H.
+
+    inversion H_total_supply.
+  Qed.
+
+
+  (* Definition balance_of_impl (self : Pointer.t Erc20.t) (owner : Pointer.t AccountId) :
+      M (option Balance.t) :=
+    let* self := M.read self in *)
+
+    Impl_erc20_Mapping_K_V.get mapping owner.
+End Impl_erc20_Erc20.

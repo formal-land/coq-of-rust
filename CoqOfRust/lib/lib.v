@@ -14,7 +14,7 @@ Global Open Scope type_scope.
 Export List.ListNotations.
 
 Require Export CoqOfRust.M.
-Export M.Notations.
+Import M.Notations.
 
 Module List.
   (** Check the equality of two lists. *)
@@ -26,16 +26,12 @@ Module List.
     end.
 End List.
 
-Definition assign (target : Value.t) (source : Value.t) : M :=
-  let* _ := M.write target source in
-  M.alloc (Value.Tuple []).
-
-(** ** Integer types *)
-
 (** A value with an address of type `ref str`. *)
 Definition mk_str (s : string) : M :=
   let* p := M.alloc (Value.String s) in
   alloc p.
+
+(** ** Integer types *)
 
 Module IntegerDescription.
   Class C (Self : M.Integer.t) : Set := {

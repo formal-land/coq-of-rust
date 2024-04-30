@@ -32,7 +32,6 @@ Require Export CoqOfRust.lib.lib.
 Export List.ListNotations.
 
 Require Export CoqOfRust.M.
-Export M.Notations.
 
 Parameter pointer_coercion : string -> Value.t -> Value.t.
 

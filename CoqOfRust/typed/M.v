@@ -2,26 +2,194 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 
-Module Pointer.
-  Inductive t (A : Set) : Set :=
-  | Immediate (value : A)
-  | Mutable {Address : Set} (address : Address) (path : Pointer.Path.t).
-  Arguments Immediate {_}.
-  Arguments Mutable {_ _}.
+Import List.ListNotations.
 
-  Definition to_value_pointer {A : Set} (to_value : A -> Value.t) (pointer : t A) :
-      CoqOfRust.M.Pointer.t Value.t :=
-    match pointer with
-    | Immediate v => CoqOfRust.M.Pointer.Immediate (to_value v)
-    | Mutable address path => CoqOfRust.M.Pointer.Mutable address path
-    end.
+Local Open Scope list.
+
+(** ** Translation from a high-level type to a value. *)
+
+Class ToValue (A : Set) : Set := {
+  Φ : Ty.t;
+  φ : A -> Value.t;
+}.
+Arguments Φ _ {_}.
+
+Module Empty_setIsToValue.
+  Global Instance I : ToValue Empty_set := {
+    Φ := Ty.path "never";
+    φ v := match v with end;
+  }.
+End Empty_setIsToValue.
+
+Module StringIsToValue.
+  Global Instance I : ToValue string := {
+    Φ := Ty.path "str";
+    φ v := Value.String v;
+  }.
+End StringIsToValue.
+
+(** For tuples we provide a canonical way to convert to values. *)
+Module TupleIsToValue.
+  Global Instance I0 : ToValue unit := {
+    Φ := Ty.tuple [];
+    φ 'tt := Value.Tuple [];
+  }.
+
+  Global Instance I2 (A1 A2 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2) :
+      ToValue (A1 * A2) := {
+    Φ := Ty.tuple [Φ A1; Φ A2];
+    φ '(x1, x2) := Value.Tuple [φ x1; φ x2];
+  }.
+
+  Global Instance I3 (A1 A2 A3 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3) :
+      ToValue (A1 * A2 * A3) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3];
+    φ '(x1, x2, x3) :=
+      Value.Tuple [φ x1; φ x2; φ x3];
+  }.
+
+  Global Instance I4 (A1 A2 A3 A4 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3)
+      (_ : ToValue A4) :
+      ToValue (A1 * A2 * A3 * A4) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4];
+    φ '(x1, x2, x3, x4) :=
+      Value.Tuple [φ x1; φ x2; φ x3; φ x4];
+  }.
+
+  Global Instance I5 (A1 A2 A3 A4 A5 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3)
+      (_ : ToValue A4)
+      (_ : ToValue A5) :
+      ToValue (A1 * A2 * A3 * A4 * A5) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5];
+    φ '(x1, x2, x3, x4, x5) :=
+      Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5];
+  }.
+
+  Global Instance I6 (A1 A2 A3 A4 A5 A6 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3)
+      (_ : ToValue A4)
+      (_ : ToValue A5)
+      (_ : ToValue A6) :
+      ToValue (A1 * A2 * A3 * A4 * A5 * A6) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6];
+    φ '(x1, x2, x3, x4, x5, x6) :=
+      Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6];
+  }.
+
+  Global Instance I7 (A1 A2 A3 A4 A5 A6 A7 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3)
+      (_ : ToValue A4)
+      (_ : ToValue A5)
+      (_ : ToValue A6)
+      (_ : ToValue A7) :
+      ToValue (A1 * A2 * A3 * A4 * A5 * A6 * A7) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7];
+    φ '(x1, x2, x3, x4, x5, x6, x7) :=
+      Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6; φ x7];
+  }.
+
+  Global Instance I8 (A1 A2 A3 A4 A5 A6 A7 A8 : Set)
+      (_ : ToValue A1)
+      (_ : ToValue A2)
+      (_ : ToValue A3)
+      (_ : ToValue A4)
+      (_ : ToValue A5)
+      (_ : ToValue A6)
+      (_ : ToValue A7)
+      (_ : ToValue A8) :
+      ToValue (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7; Φ A8];
+    φ '(x1, x2, x3, x4, x5, x6, x7, x8) :=
+      Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6; φ x7; φ x8];
+  }.
+End TupleIsToValue.
+
+Module Pointer.
+  Module Address.
+    Inductive t (A : Set) : Set :=
+    | Immediate (value : A)
+    | Mutable {Address : Set} (address : Address).
+    Arguments Immediate {_}.
+    Arguments Mutable {_ _}.
+
+    Definition to_address {A : Set} (to_value : A -> Value.t) (address : t A) :
+        CoqOfRust.M.Pointer.Address.t Value.t :=
+      match address with
+      | Immediate v => CoqOfRust.M.Pointer.Address.Immediate (to_value v)
+      | Mutable address => CoqOfRust.M.Pointer.Address.Mutable address
+      end.
+  End Address.
+
+  Inductive t (A : Set) : Set :=
+  | Make {Big_A : Set}
+      (to_value : Big_A -> Value.t)
+      (address : Address.t Big_A)
+      (path : Pointer.Path.t)
+      (projection : Big_A -> option A)
+      (injection : Big_A -> A -> option Big_A).
+  Arguments Make {_ _}.
+
+  Definition map {Big Small : Set}
+      (pointer : t Big)
+      (index : Pointer.Index.t)
+      (projection : Big -> option Small)
+      (injection : Big -> Small -> option Big) :
+      t Small :=
+    let 'Make to_value address path projection' injection' := pointer in
+    Make
+      to_value
+      address
+      (path ++ [index])
+      (fun big_big =>
+        match projection' big_big with
+        | Some big => projection big
+        | None => None
+        end
+      )
+      (fun big_big small =>
+        match projection' big_big with
+        | Some big =>
+          match injection big small with
+          | Some big' => injection' big_big big'
+          | None => None
+          end
+        | None => None
+        end
+      ).
+
+  (* Definition to_value_pointer {A : Set} (pointer : t A) : CoqOfRust.M.Pointer.t Value.t :=
+    let 'Make address projection injection := pointer in
+    let address :=
+      match address with
+      | Address.Immediate v => CoqOfRust.M.Pointer.Address.Immediate (to_value v)
+      | Address.Mutable address => CoqOfRust.M.Pointer.Address.Mutable address
+      end in
+    {|
+      CoqOfRust.M.Pointer.address := address;
+      CoqOfRust.M.Pointer.path := path;
+    |}. *)
 End Pointer.
 
 Module Primitive.
   Inductive t : Set -> Set :=
   | StateAlloc {A : Set} (to_value : A -> Value.t) (value : A) : t (Pointer.t A)
-  | StateRead {A : Set} (pointer : Pointer.t A) : t A
-  | StateWrite {A : Set} (pointer : Pointer.t A) (update : A) : t unit
+  | StateRead {A : Set} (address : Pointer.Address.t A) : t A
+  | StateWrite {A : Set} (address : Pointer.Address.t A) (update : A) : t unit
   | EnvRead {A : Set} : t A.
 End Primitive.
 
@@ -72,8 +240,8 @@ Module LowM.
   | CallPrimitive {B : Set} (primitive : Primitive.t B) (k : B -> t A)
   | CallClosure {B : Set}
       (to_value : B -> Value.t)
-      (params : ClosureParams.t)
       (body : t (B + Exception.t Empty_set))
+      (params : ClosureParams.t)
       (k : (B + Exception.t Empty_set) -> t A)
   | Impossible.
   Arguments Pure {_}.
@@ -111,10 +279,11 @@ Definition let_ {A B R : Set} (e1 : MBody A R) (e2 : A -> MBody B R) : MBody B R
   | inr error => LowM.Pure (inr error)
   end).
 
-Definition result_to_value {A R : Set} `{ToValue A} `{ToValue R} (result : A + Exception.t R) :
+Definition result_to_value {A R : Set} `{ToValue R}
+    (to_value : A -> Value.t) (result : A + Exception.t R) :
     Value.t + CoqOfRust.M.Exception.t :=
   match result with
-  | inl v => inl (φ v)
+  | inl v => inl (to_value v)
   | inr exception =>
     inr match exception with
     | Exception.Return r => CoqOfRust.M.Exception.Return (φ r)
@@ -214,6 +383,9 @@ Definition break_match {R : Set} : MBody unit R :=
 Definition panic {A R : Set} (message : string) : MBody A R :=
   raise (Exception.Panic message).
 
+Definition impossible {A R : Set} : MBody A R :=
+  LowM.Impossible.
+
 Definition call_primitive {A R : Set} (primitive : Primitive.t A) : MBody A R :=
   LowM.CallPrimitive primitive (fun result =>
   LowM.Pure (inl result)).
@@ -222,10 +394,20 @@ Definition alloc {A R : Set} `{ToValue A} (value : A) : MBody (Pointer.t A) R :=
   call_primitive (Primitive.StateAlloc φ value).
 
 Definition read {A R : Set} (pointer : Pointer.t A) : MBody A R :=
-  call_primitive (Primitive.StateRead pointer).
+  let 'Pointer.Make _ address _ injection _ := pointer in
+  let* value := call_primitive (Primitive.StateRead address) in
+  match injection value with
+  | Some sub_value => pure sub_value
+  | None => impossible
+  end.
 
 Definition write {A R : Set} (pointer : Pointer.t A) (update : A) : MBody unit R :=
-  call_primitive (Primitive.StateWrite pointer update).
+  let 'Pointer.Make _ address _ _ projection := pointer in
+  let* current_value := call_primitive (Primitive.StateRead address) in
+  match projection current_value update with
+  | Some updated_value => call_primitive (Primitive.StateWrite address updated_value)
+  | None => impossible
+  end.
 
 Definition copy {A R : Set} `{ToValue A} (p : Pointer.t A) : MBody (Pointer.t A) R :=
   let* v := read p in
@@ -272,8 +454,9 @@ Definition catch_break {R : Set} (body : MBody (Pointer.t unit) R) : MBody (Poin
       end
     ).
 
-Definition call_closure {A R : Set} {H : ToValue A} (body : M A) : MBody A R :=
-  catch (LowM.CallClosure φ body LowM.Pure) (fun exception =>
+Definition call_closure {A R : Set} {H : ToValue A} (body : M A) (params : ClosureParams.t) :
+    MBody A R :=
+  catch (LowM.CallClosure φ body params LowM.Pure) (fun exception =>
     match exception with
     | Exception.Return r => match r with end
     | Exception.Continue => raise Exception.Continue
@@ -286,16 +469,6 @@ Definition call_closure {A R : Set} {H : ToValue A} (body : M A) : MBody A R :=
 Definition read_env {A R : Set} : MBody A R :=
   call_primitive Primitive.EnvRead.
 
-Definition impossible {A R : Set} : MBody A R :=
-  LowM.Impossible.
-
-(* Module EnvStateToValue.
-  Record t (Env Address : Set) (get_Set : Address -> Set) : Set := {
-    env_to_value : Env -> Value.t;
-    cell_to_value : forall (address : Address), get_Set address -> Value.t;
-  }.
-End EnvStateToValue. *)
-
 Module Run.
   Reserved Notation "{{ Address , env_to_value | e ~ result }}".
 
@@ -304,17 +477,17 @@ Module Run.
       CoqOfRust.M.M -> MBody A R -> Prop :=
   | Pure (result : A + Exception.t R) :
     {{ Address, env_to_value |
-      CoqOfRust.M.LowM.Pure (result_to_value result) ~
+      CoqOfRust.M.LowM.Pure (result_to_value φ result) ~
       LowM.Pure result
     }}
   | CallPrimitiveStateAlloc {B : Set} `{ToValue B}
       (value : B)
       (k' : Value.t -> CoqOfRust.M.M)
       (k : Pointer.t B -> MBody A R) :
-    (forall (pointer : Pointer.t B),
+    (forall (address : Pointer.Address.t B),
       {{ Address, env_to_value |
-        k' (Value.Pointer φ (Pointer.to_value_pointer φ pointer)) ~
-        k pointer
+        k' (Value.Pointer (CoqOfRust.M.Pointer.Make φ (Pointer.Address.to_address φ address) [])) ~
+        k (Pointer.Make φ address [] (fun x => Some x) (fun _ x => Some x))
       }}
     ) ->
     {{ Address, env_to_value |
@@ -323,7 +496,7 @@ Module Run.
     }}
   | CallPrimitiveStateRead {B : Set}
       (to_value : B -> Value.t)
-      (pointer : Pointer.t B)
+      (address : Pointer.Address.t B)
       (k' : Value.t -> CoqOfRust.M.M)
       (k : B -> MBody A R) :
     (forall (value : B),
@@ -334,13 +507,13 @@ Module Run.
     ) ->
     {{ Address, env_to_value |
       CoqOfRust.M.LowM.CallPrimitive
-        (CoqOfRust.M.Primitive.StateRead to_value (Pointer.to_value_pointer to_value pointer))
+        (CoqOfRust.M.Primitive.StateRead to_value (Pointer.Address.to_address to_value address))
         k' ~
-      LowM.CallPrimitive (Primitive.StateRead pointer) k
+      LowM.CallPrimitive (Primitive.StateRead address) k
     }}
   | CallPrimitiveStateWrite {B : Set}
       (to_value : B -> Value.t)
-      (pointer : Pointer.t B)
+      (address : Pointer.Address.t B)
       (update : B)
       (k' : Value.t -> CoqOfRust.M.M)
       (k : unit -> MBody A R) :
@@ -352,11 +525,11 @@ Module Run.
       CoqOfRust.M.LowM.CallPrimitive
         (CoqOfRust.M.Primitive.StateWrite
           to_value
-          (Pointer.to_value_pointer to_value pointer)
+          (Pointer.Address.to_address to_value address)
           (to_value update)
         )
         k' ~
-      LowM.CallPrimitive (Primitive.StateWrite pointer update) k
+      LowM.CallPrimitive (Primitive.StateWrite address update) k
     }}
   | CallPrimitiveEnvRead
       (k' : Value.t -> CoqOfRust.M.M)
@@ -374,10 +547,19 @@ Module Run.
   | CallClosure {B : Set}
       (to_value : B -> Value.t)
       (body : M B)
+      (params : ClosureParams.t)
+      (body' : Value.t)
+      (k' : Value.t + CoqOfRust.M.Exception.t -> CoqOfRust.M.M)
       (k : B + Exception.t Empty_set -> MBody A R) :
+    (forall (result : B + Exception.t Empty_set),
+      {{ Address, env_to_value |
+        k' (result_to_value to_value result) ~
+        k result
+      }}
+    ) ->
     {{ Address, env_to_value |
-      LowM.CallClosure e k ~
-      LowM.CallClosure to_value body k
+      CoqOfRust.M.LowM.CallClosure body' (ClosureParams.to_value params) k' ~
+      LowM.CallClosure to_value body params k
     }}
 
   where "{{ Address , env_to_value | untyped ~ typed }}" :=
@@ -385,7 +567,7 @@ Module Run.
 End Run.
 
 
-Ltac run_symbolic_state_read :=
+(* Ltac run_symbolic_state_read :=
   match goal with
   | |- Run.t _ _ _ (LowM.CallPrimitive (Primitive.StateRead ?address) _) _ =>
     let H := fresh "H" in
@@ -423,4 +605,4 @@ Ltac run_symbolic :=
   repeat (
     cbn ||
     run_symbolic_one_step
-  ).
+  ). *)

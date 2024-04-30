@@ -1,7 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.simulations.M.
-
-Import simulations.M.Notations.
+Require Import CoqOfRust.typed.M.
 
 Module u8.
   Inductive t : Set :=
