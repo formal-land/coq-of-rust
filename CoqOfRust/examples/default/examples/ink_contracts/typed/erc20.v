@@ -18,9 +18,11 @@ Module Mapping.
 End Mapping.
 
 Module Impl_erc20_Mapping_K_V.
-  Parameter get : forall {K V : Set}, Pointer.t (Mapping.t K V) -> Pointer.t K -> M (option V).
+  Parameter get : forall {K V : Set} `{ToValue K} `{ToValue V},
+    Pointer.t (Mapping.t K V) -> Pointer.t K -> M (option V).
 
-  Parameter insert : forall {K V : Set}, Pointer.t (Mapping.t K V) -> K -> V -> M unit.
+  Parameter insert : forall {K V : Set} `{ToValue K} `{ToValue V},
+    Pointer.t (Mapping.t K V) -> K -> V -> M unit.
 End Impl_erc20_Mapping_K_V.
 
 Module Balance.
@@ -40,30 +42,9 @@ End AccountId.
 (* TODO: move to the right place *)
 Module Pointer.
   Global Instance IsToValue {T : Set} `{ToValue T} : ToValue (Pointer.t T) := {
-    Φ := Ty.path "erc20::Pointer";
-    φ x :=
-      let '(Pointer.Make to_value address path _ _) := x in
-      Value.Pointer (CoqOfRust.M.Pointer.Make
-        to_value
-        (Pointer.Address.to_address to_value address)
-        path
-      );
+    Φ := Ty.path "erc20::Pointer"; (* TODO *)
+    φ x := Value.Pointer (Pointer.to_pointer x);
   }.
-
-  Module Valid.
-    Inductive t {A : Set} `{ToValue A} : Pointer.t A -> Prop :=
-    | Intro {Big_A : Set}
-        (to_value : Big_A -> Value.t)
-        (address : Pointer.Address.t Big_A)
-        (path : Pointer.Path.t)
-        (projection : Big_A -> option A)
-        (injection : Big_A -> A -> option Big_A) :
-      (forall (value : Big_A),
-        Value.read_path (to_value value) path =
-        Option.map (projection value) φ
-      ) ->
-      t (Pointer.Make to_value address path projection injection).
-  End Valid.
 End Pointer.
 
 Module Erc20.
@@ -83,22 +64,11 @@ Module Erc20.
       ];
   }.
 
-  Definition get_total_supply (self : Pointer.t t) : Pointer.t Balance.t :=
-    Pointer.map self (Pointer.Index.StructRecord "erc20::Erc20" "total_supply")
+  Definition get_total_supply {R : Set} (self : Pointer.t t) :
+      MBody (Pointer.t Balance.t) R :=
+    M.make_sub_pointer self (Pointer.Index.StructRecord "erc20::Erc20" "total_supply")
       (fun x => Some x.(total_supply))
       (fun x v => Some (x <| total_supply := v |>)).
-
-  Lemma get_total_supply_is_valid (self : Pointer.t t)
-      (H_self : Pointer.Valid.t self) :
-      Pointer.Valid.t (get_total_supply self).
-  Proof.
-    destruct H_self.
-    constructor.
-    intros.
-    rewrite Value.read_path_suffix_eq.
-    rewrite H.
-    now destruct (projection value).
-  Qed.
 End Erc20.
 
 Module Impl_erc20_Erc20.
@@ -107,11 +77,11 @@ Module Impl_erc20_Erc20.
   Definition total_supply (self : Pointer.t Self) : M Balance.t :=
     let* self := M.alloc self in
     let* self := M.read self in
-    M.read (Erc20.get_total_supply self).
+    let* self_total_supply := Erc20.get_total_supply self in
+    M.read self_total_supply.
 
   Lemma total_supply_run {Address Env : Set} (env_to_value : Env -> Value.t)
-      (self : Pointer.t Self)
-      (H_self : Pointer.Valid.t self) :
+      (self : Pointer.t Self) :
     {{ Address, env_to_value |
       ink_contracts.erc20.Impl_erc20_Erc20.total_supply [] [φ self] ~
       total_supply self
@@ -119,9 +89,33 @@ Module Impl_erc20_Erc20.
   Proof.
     Opaque φ.
     cbn.
-    (* destruct self. *)
     apply Run.CallPrimitiveStateAlloc.
     intros; cbn.
+    apply Run.CallPrimitiveStateRead; [reflexivity|].
+    intros.
+    unfold M.get_struct_record_field.
+    Transparent φ.
+    cbn.
+    destruct value, origin.
+    apply Run.CallPrimitiveMakeSubPointer.
+    { sfirstorder. }
+    { sfirstorder. }
+    unfold M.read; cbn.
+    apply Run.CallPrimitiveStateRead; [reflexivity|].
+    intros.
+    apply Run.Pure.
+    reflexivity.
+  Qed.
+    destruct value.
+    apply Run.Pure.
+
+    run_symbolic_state_read.
+
+    apply H.
+    set (origin := Pointer.Origin.Make _ _ _).
+    pose proof (H := Run.CallPrimitiveStateRead Address env_to_value origin).
+    apply H.
+
     apply Run.CallPrimitiveStateRead.
     intros.
     unfold M.get_struct_record_field.

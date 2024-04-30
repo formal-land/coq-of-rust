@@ -122,26 +122,30 @@ End TupleIsToValue.
 Module Pointer.
   Module Address.
     Inductive t (A : Set) : Set :=
+    | Null
     | Immediate (value : A)
     | Mutable {Address : Set} (address : Address).
+    Arguments Null {_}.
     Arguments Immediate {_}.
     Arguments Mutable {_ _}.
 
     Definition to_address {A : Set} (to_value : A -> Value.t) (address : t A) :
         CoqOfRust.M.Pointer.Address.t Value.t :=
       match address with
+      | Null => CoqOfRust.M.Pointer.Address.Null
       | Immediate v => CoqOfRust.M.Pointer.Address.Immediate (to_value v)
       | Mutable address => CoqOfRust.M.Pointer.Address.Mutable address
       end.
 
-    Definition map {A A' : Set} (projection : A -> option A') (address : t A) : option (t A') :=
+    Definition map {A A' : Set} (projection : A -> option A') (address : t A) : t A' :=
       match address with
+      | Null => Null
       | Immediate v =>
         match projection v with
-        | Some v' => Some (Immediate v')
-        | None => None
+        | Some v' => Immediate v'
+        | None => Null (* This is where the null addresses can be created *)
         end
-      | Mutable address => Some (Mutable address)
+      | Mutable address => Mutable address
       end.
   End Address.
 
@@ -155,23 +159,22 @@ Module Pointer.
     Arguments Make {_ _}.
   End Origin.
 
-  Inductive t (A : Set) : Set :=
+  Inductive t (A : Set) `{ToValue A} : Set :=
   | Make
       (origin : Origin.t A)
-      (to_value : A -> Value.t)
       (address : Address.t A)
       (path : Pointer.Path.t).
-  Arguments Make {_}.
+  Arguments Make {_ _}.
 
-  Definition to_pointer {A : Set} (pointer : t A) : CoqOfRust.M.Pointer.t Value.t :=
-    let 'Make origin to_value address path := pointer in
+  Definition to_pointer {A : Set} `{ToValue A} (pointer : t A) : CoqOfRust.M.Pointer.t Value.t :=
+    let 'Make origin address path := pointer in
     let 'Origin.Make big_to_value projection injection := origin in
     CoqOfRust.M.Pointer.Make
       big_to_value
-      to_value
+      φ
       projection
       injection
-      (Address.to_address to_value address)
+      (Address.to_address φ address)
       path.
 
   (* Definition map {Big Small : Set}
@@ -219,13 +222,12 @@ End Pointer.
 
 Module Primitive.
   Inductive t : Set -> Set :=
-  | StateAlloc {A : Set} (to_value : A -> Value.t) (value : A) : t (Pointer.t A)
-  | StateRead {A : Set} (pointer : Pointer.t A) : t A
-  | StateWrite {A : Set} (pointer : Pointer.t A) (update : A) : t unit
-  | MakeSubPointer {A A' : Set}
+  | StateAlloc {A : Set} `{ToValue A} (value : A) : t (Pointer.t A)
+  | StateRead {A : Set} `{ToValue A} (pointer : Pointer.t A) : t A
+  | StateWrite {A : Set} `{ToValue A} (pointer : Pointer.t A) (update : A) : t unit
+  | MakeSubPointer {A A' : Set} `{ToValue A} `{ToValue A'}
       (pointer : Pointer.t A)
       (index : Pointer.Index.t)
-      (to_value : A' -> Value.t)
       (projection : A -> option A')
       (injection : A -> A' -> option A) :
     t (Pointer.t A')
@@ -430,19 +432,19 @@ Definition call_primitive {A R : Set} (primitive : Primitive.t A) : MBody A R :=
   LowM.Pure (inl result)).
 
 Definition alloc {A R : Set} `{ToValue A} (value : A) : MBody (Pointer.t A) R :=
-  call_primitive (Primitive.StateAlloc φ value).
+  call_primitive (Primitive.StateAlloc value).
 
-Definition read {A R : Set} (pointer : Pointer.t A) : MBody A R :=
+Definition read {A R : Set} `{ToValue A} (pointer : Pointer.t A) : MBody A R :=
   call_primitive (Primitive.StateRead pointer).
 
-Definition write {A R : Set} (pointer : Pointer.t A) (update : A) : MBody unit R :=
+Definition write {A R : Set} `{ToValue A} (pointer : Pointer.t A) (update : A) : MBody unit R :=
   call_primitive (Primitive.StateWrite pointer update).
 
-Definition make_sub_pointer {A A' R : Set} `{ToValue A'}
+Definition make_sub_pointer {A A' R : Set} `{ToValue A} `{ToValue A'}
     (pointer : Pointer.t A) (index : Pointer.Index.t)
     (projection : A -> option A') (injection : A -> A' -> option A) :
     MBody (Pointer.t A') R :=
-  call_primitive (Primitive.MakeSubPointer pointer index φ projection injection).
+  call_primitive (Primitive.MakeSubPointer pointer index projection injection).
 
 Definition copy {A R : Set} `{ToValue A} (p : Pointer.t A) : MBody (Pointer.t A) R :=
   let* v := read p in
@@ -510,9 +512,12 @@ Module Run.
   Inductive t (Address : Set) {Env : Set} (env_to_value : Env -> Value.t)
       {A R : Set} `{ToValue A} `{ToValue R} :
       CoqOfRust.M.M -> MBody A R -> Prop :=
-  | Pure (result : A + Exception.t R) :
+  | Pure
+      (result : A + Exception.t R)
+      (result' : Value.t + CoqOfRust.M.Exception.t) :
+    result' = result_to_value φ result ->
     {{ Address, env_to_value |
-      CoqOfRust.M.LowM.Pure (result_to_value φ result) ~
+      CoqOfRust.M.LowM.Pure result' ~
       LowM.Pure result
     }}
   | CallPrimitiveStateAlloc {B : Set} `{ToValue B}
@@ -523,7 +528,6 @@ Module Run.
       let pointer :=
         Pointer.Make
           (Pointer.Origin.Make φ (fun x => Some x) (fun _ x => Some x))
-          φ
           address
           [] in
       {{ Address, env_to_value |
@@ -533,31 +537,33 @@ Module Run.
     ) ->
     {{ Address, env_to_value |
       CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.StateAlloc (φ value)) k' ~
-      LowM.CallPrimitive (Primitive.StateAlloc φ value) k
+      LowM.CallPrimitive (Primitive.StateAlloc value) k
     }}
-  | CallPrimitiveStateRead {B : Set}
-      origin to_value address path
+  | CallPrimitiveStateRead {B : Set} `{ToValue B}
+      origin address path
+      pointer'
       (k' : Value.t -> CoqOfRust.M.M)
       (k : B -> MBody A R) :
-    let pointer : Pointer.t B := Pointer.Make origin to_value address path in
+    let pointer : Pointer.t B := Pointer.Make origin address path in
+    pointer' = Pointer.to_pointer pointer ->
     (forall (value : B),
       {{ Address, env_to_value |
-        k' (to_value value) ~
+        k' (φ value) ~
         k value
       }}
     ) ->
     {{ Address, env_to_value |
       CoqOfRust.M.LowM.CallPrimitive
-        (CoqOfRust.M.Primitive.StateRead (Pointer.to_pointer pointer))
+        (CoqOfRust.M.Primitive.StateRead pointer')
         k' ~
       LowM.CallPrimitive (Primitive.StateRead pointer) k
     }}
-  | CallPrimitiveStateWrite {B : Set}
-      origin to_value address path
+  | CallPrimitiveStateWrite {B : Set} `{ToValue B}
+      origin address path
       (update : B)
       (k' : Value.t -> CoqOfRust.M.M)
       (k : unit -> MBody A R) :
-    let pointer : Pointer.t B := Pointer.Make origin to_value address path in
+    let pointer : Pointer.t B := Pointer.Make origin address path in
     {{ Address, env_to_value |
       k' (Value.Tuple []) ~
       k tt
@@ -566,20 +572,19 @@ Module Run.
       CoqOfRust.M.LowM.CallPrimitive
         (CoqOfRust.M.Primitive.StateWrite
           (Pointer.to_pointer pointer)
-          (to_value update)
+          (φ update)
         )
         k' ~
       LowM.CallPrimitive (Primitive.StateWrite pointer update) k
     }}
-  | CallPrimitiveMakeSubPointer {Big_B B B' : Set}
+  | CallPrimitiveMakeSubPointer {Big_B B B' : Set} `{ToValue B} `{ToValue B'}
       (big_to_value : Big_B -> Value.t) projection injection
-      (to_value : B -> Value.t) address path
-      index (to_value' : B' -> Value.t) projection' injection'
-      (address' : Pointer.Address.t B')
+      address path
+      index projection' injection'
       (k' : Value.t -> CoqOfRust.M.M)
       (k : Pointer.t B' -> MBody A R) :
     let origin : Pointer.Origin.t B := Pointer.Origin.Make big_to_value projection injection in
-    let pointer : Pointer.t B := Pointer.Make origin to_value address path in
+    let pointer : Pointer.t B := Pointer.Make origin address path in
     let origin' : Pointer.Origin.t B' :=
       Pointer.Origin.Make
         big_to_value
@@ -597,29 +602,25 @@ Module Run.
             end
           | None => None
           end) in
-    Pointer.Address.map projection' address = Some address' ->
     let pointer' : Pointer.t B' :=
       Pointer.Make
         origin'
-        to_value'
-        address'
+        (Pointer.Address.map projection' address)
         (path ++ [index]) in
     (* Communtativity of the read *)
-    (forall (b : B) (b' : B'),
-      Option.map (projection' b) to_value' =
-      Value.read_path (to_value b) [index]
+    (forall (b : B),
+      Option.map (projection' b) φ =
+      Value.read_path (φ b) [index]
     ) ->
     (* Communtativity of the write *)
     (forall (b : B) (b' : B'),
-      Option.map (injection' b b') to_value =
-      Value.write_value (to_value b) [index] (to_value' b')
+      Option.map (injection' b b') φ =
+      Value.write_value (φ b) [index] (φ b')
     ) ->
-    (forall (value : B),
-      {{ Address, env_to_value |
-        k' (Value.Pointer (Pointer.to_pointer pointer')) ~
-        k pointer'
-      }}
-    ) ->
+    {{ Address, env_to_value |
+      k' (Value.Pointer (Pointer.to_pointer pointer')) ~
+      k pointer'
+    }} ->
     {{ Address, env_to_value |
       CoqOfRust.M.LowM.CallPrimitive
         (CoqOfRust.M.Primitive.MakeSubPointer
@@ -627,7 +628,7 @@ Module Run.
           index
         )
         k' ~
-      LowM.CallPrimitive (Primitive.MakeSubPointer pointer index to_value' projection' injection') k
+      LowM.CallPrimitive (Primitive.MakeSubPointer pointer index projection' injection') k
     }}
   | CallPrimitiveEnvRead
       (k' : Value.t -> CoqOfRust.M.M)
@@ -664,6 +665,23 @@ Module Run.
     (t Address env_to_value untyped typed).
 End Run.
 
+Import Run.
+
+Ltac run_symbolic_state_read :=
+  match goal with
+  | |- {{ ?Address, ?env_to_value |
+      CoqOfRust.M.LowM.CallPrimitive
+        (CoqOfRust.M.Primitive.StateRead ?pointer')
+        ?k' ~
+      LowM.CallPrimitive (Primitive.StateRead (Pointer.Make ?origin ?address ?path)) ?k
+    }} =>
+      let H := fresh "H" in
+      pose proof (H :=
+        Run.CallPrimitiveStateRead Address env_to_value origin address path k' k
+      );
+      apply H;
+      clear H
+  end.
 
 (* Ltac run_symbolic_state_read :=
   match goal with

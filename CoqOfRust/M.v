@@ -100,8 +100,10 @@ Module Pointer.
   Module Address.
     (** The type [Value] is know just after as [Value.t], but not defined here yet. *)
     Inductive t (Value : Set) : Set :=
+    | Null
     | Immediate (value : Value)
     | Mutable {Address : Set} (address : Address).
+    Arguments Null {_}.
     Arguments Immediate {_}.
     Arguments Mutable {_ _}.
   End Address.
