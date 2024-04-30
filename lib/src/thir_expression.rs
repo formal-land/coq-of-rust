@@ -693,7 +693,7 @@ pub(crate) fn compile_expr<'a>(
                     Rc::new(Expr::Call {
                         func: Expr::local_var(getter_name),
                         args: vec![base, constructor, index],
-                        kind: CallKind::Pure,
+                        kind: CallKind::Effectful,
                     })
                 }
                 None => {

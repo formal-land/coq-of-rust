@@ -106,13 +106,10 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
 pub(crate) fn compile_qpath(env: &Env, hir_id: HirId, qpath: &QPath) -> Path {
     let type_check_results = rustc_middle::ty::TypeckResults::new(hir_id.owner);
 
-    compile_def_id(
-        env,
-        type_check_results
-            .qpath_res(qpath, hir_id)
-            .opt_def_id()
-            .unwrap(),
-    )
+    match type_check_results.qpath_res(qpath, hir_id).opt_def_id() {
+        Some(def_id) => compile_def_id(env, def_id),
+        None => Path::new(&["QPath", "without_def_id"]),
+    }
 }
 
 #[derive(Eq, PartialEq)]

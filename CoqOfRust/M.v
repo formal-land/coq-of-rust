@@ -333,9 +333,9 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {A : Set} (to_value : A -> Value.t) (address : Pointer.Address.t Value.t)
-  | StateWrite {A : Set}
-      (to_value : A -> Value.t) (address : Pointer.Address.t Value.t) (update : Value.t)
+  | StateRead (pointer : Pointer.t Value.t)
+  | StateWrite (pointer : Pointer.t Value.t) (update : Value.t)
+  | MakeSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -558,24 +558,13 @@ Definition alloc (v : Value.t) : M :=
 
 Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Make to_value address path) =>
-    let* value := call_primitive (Primitive.StateRead to_value address) in
-    match Value.read_path value path with
-    | Some sub_value => pure sub_value
-    | None => impossible
-    end
+  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
   | _ => impossible
   end.
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Make to_value address path) =>
-    let* current_value := call_primitive (Primitive.StateRead to_value address) in
-    match Value.write_value current_value path update with
-    | Some updated_value =>
-      call_primitive (Primitive.StateWrite to_value address updated_value)
-    | None => impossible
-    end
+  | Value.Pointer pointer => call_primitive (Primitive.StateWrite pointer update)
   | _ => impossible
   end.
 
@@ -746,10 +735,7 @@ Parameter get_array_field : forall (value : Value.t) (index : Value.t), M.
   | _ => pure (Value.Error "Expected a usize as an array index")
   end. *)
 
-(** Same as for [get_tuple_field], an error should not occur. *)
-Parameter get_struct_tuple_field : forall
-    (value : Value.t) (constructor : string) (index : Z),
-    Value.t.
+Parameter get_struct_tuple_field : forall (value : Value.t) (constructor : string) (index : Z), M.
 (* Definition get_struct_tuple_field
     (value : Value.t) (constructor : string) (index : Z) :
     Value.t :=
@@ -775,15 +761,11 @@ Parameter get_struct_tuple_field : forall
   | _ => Value.Error "expected an address"
   end. *)
 
-(** Same as for [get_tuple_field], an error should not occur. *)
-Definition get_struct_record_field
-    (value : Value.t) (constructor field : string) :
-    Value.t :=
+Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
   match value with
-  | Value.Pointer (Pointer.Make to_value address path) =>
-    let new_path := path ++ [Pointer.Index.StructRecord constructor field] in
-    Value.Pointer (Pointer.Make to_value address new_path)
-  | _ => Value.Error "expected an address"
+  | Value.Pointer pointer =>
+    call_primitive (Primitive.MakeSubPointer pointer (Pointer.Index.StructRecord constructor field))
+  | _ => impossible
   end.
 
 Parameter pointer_coercion : Value.t -> Value.t.
