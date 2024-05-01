@@ -1,0 +1,203 @@
+make -f CoqMakefile all
+make[1]: Entering directory '/home/olympichek/coq-of-rust/CoqOfRust'
+COQC ./examples/default/token-2022/entrypoint.v
+COQC ./examples/default/token-2022/error.v
+COQC ./examples/default/token-2022/extension/confidential_transfer/account_info.v
+File "./examples/default/token-2022/extension/confidential_transfer/account_info.v", line 233, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer/account_info.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer/account_info.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer/account_info.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer/ciphertext_extraction.v
+File "./examples/default/token-2022/extension/confidential_transfer/ciphertext_extraction.v", line 3994, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer/ciphertext_extraction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer/ciphertext_extraction.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer/ciphertext_extraction.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer/instruction.v
+File "./examples/default/token-2022/extension/confidential_transfer/instruction.v", line 860, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer/instruction.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer/instruction.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer/mod.v
+File "./examples/default/token-2022/extension/confidential_transfer/mod.v", line 344, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer/mod.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer/mod.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer/processor.v
+COQC ./examples/default/token-2022/extension/confidential_transfer/split_proof_generation.v
+COQC ./examples/default/token-2022/extension/confidential_transfer/verify_proof.v
+COQC ./examples/default/token-2022/extension/confidential_transfer_fee/account_info.v
+File "./examples/default/token-2022/extension/confidential_transfer_fee/account_info.v", line 233, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer_fee/account_info.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer_fee/account_info.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer_fee/account_info.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer_fee/instruction.v
+File "./examples/default/token-2022/extension/confidential_transfer_fee/instruction.v", line 626, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer_fee/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer_fee/instruction.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer_fee/instruction.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer_fee/mod.v
+File "./examples/default/token-2022/extension/confidential_transfer_fee/mod.v", line 392, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/confidential_transfer_fee/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/confidential_transfer_fee/mod.vo] Deleting file 'examples/default/token-2022/extension/confidential_transfer_fee/mod.glob'
+COQC ./examples/default/token-2022/extension/confidential_transfer_fee/processor.v
+COQC ./examples/default/token-2022/extension/cpi_guard/instruction.v
+COQC ./examples/default/token-2022/extension/cpi_guard/mod.v
+File "./examples/default/token-2022/extension/cpi_guard/mod.v", line 213, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/cpi_guard/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/cpi_guard/mod.vo] Deleting file 'examples/default/token-2022/extension/cpi_guard/mod.glob'
+COQC ./examples/default/token-2022/extension/cpi_guard/processor.v
+COQC ./examples/default/token-2022/extension/default_account_state/instruction.v
+COQC ./examples/default/token-2022/extension/default_account_state/mod.v
+File "./examples/default/token-2022/extension/default_account_state/mod.v", line 214, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/default_account_state/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/default_account_state/mod.vo] Deleting file 'examples/default/token-2022/extension/default_account_state/mod.glob'
+COQC ./examples/default/token-2022/extension/default_account_state/processor.v
+COQC ./examples/default/token-2022/extension/group_member_pointer/instruction.v
+File "./examples/default/token-2022/extension/group_member_pointer/instruction.v", line 449, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/group_member_pointer/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/group_member_pointer/instruction.vo] Deleting file 'examples/default/token-2022/extension/group_member_pointer/instruction.glob'
+COQC ./examples/default/token-2022/extension/group_member_pointer/mod.v
+File "./examples/default/token-2022/extension/group_member_pointer/mod.v", line 264, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/group_member_pointer/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/group_member_pointer/mod.vo] Deleting file 'examples/default/token-2022/extension/group_member_pointer/mod.glob'
+COQC ./examples/default/token-2022/extension/group_member_pointer/processor.v
+COQC ./examples/default/token-2022/extension/group_pointer/instruction.v
+File "./examples/default/token-2022/extension/group_pointer/instruction.v", line 441, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/group_pointer/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/group_pointer/instruction.vo] Deleting file 'examples/default/token-2022/extension/group_pointer/instruction.glob'
+COQC ./examples/default/token-2022/extension/group_pointer/mod.v
+File "./examples/default/token-2022/extension/group_pointer/mod.v", line 258, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/group_pointer/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/group_pointer/mod.vo] Deleting file 'examples/default/token-2022/extension/group_pointer/mod.glob'
+COQC ./examples/default/token-2022/extension/group_pointer/processor.v
+COQC ./examples/default/token-2022/extension/immutable_owner.v
+COQC ./examples/default/token-2022/extension/interest_bearing_mint/instruction.v
+File "./examples/default/token-2022/extension/interest_bearing_mint/instruction.v", line 456, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/interest_bearing_mint/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/interest_bearing_mint/instruction.vo] Deleting file 'examples/default/token-2022/extension/interest_bearing_mint/instruction.glob'
+COQC ./examples/default/token-2022/extension/interest_bearing_mint/mod.v
+File "./examples/default/token-2022/extension/interest_bearing_mint/mod.v", line 427, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/interest_bearing_mint/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/interest_bearing_mint/mod.vo] Deleting file 'examples/default/token-2022/extension/interest_bearing_mint/mod.glob'
+COQC ./examples/default/token-2022/extension/interest_bearing_mint/processor.v
+COQC ./examples/default/token-2022/extension/memo_transfer/instruction.v
+COQC ./examples/default/token-2022/extension/memo_transfer/mod.v
+File "./examples/default/token-2022/extension/memo_transfer/mod.v", line 214, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/memo_transfer/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/memo_transfer/mod.vo] Deleting file 'examples/default/token-2022/extension/memo_transfer/mod.glob'
+COQC ./examples/default/token-2022/extension/memo_transfer/processor.v
+COQC ./examples/default/token-2022/extension/metadata_pointer/instruction.v
+File "./examples/default/token-2022/extension/metadata_pointer/instruction.v", line 449, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/metadata_pointer/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/metadata_pointer/instruction.vo] Deleting file 'examples/default/token-2022/extension/metadata_pointer/instruction.glob'
+COQC ./examples/default/token-2022/extension/metadata_pointer/mod.v
+File "./examples/default/token-2022/extension/metadata_pointer/mod.v", line 264, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/metadata_pointer/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/metadata_pointer/mod.vo] Deleting file 'examples/default/token-2022/extension/metadata_pointer/mod.glob'
+COQC ./examples/default/token-2022/extension/metadata_pointer/processor.v
+COQC ./examples/default/token-2022/extension/mint_close_authority.v
+File "./examples/default/token-2022/extension/mint_close_authority.v", line 220, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/mint_close_authority.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/mint_close_authority.vo] Deleting file 'examples/default/token-2022/extension/mint_close_authority.glob'
+COQC ./examples/default/token-2022/extension/mod.v
+File "./examples/default/token-2022/extension/mod.v", line 194, characters 2-557:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/mod.vo] Deleting file 'examples/default/token-2022/extension/mod.glob'
+COQC ./examples/default/token-2022/extension/non_transferable.v
+COQC ./examples/default/token-2022/extension/permanent_delegate.v
+File "./examples/default/token-2022/extension/permanent_delegate.v", line 220, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/permanent_delegate.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/permanent_delegate.vo] Deleting file 'examples/default/token-2022/extension/permanent_delegate.glob'
+COQC ./examples/default/token-2022/extension/reallocate.v
+COQC ./examples/default/token-2022/extension/token_group/mod.v
+COQC ./examples/default/token-2022/extension/token_group/processor.v
+COQC ./examples/default/token-2022/extension/token_metadata/mod.v
+COQC ./examples/default/token-2022/extension/token_metadata/processor.v
+COQC ./examples/default/token-2022/extension/transfer_fee/instruction.v
+COQC ./examples/default/token-2022/extension/transfer_fee/mod.v
+File "./examples/default/token-2022/extension/transfer_fee/mod.v", line 319, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/transfer_fee/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/transfer_fee/mod.vo] Deleting file 'examples/default/token-2022/extension/transfer_fee/mod.glob'
+COQC ./examples/default/token-2022/extension/transfer_fee/processor.v
+COQC ./examples/default/token-2022/extension/transfer_hook/instruction.v
+File "./examples/default/token-2022/extension/transfer_hook/instruction.v", line 441, characters 6-629:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/transfer_hook/instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/transfer_hook/instruction.vo] Deleting file 'examples/default/token-2022/extension/transfer_hook/instruction.glob'
+COQC ./examples/default/token-2022/extension/transfer_hook/mod.v
+File "./examples/default/token-2022/extension/transfer_hook/mod.v", line 258, characters 4-593:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/extension/transfer_hook/mod.vo] Error 1
+make[2]: *** [examples/default/token-2022/extension/transfer_hook/mod.vo] Deleting file 'examples/default/token-2022/extension/transfer_hook/mod.glob'
+COQC ./examples/default/token-2022/extension/transfer_hook/processor.v
+COQC ./examples/default/token-2022/generic_token_account.v
+COQC ./examples/default/token-2022/instruction.v
+COQC ./examples/default/token-2022/lib.v
+COQC ./examples/default/token-2022/native_mint.v
+COQC ./examples/default/token-2022/offchain.v
+File "./examples/default/token-2022/offchain.v", line 311, characters 58-63:
+Error: The reference yield was not found in the current environment.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/offchain.vo] Error 1
+make[2]: *** [examples/default/token-2022/offchain.vo] Deleting file 'examples/default/token-2022/offchain.glob'
+COQC ./examples/default/token-2022/onchain.v
+COQC ./examples/default/token-2022/pod.v
+File "./examples/default/token-2022/pod.v", line 423, characters 2-557:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/pod.vo] Error 1
+make[2]: *** [examples/default/token-2022/pod.vo] Deleting file 'examples/default/token-2022/pod.glob'
+COQC ./examples/default/token-2022/pod_instruction.v
+File "./examples/default/token-2022/pod_instruction.v", line 255, characters 2-557:
+Error: underscore already exists.
+
+make[2]: *** [CoqMakefile:830: examples/default/token-2022/pod_instruction.vo] Error 1
+make[2]: *** [examples/default/token-2022/pod_instruction.vo] Deleting file 'examples/default/token-2022/pod_instruction.glob'
+COQC ./examples/default/token-2022/processor.v
+COQC ./examples/default/token-2022/proof.v
+COQC ./examples/default/token-2022/state.v
+make[2]: Target 'real-all' not remade because of errors.
+make[1]: *** [CoqMakefile:409: all] Error 2
+make[1]: Leaving directory '/home/olympichek/coq-of-rust/CoqOfRust'
+make: *** [Makefile:18: all] Error 2
+make: Target 'default' not remade because of errors.
