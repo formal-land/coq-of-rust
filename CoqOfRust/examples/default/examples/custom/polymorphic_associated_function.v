@@ -34,10 +34,9 @@ Module Impl_polymorphic_associated_function_Foo_A.
                 M.get_trait_method (| "core::convert::Into", A, [ B ], "into", [] |),
                 [
                   M.read (|
-                    M.get_struct_record_field (|
-                      self,
-                      "polymorphic_associated_function::Foo",
-                      "data"
+                    M.call_closure (|
+                      M.get_struct_record_field "polymorphic_associated_function::Foo" "data",
+                      [ self ]
                     |)
                   |)
                 ]
@@ -86,10 +85,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.get_struct_record_field (|
-                    bar,
-                    "polymorphic_associated_function::Foo",
-                    "data"
+                  M.call_closure (|
+                    M.get_struct_record_field "polymorphic_associated_function::Foo" "data",
+                    [ bar ]
                   |);
                   UnsupportedLiteral
                 ]

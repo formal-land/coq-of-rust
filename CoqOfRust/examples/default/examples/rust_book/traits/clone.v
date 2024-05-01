@@ -95,7 +95,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "clone",
                 []
               |),
-              [ M.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 0 |) ]
+              [ M.call_closure (| M.get_struct_tuple_field "clone::Pair" 0, [ M.read (| self |) ] |)
+              ]
             |);
             M.call_closure (|
               M.get_trait_method (|
@@ -107,7 +108,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "clone",
                 []
               |),
-              [ M.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 1 |) ]
+              [ M.call_closure (| M.get_struct_tuple_field "clone::Pair" 1, [ M.read (| self |) ] |)
+              ]
             |)
           ]))
     | _, _ => M.impossible
@@ -141,10 +143,16 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
             M.read (| f |);
             M.read (| Value.String "Pair" |);
             (* Unsize *)
-            M.pointer_coercion (M.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 0 |));
+            M.pointer_coercion
+              (M.call_closure (|
+                M.get_struct_tuple_field "clone::Pair" 0,
+                [ M.read (| self |) ]
+              |));
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 1 |) |))
+              (M.alloc (|
+                M.call_closure (| M.get_struct_tuple_field "clone::Pair" 1, [ M.read (| self |) ] |)
+              |))
           ]
         |)))
     | _, _ => M.impossible

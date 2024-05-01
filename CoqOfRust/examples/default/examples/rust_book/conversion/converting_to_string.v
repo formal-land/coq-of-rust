@@ -45,10 +45,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                             [ Ty.path "i32" ]
                           |),
                           [
-                            M.get_struct_record_field (|
-                              M.read (| self |),
-                              "converting_to_string::Circle",
-                              "radius"
+                            M.call_closure (|
+                              M.get_struct_record_field "converting_to_string::Circle" "radius",
+                              [ M.read (| self |) ]
                             |)
                           ]
                         |)

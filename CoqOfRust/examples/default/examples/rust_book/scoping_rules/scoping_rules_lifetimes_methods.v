@@ -25,10 +25,9 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_tuple_field (|
-                M.read (| self |),
-                "scoping_rules_lifetimes_methods::Owner",
-                0
+              M.call_closure (|
+                M.get_struct_tuple_field "scoping_rules_lifetimes_methods::Owner" 0,
+                [ M.read (| self |) ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
           M.alloc (| Value.Tuple [] |)
@@ -78,10 +77,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                                     [ Ty.path "i32" ]
                                   |),
                                   [
-                                    M.get_struct_tuple_field (|
-                                      M.read (| self |),
-                                      "scoping_rules_lifetimes_methods::Owner",
-                                      0
+                                    M.call_closure (|
+                                      M.get_struct_tuple_field
+                                        "scoping_rules_lifetimes_methods::Owner"
+                                        0,
+                                      [ M.read (| self |) ]
                                     |)
                                   ]
                                 |)

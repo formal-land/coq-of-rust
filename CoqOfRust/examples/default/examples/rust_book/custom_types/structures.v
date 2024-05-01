@@ -31,12 +31,18 @@ Module Impl_core_fmt_Debug_for_structures_Person.
             M.read (| Value.String "name" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (| M.read (| self |), "structures::Person", "name" |));
+              (M.call_closure (|
+                M.get_struct_record_field "structures::Person" "name",
+                [ M.read (| self |) ]
+              |));
             M.read (| Value.String "age" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (| M.read (| self |), "structures::Person", "age" |)
+                M.call_closure (|
+                  M.get_struct_record_field "structures::Person" "age",
+                  [ M.read (| self |) ]
+                |)
               |))
           ]
         |)))
@@ -233,7 +239,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "f32" ]
                                 |),
-                                [ M.get_struct_record_field (| point, "structures::Point", "x" |) ]
+                                [
+                                  M.call_closure (|
+                                    M.get_struct_record_field "structures::Point" "x",
+                                    [ point ]
+                                  |)
+                                ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -241,7 +252,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "f32" ]
                                 |),
-                                [ M.get_struct_record_field (| point, "structures::Point", "y" |) ]
+                                [
+                                  M.call_closure (|
+                                    M.get_struct_record_field "structures::Point" "y",
+                                    [ point ]
+                                  |)
+                                ]
                               |)
                             ]
                         |))
@@ -287,10 +303,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    bottom_right,
-                                    "structures::Point",
-                                    "x"
+                                  M.call_closure (|
+                                    M.get_struct_record_field "structures::Point" "x",
+                                    [ bottom_right ]
                                   |)
                                 ]
                               |);
@@ -301,10 +316,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    bottom_right,
-                                    "structures::Point",
-                                    "y"
+                                  M.call_closure (|
+                                    M.get_struct_record_field "structures::Point" "y",
+                                    [ bottom_right ]
                                   |)
                                 ]
                               |)
@@ -382,10 +396,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_tuple_field (|
-                                            pair_,
-                                            "structures::Pair",
-                                            0
+                                          M.call_closure (|
+                                            M.get_struct_tuple_field "structures::Pair" 0,
+                                            [ pair_ ]
                                           |)
                                         ]
                                       |);
@@ -396,10 +409,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "f32" ]
                                         |),
                                         [
-                                          M.get_struct_tuple_field (|
-                                            pair_,
-                                            "structures::Pair",
-                                            1
+                                          M.call_closure (|
+                                            M.get_struct_tuple_field "structures::Pair" 1,
+                                            [ pair_ ]
                                           |)
                                         ]
                                       |)

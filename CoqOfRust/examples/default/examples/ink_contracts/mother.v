@@ -175,8 +175,18 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "mother::AccountId", 0 |) |))
-          (M.read (| M.get_struct_tuple_field (| M.read (| other |), "mother::AccountId", 0 |) |))))
+          (M.read (|
+            M.call_closure (|
+              M.get_struct_tuple_field "mother::AccountId" 0,
+              [ M.read (| self |) ]
+            |)
+          |))
+          (M.read (|
+            M.call_closure (|
+              M.get_struct_tuple_field "mother::AccountId" 0,
+              [ M.read (| other |) ]
+            |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -362,8 +372,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             []
           |),
           [
-            M.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |);
-            M.get_struct_tuple_field (| M.read (| other |), "mother::Bids", 0 |)
+            M.call_closure (| M.get_struct_tuple_field "mother::Bids" 0, [ M.read (| self |) ] |);
+            M.call_closure (| M.get_struct_tuple_field "mother::Bids" 0, [ M.read (| other |) ] |)
           ]
         |)))
     | _, _ => M.impossible
@@ -447,7 +457,12 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                 "clone",
                 []
               |),
-              [ M.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |) ]
+              [
+                M.call_closure (|
+                  M.get_struct_tuple_field "mother::Bids" 0,
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)
           ]))
     | _, _ => M.impossible
@@ -1001,15 +1016,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.get_struct_record_field (|
-                          M.read (| self |),
-                          "mother::Auction",
-                          "name"
+                        M.call_closure (|
+                          M.get_struct_record_field "mother::Auction" "name",
+                          [ M.read (| self |) ]
                         |);
-                        M.get_struct_record_field (|
-                          M.read (| other |),
-                          "mother::Auction",
-                          "name"
+                        M.call_closure (|
+                          M.get_struct_record_field "mother::Auction" "name",
+                          [ M.read (| other |) ]
                         |)
                       ]
                     |),
@@ -1023,15 +1036,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                           []
                         |),
                         [
-                          M.get_struct_record_field (|
-                            M.read (| self |),
-                            "mother::Auction",
-                            "subject"
+                          M.call_closure (|
+                            M.get_struct_record_field "mother::Auction" "subject",
+                            [ M.read (| self |) ]
                           |);
-                          M.get_struct_record_field (|
-                            M.read (| other |),
-                            "mother::Auction",
-                            "subject"
+                          M.call_closure (|
+                            M.get_struct_record_field "mother::Auction" "subject",
+                            [ M.read (| other |) ]
                           |)
                         ]
                       |)))
@@ -1046,15 +1057,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.get_struct_record_field (|
-                          M.read (| self |),
-                          "mother::Auction",
-                          "bids"
+                        M.call_closure (|
+                          M.get_struct_record_field "mother::Auction" "bids",
+                          [ M.read (| self |) ]
                         |);
-                        M.get_struct_record_field (|
-                          M.read (| other |),
-                          "mother::Auction",
-                          "bids"
+                        M.call_closure (|
+                          M.get_struct_record_field "mother::Auction" "bids",
+                          [ M.read (| other |) ]
                         |)
                       ]
                     |)))
@@ -1069,8 +1078,14 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                       []
                     |),
                     [
-                      M.get_struct_record_field (| M.read (| self |), "mother::Auction", "terms" |);
-                      M.get_struct_record_field (| M.read (| other |), "mother::Auction", "terms" |)
+                      M.call_closure (|
+                        M.get_struct_record_field "mother::Auction" "terms",
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        M.get_struct_record_field "mother::Auction" "terms",
+                        [ M.read (| other |) ]
+                      |)
                     ]
                   |)))
               |),
@@ -1084,18 +1099,30 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                     []
                   |),
                   [
-                    M.get_struct_record_field (| M.read (| self |), "mother::Auction", "status" |);
-                    M.get_struct_record_field (| M.read (| other |), "mother::Auction", "status" |)
+                    M.call_closure (|
+                      M.get_struct_record_field "mother::Auction" "status",
+                      [ M.read (| self |) ]
+                    |);
+                    M.call_closure (|
+                      M.get_struct_record_field "mother::Auction" "status",
+                      [ M.read (| other |) ]
+                    |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field (| M.read (| self |), "mother::Auction", "finalized" |)
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "finalized",
+                    [ M.read (| self |) ]
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field (| M.read (| other |), "mother::Auction", "finalized" |)
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "finalized",
+                    [ M.read (| other |) ]
+                  |)
                 |))))
           |),
           ltac:(M.monadic
@@ -1114,8 +1141,14 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "mother::Auction", "vector" |);
-                M.get_struct_record_field (| M.read (| other |), "mother::Auction", "vector" |)
+                M.call_closure (|
+                  M.get_struct_record_field "mother::Auction" "vector",
+                  [ M.read (| self |) ]
+                |);
+                M.call_closure (|
+                  M.get_struct_record_field "mother::Auction" "vector",
+                  [ M.read (| other |) ]
+                |)
               ]
             |)))
         |)))
@@ -1235,7 +1268,12 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "name" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "name",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |));
             ("subject",
               M.call_closure (|
@@ -1246,7 +1284,12 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "subject" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "subject",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |));
             ("bids",
               M.call_closure (|
@@ -1257,7 +1300,12 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "bids" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "bids",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |));
             ("terms",
               M.call_closure (|
@@ -1268,7 +1316,12 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "terms" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "terms",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |));
             ("status",
               M.call_closure (|
@@ -1279,12 +1332,21 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "status" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "status",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |));
             ("finalized",
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "finalized" |)
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "finalized",
+                    [ M.read (| self |) ]
+                  |)
                 ]
               |));
             ("vector",
@@ -1298,7 +1360,12 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "vector" |) ]
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "mother::Auction" "vector",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |))
           ]))
     | _, _ => M.impossible
@@ -1599,7 +1666,12 @@ Module Impl_mother_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "mother::Env", "caller" |) |)))
+        M.read (|
+          M.call_closure (|
+            M.get_struct_record_field "mother::Env" "caller",
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   

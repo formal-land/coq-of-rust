@@ -219,10 +219,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
-                                            person,
-                                            "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                                            "age"
+                                          M.call_closure (|
+                                            M.get_struct_record_field
+                                              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                                              "age",
+                                            [ person ]
                                           |)
                                         ]
                                       |)
@@ -277,19 +278,21 @@ Module main.
               M.read (| Value.String "name" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field (|
-                  M.read (| self |),
-                  "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                  "name"
+                (M.call_closure (|
+                  M.get_struct_record_field
+                    "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                    "name",
+                  [ M.read (| self |) ]
                 |));
               M.read (| Value.String "age" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                    "age"
+                  M.call_closure (|
+                    M.get_struct_record_field
+                      "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                      "age",
+                    [ M.read (| self |) ]
                   |)
                 |))
             ]

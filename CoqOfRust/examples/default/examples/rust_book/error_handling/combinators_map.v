@@ -102,7 +102,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Peeled", 0 |)
+                M.call_closure (|
+                  M.get_struct_tuple_field "combinators_map::Peeled" 0,
+                  [ M.read (| self |) ]
+                |)
               |))
           ]
         |)))
@@ -146,7 +149,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Chopped", 0 |)
+                M.call_closure (|
+                  M.get_struct_tuple_field "combinators_map::Chopped" 0,
+                  [ M.read (| self |) ]
+                |)
               |))
           ]
         |)))
@@ -190,7 +196,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Cooked", 0 |)
+                M.call_closure (|
+                  M.get_struct_tuple_field "combinators_map::Cooked" 0,
+                  [ M.read (| self |) ]
+                |)
               |))
           ]
         |)))

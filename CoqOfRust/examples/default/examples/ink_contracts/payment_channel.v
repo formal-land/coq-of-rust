@@ -92,10 +92,16 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
           (M.read (|
-            M.get_struct_tuple_field (| M.read (| self |), "payment_channel::AccountId", 0 |)
+            M.call_closure (|
+              M.get_struct_tuple_field "payment_channel::AccountId" 0,
+              [ M.read (| self |) ]
+            |)
           |))
           (M.read (|
-            M.get_struct_tuple_field (| M.read (| other |), "payment_channel::AccountId", 0 |)
+            M.call_closure (|
+              M.get_struct_tuple_field "payment_channel::AccountId" 0,
+              [ M.read (| other |) ]
+            |)
           |))))
     | _, _ => M.impossible
     end.
@@ -358,7 +364,10 @@ Module Impl_payment_channel_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "payment_channel::Env", "caller" |)
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::Env" "caller",
+            [ M.read (| self |) ]
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -782,10 +791,9 @@ Module Impl_payment_channel_PaymentChannel.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "payment_channel::PaymentChannel",
-                  "recipient"
+                M.call_closure (|
+                  M.get_struct_record_field "payment_channel::PaymentChannel" "recipient",
+                  [ M.read (| self |) ]
                 |);
                 M.alloc (|
                   M.call_closure (|
@@ -926,10 +934,11 @@ Module Impl_payment_channel_PaymentChannel.
                                       ]
                                     |)
                                   |);
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "recipient",
+                                    [ M.read (| self |) ]
                                   |)
                                 ]
                               |)
@@ -966,10 +975,11 @@ Module Impl_payment_channel_PaymentChannel.
                               BinOp.Pure.lt
                                 (M.read (| amount |))
                                 (M.read (|
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "withdrawn"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "withdrawn",
+                                    [ M.read (| self |) ]
                                   |)
                                 |))
                             |)) in
@@ -1075,19 +1085,21 @@ Module Impl_payment_channel_PaymentChannel.
                                   |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "recipient",
+                                    [ M.read (| self |) ]
                                   |)
                                 |);
                                 BinOp.Panic.sub (|
                                   M.read (| amount |),
                                   M.read (|
-                                    M.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "payment_channel::PaymentChannel",
-                                      "withdrawn"
+                                    M.call_closure (|
+                                      M.get_struct_record_field
+                                        "payment_channel::PaymentChannel"
+                                        "withdrawn",
+                                      [ M.read (| self |) ]
                                     |)
                                   |)
                                 |)
@@ -1284,10 +1296,9 @@ Module Impl_payment_channel_PaymentChannel.
                         |)
                       |);
                       M.read (|
-                        M.get_struct_record_field (|
-                          M.read (| self |),
-                          "payment_channel::PaymentChannel",
-                          "sender"
+                        M.call_closure (|
+                          M.get_struct_record_field "payment_channel::PaymentChannel" "sender",
+                          [ M.read (| self |) ]
                         |)
                       |)
                     ]
@@ -1368,10 +1379,11 @@ Module Impl_payment_channel_PaymentChannel.
                                       ]
                                     |)
                                   |);
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "sender"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "sender",
+                                    [ M.read (| self |) ]
                                   |)
                                 ]
                               |)
@@ -1420,10 +1432,11 @@ Module Impl_payment_channel_PaymentChannel.
                   BinOp.Panic.add (|
                     M.read (| now |),
                     M.read (|
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "payment_channel::PaymentChannel",
-                        "close_duration"
+                      M.call_closure (|
+                        M.get_struct_record_field
+                          "payment_channel::PaymentChannel"
+                          "close_duration",
+                        [ M.read (| self |) ]
                       |)
                     |)
                   |)
@@ -1456,10 +1469,11 @@ Module Impl_payment_channel_PaymentChannel.
                               ("expiration", M.read (| expiration |));
                               ("close_duration",
                                 M.read (|
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "close_duration"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "close_duration",
+                                    [ M.read (| self |) ]
                                   |)
                                 |))
                             ]
@@ -1469,10 +1483,9 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "payment_channel::PaymentChannel",
-                    "expiration"
+                  M.call_closure (|
+                    M.get_struct_record_field "payment_channel::PaymentChannel" "expiration",
+                    [ M.read (| self |) ]
                   |),
                   Value.StructTuple "core::option::Option::Some" [ M.read (| expiration |) ]
                 |) in
@@ -1514,10 +1527,9 @@ Module Impl_payment_channel_PaymentChannel.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "payment_channel::PaymentChannel",
-                  "expiration"
+                M.call_closure (|
+                  M.get_struct_record_field "payment_channel::PaymentChannel" "expiration",
+                  [ M.read (| self |) ]
                 |),
                 [
                   fun γ =>
@@ -1605,10 +1617,11 @@ Module Impl_payment_channel_PaymentChannel.
                                 |)
                               |);
                               M.read (|
-                                M.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "payment_channel::PaymentChannel",
-                                  "sender"
+                                M.call_closure (|
+                                  M.get_struct_record_field
+                                    "payment_channel::PaymentChannel"
+                                    "sender",
+                                  [ M.read (| self |) ]
                                 |)
                               |)
                             ]
@@ -1709,10 +1722,11 @@ Module Impl_payment_channel_PaymentChannel.
                                       ]
                                     |)
                                   |);
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "recipient",
+                                    [ M.read (| self |) ]
                                   |)
                                 ]
                               |)
@@ -1785,10 +1799,11 @@ Module Impl_payment_channel_PaymentChannel.
                               BinOp.Pure.lt
                                 (M.read (| amount |))
                                 (M.read (|
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "withdrawn"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "withdrawn",
+                                    [ M.read (| self |) ]
                                   |)
                                 |))
                             |)) in
@@ -1817,20 +1832,18 @@ Module Impl_payment_channel_PaymentChannel.
                   BinOp.Panic.sub (|
                     M.read (| amount |),
                     M.read (|
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "payment_channel::PaymentChannel",
-                        "withdrawn"
+                      M.call_closure (|
+                        M.get_struct_record_field "payment_channel::PaymentChannel" "withdrawn",
+                        [ M.read (| self |) ]
                       |)
                     |)
                   |)
                 |) in
               let _ :=
                 let β :=
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "payment_channel::PaymentChannel",
-                    "withdrawn"
+                  M.call_closure (|
+                    M.get_struct_record_field "payment_channel::PaymentChannel" "withdrawn",
+                    [ M.read (| self |) ]
                   |) in
                 M.write (|
                   β,
@@ -1882,10 +1895,11 @@ Module Impl_payment_channel_PaymentChannel.
                                   |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "payment_channel::PaymentChannel"
+                                      "recipient",
+                                    [ M.read (| self |) ]
                                   |)
                                 |);
                                 M.read (| amount_to_withdraw |)
@@ -1981,10 +1995,9 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "payment_channel::PaymentChannel",
-            "sender"
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::PaymentChannel" "sender",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -2003,10 +2016,9 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "payment_channel::PaymentChannel",
-            "recipient"
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::PaymentChannel" "recipient",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -2026,10 +2038,9 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "payment_channel::PaymentChannel",
-            "expiration"
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::PaymentChannel" "expiration",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -2049,10 +2060,9 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "payment_channel::PaymentChannel",
-            "withdrawn"
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::PaymentChannel" "withdrawn",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -2072,10 +2082,9 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "payment_channel::PaymentChannel",
-            "close_duration"
+          M.call_closure (|
+            M.get_struct_record_field "payment_channel::PaymentChannel" "close_duration",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible

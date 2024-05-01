@@ -257,18 +257,17 @@ Module ClosureParams.
   | Empty
   | Cons {A : Set} `{ToValue A} (param : A) (params : t).
 
-  Notation "<[ ]>" := Empty.
-  Notation "<[ x ; .. ; y ]>" := (Cons x .. (Cons y Empty) ..).
-
   Fixpoint to_value (params : t) : list Value.t :=
     match params with
-    | <[]> => []
+    | Empty => []
     | Cons param params => φ param :: to_value params
     end.
 
   Module HasSetValue.
     Inductive t : ClosureParams.t -> forall {A : Set}, A -> Prop :=
     | Empty : t ClosureParams.Empty tt
+    | Single {A : Set} `{ToValue A} (value : A) :
+        t (ClosureParams.Cons value ClosureParams.Empty) value
     | Cons {A As : Set} `{ToValue A} (value : A) (params : ClosureParams.t) (values : As) :
         t params values ->
         t (ClosureParams.Cons value params) (value, values).
@@ -279,15 +278,14 @@ Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive {B : Set} (primitive : Primitive.t B) (k : B -> t A)
-  | CallClosure {B : Set}
-      (to_value : B -> Value.t)
-      (body : t (B + Exception.t Empty_set))
+  | CallClosure {B Params : Set} `{ToValue B}
+      (closure : Params -> t (B + Exception.t Empty_set))
       (params : ClosureParams.t)
       (k : (B + Exception.t Empty_set) -> t A)
   | Impossible.
   Arguments Pure {_}.
   Arguments CallPrimitive {_ _}.
-  Arguments CallClosure {_ _}.
+  Arguments CallClosure {_ _ _ _}.
   Arguments Impossible {_}.
 
   Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
@@ -295,8 +293,8 @@ Module LowM.
     | Pure v => e2 v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) e2)
-    | CallClosure to_value params body k =>
-      CallClosure to_value params body (fun v => let_ (k v) e2)
+    | CallClosure params body k =>
+      CallClosure params body (fun v => let_ (k v) e2)
     | Impossible => Impossible
     end.
 End LowM.
@@ -361,6 +359,10 @@ Module Notations.
   Notation "e (||)" :=
     (run e)
     (at level 100).
+
+  Notation "<[ ]>" := ClosureParams.Empty.
+  Notation "<[ x ; .. ; y ]>" :=
+    (ClosureParams.Cons x .. (ClosureParams.Cons y ClosureParams.Empty) ..).
 End Notations.
 Import Notations.
 
@@ -491,9 +493,11 @@ Definition catch_break {R : Set} (body : MBody (Pointer.t unit) R) : MBody (Poin
       end
     ).
 
-Definition call_closure {A R : Set} {H : ToValue A} (body : M A) (params : ClosureParams.t) :
+Definition call_closure {Params A R : Set} `{ToValue A}
+    (body : Params -> M A)
+    (params : ClosureParams.t) :
     MBody A R :=
-  catch (LowM.CallClosure φ body params LowM.Pure) (fun exception =>
+  catch (LowM.CallClosure body params LowM.Pure) (fun exception =>
     match exception with
     | Exception.Return r => match r with end
     | Exception.Continue => raise Exception.Continue
@@ -577,58 +581,60 @@ Module Run.
         k' ~
       LowM.CallPrimitive (Primitive.StateWrite pointer update) k
     }}
-  | CallPrimitiveMakeSubPointer {Big_B B B' : Set} `{ToValue B} `{ToValue B'}
+  | CallPrimitiveMakeSubPointer {Big_B B Sub_B : Set} `{ToValue B} `{ToValue Sub_B}
       (big_to_value : Big_B -> Value.t) projection injection
       address path
-      index projection' injection'
+      index sub_projection sub_injection
+      pointer'
       (k' : Value.t -> CoqOfRust.M.M)
-      (k : Pointer.t B' -> MBody A R) :
+      (k : Pointer.t Sub_B -> MBody A R) :
     let origin : Pointer.Origin.t B := Pointer.Origin.Make big_to_value projection injection in
     let pointer : Pointer.t B := Pointer.Make origin address path in
-    let origin' : Pointer.Origin.t B' :=
+    let sub_origin : Pointer.Origin.t Sub_B :=
       Pointer.Origin.Make
         big_to_value
         (fun big_b =>
           match projection big_b with
-          | Some b => projection' b
+          | Some b => sub_projection b
           | None => None
           end)
-        (fun big_b new_b' =>
+        (fun big_b new_sub_b =>
           match projection big_b with
           | Some b =>
-            match injection' b new_b' with
+            match sub_injection b new_sub_b with
             | Some new_b => injection big_b new_b
             | None => None
             end
           | None => None
           end) in
-    let pointer' : Pointer.t B' :=
+    let sub_pointer : Pointer.t Sub_B :=
       Pointer.Make
-        origin'
-        (Pointer.Address.map projection' address)
+        sub_origin
+        (Pointer.Address.map sub_projection address)
         (path ++ [index]) in
+    pointer' = Pointer.to_pointer pointer ->
     (* Communtativity of the read *)
     (forall (b : B),
-      Option.map (projection' b) φ =
+      Option.map (sub_projection b) φ =
       Value.read_path (φ b) [index]
     ) ->
     (* Communtativity of the write *)
-    (forall (b : B) (b' : B'),
-      Option.map (injection' b b') φ =
-      Value.write_value (φ b) [index] (φ b')
+    (forall (b : B) (sub_b : Sub_B),
+      Option.map (sub_injection b sub_b) φ =
+      Value.write_value (φ b) [index] (φ sub_b)
     ) ->
     {{ Address, env_to_value |
-      k' (Value.Pointer (Pointer.to_pointer pointer')) ~
-      k pointer'
+      k' (Value.Pointer (Pointer.to_pointer sub_pointer)) ~
+      k sub_pointer
     }} ->
     {{ Address, env_to_value |
       CoqOfRust.M.LowM.CallPrimitive
         (CoqOfRust.M.Primitive.MakeSubPointer
-          (Pointer.to_pointer pointer)
+          pointer'
           index
         )
         k' ~
-      LowM.CallPrimitive (Primitive.MakeSubPointer pointer index projection' injection') k
+      LowM.CallPrimitive (Primitive.MakeSubPointer pointer index sub_projection sub_injection) k
     }}
   | CallPrimitiveEnvRead
       (k' : Value.t -> CoqOfRust.M.M)
@@ -643,22 +649,31 @@ Module Run.
       CoqOfRust.M.LowM.CallPrimitive CoqOfRust.M.Primitive.EnvRead k' ~
       LowM.CallPrimitive Primitive.EnvRead k
     }}
-  | CallClosure {B : Set}
-      (to_value : B -> Value.t)
-      (body : M B)
+  | CallClosure {B Params : Set} `{ToValue B}
+      (closure : Params -> M B)
       (params : ClosureParams.t)
-      (body' : Value.t)
+      (params_set_value : Params)
+      (closure' : Value.t)
+      (closure_content' : list Value.t -> CoqOfRust.M.M)
+      params'
       (k' : Value.t + CoqOfRust.M.Exception.t -> CoqOfRust.M.M)
       (k : B + Exception.t Empty_set -> MBody A R) :
+    closure' = M.closure closure_content' ->
+    params' = ClosureParams.to_value params ->
+    ClosureParams.HasSetValue.t params params_set_value ->
+    {{ Address, env_to_value |
+      closure_content' params' ~
+      closure params_set_value
+    }} ->
     (forall (result : B + Exception.t Empty_set),
       {{ Address, env_to_value |
-        k' (result_to_value to_value result) ~
+        k' (result_to_value φ result) ~
         k result
       }}
     ) ->
     {{ Address, env_to_value |
-      CoqOfRust.M.LowM.CallClosure body' (ClosureParams.to_value params) k' ~
-      LowM.CallClosure to_value body params k
+      CoqOfRust.M.LowM.CallClosure closure' params' k' ~
+      LowM.CallClosure closure params k
     }}
 
   where "{{ Address , env_to_value | untyped ~ typed }}" :=

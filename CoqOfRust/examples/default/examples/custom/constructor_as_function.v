@@ -74,10 +74,9 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "constructor_as_function::Constructor",
-                  0
+                M.call_closure (|
+                  M.get_struct_tuple_field "constructor_as_function::Constructor" 0,
+                  [ M.read (| self |) ]
                 |)
               |))
           ]

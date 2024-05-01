@@ -107,10 +107,11 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "scoping_rules_borrowing_mutablity::Book"
+                                      "title",
+                                    [ M.read (| book |) ]
                                   |)
                                 ]
                               |);
@@ -121,10 +122,11 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "scoping_rules_borrowing_mutablity::Book"
+                                      "year",
+                                    [ M.read (| book |) ]
                                   |)
                                 ]
                               |)
@@ -155,10 +157,9 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           M.write (|
-            M.get_struct_record_field (|
-              M.read (| book |),
-              "scoping_rules_borrowing_mutablity::Book",
-              "year"
+            M.call_closure (|
+              M.get_struct_record_field "scoping_rules_borrowing_mutablity::Book" "year",
+              [ M.read (| book |) ]
             |),
             Value.Integer Integer.U32 2014
           |) in
@@ -194,10 +195,11 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "scoping_rules_borrowing_mutablity::Book"
+                                      "title",
+                                    [ M.read (| book |) ]
                                   |)
                                 ]
                               |);
@@ -208,10 +210,11 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "scoping_rules_borrowing_mutablity::Book"
+                                      "year",
+                                    [ M.read (| book |) ]
                                   |)
                                 ]
                               |)

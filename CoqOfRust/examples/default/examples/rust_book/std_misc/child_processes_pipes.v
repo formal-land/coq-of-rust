@@ -185,7 +185,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field (| process, "std::process::Child", "stdin" |)
+                          M.call_closure (|
+                            M.get_struct_record_field "std::process::Child" "stdin",
+                            [ process ]
+                          |)
                         |)
                       ]
                     |)
@@ -313,7 +316,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field (| process, "std::process::Child", "stdout" |)
+                        M.call_closure (|
+                          M.get_struct_record_field "std::process::Child" "stdout",
+                          [ process ]
+                        |)
                       |)
                     ]
                   |)

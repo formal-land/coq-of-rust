@@ -34,10 +34,9 @@ Module Impl_generics_new_type_idiom_Years.
           [
             BinOp.Panic.mul (|
               M.read (|
-                M.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_new_type_idiom::Years",
-                  0
+                M.call_closure (|
+                  M.get_struct_tuple_field "generics_new_type_idiom::Years" 0,
+                  [ M.read (| self |) ]
                 |)
               |),
               Value.Integer Integer.I64 365
@@ -67,7 +66,10 @@ Module Impl_generics_new_type_idiom_Days.
           [
             BinOp.Panic.div (|
               M.read (|
-                M.get_struct_tuple_field (| M.read (| self |), "generics_new_type_idiom::Days", 0 |)
+                M.call_closure (|
+                  M.get_struct_tuple_field "generics_new_type_idiom::Days" 0,
+                  [ M.read (| self |) ]
+                |)
               |),
               Value.Integer Integer.I64 365
             |)
@@ -90,7 +92,10 @@ Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
       (let age := M.alloc (| age |) in
       BinOp.Pure.ge
         (M.read (|
-          M.get_struct_tuple_field (| M.read (| age |), "generics_new_type_idiom::Years", 0 |)
+          M.call_closure (|
+            M.get_struct_tuple_field "generics_new_type_idiom::Years" 0,
+            [ M.read (| age |) ]
+          |)
         |))
         (Value.Integer Integer.I64 18)))
   | _, _ => M.impossible

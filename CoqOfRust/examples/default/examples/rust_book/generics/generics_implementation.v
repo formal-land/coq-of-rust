@@ -29,7 +29,10 @@ Module Impl_generics_implementation_Val.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.get_struct_record_field (| M.read (| self |), "generics_implementation::Val", "val" |)))
+        M.call_closure (|
+          M.get_struct_record_field "generics_implementation::Val" "val",
+          [ M.read (| self |) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -50,10 +53,9 @@ Module Impl_generics_implementation_GenVal_T.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.get_struct_record_field (|
-          M.read (| self |),
-          "generics_implementation::GenVal",
-          "gen_val"
+        M.call_closure (|
+          M.get_struct_record_field "generics_implementation::GenVal" "gen_val",
+          [ M.read (| self |) ]
         |)))
     | _, _ => M.impossible
     end.

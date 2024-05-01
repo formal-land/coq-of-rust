@@ -219,9 +219,17 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |) |))
           (M.read (|
-            M.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
+            M.call_closure (|
+              M.get_struct_tuple_field "erc1155::AccountId" 0,
+              [ M.read (| self |) ]
+            |)
+          |))
+          (M.read (|
+            M.call_closure (|
+              M.get_struct_tuple_field "erc1155::AccountId" 0,
+              [ M.read (| other |) ]
+            |)
           |))))
     | _, _ => M.impossible
     end.
@@ -525,7 +533,12 @@ Module Impl_erc1155_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |) |)))
+        M.read (|
+          M.call_closure (|
+            M.get_struct_record_field "erc1155::Env" "caller",
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -722,10 +735,9 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.read (| self |),
-                "erc1155::Contract",
-                "token_id_nonce"
+              M.call_closure (|
+                M.get_struct_record_field "erc1155::Contract" "token_id_nonce",
+                [ M.read (| self |) ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U128 1 |) |) in
           let _ :=
@@ -739,19 +751,17 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.call_closure (|
+                    M.get_struct_record_field "erc1155::Contract" "balances",
+                    [ M.read (| self |) ]
                   |);
                   Value.Tuple
                     [
                       M.read (| caller |);
                       M.read (|
-                        M.get_struct_record_field (|
-                          M.read (| self |),
-                          "erc1155::Contract",
-                          "token_id_nonce"
+                        M.call_closure (|
+                          M.get_struct_record_field "erc1155::Contract" "token_id_nonce",
+                          [ M.read (| self |) ]
                         |)
                       |)
                     ];
@@ -813,10 +823,9 @@ Module Impl_erc1155_Contract.
                             |));
                           ("token_id",
                             M.read (|
-                              M.get_struct_record_field (|
-                                M.read (| self |),
-                                "erc1155::Contract",
-                                "token_id_nonce"
+                              M.call_closure (|
+                                M.get_struct_record_field "erc1155::Contract" "token_id_nonce",
+                                [ M.read (| self |) ]
                               |)
                             |));
                           ("value", M.read (| value |))
@@ -825,7 +834,10 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "token_id_nonce" |)
+          M.call_closure (|
+            M.get_struct_record_field "erc1155::Contract" "token_id_nonce",
+            [ M.read (| self |) ]
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -874,10 +886,11 @@ Module Impl_erc1155_Contract.
                                 (BinOp.Pure.le
                                   (M.read (| token_id |))
                                   (M.read (|
-                                    M.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "erc1155::Contract",
-                                      "token_id_nonce"
+                                    M.call_closure (|
+                                      M.get_struct_record_field
+                                        "erc1155::Contract"
+                                        "token_id_nonce",
+                                      [ M.read (| self |) ]
                                     |)
                                   |)))
                             |)) in
@@ -934,10 +947,9 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.call_closure (|
+                        M.get_struct_record_field "erc1155::Contract" "balances",
+                        [ M.read (| self |) ]
                       |);
                       Value.Tuple [ M.read (| caller |); M.read (| token_id |) ];
                       M.read (| value |)
@@ -1043,10 +1055,9 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.call_closure (|
+                        M.get_struct_record_field "erc1155::Contract" "balances",
+                        [ M.read (| self |) ]
                       |);
                       M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
                     ]
@@ -1071,10 +1082,9 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.call_closure (|
+                    M.get_struct_record_field "erc1155::Contract" "balances",
+                    [ M.read (| self |) ]
                   |);
                   Value.Tuple [ M.read (| from |); M.read (| token_id |) ];
                   M.read (| sender_balance |)
@@ -1100,10 +1110,9 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.call_closure (|
+                        M.get_struct_record_field "erc1155::Contract" "balances",
+                        [ M.read (| self |) ]
                       |);
                       M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
                     ]
@@ -1126,10 +1135,9 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.call_closure (|
+                    M.get_struct_record_field "erc1155::Contract" "balances",
+                    [ M.read (| self |) ]
                   |);
                   Value.Tuple [ M.read (| to |); M.read (| token_id |) ];
                   M.read (| recipient_balance |)
@@ -1305,7 +1313,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             []
           |),
           [
-            M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "approvals" |);
+            M.call_closure (|
+              M.get_struct_record_field "erc1155::Contract" "approvals",
+              [ M.read (| self |) ]
+            |);
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
@@ -1340,7 +1351,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "balances" |);
+                M.call_closure (|
+                  M.get_struct_record_field "erc1155::Contract" "balances",
+                  [ M.read (| self |) ]
+                |);
                 M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
               ]
             |);
@@ -2623,10 +2637,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc1155::Contract",
-                                  "approvals"
+                                M.call_closure (|
+                                  M.get_struct_record_field "erc1155::Contract" "approvals",
+                                  [ M.read (| self |) ]
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ];
                                 Value.Tuple []
@@ -2652,10 +2665,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc1155::Contract",
-                                  "approvals"
+                                M.call_closure (|
+                                  M.get_struct_record_field "erc1155::Contract" "approvals",
+                                  [ M.read (| self |) ]
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ]
                               ]

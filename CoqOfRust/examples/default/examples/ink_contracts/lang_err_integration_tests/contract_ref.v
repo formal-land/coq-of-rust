@@ -253,17 +253,15 @@ Module Impl_contract_ref_FlipperRef.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field (|
-                M.read (| self |),
-                "contract_ref::FlipperRef",
-                "value"
+              M.call_closure (|
+                M.get_struct_record_field "contract_ref::FlipperRef" "value",
+                [ M.read (| self |) ]
               |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "contract_ref::FlipperRef",
-                    "value"
+                  M.call_closure (|
+                    M.get_struct_record_field "contract_ref::FlipperRef" "value",
+                    [ M.read (| self |) ]
                   |)
                 |))
             |) in
@@ -285,7 +283,10 @@ Module Impl_contract_ref_FlipperRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "contract_ref::FlipperRef", "value" |)
+          M.call_closure (|
+            M.get_struct_record_field "contract_ref::FlipperRef" "value",
+            [ M.read (| self |) ]
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -429,10 +430,9 @@ Module Impl_contract_ref_ContractRef.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "flip", [] |),
                 [
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "contract_ref::ContractRef",
-                    "flipper"
+                  M.call_closure (|
+                    M.get_struct_record_field "contract_ref::ContractRef" "flipper",
+                    [ M.read (| self |) ]
                   |)
                 ]
               |)
@@ -457,10 +457,9 @@ Module Impl_contract_ref_ContractRef.
         M.call_closure (|
           M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "get", [] |),
           [
-            M.get_struct_record_field (|
-              M.read (| self |),
-              "contract_ref::ContractRef",
-              "flipper"
+            M.call_closure (|
+              M.get_struct_record_field "contract_ref::ContractRef" "flipper",
+              [ M.read (| self |) ]
             |)
           ]
         |)))

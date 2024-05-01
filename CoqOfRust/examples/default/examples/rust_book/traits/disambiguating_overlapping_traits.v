@@ -37,10 +37,9 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
             []
           |),
           [
-            M.get_struct_record_field (|
-              M.read (| self |),
-              "disambiguating_overlapping_traits::Form",
-              "username"
+            M.call_closure (|
+              M.get_struct_record_field "disambiguating_overlapping_traits::Form" "username",
+              [ M.read (| self |) ]
             |)
           ]
         |)))
@@ -69,10 +68,9 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "disambiguating_overlapping_traits::Form",
-            "age"
+          M.call_closure (|
+            M.get_struct_record_field "disambiguating_overlapping_traits::Form" "age",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible

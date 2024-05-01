@@ -74,10 +74,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "associated_functions_and_methods::Rectangle",
-            "p1"
+          M.call_closure (|
+            M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p1",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -103,10 +102,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.get_struct_record_field (|
-              M.read (| self |),
-              "associated_functions_and_methods::Rectangle",
-              "p1"
+            M.call_closure (|
+              M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p1",
+              [ M.read (| self |) ]
             |),
             [
               fun γ =>
@@ -126,10 +124,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.get_struct_record_field (|
-                      M.read (| self |),
-                      "associated_functions_and_methods::Rectangle",
-                      "p2"
+                    M.call_closure (|
+                      M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p2",
+                      [ M.read (| self |) ]
                     |),
                     [
                       fun γ =>
@@ -184,10 +181,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.get_struct_record_field (|
-              M.read (| self |),
-              "associated_functions_and_methods::Rectangle",
-              "p1"
+            M.call_closure (|
+              M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p1",
+              [ M.read (| self |) ]
             |),
             [
               fun γ =>
@@ -207,10 +203,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.get_struct_record_field (|
-                      M.read (| self |),
-                      "associated_functions_and_methods::Rectangle",
-                      "p2"
+                    M.call_closure (|
+                      M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p2",
+                      [ M.read (| self |) ]
                     |),
                     [
                       fun γ =>
@@ -273,50 +268,50 @@ Module Impl_associated_functions_and_methods_Rectangle.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "associated_functions_and_methods::Rectangle",
-                  "p1"
-                |),
-                "associated_functions_and_methods::Point",
-                "x"
+              M.call_closure (|
+                M.get_struct_record_field "associated_functions_and_methods::Point" "x",
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p1",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "associated_functions_and_methods::Rectangle",
-                  "p2"
-                |),
-                "associated_functions_and_methods::Point",
-                "x"
+              M.call_closure (|
+                M.get_struct_record_field "associated_functions_and_methods::Point" "x",
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p2",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "associated_functions_and_methods::Rectangle",
-                  "p1"
-                |),
-                "associated_functions_and_methods::Point",
-                "y"
+              M.call_closure (|
+                M.get_struct_record_field "associated_functions_and_methods::Point" "y",
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p1",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "associated_functions_and_methods::Rectangle",
-                  "p2"
-                |),
-                "associated_functions_and_methods::Point",
-                "y"
+              M.call_closure (|
+                M.get_struct_record_field "associated_functions_and_methods::Point" "y",
+                [
+                  M.call_closure (|
+                    M.get_struct_record_field "associated_functions_and_methods::Rectangle" "p2",
+                    [ M.read (| self |) ]
+                  |)
+                ]
               |) in
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
           M.alloc (| Value.Tuple [] |)

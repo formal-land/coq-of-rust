@@ -138,7 +138,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           "success",
                           []
                         |),
-                        [ M.get_struct_record_field (| output, "std::process::Output", "status" |) ]
+                        [
+                          M.call_closure (|
+                            M.get_struct_record_field "std::process::Output" "status",
+                            [ output ]
+                          |)
+                        ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -161,7 +166,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "deref",
                             []
                           |),
-                          [ M.get_struct_record_field (| output, "std::process::Output", "stdout" |)
+                          [
+                            M.call_closure (|
+                              M.get_struct_record_field "std::process::Output" "stdout",
+                              [ output ]
+                            |)
                           ]
                         |)
                       ]
@@ -234,7 +243,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "deref",
                             []
                           |),
-                          [ M.get_struct_record_field (| output, "std::process::Output", "stderr" |)
+                          [
+                            M.call_closure (|
+                              M.get_struct_record_field "std::process::Output" "stderr",
+                              [ output ]
+                            |)
                           ]
                         |)
                       ]

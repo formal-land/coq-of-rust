@@ -113,7 +113,12 @@ Module Impl_traits_Sheep.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "traits::Sheep", "naked" |) |)))
+        M.read (|
+          M.call_closure (|
+            M.get_struct_record_field "traits::Sheep" "naked",
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -245,10 +250,9 @@ Module Impl_traits_Sheep.
                                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                           |),
                                           [
-                                            M.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "traits::Sheep",
-                                              "name"
+                                            M.call_closure (|
+                                              M.get_struct_record_field "traits::Sheep" "name",
+                                              [ M.read (| self |) ]
                                             |)
                                           ]
                                         |)
@@ -262,7 +266,10 @@ Module Impl_traits_Sheep.
                     M.alloc (| Value.Tuple [] |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field (| M.read (| self |), "traits::Sheep", "naked" |),
+                      M.call_closure (|
+                        M.get_struct_record_field "traits::Sheep" "naked",
+                        [ M.read (| self |) ]
+                      |),
                       Value.Bool true
                     |) in
                   M.alloc (| Value.Tuple [] |)))
@@ -307,7 +314,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "traits::Sheep", "name" |) |)))
+        M.read (|
+          M.call_closure (|
+            M.get_struct_record_field "traits::Sheep" "name",
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -392,10 +404,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                   |),
                                   [
-                                    M.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "traits::Sheep",
-                                      "name"
+                                    M.call_closure (|
+                                      M.get_struct_record_field "traits::Sheep" "name",
+                                      [ M.read (| self |) ]
                                     |)
                                   ]
                                 |);

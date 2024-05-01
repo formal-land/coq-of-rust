@@ -64,11 +64,23 @@ Module Erc20.
       ];
   }.
 
-  Definition get_total_supply {R : Set} (self : Pointer.t t) :
-      MBody (Pointer.t Balance.t) R :=
+  Definition get_total_supply (self : Pointer.t t) : M (Pointer.t Balance.t) :=
     M.make_sub_pointer self (Pointer.Index.StructRecord "erc20::Erc20" "total_supply")
       (fun x => Some x.(total_supply))
       (fun x v => Some (x <| total_supply := v |>)).
+
+  Lemma get_total_supply_run {Address Env : Set} (env_to_value : Env -> Value.t)
+      (self : Pointer.t t) :
+    {{ Address, env_to_value |
+      get_struct_record_field_closure "erc20::Erc20" "total_supply" [φ self] ~
+      Erc20.get_total_supply self
+    }}.
+  Proof.
+    destruct self, origin.
+    apply Run.CallPrimitiveMakeSubPointer; try reflexivity.
+    apply Run.Pure.
+    reflexivity.
+  Qed.
 End Erc20.
 
 Module Impl_erc20_Erc20.
@@ -77,7 +89,7 @@ Module Impl_erc20_Erc20.
   Definition total_supply (self : Pointer.t Self) : M Balance.t :=
     let* self := M.alloc self in
     let* self := M.read self in
-    let* self_total_supply := Erc20.get_total_supply self in
+    let* self_total_supply := M.call_closure Erc20.get_total_supply <[self]> in
     M.read self_total_supply.
 
   Lemma total_supply_run {Address Env : Set} (env_to_value : Env -> Value.t)
@@ -93,50 +105,15 @@ Module Impl_erc20_Erc20.
     intros; cbn.
     apply Run.CallPrimitiveStateRead; [reflexivity|].
     intros.
-    unfold M.get_struct_record_field.
-    Transparent φ.
-    cbn.
-    destruct value, origin.
-    apply Run.CallPrimitiveMakeSubPointer.
-    { sfirstorder. }
-    { sfirstorder. }
-    unfold M.read; cbn.
-    apply Run.CallPrimitiveStateRead; [reflexivity|].
+    eapply Run.CallClosure; try constructor. {
+      apply Erc20.get_total_supply_run.
+    }
     intros.
-    apply Run.Pure.
-    reflexivity.
+    destruct result as [|[[] | | | | ]]; cbn; try now apply Run.Pure.
+    destruct t0.
+    apply Run.CallPrimitiveStateRead; [reflexivity|]; intros.
+    now apply Run.Pure.
   Qed.
-    destruct value.
-    apply Run.Pure.
-
-    run_symbolic_state_read.
-
-    apply H.
-    set (origin := Pointer.Origin.Make _ _ _).
-    pose proof (H := Run.CallPrimitiveStateRead Address env_to_value origin).
-    apply H.
-
-    apply Run.CallPrimitiveStateRead.
-    intros.
-    unfold M.get_struct_record_field.
-    unfold M.read.
-    assert (H_total_supply := Erc20.get_total_supply_is_valid self H_self).
-    unfold Erc20.get_total_supply in *.
-    cbn.
-    unfold Pointer.map.
-    Transparent φ.
-    cbn.
-    destruct H_self.
-    (* destruct value. *)
-    apply Run.CallPrimitiveStateRead.
-    intros.
-    rewrite Value.read_path_suffix_eq.
-    destruct H_self.
-    rewrite H.
-
-    inversion H_total_supply.
-  Qed.
-
 
   (* Definition balance_of_impl (self : Pointer.t Erc20.t) (owner : Pointer.t AccountId) :
       M (option Balance.t) :=

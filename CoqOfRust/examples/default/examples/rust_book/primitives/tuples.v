@@ -60,16 +60,30 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
             M.read (| Value.String "Matrix" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |));
+              (M.call_closure (|
+                M.get_struct_tuple_field "tuples::Matrix" 0,
+                [ M.read (| self |) ]
+              |));
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |));
+              (M.call_closure (|
+                M.get_struct_tuple_field "tuples::Matrix" 1,
+                [ M.read (| self |) ]
+              |));
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |));
+              (M.call_closure (|
+                M.get_struct_tuple_field "tuples::Matrix" 2,
+                [ M.read (| self |) ]
+              |));
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 3 |) |))
+              (M.alloc (|
+                M.call_closure (|
+                  M.get_struct_tuple_field "tuples::Matrix" 3,
+                  [ M.read (| self |) ]
+                |)
+              |))
           ]
         |)))
     | _, _ => M.impossible

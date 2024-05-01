@@ -23,7 +23,10 @@ Module underscore.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.get_struct_record_field (| self, "const_underscore_expression::Bar", "test" |)
+            M.call_closure (|
+              M.get_struct_record_field "const_underscore_expression::Bar" "test",
+              [ self ]
+            |)
           |)))
       | _, _ => M.impossible
       end.

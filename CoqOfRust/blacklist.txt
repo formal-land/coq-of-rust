@@ -1,3 +1,6 @@
+alloc/
+core/
+move/
 alloc/boxed.v
 core/any.v
 core/array/mod.v

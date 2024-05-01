@@ -233,10 +233,9 @@ Module Impl_mapping_integration_tests_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
-            M.read (| self |),
-            "mapping_integration_tests::Env",
-            "caller"
+          M.call_closure (|
+            M.get_struct_record_field "mapping_integration_tests::Env" "caller",
+            [ M.read (| self |) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -396,10 +395,9 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.call_closure (|
+                  M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                  [ M.read (| self |) ]
                 |);
                 caller
               ]
@@ -456,10 +454,9 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.call_closure (|
+                  M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                  [ M.read (| self |) ]
                 |);
                 M.read (| caller |);
                 M.read (| value |)
@@ -517,10 +514,9 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.call_closure (|
+                  M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                  [ M.read (| self |) ]
                 |);
                 M.read (| caller |)
               ]
@@ -576,10 +572,9 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.call_closure (|
+                  M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                  [ M.read (| self |) ]
                 |);
                 caller
               ]
@@ -637,10 +632,9 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
-                    M.read (| self |),
-                    "mapping_integration_tests::Mappings",
-                    "balances"
+                  M.call_closure (|
+                    M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                    [ M.read (| self |) ]
                   |);
                   M.read (| caller |)
                 ]
@@ -698,10 +692,9 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "mapping_integration_tests::Mappings",
-                  "balances"
+                M.call_closure (|
+                  M.get_struct_record_field "mapping_integration_tests::Mappings" "balances",
+                  [ M.read (| self |) ]
                 |);
                 M.read (| caller |)
               ]

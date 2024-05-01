@@ -31,10 +31,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_structs::Borrowed",
-                  0
+                M.call_closure (|
+                  M.get_struct_tuple_field "scoping_rules_lifetimes_structs::Borrowed" 0,
+                  [ M.read (| self |) ]
                 |)
               |))
           ]
@@ -83,19 +82,17 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (|
-                M.read (| self |),
-                "scoping_rules_lifetimes_structs::NamedBorrowed",
-                "x"
+              (M.call_closure (|
+                M.get_struct_record_field "scoping_rules_lifetimes_structs::NamedBorrowed" "x",
+                [ M.read (| self |) ]
               |));
             M.read (| Value.String "y" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_structs::NamedBorrowed",
-                  "y"
+                M.call_closure (|
+                  M.get_struct_record_field "scoping_rules_lifetimes_structs::NamedBorrowed" "y",
+                  [ M.read (| self |) ]
                 |)
               |))
           ]

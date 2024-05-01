@@ -253,10 +253,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
-                                            point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "x"
+                                          M.call_closure (|
+                                            M.get_struct_record_field
+                                              "scoping_rules_borrowing_the_ref_pattern::Point"
+                                              "x",
+                                            [ point ]
                                           |)
                                         ]
                                       |);
@@ -267,10 +268,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
-                                            point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "y"
+                                          M.call_closure (|
+                                            M.get_struct_record_field
+                                              "scoping_rules_borrowing_the_ref_pattern::Point"
+                                              "y",
+                                            [ point ]
                                           |)
                                         ]
                                       |)
@@ -318,10 +320,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
-                                            mutable_point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "x"
+                                          M.call_closure (|
+                                            M.get_struct_record_field
+                                              "scoping_rules_borrowing_the_ref_pattern::Point"
+                                              "x",
+                                            [ mutable_point ]
                                           |)
                                         ]
                                       |);
@@ -332,10 +335,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
-                                            mutable_point,
-                                            "scoping_rules_borrowing_the_ref_pattern::Point",
-                                            "y"
+                                          M.call_closure (|
+                                            M.get_struct_record_field
+                                              "scoping_rules_borrowing_the_ref_pattern::Point"
+                                              "y",
+                                            [ mutable_point ]
                                           |)
                                         ]
                                       |)

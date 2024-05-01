@@ -323,7 +323,12 @@ Module Impl_erc20_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "erc20::Env", "caller" |) |)))
+        M.read (|
+          M.call_closure (|
+            M.get_struct_record_field "erc20::Env" "caller",
+            [ M.read (| self |) ]
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -501,7 +506,10 @@ Module Impl_erc20_Erc20.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "total_supply" |)
+          M.call_closure (|
+            M.get_struct_record_field "erc20::Erc20" "total_supply",
+            [ M.read (| self |) ]
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -533,7 +541,10 @@ Module Impl_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "balances" |);
+                M.call_closure (|
+                  M.get_struct_record_field "erc20::Erc20" "balances",
+                  [ M.read (| self |) ]
+                |);
                 M.read (| owner |)
               ]
             |)
@@ -596,7 +607,10 @@ Module Impl_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "allowances" |);
+                M.call_closure (|
+                  M.get_struct_record_field "erc20::Erc20" "allowances",
+                  [ M.read (| self |) ]
+                |);
                 M.alloc (|
                   Value.Tuple [ M.read (| M.read (| owner |) |); M.read (| M.read (| spender |) |) ]
                 |)
@@ -705,7 +719,10 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "balances" |);
+                      M.call_closure (|
+                        M.get_struct_record_field "erc20::Erc20" "balances",
+                        [ M.read (| self |) ]
+                      |);
                       M.read (| M.read (| from |) |);
                       BinOp.Panic.sub (| M.read (| from_balance |), M.read (| value |) |)
                     ]
@@ -729,7 +746,10 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "balances" |);
+                      M.call_closure (|
+                        M.get_struct_record_field "erc20::Erc20" "balances",
+                        [ M.read (| self |) ]
+                      |);
                       M.read (| M.read (| to |) |);
                       BinOp.Panic.add (| M.read (| to_balance |), M.read (| value |) |)
                     ]
@@ -863,7 +883,10 @@ Module Impl_erc20_Erc20.
                   []
                 |),
                 [
-                  M.get_struct_record_field (| M.read (| self |), "erc20::Erc20", "allowances" |);
+                  M.call_closure (|
+                    M.get_struct_record_field "erc20::Erc20" "allowances",
+                    [ M.read (| self |) ]
+                  |);
                   Value.Tuple [ M.read (| owner |); M.read (| spender |) ];
                   M.read (| value |)
                 ]
@@ -1060,10 +1083,9 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc20::Erc20",
-                        "allowances"
+                      M.call_closure (|
+                        M.get_struct_record_field "erc20::Erc20" "allowances",
+                        [ M.read (| self |) ]
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
                       BinOp.Panic.sub (| M.read (| allowance |), M.read (| value |) |)

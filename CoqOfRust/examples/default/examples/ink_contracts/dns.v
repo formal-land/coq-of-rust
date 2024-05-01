@@ -230,8 +230,12 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "dns::AccountId", 0 |) |))
-          (M.read (| M.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |) |))))
+          (M.read (|
+            M.call_closure (| M.get_struct_tuple_field "dns::AccountId" 0, [ M.read (| self |) ] |)
+          |))
+          (M.read (|
+            M.call_closure (| M.get_struct_tuple_field "dns::AccountId" 0, [ M.read (| other |) ] |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -344,7 +348,9 @@ Module Impl_dns_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "dns::Env", "caller" |) |)))
+        M.read (|
+          M.call_closure (| M.get_struct_record_field "dns::Env" "caller", [ M.read (| self |) ] |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -752,10 +758,11 @@ Module Impl_dns_DomainNameService.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "dns::DomainNameService",
-                                    "name_to_owner"
+                                  M.call_closure (|
+                                    M.get_struct_record_field
+                                      "dns::DomainNameService"
+                                      "name_to_owner",
+                                    [ M.read (| self |) ]
                                   |);
                                   name
                                 ]
@@ -788,10 +795,9 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.call_closure (|
+                        M.get_struct_record_field "dns::DomainNameService" "name_to_owner",
+                        [ M.read (| self |) ]
                       |);
                       M.read (| name |);
                       M.read (| caller |)
@@ -860,19 +866,17 @@ Module Impl_dns_DomainNameService.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "dns::DomainNameService",
-                  "name_to_owner"
+                M.call_closure (|
+                  M.get_struct_record_field "dns::DomainNameService" "name_to_owner",
+                  [ M.read (| self |) ]
                 |);
                 name
               ]
             |);
             M.read (|
-              M.get_struct_record_field (|
-                M.read (| self |),
-                "dns::DomainNameService",
-                "default_address"
+              M.call_closure (|
+                M.get_struct_record_field "dns::DomainNameService" "default_address",
+                [ M.read (| self |) ]
               |)
             |)
           ]
@@ -989,10 +993,9 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_address"
+                      M.call_closure (|
+                        M.get_struct_record_field "dns::DomainNameService" "name_to_address",
+                        [ M.read (| self |) ]
                       |);
                       name
                     ]
@@ -1009,10 +1012,9 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_address"
+                      M.call_closure (|
+                        M.get_struct_record_field "dns::DomainNameService" "name_to_address",
+                        [ M.read (| self |) ]
                       |);
                       M.read (| name |);
                       M.read (| new_address |)
@@ -1164,10 +1166,9 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.call_closure (|
+                        M.get_struct_record_field "dns::DomainNameService" "name_to_owner",
+                        [ M.read (| self |) ]
                       |);
                       name
                     ]
@@ -1184,10 +1185,9 @@ Module Impl_dns_DomainNameService.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.call_closure (|
+                        M.get_struct_record_field "dns::DomainNameService" "name_to_owner",
+                        [ M.read (| self |) ]
                       |);
                       M.read (| name |);
                       M.read (| to |)
@@ -1261,19 +1261,17 @@ Module Impl_dns_DomainNameService.
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "dns::DomainNameService",
-                  "name_to_address"
+                M.call_closure (|
+                  M.get_struct_record_field "dns::DomainNameService" "name_to_address",
+                  [ M.read (| self |) ]
                 |);
                 name
               ]
             |);
             M.read (|
-              M.get_struct_record_field (|
-                M.read (| self |),
-                "dns::DomainNameService",
-                "default_address"
+              M.call_closure (|
+                M.get_struct_record_field "dns::DomainNameService" "default_address",
+                [ M.read (| self |) ]
               |)
             |)
           ]

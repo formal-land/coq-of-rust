@@ -697,6 +697,9 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
+Definition closure (f : list Value.t -> M) : Value.t :=
+  Value.Closure (existS (Value.t, M) f).
+
 (** An error should not occur as we statically know the number of fields in a
     tuple, but the code for the error branch is still there for typing and
     debugging reasons. *)
@@ -737,7 +740,7 @@ Parameter get_array_field : forall (value : Value.t) (index : Value.t), M.
   | _ => pure (Value.Error "Expected a usize as an array index")
   end. *)
 
-Parameter get_struct_tuple_field : forall (value : Value.t) (constructor : string) (index : Z), M.
+Parameter get_struct_tuple_field : forall (constructor : string) (index : Z), Value.t.
 (* Definition get_struct_tuple_field
     (value : Value.t) (constructor : string) (index : Z) :
     Value.t :=
@@ -763,12 +766,18 @@ Parameter get_struct_tuple_field : forall (value : Value.t) (constructor : strin
   | _ => Value.Error "expected an address"
   end. *)
 
-Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
-  match value with
-  | Value.Pointer pointer =>
-    call_primitive (Primitive.MakeSubPointer pointer (Pointer.Index.StructRecord constructor field))
+Definition get_struct_record_field_closure (constructor field : string) (args : list Value.t) : M :=
+  match args with
+  | [Value.Pointer pointer] =>
+    call_primitive (Primitive.MakeSubPointer
+      pointer
+      (Pointer.Index.StructRecord constructor field)
+    )
   | _ => impossible
   end.
+
+Definition get_struct_record_field (constructor field : string) : Value.t :=
+  closure (get_struct_record_field_closure constructor field).
 
 Parameter pointer_coercion : Value.t -> Value.t.
 
@@ -871,9 +880,6 @@ Parameter get_slice_rest_or_break_match :
     types that are actually different but convertible, like different kinds of
     integers. *)
 Parameter rust_cast : Value.t -> Value.t.
-
-Definition closure (f : list Value.t -> M) : Value.t :=
-  Value.Closure (existS (Value.t, M) f).
 
 Definition constructor_as_closure (constructor : string) : Value.t :=
   closure (fun args =>

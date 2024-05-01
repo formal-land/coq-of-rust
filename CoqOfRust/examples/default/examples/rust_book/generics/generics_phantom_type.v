@@ -38,15 +38,13 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_tuple_field (|
-                M.read (| self |),
-                "generics_phantom_type::PhantomTuple",
-                0
+              M.call_closure (|
+                M.get_struct_tuple_field "generics_phantom_type::PhantomTuple" 0,
+                [ M.read (| self |) ]
               |);
-              M.get_struct_tuple_field (|
-                M.read (| other |),
-                "generics_phantom_type::PhantomTuple",
-                0
+              M.call_closure (|
+                M.get_struct_tuple_field "generics_phantom_type::PhantomTuple" 0,
+                [ M.read (| other |) ]
               |)
             ]
           |),
@@ -60,15 +58,13 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
                 []
               |),
               [
-                M.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_phantom_type::PhantomTuple",
-                  1
+                M.call_closure (|
+                  M.get_struct_tuple_field "generics_phantom_type::PhantomTuple" 1,
+                  [ M.read (| self |) ]
                 |);
-                M.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "generics_phantom_type::PhantomTuple",
-                  1
+                M.call_closure (|
+                  M.get_struct_tuple_field "generics_phantom_type::PhantomTuple" 1,
+                  [ M.read (| other |) ]
                 |)
               ]
             |)))
@@ -121,15 +117,13 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_record_field (|
-                M.read (| self |),
-                "generics_phantom_type::PhantomStruct",
-                "first"
+              M.call_closure (|
+                M.get_struct_record_field "generics_phantom_type::PhantomStruct" "first",
+                [ M.read (| self |) ]
               |);
-              M.get_struct_record_field (|
-                M.read (| other |),
-                "generics_phantom_type::PhantomStruct",
-                "first"
+              M.call_closure (|
+                M.get_struct_record_field "generics_phantom_type::PhantomStruct" "first",
+                [ M.read (| other |) ]
               |)
             ]
           |),
@@ -143,15 +137,13 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
                 []
               |),
               [
-                M.get_struct_record_field (|
-                  M.read (| self |),
-                  "generics_phantom_type::PhantomStruct",
-                  "phantom"
+                M.call_closure (|
+                  M.get_struct_record_field "generics_phantom_type::PhantomStruct" "phantom",
+                  [ M.read (| self |) ]
                 |);
-                M.get_struct_record_field (|
-                  M.read (| other |),
-                  "generics_phantom_type::PhantomStruct",
-                  "phantom"
+                M.call_closure (|
+                  M.get_struct_record_field "generics_phantom_type::PhantomStruct" "phantom",
+                  [ M.read (| other |) ]
                 |)
               ]
             |)))
