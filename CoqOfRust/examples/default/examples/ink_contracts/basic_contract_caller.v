@@ -120,16 +120,18 @@ Module Impl_basic_contract_caller_OtherContract.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "basic_contract_caller::OtherContract"
-                "value",
+              M.get_struct_record_field (|
+                M.read (| self |),
+                "basic_contract_caller::OtherContract",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "basic_contract_caller::OtherContract"
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "basic_contract_caller::OtherContract",
                     "value"
+                  |)
                 |))
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -150,10 +152,11 @@ Module Impl_basic_contract_caller_OtherContract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field
-            (M.read (| self |))
-            "basic_contract_caller::OtherContract"
+          M.get_struct_record_field (|
+            M.read (| self |),
+            "basic_contract_caller::OtherContract",
             "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -230,10 +233,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "basic_contract_caller::BasicContractCaller"
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "basic_contract_caller::BasicContractCaller",
                     "other_contract"
+                  |)
                 ]
               |)
             |) in
@@ -245,10 +249,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "basic_contract_caller::BasicContractCaller"
+                M.get_struct_record_field (|
+                  M.read (| self |),
+                  "basic_contract_caller::BasicContractCaller",
                   "other_contract"
+                |)
               ]
             |)
           |)

@@ -101,7 +101,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Peeled" 0
+                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Peeled", 0 |)
               |))
           ]
         |)))
@@ -145,7 +145,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Chopped" 0
+                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Chopped", 0 |)
               |))
           ]
         |)))
@@ -189,7 +189,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "combinators_map::Cooked" 0
+                M.get_struct_tuple_field (| M.read (| self |), "combinators_map::Cooked", 0 |)
               |))
           ]
         |)))
@@ -223,12 +223,7 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
                 M.alloc (|
                   Value.StructTuple
@@ -262,18 +257,8 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
-                let γ1_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ0_0,
-                    "combinators_map::Peeled",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let γ1_0 := M.get_struct_tuple_field (| γ0_0, "combinators_map::Peeled", 0 |) in
                 let food := M.copy (| γ1_0 |) in
                 M.alloc (|
                   Value.StructTuple
@@ -322,11 +307,7 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ, "combinators_map::Chopped", 0 |) in
                           let food := M.copy (| γ0_0 |) in
                           Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
                     ]
@@ -416,11 +397,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
-                                  γ,
-                                  "combinators_map::Peeled",
-                                  0
-                                |) in
+                                M.get_struct_tuple_field (| γ, "combinators_map::Peeled", 0 |) in
                               let f := M.copy (| γ0_0 |) in
                               Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
                         ]
@@ -440,11 +417,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ, "combinators_map::Chopped", 0 |) in
                           let f := M.copy (| γ0_0 |) in
                           Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
                     ]
@@ -475,12 +448,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

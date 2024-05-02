@@ -9,8 +9,9 @@ Local Open Scope type.
 
 Module State.
   Class Trait (State Address : Set) : Type := {
-    read (a : Address) : State -> option Value.t;
-    alloc_write (a : Address) : State -> Value.t -> option State;
+    get_Set (a : Address) : Set;
+    read (a : Address) : State -> option (get_Set a);
+    alloc_write (a : Address) : State -> get_Set a -> option State;
   }.
 
   Module Valid.
@@ -20,17 +21,17 @@ Module State.
         allocated values. *)
     Record t `(Trait) : Prop := {
       (* [alloc_write] can only fail on new cells *)
-      not_allocated (a : Address) (s : State) (v : Value.t) :
+      not_allocated (a : Address) (s : State) (v : get_Set a) :
         match alloc_write a s v with
         | Some _ => True
         | None => read a s = None
         end;
-      same (a : Address) (s : State) (v : Value.t) :
+      same (a : Address) (s : State) (v : get_Set a) :
         match alloc_write a s v with
         | Some s => read a s = Some v
         | None => True
         end;
-      different (a1 a2 : Address) (s : State) (v2 : Value.t) :
+      different (a1 a2 : Address) (s : State) (v2 : get_Set a2) :
         a1 <> a2 ->
         match alloc_write a2 s v2 with
         | Some s' => read a1 s' = read a1 s
@@ -58,7 +59,7 @@ Definition IsTraitMethod
 Module Run.
   Reserved Notation "{{ env , state | e ⇓ result | state' }}".
 
-  Inductive t `{State.Trait} (env : Value.t)
+  Inductive t `{State.Trait} {Env : Set} (env_to_value : Env -> Value.t)
       (* Be aware of the order of parameters: the result and final state are at
          the beginning. This is due to the way polymorphic types for inductive
          work in Coq, and the fact that the result is always the same as we are
@@ -66,49 +67,84 @@ Module Run.
       (result : Value.t + Exception.t) (state' : State) :
       M -> State -> Prop :=
   | Pure :
-    {{ env, state' | LowM.Pure result ⇓ result | state' }}
+    {{ env_to_value, state' | LowM.Pure result ⇓ result | state' }}
   | CallPrimitiveStateAllocImmediate
       (state : State) (v : Value.t)
       (k : Value.t -> M) :
-    {{ env, state |
+    {{ env_to_value, state |
       k (Value.Pointer (Pointer.Immediate v)) ⇓ result
     | state' }} ->
-    {{ env, state |
+    {{ env_to_value, state |
       LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ result
     | state' }}
   | CallPrimitiveStateAllocMutable
-      (address : Address) (v : Value.t)
+      (address : Address)
+      (value : State.get_Set address)
+      (value' : Value.t)
+      (to_value : State.get_Set address -> Value.t)
       (state : State)
       (k : Value.t -> M) :
-    let r := Value.Pointer (Pointer.Mutable address []) in
+    let r := Value.Pointer (Pointer.mutable address to_value) in
+    value' = to_value value ->
     State.read address state = None ->
-    State.alloc_write address state v = Some state' ->
-    {{ env, state | k r ⇓ result | state' }} ->
-    {{ env, state |
-      LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ result
+    State.alloc_write address state value = Some state' ->
+    {{ env_to_value, state | k r ⇓ result | state' }} ->
+    {{ env_to_value, state |
+      LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ result
     | state' }}
   | CallPrimitiveStateRead
-      (address : Address) (v : Value.t)
+      {A : Set} address path big_to_value projection injection to_value
+      (value : State.get_Set address)
+      (sub_value : A)
       (state : State)
       (k : Value.t -> M) :
-    State.read address state = Some v ->
-    {{ env, state | k v ⇓ result | state' }} ->
-    {{ env, state |
-      LowM.CallPrimitive (Primitive.StateRead address) k ⇓ result
+    let mutable :=
+      @Pointer.Mutable.Make
+        Value.t Address (State.get_Set address) A
+        address
+        path
+        big_to_value
+        projection
+        injection
+        to_value in
+    State.read address state = Some value ->
+    projection value = Some sub_value ->
+    {{ env_to_value, state |
+      k (to_value sub_value) ⇓
+      result
+    | state' }} ->
+    {{ env_to_value, state |
+      LowM.CallPrimitive (Primitive.StateRead mutable) k ⇓
+      result
     | state' }}
   | CallPrimitiveStateWrite
-      (address : Address) (v : Value.t)
+      {A : Set} address path big_to_value projection injection to_value
+      (update : A) (update' : Value.t)
+      (big_value new_big_value : State.get_Set address)
       (state state_inter : State)
       (k : Value.t -> M) :
-    State.alloc_write address state v = Some state_inter ->
-    {{ env, state_inter | k (Value.Tuple []) ⇓ result | state' }} ->
-    {{ env, state |
-      LowM.CallPrimitive (Primitive.StateWrite address v) k ⇓ result
+    let mutable :=
+      @Pointer.Mutable.Make
+        Value.t Address (State.get_Set address) A
+        address
+        path
+        big_to_value
+        projection
+        injection
+        to_value in
+    update' = to_value update ->
+    State.read address state = Some big_value ->
+    injection big_value update = Some new_big_value ->
+    State.alloc_write address state new_big_value = Some state_inter ->
+    {{ env_to_value, state_inter | k (Value.Tuple []) ⇓ result | state' }} ->
+    {{ env_to_value, state |
+      LowM.CallPrimitive (Primitive.StateWrite mutable update') k ⇓
+      result
     | state' }}
   | CallPrimitiveEnvRead
       (state : State) (k : Value.t -> M) :
-    {{ env, state | k env ⇓ result | state' }} ->
-    {{ env, state |
+    {{ env_to_value, state | k (env_to_value env) ⇓ result | state' }} ->
+    {{ env_to_value, state |
       LowM.CallPrimitive Primitive.EnvRead k ⇓ result
     | state' }}
   | CallPrimitiveGetAssociatedFunction
@@ -119,8 +155,8 @@ Module Run.
     let closure :=
       Value.Closure (existS (Value.t, M) (associated_function generic_tys)) in
     M.IsAssociatedFunction ty name associated_function ->
-    {{ env, state | k closure ⇓ result | state' }} ->
-    {{ env, state |
+    {{ env_to_value, state | k closure ⇓ result | state' }} ->
+    {{ env_to_value, state |
       LowM.CallPrimitive
         (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
         result
@@ -134,8 +170,8 @@ Module Run.
     let closure :=
       Value.Closure (existS (Value.t, M) (method generic_tys)) in
     IsTraitMethod trait_name self_ty trait_tys method_name method ->
-    {{ env, state | k closure ⇓ result | state' }} ->
-    {{ env, state |
+    {{ env_to_value, state | k closure ⇓ result | state' }} ->
+    {{ env_to_value, state |
       LowM.CallPrimitive
         (Primitive.GetTraitMethod
           trait_name
@@ -152,9 +188,9 @@ Module Run.
       (value : Value.t + Exception.t)
       (k : Value.t + Exception.t -> M) :
     let closure := Value.Closure (existS (Value.t, M) f) in
-    {{ env, state | f args ⇓ value | state_inter }} ->
-    {{ env, state_inter | k value ⇓ result | state' }} ->
-    {{ env, state | LowM.CallClosure closure args k ⇓ result | state' }}
+    {{ env_to_value, state | f args ⇓ value | state_inter }} ->
+    {{ env_to_value, state_inter | k value ⇓ result | state' }} ->
+    {{ env_to_value, state | LowM.CallClosure closure args k ⇓ result | state' }}
 
   where "{{ env , state | e ⇓ result | state' }}" :=
     (t env result state' e state).

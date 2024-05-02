@@ -74,21 +74,13 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
-                            γ,
-                            "if_let::Container::Left",
-                            0
-                          |) in
+                          M.get_struct_tuple_field (| γ, "if_let::Container::Left", 0 |) in
                         let value := M.copy (| γ0_0 |) in
                         Value.Tuple [ value ]));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
-                            γ,
-                            "if_let::Container::Right",
-                            0
-                          |) in
+                          M.get_struct_tuple_field (| γ, "if_let::Container::Right", 0 |) in
                         let value := M.copy (| γ0_0 |) in
                         Value.Tuple [ value ]))
                   ],
@@ -152,12 +144,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := x in
-                  let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
                   let _ :=
                     let _ :=
@@ -213,19 +200,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ := x in
-                  let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|
@@ -280,12 +257,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := x in
-                  let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
                   let γ :=
                     M.use
@@ -294,12 +266,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let γ := x in
-                  let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let z := M.copy (| γ0_0 |) in
                   let _ :=
                     let _ :=
@@ -363,30 +330,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let γ := x in
-                let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let y := M.copy (| γ0_0 |) in
                 let γ :=
                   M.alloc (| BinOp.Pure.gt (M.read (| y |)) (Value.Integer Integer.I32 3) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let γ := x in
-                let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let z := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

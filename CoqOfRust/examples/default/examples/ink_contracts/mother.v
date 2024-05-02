@@ -174,8 +174,8 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (M.read (| self |)) "mother::AccountId" 0 |))
-          (M.read (| M.get_struct_tuple_field (M.read (| other |)) "mother::AccountId" 0 |))))
+          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "mother::AccountId", 0 |) |))
+          (M.read (| M.get_struct_tuple_field (| M.read (| other |), "mother::AccountId", 0 |) |))))
     | _, _ => M.impossible
     end.
   
@@ -361,8 +361,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             []
           |),
           [
-            M.get_struct_tuple_field (M.read (| self |)) "mother::Bids" 0;
-            M.get_struct_tuple_field (M.read (| other |)) "mother::Bids" 0
+            M.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |);
+            M.get_struct_tuple_field (| M.read (| other |), "mother::Bids", 0 |)
           ]
         |)))
     | _, _ => M.impossible
@@ -446,7 +446,7 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                 "clone",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "mother::Bids" 0 ]
+              [ M.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |) ]
             |)
           ]))
     | _, _ => M.impossible
@@ -699,11 +699,11 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.get_struct_tuple_field (|
                               γ0_0,
                               "mother::Status::EndingPeriod",
                               0
@@ -711,7 +711,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let __self_0 := M.alloc (| γ2_0 |) in
                           let γ0_1 := M.read (| γ0_1 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.get_struct_tuple_field (|
                               γ0_1,
                               "mother::Status::EndingPeriod",
                               0
@@ -724,23 +724,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_0,
-                              "mother::Status::Ended",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_0, "mother::Status::Ended", 0 |) in
                           let __self_0 := M.alloc (| γ2_0 |) in
                           let γ0_1 := M.read (| γ0_1 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_1,
-                              "mother::Status::Ended",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_1, "mother::Status::Ended", 0 |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
@@ -756,23 +748,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_0,
-                              "mother::Status::RfDelay",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_0, "mother::Status::RfDelay", 0 |) in
                           let __self_0 := M.alloc (| γ2_0 |) in
                           let γ0_1 := M.read (| γ0_1 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_1,
-                              "mother::Status::RfDelay",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_1, "mother::Status::RfDelay", 0 |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             BinOp.Pure.eq
@@ -866,12 +850,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "mother::Status::EndingPeriod",
-                      0
-                    |) in
+                  let γ1_0 := M.get_struct_tuple_field (| γ, "mother::Status::EndingPeriod", 0 |) in
                   let __self_0 := M.alloc (| γ1_0 |) in
                   M.alloc (|
                     Value.StructTuple
@@ -892,8 +871,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.get_struct_tuple_field_or_break_match (| γ, "mother::Status::Ended", 0 |) in
+                  let γ1_0 := M.get_struct_tuple_field (| γ, "mother::Status::Ended", 0 |) in
                   let __self_0 := M.alloc (| γ1_0 |) in
                   M.alloc (|
                     Value.StructTuple
@@ -914,8 +892,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.get_struct_tuple_field_or_break_match (| γ, "mother::Status::RfDelay", 0 |) in
+                  let γ1_0 := M.get_struct_tuple_field (| γ, "mother::Status::RfDelay", 0 |) in
                   let __self_0 := M.alloc (| γ1_0 |) in
                   M.alloc (|
                     Value.StructTuple
@@ -1000,8 +977,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.get_struct_record_field (M.read (| self |)) "mother::Auction" "name";
-                        M.get_struct_record_field (M.read (| other |)) "mother::Auction" "name"
+                        M.get_struct_record_field (|
+                          M.read (| self |),
+                          "mother::Auction",
+                          "name"
+                        |);
+                        M.get_struct_record_field (|
+                          M.read (| other |),
+                          "mother::Auction",
+                          "name"
+                        |)
                       ]
                     |),
                     ltac:(M.monadic
@@ -1014,8 +999,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                           []
                         |),
                         [
-                          M.get_struct_record_field (M.read (| self |)) "mother::Auction" "subject";
-                          M.get_struct_record_field (M.read (| other |)) "mother::Auction" "subject"
+                          M.get_struct_record_field (|
+                            M.read (| self |),
+                            "mother::Auction",
+                            "subject"
+                          |);
+                          M.get_struct_record_field (|
+                            M.read (| other |),
+                            "mother::Auction",
+                            "subject"
+                          |)
                         ]
                       |)))
                   |),
@@ -1029,8 +1022,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                         []
                       |),
                       [
-                        M.get_struct_record_field (M.read (| self |)) "mother::Auction" "bids";
-                        M.get_struct_record_field (M.read (| other |)) "mother::Auction" "bids"
+                        M.get_struct_record_field (|
+                          M.read (| self |),
+                          "mother::Auction",
+                          "bids"
+                        |);
+                        M.get_struct_record_field (|
+                          M.read (| other |),
+                          "mother::Auction",
+                          "bids"
+                        |)
                       ]
                     |)))
                 |),
@@ -1044,8 +1045,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "mother::Auction" "terms";
-                      M.get_struct_record_field (M.read (| other |)) "mother::Auction" "terms"
+                      M.get_struct_record_field (| M.read (| self |), "mother::Auction", "terms" |);
+                      M.get_struct_record_field (| M.read (| other |), "mother::Auction", "terms" |)
                     ]
                   |)))
               |),
@@ -1059,18 +1060,18 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "mother::Auction" "status";
-                    M.get_struct_record_field (M.read (| other |)) "mother::Auction" "status"
+                    M.get_struct_record_field (| M.read (| self |), "mother::Auction", "status" |);
+                    M.get_struct_record_field (| M.read (| other |), "mother::Auction", "status" |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "mother::Auction" "finalized"
+                  M.get_struct_record_field (| M.read (| self |), "mother::Auction", "finalized" |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field (M.read (| other |)) "mother::Auction" "finalized"
+                  M.get_struct_record_field (| M.read (| other |), "mother::Auction", "finalized" |)
                 |))))
           |),
           ltac:(M.monadic
@@ -1089,8 +1090,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "mother::Auction" "vector";
-                M.get_struct_record_field (M.read (| other |)) "mother::Auction" "vector"
+                M.get_struct_record_field (| M.read (| self |), "mother::Auction", "vector" |);
+                M.get_struct_record_field (| M.read (| other |), "mother::Auction", "vector" |)
               ]
             |)))
         |)))
@@ -1210,7 +1211,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "name" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "name" |) ]
               |));
             ("subject",
               M.call_closure (|
@@ -1221,7 +1222,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "subject" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "subject" |) ]
               |));
             ("bids",
               M.call_closure (|
@@ -1232,7 +1233,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "bids" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "bids" |) ]
               |));
             ("terms",
               M.call_closure (|
@@ -1243,7 +1244,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "terms" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "terms" |) ]
               |));
             ("status",
               M.call_closure (|
@@ -1254,12 +1255,13 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "status" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "status" |) ]
               |));
             ("finalized",
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "finalized" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "finalized" |)
+                ]
               |));
             ("vector",
               M.call_closure (|
@@ -1272,7 +1274,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "mother::Auction" "vector" ]
+                [ M.get_struct_record_field (| M.read (| self |), "mother::Auction", "vector" |) ]
               |))
           ]))
     | _, _ => M.impossible
@@ -1452,23 +1454,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_0,
-                              "mother::Failure::Revert",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_0, "mother::Failure::Revert", 0 |) in
                           let __self_0 := M.alloc (| γ2_0 |) in
                           let γ0_1 := M.read (| γ0_1 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
-                              γ0_1,
-                              "mother::Failure::Revert",
-                              0
-                            |) in
+                            M.get_struct_tuple_field (| γ0_1, "mother::Failure::Revert", 0 |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
@@ -1573,7 +1567,7 @@ Module Impl_mother_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "mother::Env" "caller" |)))
+        M.read (| M.get_struct_record_field (| M.read (| self |), "mother::Env", "caller" |) |)))
     | _, _ => M.impossible
     end.
   
@@ -1887,18 +1881,8 @@ Module Impl_mother_Mother.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
-                  let γ1_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ0_0,
-                      "mother::Failure::Revert",
-                      0
-                    |) in
+                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ1_0 := M.get_struct_tuple_field (| γ0_0, "mother::Failure::Revert", 0 |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -1921,12 +1905,7 @@ Module Impl_mother_Mother.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|

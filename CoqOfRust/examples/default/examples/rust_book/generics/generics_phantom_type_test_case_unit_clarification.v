@@ -147,17 +147,19 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
             M.read (| Value.String "Length" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field
-                (M.read (| self |))
-                "generics_phantom_type_test_case_unit_clarification::Length"
-                0);
+              (M.get_struct_tuple_field (|
+                M.read (| self |),
+                "generics_phantom_type_test_case_unit_clarification::Length",
+                0
+              |));
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "generics_phantom_type_test_case_unit_clarification::Length"
+                M.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "generics_phantom_type_test_case_unit_clarification::Length",
                   1
+                |)
               |))
           ]
         |)))
@@ -190,10 +192,11 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
             M.call_closure (|
               M.get_trait_method (| "core::clone::Clone", Ty.path "f64", [], "clone", [] |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "generics_phantom_type_test_case_unit_clarification::Length"
+                M.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "generics_phantom_type_test_case_unit_clarification::Length",
                   0
+                |)
               ]
             |);
             M.call_closure (|
@@ -205,10 +208,11 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "generics_phantom_type_test_case_unit_clarification::Length"
+                M.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "generics_phantom_type_test_case_unit_clarification::Length",
                   1
+                |)
               ]
             |)
           ]))
@@ -263,16 +267,18 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           [
             BinOp.Panic.add (|
               M.read (|
-                M.get_struct_tuple_field
-                  self
-                  "generics_phantom_type_test_case_unit_clarification::Length"
+                M.get_struct_tuple_field (|
+                  self,
+                  "generics_phantom_type_test_case_unit_clarification::Length",
                   0
+                |)
               |),
               M.read (|
-                M.get_struct_tuple_field
-                  rhs
-                  "generics_phantom_type_test_case_unit_clarification::Length"
+                M.get_struct_tuple_field (|
+                  rhs,
+                  "generics_phantom_type_test_case_unit_clarification::Length",
                   0
+                |)
               |)
             |);
             Value.StructTuple "core::marker::PhantomData" []
@@ -399,10 +405,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f64" ]
                                 |),
                                 [
-                                  M.get_struct_tuple_field
-                                    two_feet
-                                    "generics_phantom_type_test_case_unit_clarification::Length"
+                                  M.get_struct_tuple_field (|
+                                    two_feet,
+                                    "generics_phantom_type_test_case_unit_clarification::Length",
                                     0
+                                  |)
                                 ]
                               |)
                             ]
@@ -444,10 +451,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f64" ]
                                 |),
                                 [
-                                  M.get_struct_tuple_field
-                                    two_meters
-                                    "generics_phantom_type_test_case_unit_clarification::Length"
+                                  M.get_struct_tuple_field (|
+                                    two_meters,
+                                    "generics_phantom_type_test_case_unit_clarification::Length",
                                     0
+                                  |)
                                 ]
                               |)
                             ]

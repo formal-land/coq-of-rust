@@ -32,7 +32,11 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "scoping_rules_lifetimes_bounds::Ref" 0
+                M.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "scoping_rules_lifetimes_bounds::Ref",
+                  0
+                |)
               |))
           ]
         |)))

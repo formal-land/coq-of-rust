@@ -184,7 +184,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
             M.read (| Value.String "AccountId" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "multisig::AccountId" 0 |))
+              (M.alloc (|
+                M.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -253,8 +255,10 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (M.read (| self |)) "multisig::AccountId" 0 |))
-          (M.read (| M.get_struct_tuple_field (M.read (| other |)) "multisig::AccountId" 0 |))))
+          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |) |))
+          (M.read (|
+            M.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -323,8 +327,8 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
             []
           |),
           [
-            M.get_struct_tuple_field (M.read (| self |)) "multisig::AccountId" 0;
-            M.get_struct_tuple_field (M.read (| other |)) "multisig::AccountId" 0
+            M.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |);
+            M.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
     | _, _ => M.impossible
@@ -351,8 +355,8 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
         M.call_closure (|
           M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
           [
-            M.get_struct_tuple_field (M.read (| self |)) "multisig::AccountId" 0;
-            M.get_struct_tuple_field (M.read (| other |)) "multisig::AccountId" 0
+            M.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |);
+            M.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
     | _, _ => M.impossible
@@ -846,7 +850,7 @@ Module Impl_multisig_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "multisig::Env" "caller" |)))
+        M.read (| M.get_struct_record_field (| M.read (| self |), "multisig::Env", "caller" |) |)))
     | _, _ => M.impossible
     end.
   
@@ -1243,7 +1247,7 @@ Module Impl_multisig_Multisig.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -1260,10 +1264,11 @@ Module Impl_multisig_Multisig.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              contract
-                                              "multisig::Multisig"
-                                              "is_owner";
+                                            M.get_struct_record_field (|
+                                              contract,
+                                              "multisig::Multisig",
+                                              "is_owner"
+                                            |);
                                             M.read (| M.read (| owner |) |);
                                             Value.Tuple []
                                           ]
@@ -1278,12 +1283,12 @@ Module Impl_multisig_Multisig.
               |)) in
           let _ :=
             M.write (|
-              M.get_struct_record_field contract "multisig::Multisig" "owners",
+              M.get_struct_record_field (| contract, "multisig::Multisig", "owners" |),
               M.read (| owners |)
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field contract "multisig::Multisig" "transaction_list",
+              M.get_struct_record_field (| contract, "multisig::Multisig", "transaction_list" |),
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
@@ -1297,7 +1302,7 @@ Module Impl_multisig_Multisig.
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field contract "multisig::Multisig" "requirement",
+              M.get_struct_record_field (| contract, "multisig::Multisig", "requirement" |),
               M.read (| requirement |)
             |) in
           contract
@@ -1351,10 +1356,11 @@ Module Impl_multisig_Multisig.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "multisig::Multisig"
-                                        "confirmation_count";
+                                      M.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "multisig::Multisig",
+                                        "confirmation_count"
+                                      |);
                                       trans_id
                                     ]
                                   |);
@@ -1362,10 +1368,11 @@ Module Impl_multisig_Multisig.
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "multisig::Multisig"
+                                M.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "multisig::Multisig",
                                   "requirement"
+                                |)
                               |)))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1426,10 +1433,11 @@ Module Impl_multisig_Multisig.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "multisig::Multisig"
-                        "transactions";
+                      M.get_struct_record_field (|
+                        M.read (| self |),
+                        "multisig::Multisig",
+                        "transactions"
+                      |);
                       trans_id
                     ]
                   |);
@@ -1476,10 +1484,11 @@ Module Impl_multisig_Multisig.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "multisig::Multisig"
-                                  "is_owner";
+                                M.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "multisig::Multisig",
+                                  "is_owner"
+                                |);
                                 M.read (| owner |)
                               ]
                             |))
@@ -1603,8 +1612,8 @@ Module Impl_multisig_Multisig.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.get_tuple_field (| γ, 1 |) in
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -1701,10 +1710,11 @@ Module Impl_multisig_Multisig.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "multisig::Multisig"
-                                    "is_owner";
+                                  M.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "multisig::Multisig",
+                                    "is_owner"
+                                  |);
                                   M.read (| owner |)
                                 ]
                               |)))
@@ -1785,16 +1795,21 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "multisig::Multisig"
+                          M.get_struct_record_field (|
+                            M.read (| self |),
+                            "multisig::Multisig",
                             "owners"
+                          |)
                         ]
                       |)),
                     Value.Integer Integer.U32 1
                   |);
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement"
+                    M.get_struct_record_field (|
+                      M.read (| self |),
+                      "multisig::Multisig",
+                      "requirement"
+                    |)
                   |)
                 ]
               |)
@@ -1810,7 +1825,11 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "is_owner";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "is_owner"
+                  |);
                   M.read (| new_owner |);
                   Value.Tuple []
                 ]
@@ -1827,7 +1846,7 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "owners";
+                  M.get_struct_record_field (| M.read (| self |), "multisig::Multisig", "owners" |);
                   M.read (| new_owner |)
                 ]
               |)
@@ -1914,10 +1933,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
                               "owners"
+                            |)
                           ]
                         |)
                       ]
@@ -2000,13 +2020,15 @@ Module Impl_multisig_Multisig.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "multisig::Multisig"
-                        "transaction_list")
-                      "multisig::Transactions"
+                    M.get_struct_record_field (|
+                      M.get_struct_record_field (|
+                        M.read (| self |),
+                        "multisig::Multisig",
+                        "transaction_list"
+                      |),
+                      "multisig::Transactions",
                       "transactions"
+                    |)
                   ]
                 |)
               |),
@@ -2037,7 +2059,7 @@ Module Impl_multisig_Multisig.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -2075,10 +2097,11 @@ Module Impl_multisig_Multisig.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "multisig::Multisig"
-                                                      "confirmations";
+                                                    M.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "multisig::Multisig",
+                                                      "confirmations"
+                                                    |);
                                                     key
                                                   ]
                                                 |)
@@ -2106,10 +2129,11 @@ Module Impl_multisig_Multisig.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "multisig::Multisig"
-                                                    "confirmations";
+                                                  M.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "multisig::Multisig",
+                                                    "confirmations"
+                                                  |);
                                                   M.read (| key |)
                                                 ]
                                               |)
@@ -2134,10 +2158,11 @@ Module Impl_multisig_Multisig.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "multisig::Multisig"
-                                                        "confirmation_count";
+                                                      M.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "multisig::Multisig",
+                                                        "confirmation_count"
+                                                      |);
                                                       M.read (| trans_id |)
                                                     ]
                                                   |);
@@ -2168,10 +2193,11 @@ Module Impl_multisig_Multisig.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "multisig::Multisig"
-                                                    "confirmation_count";
+                                                  M.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "multisig::Multisig",
+                                                    "confirmation_count"
+                                                  |);
                                                   M.read (| M.read (| trans_id |) |);
                                                   M.read (| count |)
                                                 ]
@@ -2247,7 +2273,13 @@ Module Impl_multisig_Multisig.
                       "len",
                       []
                     |),
-                    [ M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "owners" ]
+                    [
+                      M.get_struct_record_field (|
+                        M.read (| self |),
+                        "multisig::Multisig",
+                        "owners"
+                      |)
+                    ]
                   |)),
                 Value.Integer Integer.U32 1
               |)
@@ -2259,7 +2291,11 @@ Module Impl_multisig_Multisig.
                 [
                   M.read (| len |);
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement"
+                    M.get_struct_record_field (|
+                      M.read (| self |),
+                      "multisig::Multisig",
+                      "requirement"
+                    |)
                   |)
                 ]
               |)
@@ -2290,7 +2326,7 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "owners";
+                  M.get_struct_record_field (| M.read (| self |), "multisig::Multisig", "owners" |);
                   M.read (| owner_index |)
                 ]
               |)
@@ -2306,14 +2342,22 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "is_owner";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "is_owner"
+                  |);
                   M.read (| owner |)
                 ]
               |)
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement",
+              M.get_struct_record_field (|
+                M.read (| self |),
+                "multisig::Multisig",
+                "requirement"
+              |),
               M.read (| requirement |)
             |) in
           let _ :=
@@ -2421,7 +2465,7 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "owners";
+                  M.get_struct_record_field (| M.read (| self |), "multisig::Multisig", "owners" |);
                   M.rust_cast (M.read (| owner_index |))
                 ]
               |),
@@ -2438,7 +2482,11 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "is_owner";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "is_owner"
+                  |);
                   M.read (| old_owner |)
                 ]
               |)
@@ -2454,7 +2502,11 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "is_owner";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "is_owner"
+                  |);
                   M.read (| new_owner |);
                   Value.Tuple []
                 ]
@@ -2564,7 +2616,12 @@ Module Impl_multisig_Multisig.
                         "len",
                         []
                       |),
-                      [ M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "owners"
+                      [
+                        M.get_struct_record_field (|
+                          M.read (| self |),
+                          "multisig::Multisig",
+                          "owners"
+                        |)
                       ]
                     |));
                   M.read (| new_requirement |)
@@ -2573,7 +2630,11 @@ Module Impl_multisig_Multisig.
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "requirement",
+              M.get_struct_record_field (|
+                M.read (| self |),
+                "multisig::Multisig",
+                "requirement"
+              |),
               M.read (| new_requirement |)
             |) in
           let _ :=
@@ -2663,10 +2724,11 @@ Module Impl_multisig_Multisig.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "multisig::Multisig"
-                        "confirmation_count";
+                      M.get_struct_record_field (|
+                        M.read (| self |),
+                        "multisig::Multisig",
+                        "confirmation_count"
+                      |);
                       transaction
                     ]
                   |);
@@ -2688,10 +2750,11 @@ Module Impl_multisig_Multisig.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "multisig::Multisig"
-                      "confirmations";
+                    M.get_struct_record_field (|
+                      M.read (| self |),
+                      "multisig::Multisig",
+                      "confirmations"
+                    |);
                     key
                   ]
                 |))
@@ -2724,10 +2787,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
-                              "confirmations";
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
+                              "confirmations"
+                            |);
                             M.read (| key |);
                             Value.Tuple []
                           ]
@@ -2742,10 +2806,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
-                              "confirmation_count";
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
+                              "confirmation_count"
+                            |);
                             M.read (| transaction |);
                             M.read (| count |)
                           ]
@@ -2768,10 +2833,11 @@ Module Impl_multisig_Multisig.
                             BinOp.Pure.ge
                               (M.read (| count |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "multisig::Multisig"
+                                M.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "multisig::Multisig",
                                   "requirement"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2786,10 +2852,11 @@ Module Impl_multisig_Multisig.
                           [
                             BinOp.Panic.sub (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "multisig::Multisig"
+                                M.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "multisig::Multisig",
                                   "requirement"
+                                |)
                               |),
                               M.read (| count |)
                             |)
@@ -2888,23 +2955,27 @@ Module Impl_multisig_Multisig.
             |) in
           let trans_id :=
             M.copy (|
-              M.get_struct_record_field
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "multisig::Multisig"
-                  "transaction_list")
-                "multisig::Transactions"
+              M.get_struct_record_field (|
+                M.get_struct_record_field (|
+                  M.read (| self |),
+                  "multisig::Multisig",
+                  "transaction_list"
+                |),
+                "multisig::Transactions",
                 "next_id"
+              |)
             |) in
           let _ :=
             M.write (|
-              M.get_struct_record_field
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "multisig::Multisig"
-                  "transaction_list")
-                "multisig::Transactions"
-                "next_id",
+              M.get_struct_record_field (|
+                M.get_struct_record_field (|
+                  M.read (| self |),
+                  "multisig::Multisig",
+                  "transaction_list"
+                |),
+                "multisig::Transactions",
+                "next_id"
+              |),
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
@@ -2934,7 +3005,11 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "transactions";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "transactions"
+                  |);
                   M.read (| trans_id |);
                   M.read (| transaction |)
                 ]
@@ -2951,13 +3026,15 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "multisig::Multisig"
-                      "transaction_list")
-                    "multisig::Transactions"
-                    "transactions";
+                  M.get_struct_record_field (|
+                    M.get_struct_record_field (|
+                      M.read (| self |),
+                      "multisig::Multisig",
+                      "transaction_list"
+                    |),
+                    "multisig::Transactions",
+                    "transactions"
+                  |);
                   M.read (| trans_id |)
                 ]
               |)
@@ -3056,7 +3133,11 @@ Module Impl_multisig_Multisig.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "multisig::Multisig" "transactions";
+                  M.get_struct_record_field (|
+                    M.read (| self |),
+                    "multisig::Multisig",
+                    "transactions"
+                  |);
                   trans_id
                 ]
               |)
@@ -3093,10 +3174,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
-                              "transactions";
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
+                              "transactions"
+                            |);
                             M.read (| trans_id |)
                           ]
                         |)
@@ -3142,13 +3224,15 @@ Module Impl_multisig_Multisig.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "multisig::Multisig"
-                                              "transaction_list")
-                                            "multisig::Transactions"
+                                          M.get_struct_record_field (|
+                                            M.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "multisig::Multisig",
+                                              "transaction_list"
+                                            |),
+                                            "multisig::Transactions",
                                             "transactions"
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -3199,13 +3283,15 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "multisig::Multisig"
-                                "transaction_list")
-                              "multisig::Transactions"
-                              "transactions";
+                            M.get_struct_record_field (|
+                              M.get_struct_record_field (|
+                                M.read (| self |),
+                                "multisig::Multisig",
+                                "transaction_list"
+                              |),
+                              "multisig::Transactions",
+                              "transactions"
+                            |);
                             M.read (| pos |)
                           ]
                         |)
@@ -3246,10 +3332,11 @@ Module Impl_multisig_Multisig.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "multisig::Multisig"
+                                        M.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "multisig::Multisig",
                                           "owners"
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -3288,7 +3375,7 @@ Module Impl_multisig_Multisig.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -3312,10 +3399,11 @@ Module Impl_multisig_Multisig.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "multisig::Multisig"
-                                                        "confirmations";
+                                                      M.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "multisig::Multisig",
+                                                        "confirmations"
+                                                      |);
                                                       Value.Tuple
                                                         [
                                                           M.read (| trans_id |);
@@ -3340,10 +3428,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
-                              "confirmation_count";
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
+                              "confirmation_count"
+                            |);
                             M.read (| trans_id |)
                           ]
                         |)
@@ -3590,10 +3679,11 @@ Module Impl_multisig_Multisig.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "multisig::Multisig"
-                              "confirmations";
+                            M.get_struct_record_field (|
+                              M.read (| self |),
+                              "multisig::Multisig",
+                              "confirmations"
+                            |);
                             M.alloc (| Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ] |)
                           ]
                         |)
@@ -3611,10 +3701,11 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "multisig::Multisig"
-                            "confirmations";
+                          M.get_struct_record_field (|
+                            M.read (| self |),
+                            "multisig::Multisig",
+                            "confirmations"
+                          |);
                           Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ]
                         ]
                       |)
@@ -3637,10 +3728,11 @@ Module Impl_multisig_Multisig.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "multisig::Multisig"
-                                "confirmation_count";
+                              M.get_struct_record_field (|
+                                M.read (| self |),
+                                "multisig::Multisig",
+                                "confirmation_count"
+                              |);
                               trans_id
                             ]
                           |);
@@ -3666,10 +3758,11 @@ Module Impl_multisig_Multisig.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "multisig::Multisig"
-                            "confirmation_count";
+                          M.get_struct_record_field (|
+                            M.read (| self |),
+                            "multisig::Multisig",
+                            "confirmation_count"
+                          |);
                           M.read (| trans_id |);
                           M.read (| confirmation_count |)
                         ]
@@ -3811,10 +3904,11 @@ Module Impl_multisig_Multisig.
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  t
-                                  "multisig::Transaction"
+                                M.get_struct_record_field (|
+                                  t,
+                                  "multisig::Transaction",
                                   "transferred_value"
+                                |)
                               |)))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3851,17 +3945,9 @@ Module Impl_multisig_Multisig.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
+                        M.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
-                          γ0_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
+                        M.get_struct_tuple_field (| γ0_0, "core::result::Result::Ok", 0 |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
                       |)));

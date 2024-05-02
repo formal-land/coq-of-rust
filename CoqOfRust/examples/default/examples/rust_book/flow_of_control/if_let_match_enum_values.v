@@ -147,11 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := c in
                   let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "if_let_match_enum_values::Foo::Qux",
-                      0
-                    |) in
+                    M.get_struct_tuple_field (| γ, "if_let_match_enum_values::Foo::Qux", 0 |) in
                   let value := M.copy (| γ0_0 |) in
                   let _ :=
                     let _ :=
@@ -208,11 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ := c in
                 let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "if_let_match_enum_values::Foo::Qux",
-                    0
-                  |) in
+                  M.get_struct_tuple_field (| γ, "if_let_match_enum_values::Foo::Qux", 0 |) in
                 let value := M.copy (| γ0_0 |) in
                 let _ :=
                   M.is_constant_or_break_match (|

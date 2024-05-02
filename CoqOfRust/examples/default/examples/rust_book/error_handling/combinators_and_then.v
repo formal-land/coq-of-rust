@@ -232,12 +232,7 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
                 M.match_operator (|
                   M.alloc (|
@@ -253,11 +248,7 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
+                          M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                         let food := M.copy (| γ0_0 |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
@@ -327,12 +318,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -463,9 +449,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
+                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
                 let cordon_bleu := M.copy (| γ0_0 |) in
                 let steak := M.copy (| γ0_1 |) in
                 let sushi := M.copy (| γ0_2 |) in

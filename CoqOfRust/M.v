@@ -115,11 +115,36 @@ Module Pointer.
     Definition t : Set := list Index.t.
   End Path.
 
+  Module Mutable.
+    Inductive t (Value : Set) : Set :=
+    | Make {Address Big_A A : Set}
+      (address : Address)
+      (path : Path.t)
+      (big_to_value : Big_A -> Value)
+      (projection : Big_A -> option A)
+      (injection : Big_A -> A -> option Big_A)
+      (to_value : A -> Value).
+    Arguments Make {_ _ _ _}.
+  End Mutable.
+
   Inductive t (Value : Set) : Set :=
   | Immediate (value : Value)
-  | Mutable {Address : Set} (address : Address) (path : Path.t).
+  | Mutable (mutable : Mutable.t Value).
   Arguments Immediate {_}.
-  Arguments Mutable {_ _}.
+  Arguments Mutable {_}.
+
+  Definition mutable {Value Address A : Set}
+      (address : Address)
+      (to_value : A -> Value) :
+      t Value :=
+    Mutable (Mutable.Make
+      address
+      []
+      to_value
+      (fun x => Some x)
+      (fun x _ => Some x)
+      to_value
+    ).
 End Pointer.
 
 Module Value.
@@ -305,8 +330,9 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {Address : Set} (address : Address)
-  | StateWrite {Address : Set} (address : Address) (value : Value.t)
+  | StateRead (mutable : Pointer.Mutable.t Value.t)
+  | StateWrite (mutable : Pointer.Mutable.t Value.t) (value : Value.t)
+  | GetSubPointer (mutable : Pointer.Mutable.t Value.t) (index : Pointer.Index.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -511,6 +537,9 @@ Definition panic (message : string) : M :=
 Definition call_closure (f : Value.t) (args : list Value.t) : M :=
   LowM.CallClosure f args LowM.Pure.
 
+Definition impossible : M :=
+  LowM.Impossible.
+
 Definition call_primitive (primitive : Primitive.t) : M :=
   LowM.CallPrimitive primitive (fun result =>
   LowM.Pure (inl result)).
@@ -521,36 +550,39 @@ Definition alloc (v : Value.t) : M :=
 Definition read (r : Value.t) : M :=
   match r with
   | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
-  | Value.Pointer (Pointer.Mutable address path) =>
-    let* v := call_primitive (Primitive.StateRead address) in
-    match Value.read_path v path with
-    | Some v => LowM.Pure (inl v)
-    | None => LowM.Impossible
-    end
-  | _ => LowM.Impossible
+  | Value.Pointer (Pointer.Mutable mutable) =>
+    call_primitive (Primitive.StateRead mutable)
+  | _ => impossible
   end.
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => LowM.Impossible
-  | Value.Pointer (Pointer.Mutable address path) =>
-    let* value := call_primitive (Primitive.StateRead address) in
-    match Value.write_value value path update with
-    | Some value => call_primitive (Primitive.StateWrite address value)
-    | None => LowM.Impossible
-    end
-  | _ => LowM.Impossible
+  | Value.Pointer (Pointer.Immediate _) => impossible
+  | Value.Pointer (Pointer.Mutable mutable) =>
+    call_primitive (Primitive.StateWrite mutable update)
+  | _ => impossible
   end.
 
 Definition copy (r : Value.t) : M :=
   let* v := read r in
   alloc v.
 
+(** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
+    access in an array, we do a [break_match]. *)
+Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
+  match r with
+  | Value.Pointer (Pointer.Immediate v) =>
+    match Value.read_path v [index] with
+    | Some v => alloc v
+    | None => break_match
+    end
+  | Value.Pointer (Pointer.Mutable mutable) =>
+    call_primitive (Primitive.GetSubPointer mutable index)
+  | _ => impossible
+  end.
+
 Definition read_env : M :=
   call_primitive Primitive.EnvRead.
-
-Definition impossible : M :=
-  LowM.Impossible.
 
 Parameter get_constant : string -> M.
 
@@ -672,180 +704,31 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
-(** An error should not occur as we statically know the number of fields in a
-    tuple, but the code for the error branch is still there for typing and
-    debugging reasons. *)
-Definition get_tuple_field (value : Value.t) (index : Z) : Value.t :=
-  match value with
-  | Value.Pointer pointer =>
-    match pointer with
-    | Pointer.Immediate value =>
-      match value with
-      | Value.Tuple fields =>
-        match List.nth_error fields (Z.to_nat index) with
-        | Some field => Value.Pointer (Pointer.Immediate field)
-        | None => Value.Error "invalid tuple index"
-        end
-      | _ => Value.Error "expected a tuple"
-      end
-    | Pointer.Mutable address path =>
-      let new_path := path ++ [Pointer.Index.Tuple index] in
-      Value.Pointer (Pointer.Mutable address new_path)
-    end
-  | _ => Value.Error "expected an address"
-  end.
+Definition get_tuple_field (value : Value.t) (index : Z) : M :=
+  get_sub_pointer value (Pointer.Index.Tuple index).
 
-(** This function might fail, in case the [index] is out of range. *)
 Definition get_array_field (value : Value.t) (index : Value.t) : M :=
-  let* index := read index in
   match index with
   | Value.Integer Integer.Usize index =>
-    match value with
-    | Value.Pointer pointer =>
-      match pointer with
-      | Pointer.Immediate value =>
-        match value with
-        | Value.Array fields =>
-          (* As this is in `usize`, the index is necessarily positive. *)
-          match List.nth_error fields (Z.to_nat index) with
-          | Some field => pure (Value.Pointer (Pointer.Immediate field))
-          | None => panic "invalid array index"
-          end
-        | _ => pure (Value.Error "expected an array")
-        end
-      | Pointer.Mutable address path =>
-        let new_path := path ++ [Pointer.Index.Array index] in
-        pure (Value.Pointer (Pointer.Mutable address new_path))
-      end
-    | _ => pure (Value.Error "expected an address")
-    end
-  | _ => pure (Value.Error "Expected a usize as an array index")
+    get_sub_pointer value (Pointer.Index.Array index)
+  | _ => impossible
   end.
 
-(** Same as for [get_tuple_field], an error should not occur. *)
-Definition get_struct_tuple_field
-    (value : Value.t) (constructor : string) (index : Z) :
-    Value.t :=
-  match value with
-  | Value.Pointer pointer =>
-    match pointer with
-    | Pointer.Immediate value =>
-      match value with
-      | Value.StructTuple current_constructor fields =>
-        if String.eqb current_constructor constructor then
-          match List.nth_error fields (Z.to_nat index) with
-          | Some value => Value.Pointer (Pointer.Immediate value)
-          | None => Value.Error "field not found"
-          end
-        else
-          Value.Error "different values of constructor"
-      | _ => Value.Error "not a struct tuple"
-      end
-    | Pointer.Mutable address path =>
-      let new_path := path ++ [Pointer.Index.StructTuple constructor index] in
-      Value.Pointer (Pointer.Mutable address new_path)
-    end
-  | _ => Value.Error "expected an address"
-  end.
+Definition get_struct_tuple_field (value : Value.t) (constructor : string) (index : Z) : M :=
+  get_sub_pointer value (Pointer.Index.StructTuple constructor index).
 
-(** Same as for [get_tuple_field], an error should not occur. *)
-Definition get_struct_record_field
-    (value : Value.t) (constructor field : string) :
-    Value.t :=
-  match value with
-  | Value.Pointer (Pointer.Immediate value) =>
-    match value with
-    | Value.StructRecord current_constructor fields =>
-      if String.eqb current_constructor constructor then
-        match List.assoc fields field with
-        | Some value => Value.Pointer (Pointer.Immediate value)
-        | None => Value.Error "field not found"
-        end
-      else
-        Value.Error "different values of constructor"
-    | _ => Value.Error "not a struct record"
-    end
-  | Value.Pointer (Pointer.Mutable address path) =>
-    let new_path := path ++ [Pointer.Index.StructRecord constructor field] in
-    Value.Pointer (Pointer.Mutable address new_path)
-  | _ => Value.Error "expected an address"
-  end.
+Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
+  get_sub_pointer value (Pointer.Index.StructRecord constructor field).
 
-Parameter pointer_coercion : Value.t -> Value.t.
+(** Get an element of a slice by index. *)
+Parameter get_slice_index : Value.t -> Z -> M.
 
-Definition get_struct_tuple_field_or_break_match
-    (value : Value.t) (constructor : string) (index : Z) :
-    M :=
-  match value with
-  | Value.Pointer pointer =>
-    match pointer with
-    | Pointer.Immediate value =>
-      match value with
-      | Value.StructTuple current_constructor fields =>
-        if String.eqb current_constructor constructor then
-          match List.nth_error fields (Z.to_nat index) with
-          | Some value => pure (Value.Pointer (Pointer.Immediate value))
-          | None => M.impossible
-          end
-        else
-          break_match
-      | _ => M.impossible
-      end
-    | Pointer.Mutable address path =>
-      match Value.read_path value path with
-      | None => M.impossible
-      | Some value =>
-        match value with
-        | Value.StructTuple current_constructor fields =>
-          if String.eqb current_constructor constructor then
-            let new_path :=
-              path ++ [Pointer.Index.StructTuple constructor index] in
-            pure (Value.Pointer (Pointer.Mutable address new_path))
-          else
-            break_match
-        | _ => M.impossible
-        end
-      end
-    end
-  | _ => M.impossible
-  end.
+(** Get an element of a slice by index counting from the end. *)
+Parameter get_slice_rev_index : Value.t -> Z -> M.
 
-Definition get_struct_record_field_or_break_match
-    (value : Value.t) (constructor field : string) :
-    M :=
-  match value with
-  | Value.Pointer pointer =>
-    match pointer with
-    | Pointer.Immediate value =>
-      match value with
-      | Value.StructRecord current_constructor fields =>
-        if String.eqb current_constructor constructor then
-          match List.assoc fields field with
-          | Some value => pure (Value.Pointer (Pointer.Immediate value))
-          | None => M.impossible
-          end
-        else
-          break_match
-      | _ => M.impossible
-      end
-    | Pointer.Mutable address path =>
-      match Value.read_path value path with
-      | None => M.impossible
-      | Some value =>
-        match value with
-        | Value.StructRecord current_constructor fields =>
-          if String.eqb current_constructor constructor then
-            let new_path :=
-              path ++ [Pointer.Index.StructRecord constructor field] in
-            pure (Value.Pointer (Pointer.Mutable address new_path))
-          else
-            break_match
-        | _ => M.impossible
-        end
-      end
-    end
-  | _ => M.impossible
-  end.
+(** For two indices n and k, get all elements of a slice without
+    the first n elements and without the last k elements. *)
+Parameter get_slice_rest : Value.t -> Z -> Z -> M.
 
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   if Value.eqb value expected_value then
@@ -853,18 +736,7 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   else
     break_match.
 
-(** Get an element of a slice by index. *)
-Parameter get_slice_index_or_break_match :
-  Value.t -> Z -> M.
-
-(** Get an element of a slice by index counting from the end. *)
-Parameter get_slice_rev_index_or_break_match :
-  Value.t -> Z -> M.
-
-(** For two indices n and k, get all elements of a slice without
-    the first n elements and without the last k elements. *)
-Parameter get_slice_rest_or_break_match :
-  Value.t -> Z -> Z -> M.
+Parameter pointer_coercion : Value.t -> Value.t.
 
 (** This function is explicitely called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of

@@ -107,17 +107,9 @@ Module Impl_enums_testcase_linked_list_List.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "enums_testcase_linked_list::List::Cons",
-                      0
-                    |) in
+                    M.get_struct_tuple_field (| γ, "enums_testcase_linked_list::List::Cons", 0 |) in
                   let γ0_1 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "enums_testcase_linked_list::List::Cons",
-                      1
-                    |) in
+                    M.get_struct_tuple_field (| γ, "enums_testcase_linked_list::List::Cons", 1 |) in
                   let tail := M.alloc (| γ0_1 |) in
                   M.alloc (|
                     BinOp.Panic.add (|
@@ -167,17 +159,9 @@ Module Impl_enums_testcase_linked_list_List.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "enums_testcase_linked_list::List::Cons",
-                      0
-                    |) in
+                    M.get_struct_tuple_field (| γ, "enums_testcase_linked_list::List::Cons", 0 |) in
                   let γ0_1 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "enums_testcase_linked_list::List::Cons",
-                      1
-                    |) in
+                    M.get_struct_tuple_field (| γ, "enums_testcase_linked_list::List::Cons", 1 |) in
                   let head := M.copy (| γ0_0 |) in
                   let tail := M.alloc (| γ0_1 |) in
                   let res :=

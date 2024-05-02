@@ -79,9 +79,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
+                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -143,9 +143,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
+                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -182,9 +182,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
+                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_2 |),
@@ -221,9 +221,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
+                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),

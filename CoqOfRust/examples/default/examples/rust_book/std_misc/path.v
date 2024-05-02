@@ -147,12 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let s := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
