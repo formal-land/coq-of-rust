@@ -1,9 +1,5 @@
 (* traits/traits.rs *)
 
-(* Questions:
-1. Should I translate reference types to Pointer types? It looks like it adds a lot of complexity
-*)
-
 (* TODO:
 1. Distinguish between functions that read the variables and functions that also writes to it
 2. Identify the way to translate them
@@ -39,8 +35,8 @@ fn new(name: &'static str) -> Sheep {
   }
 } *)
 (* NOTE: Is this the correct way to construct record in Coq? *)
-Definition new (name: String) : traits.Sheep.t := 
-  {| naked := false;
+Definition new (name: string) : traits.Sheep.t := 
+  traits.Animal {| naked := false;
     name := name;
   |}.
 
@@ -49,7 +45,7 @@ fn name(&self) -> &'static str {
   self.name
 }
 *)
-Definition name (self: traits.Sheep.t) : String := 
+Definition name (self: traits.Sheep.t) : string := 
   self.name.
 
 (* 
@@ -60,7 +56,7 @@ fn noise(&self) -> &'static str {
         "baaaaah!"
     }
 } *)
-Definition noise (self: traits.Sheep.t) : String := 
+Definition noise (self: traits.Sheep.t) : string := 
   if is_naked(self) then "baaaaah?" else "baaaaah!".
 
 (* NOTE: unimplemented since it involves println *)
@@ -100,10 +96,14 @@ impl Sheep {
   }
 }
 *)
-(* TODO: Finish this function *)
-Definition shear (self: traits.Sheep.t) : unit := 
+Definition shear (self: traits.Sheep.t) : MS? unit := 
   letS? '(storage) := readS? in
-  if is_naked(self) then tt else tt.
+  if is_naked(self) then tt else 
+  letS? _ = writeS? (
+    storage <| traits.Animal.naked := true |>,
+  )
+  in
+  returnS? tt.
 
 (*
 trait Animal {
@@ -123,9 +123,9 @@ trait Animal {
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new (name: String) : traits.Sheep.t; 
-    name (self: traits.Sheep.t) : String;
-    noise (self: traits.Sheep.t) : String;
+    new (name: string) : traits.Sheep.t; 
+    name (self: traits.Sheep.t) : string;
+    noise (self: traits.Sheep.t) : string;
     talk (self: traits.Sheep.t) : unit;
   }.
 
