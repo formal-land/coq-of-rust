@@ -119,11 +119,11 @@ Module net.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
@@ -131,7 +131,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
@@ -151,11 +151,11 @@ Module net.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
@@ -163,7 +163,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
@@ -294,7 +294,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -316,7 +316,7 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -384,11 +384,11 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -396,7 +396,7 @@ Module net.
                       let __self_0 := M.alloc (| γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -416,11 +416,11 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -428,7 +428,7 @@ Module net.
                       let __self_0 := M.alloc (| γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -520,11 +520,11 @@ Module net.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
@@ -532,7 +532,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
@@ -552,11 +552,11 @@ Module net.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
@@ -564,7 +564,7 @@ Module net.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
@@ -739,29 +739,33 @@ Module net.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV4"
-                    "ip";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::net::socket_addr::SocketAddrV4"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV4",
                     "ip"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "ip"
+                  |)
                 ]
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::net::socket_addr::SocketAddrV4"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::net::socket_addr::SocketAddrV4",
                       "port"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::net::socket_addr::SocketAddrV4"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::net::socket_addr::SocketAddrV4",
                       "port"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -797,14 +801,16 @@ Module net.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV4"
-                        "ip";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV4"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV4",
                         "ip"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV4",
+                        "ip"
+                      |)
                     ]
                   |)
                 |),
@@ -815,14 +821,16 @@ Module net.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::socket_addr::SocketAddrV4"
-                              "port";
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "core::net::socket_addr::SocketAddrV4"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::socket_addr::SocketAddrV4",
                               "port"
+                            |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "port"
+                            |)
                           ]
                         |)
                       |)));
@@ -866,14 +874,16 @@ Module net.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV4"
-                        "ip";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV4"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV4",
                         "ip"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV4",
+                        "ip"
+                      |)
                     ]
                   |)
                 |),
@@ -881,7 +891,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -896,14 +906,16 @@ Module net.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::net::socket_addr::SocketAddrV4"
-                              "port";
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "core::net::socket_addr::SocketAddrV4"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::net::socket_addr::SocketAddrV4",
                               "port"
+                            |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "core::net::socket_addr::SocketAddrV4",
+                              "port"
+                            |)
                           ]
                         |)
                       |)));
@@ -947,10 +959,11 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV4"
-                        "ip";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV4",
+                        "ip"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -959,10 +972,11 @@ Module net.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::net::socket_addr::SocketAddrV4"
-                      "port";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::net::socket_addr::SocketAddrV4",
+                      "port"
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -1128,59 +1142,67 @@ Module net.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "ip";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV6"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
                         "ip"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "ip"
+                      |)
                     ]
                   |),
                   ltac:(M.monadic
                     (BinOp.Pure.eq
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::net::socket_addr::SocketAddrV6"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::net::socket_addr::SocketAddrV6",
                           "port"
+                        |)
                       |))
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::net::socket_addr::SocketAddrV6"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::net::socket_addr::SocketAddrV6",
                           "port"
+                        |)
                       |))))
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV6"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::net::socket_addr::SocketAddrV6"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::net::socket_addr::SocketAddrV6"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
+                    |)
                   |))))
             |)))
         | _, _ => M.impossible
@@ -1216,14 +1238,16 @@ Module net.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "ip";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV6"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
                         "ip"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "ip"
+                      |)
                     ]
                   |)
                 |),
@@ -1235,14 +1259,16 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::net::socket_addr::SocketAddrV6"
-                                "port";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "core::net::socket_addr::SocketAddrV6"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::net::socket_addr::SocketAddrV6",
                                 "port"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "core::net::socket_addr::SocketAddrV6",
+                                "port"
+                              |)
                             ]
                           |)
                         |),
@@ -1260,14 +1286,16 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::net::socket_addr::SocketAddrV6"
-                                        "flowinfo";
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "core::net::socket_addr::SocketAddrV6"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::net::socket_addr::SocketAddrV6",
                                         "flowinfo"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "core::net::socket_addr::SocketAddrV6",
+                                        "flowinfo"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -1284,14 +1312,16 @@ Module net.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::net::socket_addr::SocketAddrV6"
-                                              "scope_id";
-                                            M.get_struct_record_field
-                                              (M.read (| other |))
-                                              "core::net::socket_addr::SocketAddrV6"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::net::socket_addr::SocketAddrV6",
                                               "scope_id"
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| other |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "scope_id"
+                                            |)
                                           ]
                                         |)
                                       |)));
@@ -1347,14 +1377,16 @@ Module net.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "ip";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::net::socket_addr::SocketAddrV6"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
                         "ip"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "ip"
+                      |)
                     ]
                   |)
                 |),
@@ -1362,7 +1394,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1378,14 +1410,16 @@ Module net.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::net::socket_addr::SocketAddrV6"
-                                "port";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "core::net::socket_addr::SocketAddrV6"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::net::socket_addr::SocketAddrV6",
                                 "port"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "core::net::socket_addr::SocketAddrV6",
+                                "port"
+                              |)
                             ]
                           |)
                         |),
@@ -1393,7 +1427,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -1409,14 +1443,16 @@ Module net.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::net::socket_addr::SocketAddrV6"
-                                        "flowinfo";
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "core::net::socket_addr::SocketAddrV6"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::net::socket_addr::SocketAddrV6",
                                         "flowinfo"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "core::net::socket_addr::SocketAddrV6",
+                                        "flowinfo"
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -1424,7 +1460,7 @@ Module net.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -1439,14 +1475,16 @@ Module net.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::net::socket_addr::SocketAddrV6"
-                                              "scope_id";
-                                            M.get_struct_record_field
-                                              (M.read (| other |))
-                                              "core::net::socket_addr::SocketAddrV6"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::net::socket_addr::SocketAddrV6",
                                               "scope_id"
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| other |),
+                                              "core::net::socket_addr::SocketAddrV6",
+                                              "scope_id"
+                                            |)
                                           ]
                                         |)
                                       |)));
@@ -1502,10 +1540,11 @@ Module net.
                       [ __H ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "ip";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "ip"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -1515,10 +1554,11 @@ Module net.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "port";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "port"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -1528,10 +1568,11 @@ Module net.
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::net::socket_addr::SocketAddrV6"
-                        "flowinfo";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::net::socket_addr::SocketAddrV6",
+                        "flowinfo"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -1540,10 +1581,11 @@ Module net.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::net::socket_addr::SocketAddrV6"
-                      "scope_id";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::net::socket_addr::SocketAddrV6",
+                      "scope_id"
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -1584,7 +1626,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1607,7 +1649,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1660,7 +1702,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -1685,7 +1727,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -1737,18 +1779,18 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
                       let a := M.alloc (| γ2_0 |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V4",
                           0
@@ -1766,18 +1808,18 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_0 := M.read (| γ0_0 |) in
                       let γ2_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
                       let a := M.alloc (| γ2_0 |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V6",
                           0
@@ -1795,8 +1837,8 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let self_ := M.copy (| γ0_0 |) in
                       let new_ip := M.copy (| γ0_1 |) in
                       M.write (|
@@ -1848,7 +1890,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -1867,7 +1909,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -1912,7 +1954,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -1931,7 +1973,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -1972,7 +2014,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -2004,7 +2046,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0
@@ -2052,10 +2094,11 @@ Module net.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "core::net::socket_addr::SocketAddrV4"
-              "ip"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::net::socket_addr::SocketAddrV4",
+              "ip"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2075,10 +2118,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV4"
-                    "ip",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "ip"
+                  |),
                   M.read (| new_ip |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2099,10 +2143,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::net::socket_addr::SocketAddrV4"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::socket_addr::SocketAddrV4",
                 "port"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2123,10 +2168,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV4"
-                    "port",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV4",
+                    "port"
+                  |),
                   M.read (| new_port |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2176,10 +2222,11 @@ Module net.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "core::net::socket_addr::SocketAddrV6"
-              "ip"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::net::socket_addr::SocketAddrV6",
+              "ip"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2199,10 +2246,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV6"
-                    "ip",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "ip"
+                  |),
                   M.read (| new_ip |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2223,10 +2271,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::net::socket_addr::SocketAddrV6"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::socket_addr::SocketAddrV6",
                 "port"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2247,10 +2296,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV6"
-                    "port",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "port"
+                  |),
                   M.read (| new_port |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2271,10 +2321,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::net::socket_addr::SocketAddrV6"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::socket_addr::SocketAddrV6",
                 "flowinfo"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2295,10 +2346,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV6"
-                    "flowinfo",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "flowinfo"
+                  |),
                   M.read (| new_flowinfo |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2320,10 +2372,11 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::net::socket_addr::SocketAddrV6"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::net::socket_addr::SocketAddrV6",
                 "scope_id"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2344,10 +2397,11 @@ Module net.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::net::socket_addr::SocketAddrV6"
-                    "scope_id",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::net::socket_addr::SocketAddrV6",
+                    "scope_id"
+                  |),
                   M.read (| new_scope_id |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2438,9 +2492,9 @@ Module net.
                     "into",
                     []
                   |),
-                  [ M.read (| M.get_tuple_field pieces 0 |) ]
+                  [ M.read (| M.SubPointer.get_tuple_field (| pieces, 0 |) |) ]
                 |);
-                M.read (| M.get_tuple_field pieces 1 |)
+                M.read (| M.SubPointer.get_tuple_field (| pieces, 1 |) |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2479,7 +2533,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V4",
                           0
@@ -2500,7 +2554,7 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::net::socket_addr::SocketAddr::V6",
                           0

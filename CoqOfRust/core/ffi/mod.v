@@ -207,30 +207,44 @@ Module ffi.
               M.read (| Value.String "gp_offset" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field (M.read (| self |)) "core::ffi::VaListImpl" "gp_offset");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::VaListImpl",
+                  "gp_offset"
+                |));
               M.read (| Value.String "fp_offset" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field (M.read (| self |)) "core::ffi::VaListImpl" "fp_offset");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::VaListImpl",
+                  "fp_offset"
+                |));
               M.read (| Value.String "overflow_arg_area" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::ffi::VaListImpl"
-                  "overflow_arg_area");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::VaListImpl",
+                  "overflow_arg_area"
+                |));
               M.read (| Value.String "reg_save_area" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::ffi::VaListImpl"
-                  "reg_save_area");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::VaListImpl",
+                  "reg_save_area"
+                |));
               M.read (| Value.String "_marker" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ffi::VaListImpl" "_marker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ffi::VaListImpl",
+                    "_marker"
+                  |)
                 |))
             ]
           |)))
@@ -281,12 +295,20 @@ Module ffi.
               M.read (| Value.String "inner" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field (M.read (| self |)) "core::ffi::VaList" "inner");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::VaList",
+                  "inner"
+                |));
               M.read (| Value.String "_marker" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ffi::VaList" "_marker"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ffi::VaList",
+                    "_marker"
+                  |)
                 |))
             ]
           |)))
@@ -434,7 +456,13 @@ Module ffi.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field (M.read (| self |)) "core::ffi::VaList" "inner" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::ffi::VaList",
+              "inner"
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -460,7 +488,13 @@ Module ffi.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field (M.read (| self |)) "core::ffi::VaList" "inner" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::ffi::VaList",
+              "inner"
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     

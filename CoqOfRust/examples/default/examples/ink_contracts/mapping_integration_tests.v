@@ -232,7 +232,7 @@ Module Impl_mapping_integration_tests_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
+          M.SubPointer.get_struct_record_field (|
             M.read (| self |),
             "mapping_integration_tests::Env",
             "caller"
@@ -395,7 +395,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "mapping_integration_tests::Mappings",
                   "balances"
@@ -455,7 +455,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "mapping_integration_tests::Mappings",
                   "balances"
@@ -516,7 +516,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "mapping_integration_tests::Mappings",
                   "balances"
@@ -575,7 +575,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "mapping_integration_tests::Mappings",
                   "balances"
@@ -636,7 +636,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "mapping_integration_tests::Mappings",
                     "balances"
@@ -697,7 +697,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "mapping_integration_tests::Mappings",
                   "balances"

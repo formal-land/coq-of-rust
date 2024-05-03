@@ -218,9 +218,11 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |) |))
           (M.read (|
-            M.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |)
+          |))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
           |))))
     | _, _ => M.impossible
     end.
@@ -524,7 +526,9 @@ Module Impl_erc1155_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |) |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -721,7 +725,7 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "erc1155::Contract",
                 "token_id_nonce"
@@ -738,7 +742,7 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "erc1155::Contract",
                     "balances"
@@ -747,7 +751,7 @@ Module Impl_erc1155_Contract.
                     [
                       M.read (| caller |);
                       M.read (|
-                        M.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "erc1155::Contract",
                           "token_id_nonce"
@@ -812,7 +816,7 @@ Module Impl_erc1155_Contract.
                             |));
                           ("token_id",
                             M.read (|
-                              M.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "erc1155::Contract",
                                 "token_id_nonce"
@@ -824,7 +828,11 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "token_id_nonce" |)
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "erc1155::Contract",
+            "token_id_nonce"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -873,7 +881,7 @@ Module Impl_erc1155_Contract.
                                 (BinOp.Pure.le
                                   (M.read (| token_id |))
                                   (M.read (|
-                                    M.get_struct_record_field (|
+                                    M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "erc1155::Contract",
                                       "token_id_nonce"
@@ -933,7 +941,7 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "erc1155::Contract",
                         "balances"
@@ -1042,7 +1050,7 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "erc1155::Contract",
                         "balances"
@@ -1070,7 +1078,7 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "erc1155::Contract",
                     "balances"
@@ -1099,7 +1107,7 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "erc1155::Contract",
                         "balances"
@@ -1125,7 +1133,7 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "erc1155::Contract",
                     "balances"
@@ -1304,7 +1312,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             []
           |),
           [
-            M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "approvals" |);
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "erc1155::Contract",
+              "approvals"
+            |);
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
@@ -1339,7 +1351,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "erc1155::Contract", "balances" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "erc1155::Contract",
+                  "balances"
+                |);
                 M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
               ]
             |);
@@ -2076,13 +2092,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field (| γ0_0, 0 |) in
-                                        let γ1_1 := M.get_tuple_field (| γ0_0, 1 |) in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let γ1_0 := M.read (| γ1_0 |) in
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
@@ -2218,13 +2234,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field (| γ0_0, 0 |) in
-                                        let γ1_1 := M.get_tuple_field (| γ0_0, 1 |) in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let γ1_0 := M.read (| γ1_0 |) in
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
@@ -2387,7 +2403,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -2447,7 +2463,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -2622,7 +2638,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc1155::Contract",
                                   "approvals"
@@ -2651,7 +2667,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc1155::Contract",
                                   "approvals"

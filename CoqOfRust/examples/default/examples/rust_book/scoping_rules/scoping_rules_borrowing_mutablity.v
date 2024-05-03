@@ -106,7 +106,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| book |),
                                     "scoping_rules_borrowing_mutablity::Book",
                                     "title"
@@ -120,7 +120,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| book |),
                                     "scoping_rules_borrowing_mutablity::Book",
                                     "year"
@@ -154,7 +154,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           M.write (|
-            M.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
               M.read (| book |),
               "scoping_rules_borrowing_mutablity::Book",
               "year"
@@ -193,7 +193,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| book |),
                                     "scoping_rules_borrowing_mutablity::Book",
                                     "title"
@@ -207,7 +207,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| book |),
                                     "scoping_rules_borrowing_mutablity::Book",
                                     "year"

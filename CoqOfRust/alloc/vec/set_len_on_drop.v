@@ -47,10 +47,11 @@ Module vec.
             M.read (|
               let _ :=
                 let β :=
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::set_len_on_drop::SetLenOnDrop"
-                    "local_len" in
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::set_len_on_drop::SetLenOnDrop",
+                    "local_len"
+                  |) in
                 M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| increment |) |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -71,10 +72,11 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "alloc::vec::set_len_on_drop::SetLenOnDrop"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::vec::set_len_on_drop::SetLenOnDrop",
                 "local_len"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -99,16 +101,18 @@ Module vec.
               let _ :=
                 M.write (|
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
                       "len"
+                    |)
                   |),
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::set_len_on_drop::SetLenOnDrop"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
                       "local_len"
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

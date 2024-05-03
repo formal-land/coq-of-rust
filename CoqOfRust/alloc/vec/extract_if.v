@@ -41,39 +41,44 @@ Module vec.
                 M.read (| Value.String "vec" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::extract_if::ExtractIf"
-                    "vec");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::extract_if::ExtractIf",
+                    "vec"
+                  |));
                 M.read (| Value.String "idx" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::extract_if::ExtractIf"
-                    "idx");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::extract_if::ExtractIf",
+                    "idx"
+                  |));
                 M.read (| Value.String "del" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::extract_if::ExtractIf"
-                    "del");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::extract_if::ExtractIf",
+                    "del"
+                  |));
                 M.read (| Value.String "old_len" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::extract_if::ExtractIf"
-                    "old_len");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::extract_if::ExtractIf",
+                    "old_len"
+                  |));
                 M.read (| Value.String "pred" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::extract_if::ExtractIf"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::extract_if::ExtractIf",
                       "pred"
+                    |)
                   |))
               ]
             |)))
@@ -112,10 +117,11 @@ Module vec.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::extract_if::ExtractIf"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::extract_if::ExtractIf",
                     "vec"
+                  |)
                 |)
               ]
             |)))
@@ -181,16 +187,18 @@ Module vec.
                                     (M.alloc (|
                                       BinOp.Pure.lt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::extract_if::ExtractIf"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::extract_if::ExtractIf",
                                             "idx"
+                                          |)
                                         |))
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::extract_if::ExtractIf"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::extract_if::ExtractIf",
                                             "old_len"
+                                          |)
                                         |))
                                     |)) in
                                 let _ :=
@@ -200,10 +208,11 @@ Module vec.
                                   |) in
                                 let i :=
                                   M.copy (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::extract_if::ExtractIf"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::extract_if::ExtractIf",
                                       "idx"
+                                    |)
                                   |) in
                                 let v :=
                                   M.alloc (|
@@ -221,18 +230,20 @@ Module vec.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::vec::extract_if::ExtractIf"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::vec::extract_if::ExtractIf",
                                                 "vec"
+                                              |)
                                             |)
                                           ]
                                         |);
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::extract_if::ExtractIf"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::extract_if::ExtractIf",
                                             "old_len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -248,20 +259,23 @@ Module vec.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::extract_if::ExtractIf"
-                                          "pred";
-                                        Value.Tuple [ M.get_array_field (| M.read (| v |), i |) ]
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::extract_if::ExtractIf",
+                                          "pred"
+                                        |);
+                                        Value.Tuple
+                                          [ M.SubPointer.get_array_field (| M.read (| v |), i |) ]
                                       ]
                                     |)
                                   |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::extract_if::ExtractIf"
-                                      "idx" in
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::extract_if::ExtractIf",
+                                      "idx"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -285,10 +299,11 @@ Module vec.
                                             M.read (|
                                               let _ :=
                                                 let β :=
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::vec::extract_if::ExtractIf"
-                                                    "del" in
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::extract_if::ExtractIf",
+                                                    "del"
+                                                  |) in
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.add (|
@@ -302,7 +317,12 @@ Module vec.
                                                   [
                                                     M.call_closure (|
                                                       M.get_function (| "core::ptr::read", [ T ] |),
-                                                      [ M.get_array_field (| M.read (| v |), i |) ]
+                                                      [
+                                                        M.SubPointer.get_array_field (|
+                                                          M.read (| v |),
+                                                          i
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                               |)
@@ -321,10 +341,11 @@ Module vec.
                                                     (M.alloc (|
                                                       BinOp.Pure.gt
                                                         (M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "alloc::vec::extract_if::ExtractIf"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "alloc::vec::extract_if::ExtractIf",
                                                             "del"
+                                                          |)
                                                         |))
                                                         (Value.Integer Integer.Usize 0)
                                                     |)) in
@@ -335,18 +356,22 @@ Module vec.
                                                   |) in
                                                 let del :=
                                                   M.copy (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "alloc::vec::extract_if::ExtractIf"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::vec::extract_if::ExtractIf",
                                                       "del"
+                                                    |)
                                                   |) in
                                                 let src :=
                                                   M.alloc (|
-                                                    M.get_array_field (| M.read (| v |), i |)
+                                                    M.SubPointer.get_array_field (|
+                                                      M.read (| v |),
+                                                      i
+                                                    |)
                                                   |) in
                                                 let dst :=
                                                   M.alloc (|
-                                                    M.get_array_field (|
+                                                    M.SubPointer.get_array_field (|
                                                       M.read (| v |),
                                                       M.alloc (|
                                                         BinOp.Panic.sub (|
@@ -417,16 +442,18 @@ Module vec.
                   [
                     BinOp.Panic.sub (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::extract_if::ExtractIf"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::extract_if::ExtractIf",
                           "old_len"
+                        |)
                       |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::extract_if::ExtractIf"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::extract_if::ExtractIf",
                           "idx"
+                        |)
                       |)
                     |)
                   ]
@@ -491,24 +518,27 @@ Module vec.
                               LogicalOp.and (|
                                 BinOp.Pure.lt
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::extract_if::ExtractIf"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::extract_if::ExtractIf",
                                       "idx"
+                                    |)
                                   |))
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::vec::extract_if::ExtractIf"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::extract_if::ExtractIf",
                                       "old_len"
+                                    |)
                                   |)),
                                 ltac:(M.monadic
                                   (BinOp.Pure.gt
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::vec::extract_if::ExtractIf"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::vec::extract_if::ExtractIf",
                                         "del"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0)))
                               |)
@@ -525,10 +555,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::extract_if::ExtractIf"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::extract_if::ExtractIf",
                                     "vec"
+                                  |)
                                 |)
                               ]
                             |)
@@ -544,10 +575,11 @@ Module vec.
                               [
                                 M.read (| ptr |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::extract_if::ExtractIf"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::extract_if::ExtractIf",
                                     "idx"
+                                  |)
                                 |)
                               ]
                             |)
@@ -563,10 +595,11 @@ Module vec.
                               [
                                 M.read (| src |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::extract_if::ExtractIf"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::extract_if::ExtractIf",
                                     "del"
+                                  |)
                                 |)
                               ]
                             |)
@@ -575,16 +608,18 @@ Module vec.
                           M.alloc (|
                             BinOp.Panic.sub (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::extract_if::ExtractIf"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::extract_if::ExtractIf",
                                   "old_len"
+                                |)
                               |),
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::extract_if::ExtractIf"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::extract_if::ExtractIf",
                                   "idx"
+                                |)
                               |)
                             |)
                           |) in
@@ -613,23 +648,26 @@ Module vec.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::extract_if::ExtractIf"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::extract_if::ExtractIf",
                           "vec"
+                        |)
                       |);
                       BinOp.Panic.sub (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::extract_if::ExtractIf"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::extract_if::ExtractIf",
                             "old_len"
+                          |)
                         |),
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::extract_if::ExtractIf"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::extract_if::ExtractIf",
                             "del"
+                          |)
                         |)
                       |)
                     ]

@@ -448,7 +448,12 @@ Module sync.
                   "get",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicBool" "v"
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::sync::atomic::AtomicBool",
+                    "v"
+                  |)
                 ]
               |))))
         | _, _ => M.impossible
@@ -528,7 +533,15 @@ Module sync.
                   "into_inner",
                   []
                 |),
-                [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicBool" "v" |) ]
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::sync::atomic::AtomicBool",
+                      "v"
+                    |)
+                  |)
+                ]
               |))
               (Value.Integer Integer.U8 0)))
         | _, _ => M.impossible
@@ -562,10 +575,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicBool"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicBool",
                           "v"
+                        |)
                       ]
                     |));
                   M.read (| order |)
@@ -606,10 +620,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicBool"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicBool",
                             "v"
+                          |)
                         ]
                       |);
                       M.rust_cast (M.read (| val |));
@@ -702,10 +717,11 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::sync::atomic::AtomicBool"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::sync::atomic::AtomicBool",
                                     "v"
+                                  |)
                                 ]
                               |);
                               M.rust_cast (M.read (| val |));
@@ -763,7 +779,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -773,7 +789,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -860,29 +876,29 @@ Module sync.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
@@ -914,36 +930,36 @@ Module sync.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
@@ -975,8 +991,8 @@ Module sync.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                   |)))
@@ -1067,10 +1083,11 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::sync::atomic::AtomicBool"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::sync::atomic::AtomicBool",
                                     "v"
+                                  |)
                                 ]
                               |);
                               M.rust_cast (M.read (| current |));
@@ -1084,7 +1101,7 @@ Module sync.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::result::Result::Ok",
                                   0
@@ -1098,7 +1115,7 @@ Module sync.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::result::Result::Err",
                                   0
@@ -1204,10 +1221,11 @@ Module sync.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::sync::atomic::AtomicBool"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::sync::atomic::AtomicBool",
                                 "v"
+                              |)
                             ]
                           |);
                           M.rust_cast (M.read (| current |));
@@ -1221,7 +1239,7 @@ Module sync.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::result::Result::Ok",
                               0
@@ -1235,7 +1253,7 @@ Module sync.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::result::Result::Err",
                               0
@@ -1280,10 +1298,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicBool"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicBool",
                         "v"
+                      |)
                     ]
                   |);
                   M.rust_cast (M.read (| val |));
@@ -1382,10 +1401,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicBool"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicBool",
                         "v"
+                      |)
                     ]
                   |);
                   M.rust_cast (M.read (| val |));
@@ -1422,10 +1442,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicBool"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicBool",
                         "v"
+                      |)
                     ]
                   |);
                   M.rust_cast (M.read (| val |));
@@ -1486,10 +1507,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicBool"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicBool",
                       "v"
+                    |)
                   ]
                 |)
               ]
@@ -1563,7 +1585,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1591,7 +1613,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -1604,7 +1626,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -1719,7 +1741,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicPtr" "p" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicPtr",
+                  "p"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1824,7 +1852,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicPtr" "p" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicPtr",
+                    "p"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1863,10 +1899,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicPtr"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicPtr",
                         "p"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -1913,10 +1950,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicPtr"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicPtr",
                             "p"
+                          |)
                         ]
                       |);
                       M.read (| ptr |);
@@ -1960,10 +1998,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicPtr"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicPtr",
                       "p"
+                    |)
                   ]
                 |);
                 M.read (| ptr |);
@@ -2019,7 +2058,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -2029,7 +2068,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -2081,10 +2120,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicPtr"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicPtr",
                       "p"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -2138,10 +2178,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicPtr"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicPtr",
                       "p"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -2222,7 +2263,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -2250,7 +2291,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -2263,7 +2304,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -2406,10 +2447,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicPtr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicPtr",
                           "p"
+                        |)
                       ]
                     |);
                     M.call_closure (|
@@ -2460,10 +2502,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicPtr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicPtr",
                           "p"
+                        |)
                       ]
                     |);
                     M.call_closure (|
@@ -2514,10 +2557,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicPtr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicPtr",
                           "p"
+                        |)
                       ]
                     |);
                     M.call_closure (|
@@ -2568,10 +2612,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicPtr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicPtr",
                           "p"
+                        |)
                       ]
                     |);
                     M.call_closure (|
@@ -2622,10 +2667,11 @@ Module sync.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::sync::atomic::AtomicPtr"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::sync::atomic::AtomicPtr",
                           "p"
+                        |)
                       ]
                     |);
                     M.call_closure (|
@@ -2661,7 +2707,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicPtr" "p" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicPtr",
+                  "p"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2928,7 +2980,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI8",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -3036,7 +3094,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicI8" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicI8",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -3067,10 +3133,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicI8"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicI8",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -3107,10 +3174,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicI8"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicI8",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -3147,7 +3215,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3206,7 +3279,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3216,7 +3289,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3260,7 +3333,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -3308,7 +3386,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -3345,7 +3428,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3379,7 +3467,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3413,7 +3506,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3447,7 +3545,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3481,7 +3584,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3515,7 +3623,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3587,7 +3700,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -3615,7 +3728,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -3628,7 +3741,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -3684,7 +3797,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3718,7 +3836,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -3746,7 +3869,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI8" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI8",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -3949,7 +4078,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU8",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4057,7 +4192,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicU8" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicU8",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4088,10 +4231,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicU8"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicU8",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -4128,10 +4272,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicU8"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicU8",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -4168,7 +4313,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4227,7 +4377,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -4237,7 +4387,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -4281,7 +4431,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -4329,7 +4484,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -4366,7 +4526,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4400,7 +4565,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4434,7 +4604,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4468,7 +4643,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4502,7 +4682,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4536,7 +4721,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4608,7 +4798,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -4636,7 +4826,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -4649,7 +4839,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -4705,7 +4895,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4739,7 +4934,12 @@ Module sync.
                     "get",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU8",
+                      "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -4767,7 +4967,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU8" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU8",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4970,7 +5176,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI16" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI16",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5078,7 +5290,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicI16" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicI16",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5109,10 +5329,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicI16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicI16",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -5149,10 +5370,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicI16"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicI16",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -5190,10 +5412,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5252,7 +5475,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -5262,7 +5485,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -5307,10 +5530,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -5359,10 +5583,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -5400,10 +5625,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5438,10 +5664,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5476,10 +5703,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5514,10 +5742,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5552,10 +5781,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5590,10 +5820,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5665,7 +5896,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5693,7 +5924,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -5706,7 +5937,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -5763,10 +5994,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5801,10 +6033,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -5832,7 +6065,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI16" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI16",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6035,7 +6274,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU16" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU16",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6143,7 +6388,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicU16" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicU16",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6174,10 +6427,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicU16"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicU16",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -6214,10 +6468,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicU16"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicU16",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -6255,10 +6510,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6317,7 +6573,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -6327,7 +6583,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -6372,10 +6628,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -6424,10 +6681,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -6465,10 +6723,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6503,10 +6762,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6541,10 +6801,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6579,10 +6840,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6617,10 +6879,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6655,10 +6918,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6730,7 +6994,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -6758,7 +7022,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -6771,7 +7035,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -6828,10 +7092,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6866,10 +7131,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU16"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU16",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -6897,7 +7163,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU16" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU16",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7100,7 +7372,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI32" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI32",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7208,7 +7486,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicI32" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicI32",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7239,10 +7525,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicI32"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicI32",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -7279,10 +7566,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicI32"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicI32",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -7320,10 +7608,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7382,7 +7671,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -7392,7 +7681,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -7437,10 +7726,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -7489,10 +7779,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -7530,10 +7821,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7568,10 +7860,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7606,10 +7899,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7644,10 +7938,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7682,10 +7977,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7720,10 +8016,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7795,7 +8092,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -7823,7 +8120,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -7836,7 +8133,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -7893,10 +8190,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7931,10 +8229,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -7962,7 +8261,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI32" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI32",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8165,7 +8470,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU32" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU32",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8273,7 +8584,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicU32" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicU32",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -8304,10 +8623,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicU32"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicU32",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -8344,10 +8664,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicU32"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicU32",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -8385,10 +8706,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8447,7 +8769,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -8457,7 +8779,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -8502,10 +8824,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -8554,10 +8877,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -8595,10 +8919,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8633,10 +8958,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8671,10 +8997,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8709,10 +9036,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8747,10 +9075,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8785,10 +9114,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8860,7 +9190,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -8888,7 +9218,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -8901,7 +9231,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -8958,10 +9288,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -8996,10 +9327,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU32"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU32",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9027,7 +9359,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU32" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU32",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -9230,7 +9568,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI64" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI64",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -9338,7 +9682,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicI64" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicI64",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -9369,10 +9721,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicI64"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicI64",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -9409,10 +9762,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicI64"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicI64",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -9450,10 +9804,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9512,7 +9867,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -9522,7 +9877,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -9567,10 +9922,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -9619,10 +9975,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -9660,10 +10017,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9698,10 +10056,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9736,10 +10095,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9774,10 +10134,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9812,10 +10173,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9850,10 +10212,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -9925,7 +10288,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -9953,7 +10316,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -9966,7 +10329,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -10023,10 +10386,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10061,10 +10425,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicI64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicI64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10092,7 +10457,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicI64" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicI64",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -10295,7 +10666,13 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU64" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU64",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -10403,7 +10780,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicU64" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicU64",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -10434,10 +10819,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicU64"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicU64",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -10474,10 +10860,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicU64"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicU64",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -10515,10 +10902,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10577,7 +10965,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -10587,7 +10975,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -10632,10 +11020,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -10684,10 +11073,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -10725,10 +11115,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10763,10 +11154,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10801,10 +11193,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10839,10 +11232,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10877,10 +11271,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10915,10 +11310,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -10990,7 +11386,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -11018,7 +11414,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -11031,7 +11427,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -11088,10 +11484,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11126,10 +11523,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicU64"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicU64",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11157,7 +11555,13 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicU64" "v" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicU64",
+                  "v"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -11360,7 +11764,12 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicIsize" "v"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicIsize",
+                  "v"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -11469,7 +11878,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicIsize" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicIsize",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -11500,10 +11917,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicIsize"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicIsize",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -11540,10 +11958,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicIsize"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicIsize",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -11581,10 +12000,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11643,7 +12063,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -11653,7 +12073,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -11701,10 +12121,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -11753,10 +12174,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -11794,10 +12216,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11832,10 +12255,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11870,10 +12294,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11908,10 +12333,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11946,10 +12372,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -11984,10 +12411,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12059,7 +12487,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -12087,7 +12515,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -12100,7 +12528,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -12157,10 +12585,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12195,10 +12624,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicIsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicIsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12226,7 +12656,12 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicIsize" "v"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicIsize",
+                  "v"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12430,7 +12865,12 @@ Module sync.
                 "get_mut",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicUsize" "v"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicUsize",
+                  "v"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12539,7 +12979,15 @@ Module sync.
                 "into_inner",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::sync::atomic::AtomicUsize" "v" |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::sync::atomic::AtomicUsize",
+                    "v"
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -12570,10 +13018,11 @@ Module sync.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::sync::atomic::AtomicUsize"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::sync::atomic::AtomicUsize",
                         "v"
+                      |)
                     ]
                   |));
                 M.read (| order |)
@@ -12610,10 +13059,11 @@ Module sync.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::sync::atomic::AtomicUsize"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::sync::atomic::AtomicUsize",
                             "v"
+                          |)
                         ]
                       |);
                       M.read (| val |);
@@ -12651,10 +13101,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12713,7 +13164,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -12723,7 +13174,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -12771,10 +13222,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -12823,10 +13275,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| current |);
@@ -12864,10 +13317,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12902,10 +13356,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12940,10 +13395,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -12978,10 +13434,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -13016,10 +13473,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -13054,10 +13512,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -13129,7 +13588,7 @@ Module sync.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -13157,7 +13616,7 @@ Module sync.
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
                                         let γ1_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -13170,7 +13629,7 @@ Module sync.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -13227,10 +13686,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -13265,10 +13725,11 @@ Module sync.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::sync::atomic::AtomicUsize"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::sync::atomic::AtomicUsize",
                       "v"
+                    |)
                   ]
                 |);
                 M.read (| val |);
@@ -13296,7 +13757,12 @@ Module sync.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::sync::atomic::AtomicUsize" "v"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::sync::atomic::AtomicUsize",
+                  "v"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13859,8 +14325,8 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13872,8 +14338,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13885,8 +14351,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13898,8 +14364,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13911,8 +14377,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13924,8 +14390,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13937,8 +14403,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13950,8 +14416,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13963,8 +14429,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13976,8 +14442,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -13989,8 +14455,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14002,8 +14468,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14015,8 +14481,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14028,8 +14494,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14041,8 +14507,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14054,8 +14520,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14087,8 +14553,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14123,8 +14589,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -14200,8 +14666,8 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14213,8 +14679,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14226,8 +14692,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14239,8 +14705,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14252,8 +14718,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14265,8 +14731,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14278,8 +14744,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14291,8 +14757,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14304,8 +14770,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14317,8 +14783,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14330,8 +14796,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14343,8 +14809,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14356,8 +14822,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14369,8 +14835,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14382,8 +14848,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14395,8 +14861,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14428,8 +14894,8 @@ Module sync.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14464,8 +14930,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|

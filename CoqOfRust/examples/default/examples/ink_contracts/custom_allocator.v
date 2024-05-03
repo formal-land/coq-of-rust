@@ -110,7 +110,7 @@ Module Impl_custom_allocator_CustomAllocator.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "custom_allocator::CustomAllocator",
                     "value"
@@ -131,7 +131,7 @@ Module Impl_custom_allocator_CustomAllocator.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "custom_allocator::CustomAllocator",
                         "value"
@@ -170,7 +170,7 @@ Module Impl_custom_allocator_CustomAllocator.
               []
             |),
             [
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "custom_allocator::CustomAllocator",
                 "value"

@@ -161,10 +161,18 @@ Module array.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field initialized "core::ops::range::Range" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          initialized,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field initialized "core::ops::range::Range" "end"
+                        M.SubPointer.get_struct_record_field (|
+                          initialized,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
                       |)
                     ]
                   |)
@@ -265,10 +273,11 @@ Module array.
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::array::iter::IntoIter"
-                          "data");
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |));
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -278,10 +287,11 @@ Module array.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::iter::IntoIter",
                             "alive"
+                          |)
                         ]
                       |)
                     ]
@@ -334,10 +344,11 @@ Module array.
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::array::iter::IntoIter"
-                          "data");
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |));
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -347,10 +358,11 @@ Module array.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::iter::IntoIter",
                             "alive"
+                          |)
                         ]
                       |)
                     ]
@@ -421,10 +433,11 @@ Module array.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::array::iter::IntoIter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::array::iter::IntoIter",
                       "alive"
+                    |)
                   ]
                 |);
                 M.closure
@@ -460,10 +473,11 @@ Module array.
                                       [
                                         (* Unsize *)
                                         M.pointer_coercion
-                                          (M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::array::iter::IntoIter"
-                                            "data");
+                                          (M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::array::iter::IntoIter",
+                                            "data"
+                                          |));
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -539,7 +553,13 @@ Module array.
             let fold := M.alloc (| fold |) in
             M.read (|
               let data :=
-                M.alloc (| M.get_struct_record_field self "core::array::iter::IntoIter" "data" |) in
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::array::iter::IntoIter",
+                    "data"
+                  |)
+                |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -554,7 +574,13 @@ Module array.
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
-                      [ M.get_struct_record_field self "core::array::iter::IntoIter" "alive" ];
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::array::iter::IntoIter",
+                          "alive"
+                        |)
+                      ];
                     M.read (| init |);
                     M.closure
                       (fun γ =>
@@ -714,10 +740,11 @@ Module array.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::array::iter::IntoIter"
-                        "alive";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |);
                       M.read (| n |)
                     ]
                   |)
@@ -750,10 +777,11 @@ Module array.
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::iter::IntoIter"
-                            "data");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |));
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -869,10 +897,11 @@ Module array.
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::array::iter::IntoIter"
-                                    "data")
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::array::iter::IntoIter",
+                                    "data"
+                                  |))
                               ]
                             |);
                             M.call_closure (|
@@ -882,10 +911,11 @@ Module array.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::array::iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::array::iter::IntoIter",
                                   "alive"
+                                |)
                               ]
                             |)
                           ]
@@ -962,10 +992,11 @@ Module array.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::array::iter::IntoIter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::array::iter::IntoIter",
                       "alive"
+                    |)
                   ]
                 |);
                 M.closure
@@ -1001,10 +1032,11 @@ Module array.
                                       [
                                         (* Unsize *)
                                         M.pointer_coercion
-                                          (M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::array::iter::IntoIter"
-                                            "data");
+                                          (M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::array::iter::IntoIter",
+                                            "data"
+                                          |));
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -1043,7 +1075,13 @@ Module array.
             let rfold := M.alloc (| rfold |) in
             M.read (|
               let data :=
-                M.alloc (| M.get_struct_record_field self "core::array::iter::IntoIter" "data" |) in
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::array::iter::IntoIter",
+                    "data"
+                  |)
+                |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1058,7 +1096,13 @@ Module array.
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
-                      [ M.get_struct_record_field self "core::array::iter::IntoIter" "alive" ];
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::array::iter::IntoIter",
+                          "alive"
+                        |)
+                      ];
                     M.read (| init |);
                     M.closure
                       (fun γ =>
@@ -1170,10 +1214,11 @@ Module array.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::array::iter::IntoIter"
-                        "alive";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |);
                       M.read (| n |)
                     ]
                   |)
@@ -1206,10 +1251,11 @@ Module array.
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::array::iter::IntoIter"
-                            "data");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |));
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -1346,7 +1392,12 @@ Module array.
                 "len",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::array::iter::IntoIter" "alive"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::array::iter::IntoIter",
+                  "alive"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1371,7 +1422,12 @@ Module array.
                 "is_empty",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::array::iter::IntoIter" "alive"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::array::iter::IntoIter",
+                  "alive"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1546,7 +1602,11 @@ Module array.
                                 |),
                                 [ M.read (| self |) ]
                               |);
-                              M.get_struct_record_field new "core::array::iter::IntoIter" "data"
+                              M.SubPointer.get_struct_record_field (|
+                                new,
+                                "core::array::iter::IntoIter",
+                                "data"
+                              |)
                             ]
                           |)
                         ]
@@ -1592,13 +1652,13 @@ Module array.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let src := M.copy (| γ1_0 |) in
                                         let dst := M.copy (| γ1_1 |) in
                                         let _ :=
@@ -1628,10 +1688,11 @@ Module array.
                                           |) in
                                         let _ :=
                                           M.write (|
-                                            M.get_struct_record_field
-                                              new
-                                              "core::array::iter::IntoIter"
-                                              "alive",
+                                            M.SubPointer.get_struct_record_field (|
+                                              new,
+                                              "core::array::iter::IntoIter",
+                                              "alive"
+                                            |),
                                             M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "core::ops::index_range::IndexRange",
@@ -1647,10 +1708,11 @@ Module array.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        new
-                                                        "core::array::iter::IntoIter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        new,
+                                                        "core::array::iter::IntoIter",
                                                         "alive"
+                                                      |)
                                                     ]
                                                   |),
                                                   Value.Integer Integer.Usize 1

@@ -36,20 +36,22 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "a"
+                        |)
                       ]
                     |));
                   ("b",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", B, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "b"
+                        |)
                       ]
                     |));
                   ("index",
@@ -62,10 +64,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "index"
+                        |)
                       ]
                     |));
                   ("len",
@@ -78,10 +81,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "len"
+                        |)
                       ]
                     |));
                   ("a_len",
@@ -94,10 +98,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "a_len"
+                        |)
                       ]
                     |))
                 ]))
@@ -191,7 +196,7 @@ Module iter.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -588,10 +593,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
                                       "a"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -601,7 +607,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -634,7 +640,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -666,10 +672,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
                                       "b"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -679,7 +686,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -712,7 +719,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -804,10 +811,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "a"
+                        |)
                       ]
                     |)
                   |) in
@@ -822,10 +830,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "b"
+                        |)
                       ]
                     |)
                   |) in
@@ -917,7 +926,7 @@ Module iter.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
-                                                            M.get_struct_tuple_field_or_break_match (|
+                                                            M.SubPointer.get_struct_tuple_field (|
                                                               γ,
                                                               "core::option::Option::Some",
                                                               0
@@ -933,10 +942,11 @@ Module iter.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::iter::adapters::zip::Zip"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::iter::adapters::zip::Zip",
                                                                     "a"
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -1009,7 +1019,7 @@ Module iter.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
-                                                            M.get_struct_tuple_field_or_break_match (|
+                                                            M.SubPointer.get_struct_tuple_field (|
                                                               γ,
                                                               "core::option::Option::Some",
                                                               0
@@ -1025,10 +1035,11 @@ Module iter.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::iter::adapters::zip::Zip"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::iter::adapters::zip::Zip",
                                                                     "b"
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -1057,10 +1068,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "a"
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -1072,10 +1084,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "b"
+                            |)
                           ]
                         |)
                       ]
@@ -1083,17 +1096,17 @@ Module iter.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
                           |) in
                         let x := M.copy (| γ1_0 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "core::option::Option::Some",
                             0
@@ -1106,8 +1119,8 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1161,18 +1174,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "a"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a_lower := M.copy (| γ0_0 |) in
                         let a_upper := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -1186,18 +1200,19 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::zip::Zip"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::zip::Zip",
                                   "b"
+                                |)
                               ]
                             |)
                           |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let b_lower := M.copy (| γ0_0 |) in
                                 let b_upper := M.copy (| γ0_1 |) in
                                 let lower :=
@@ -1216,17 +1231,17 @@ Module iter.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_0,
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
                                             let x := M.copy (| γ1_0 |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_1,
                                                 "core::option::Option::Some",
                                                 0
@@ -1247,10 +1262,10 @@ Module iter.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_0,
                                                 "core::option::Option::Some",
                                                 0
@@ -1263,10 +1278,10 @@ Module iter.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_1,
                                                 "core::option::Option::Some",
                                                 0
@@ -1279,8 +1294,8 @@ Module iter.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             M.alloc (|
                                               Value.StructTuple "core::option::Option::None" []
                                             |)))
@@ -1471,10 +1486,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
                                       "a"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1484,7 +1500,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1517,7 +1533,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1549,10 +1565,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
                                       "b"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1562,7 +1579,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1595,7 +1612,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1687,10 +1704,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "a"
+                        |)
                       ]
                     |)
                   |) in
@@ -1705,10 +1723,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "b"
+                        |)
                       ]
                     |)
                   |) in
@@ -1800,7 +1819,7 @@ Module iter.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
-                                                            M.get_struct_tuple_field_or_break_match (|
+                                                            M.SubPointer.get_struct_tuple_field (|
                                                               γ,
                                                               "core::option::Option::Some",
                                                               0
@@ -1816,10 +1835,11 @@ Module iter.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::iter::adapters::zip::Zip"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::iter::adapters::zip::Zip",
                                                                     "a"
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -1892,7 +1912,7 @@ Module iter.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
-                                                            M.get_struct_tuple_field_or_break_match (|
+                                                            M.SubPointer.get_struct_tuple_field (|
                                                               γ,
                                                               "core::option::Option::Some",
                                                               0
@@ -1908,10 +1928,11 @@ Module iter.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::iter::adapters::zip::Zip"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::iter::adapters::zip::Zip",
                                                                     "b"
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -1940,10 +1961,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "a"
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -1955,10 +1977,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "b"
+                            |)
                           ]
                         |)
                       ]
@@ -1966,17 +1989,17 @@ Module iter.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
                           |) in
                         let x := M.copy (| γ1_0 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "core::option::Option::Some",
                             0
@@ -1989,8 +2012,8 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2036,10 +2059,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "a"
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -2051,10 +2075,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "b"
+                            |)
                           ]
                         |)
                       ]
@@ -2091,10 +2116,11 @@ Module iter.
                   M.alloc (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "index"
+                        |)
                       |),
                       M.read (| idx |)
                     |)
@@ -2111,10 +2137,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::zip::Zip"
-                            "a";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |);
                           M.read (| idx |)
                         ]
                       |);
@@ -2127,10 +2154,11 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::zip::Zip"
-                            "b";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::zip::Zip",
+                            "b"
+                          |);
                           M.read (| idx |)
                         ]
                       |)
@@ -2170,8 +2198,8 @@ Module iter.
                 let accum := M.copy (| init |) in
                 let len :=
                   M.copy (|
-                    M.get_tuple_field
-                      (M.alloc (|
+                    M.SubPointer.get_tuple_field (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::adapters::zip::ZipImpl",
@@ -2182,8 +2210,9 @@ Module iter.
                           |),
                           [ self ]
                         |)
-                      |))
+                      |),
                       0
+                    |)
                   |) in
                 let _ :=
                   M.use
@@ -2236,7 +2265,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -2421,33 +2450,37 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.lt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "index"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "len"
+                                  |)
                                 |))
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let i :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "index"
+                            |)
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
-                              "index" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
+                              "index"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -2467,10 +2500,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::zip::Zip"
-                                        "a";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "a"
+                                      |);
                                       M.read (| i |)
                                     ]
                                   |);
@@ -2483,10 +2517,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::zip::Zip"
-                                        "b";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "b"
+                                      |);
                                       M.read (| i |)
                                     ]
                                   |)
@@ -2512,16 +2547,18 @@ Module iter.
                                         ltac:(M.monadic
                                           (BinOp.Pure.lt
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::zip::Zip"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::zip::Zip",
                                                 "index"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::zip::Zip"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::zip::Zip",
                                                 "a_len"
+                                              |)
                                             |))))
                                       |)
                                     |)) in
@@ -2532,17 +2569,19 @@ Module iter.
                                   |) in
                                 let i :=
                                   M.copy (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
                                       "index"
+                                    |)
                                   |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
-                                      "index" in
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "index"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -2552,10 +2591,11 @@ Module iter.
                                   |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::zip::Zip"
-                                      "len" in
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "len"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -2575,10 +2615,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::zip::Zip"
-                                            "a";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::zip::Zip",
+                                            "a"
+                                          |);
                                           M.read (| i |)
                                         ]
                                       |)
@@ -2613,16 +2654,18 @@ Module iter.
                   M.alloc (|
                     BinOp.Panic.sub (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "len"
+                        |)
                       |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "index"
+                        |)
                       |)
                     |)
                   |) in
@@ -2681,16 +2724,18 @@ Module iter.
                         M.read (| n |);
                         BinOp.Panic.sub (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "len"
+                            |)
                           |),
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "index"
+                            |)
                           |)
                         |)
                       ]
@@ -2700,10 +2745,11 @@ Module iter.
                   M.alloc (|
                     BinOp.Panic.add (|
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
                           "index"
+                        |)
                       |),
                       M.read (| delta |)
                     |)
@@ -2721,10 +2767,11 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.Pure.lt
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::zip::Zip"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::zip::Zip",
                                           "index"
+                                        |)
                                       |))
                                       (M.read (| end_ |))
                                   |)) in
@@ -2735,17 +2782,19 @@ Module iter.
                                 |) in
                               let i :=
                                 M.copy (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "index"
+                                  |)
                                 |) in
                               let _ :=
                                 let β :=
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
-                                    "index" in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
+                                    "index"
+                                  |) in
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
@@ -2780,10 +2829,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::zip::Zip"
-                                                  "a";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::zip::Zip",
+                                                  "a"
+                                                |);
                                                 M.read (| i |)
                                               ]
                                             |)
@@ -2818,10 +2868,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::zip::Zip"
-                                                "b";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::zip::Zip",
+                                                "b"
+                                              |);
                                               M.read (| i |)
                                             ]
                                           |)
@@ -2950,10 +3001,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "a"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -2968,10 +3020,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "b"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -3001,10 +3054,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::zip::Zip"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::zip::Zip",
                                             "a"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -3027,10 +3081,11 @@ Module iter.
                                                       (BinOp.Pure.gt
                                                         (M.read (| sz_a |))
                                                         (M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::iter::adapters::zip::Zip"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::iter::adapters::zip::Zip",
                                                             "len"
+                                                          |)
                                                         |))))
                                                   |)
                                                 |)) in
@@ -3063,10 +3118,11 @@ Module iter.
                                                               BinOp.Panic.sub (|
                                                                 M.read (| sz_a |),
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::iter::adapters::zip::Zip"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::iter::adapters::zip::Zip",
                                                                     "len"
+                                                                  |)
                                                                 |)
                                                               |))
                                                           ]
@@ -3107,17 +3163,18 @@ Module iter.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ0_0 :=
-                                                                        M.get_struct_tuple_field_or_break_match (|
+                                                                        M.SubPointer.get_struct_tuple_field (|
                                                                           γ,
                                                                           "core::option::Option::Some",
                                                                           0
                                                                         |) in
                                                                       let _ :=
                                                                         let β :=
-                                                                          M.get_struct_record_field
-                                                                            (M.read (| self |))
-                                                                            "core::iter::adapters::zip::Zip"
-                                                                            "a_len" in
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "core::iter::adapters::zip::Zip",
+                                                                            "a_len"
+                                                                          |) in
                                                                         M.write (|
                                                                           β,
                                                                           BinOp.Panic.sub (|
@@ -3138,10 +3195,11 @@ Module iter.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.get_struct_record_field
-                                                                                (M.read (| self |))
-                                                                                "core::iter::adapters::zip::Zip"
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (| self |),
+                                                                                "core::iter::adapters::zip::Zip",
                                                                                 "a"
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         |) in
@@ -3170,22 +3228,31 @@ Module iter.
                                                           M.alloc (|
                                                             Value.Tuple
                                                               [
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::iter::adapters::zip::Zip"
-                                                                  "a_len";
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::iter::adapters::zip::Zip"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::iter::adapters::zip::Zip",
+                                                                  "a_len"
+                                                                |);
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::iter::adapters::zip::Zip",
                                                                   "len"
+                                                                |)
                                                               ]
                                                           |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let left_val := M.copy (| γ0_0 |) in
                                                                 let right_val :=
                                                                   M.copy (| γ0_1 |) in
@@ -3283,10 +3350,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::zip::Zip"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::zip::Zip",
                                             "b"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -3308,10 +3376,11 @@ Module iter.
                                                     (BinOp.Pure.gt
                                                       (M.read (| sz_b |))
                                                       (M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::iter::adapters::zip::Zip"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::iter::adapters::zip::Zip",
                                                           "len"
+                                                        |)
                                                       |))))
                                                 |)
                                               |)) in
@@ -3342,10 +3411,11 @@ Module iter.
                                                           BinOp.Panic.sub (|
                                                             M.read (| sz_b |),
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::iter::adapters::zip::Zip"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::iter::adapters::zip::Zip",
                                                                 "len"
+                                                              |)
                                                             |)
                                                           |))
                                                       ]
@@ -3386,7 +3456,7 @@ Module iter.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::option::Option::Some",
                                                                       0
@@ -3402,10 +3472,11 @@ Module iter.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_struct_record_field
-                                                                            (M.read (| self |))
-                                                                            "core::iter::adapters::zip::Zip"
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "core::iter::adapters::zip::Zip",
                                                                             "b"
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |) in
@@ -3435,46 +3506,51 @@ Module iter.
                             (M.alloc (|
                               BinOp.Pure.lt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "index"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::zip::Zip"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::zip::Zip",
                                     "len"
+                                  |)
                                 |))
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
-                              "len" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
+                              "len"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
                           |) in
                         let _ :=
                           let β :=
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
-                              "a_len" in
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
+                              "a_len"
+                            |) in
                           M.write (|
                             β,
                             BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
                           |) in
                         let i :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
                               "len"
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -3491,10 +3567,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::zip::Zip"
-                                        "a";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "a"
+                                      |);
                                       M.read (| i |)
                                     ]
                                   |);
@@ -3507,10 +3584,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::zip::Zip"
-                                        "b";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "b"
+                                      |);
                                       M.read (| i |)
                                     ]
                                   |)
@@ -3680,7 +3758,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", A, [], "as_inner", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::iter::adapters::zip::Zip" "a"
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::zip::Zip",
+                    "a"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3827,19 +3910,21 @@ Module iter.
                           M.read (| Value.String "a" |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::zip::Zip"
-                              "a")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::zip::Zip",
+                              "a"
+                            |))
                         ]
                       |);
                       M.read (| Value.String "b" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::zip::Zip"
-                          "b")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::zip::Zip",
+                          "b"
+                        |))
                     ]
                   |)
                 ]
@@ -3916,8 +4001,8 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -3928,8 +4013,9 @@ Module iter.
                       |),
                       [ M.read (| self |) ]
                     |)
-                  |))
+                  |),
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -4121,7 +4207,7 @@ Module iter.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -4226,8 +4312,8 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
-                                  M.get_tuple_field
-                                    (M.alloc (|
+                                  M.SubPointer.get_tuple_field (|
+                                    M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::iter::adapters::zip::ZipImpl",
@@ -4240,10 +4326,11 @@ Module iter.
                                         |),
                                         [ self ]
                                       |)
-                                    |))
-                                    1 in
+                                    |),
+                                    1
+                                  |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -4266,8 +4353,8 @@ Module iter.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let upper := M.copy (| γ0_0 |) in
                               let more := M.copy (| γ0_1 |) in
                               let _ :=
@@ -4327,7 +4414,7 @@ Module iter.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::option::Option::Some",
                                                             0
@@ -4355,10 +4442,11 @@ Module iter.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.get_struct_record_field
-                                                                          self
-                                                                          "core::iter::adapters::zip::Zip"
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          self,
+                                                                          "core::iter::adapters::zip::Zip",
                                                                           "a"
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   ]
@@ -4382,10 +4470,11 @@ Module iter.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.get_struct_record_field
-                                                                          self
-                                                                          "core::iter::adapters::zip::Zip"
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          self,
+                                                                          "core::iter::adapters::zip::Zip",
                                                                           "b"
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   ]

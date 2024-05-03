@@ -133,11 +133,11 @@ Module num.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::num::fmt::Part::Zero",
                                   0
@@ -145,7 +145,7 @@ Module num.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::num::fmt::Part::Zero",
                                   0
@@ -158,11 +158,11 @@ Module num.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::num::fmt::Part::Num",
                                   0
@@ -170,7 +170,7 @@ Module num.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::num::fmt::Part::Num",
                                   0
@@ -183,11 +183,11 @@ Module num.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::num::fmt::Part::Copy",
                                   0
@@ -195,7 +195,7 @@ Module num.
                               let __self_0 := M.alloc (| γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::num::fmt::Part::Copy",
                                   0
@@ -316,7 +316,7 @@ Module num.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Zero",
                           0
@@ -340,7 +340,7 @@ Module num.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Num",
                           0
@@ -364,7 +364,7 @@ Module num.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Copy",
                           0
@@ -434,7 +434,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Zero",
                           0
@@ -444,7 +444,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Num",
                           0
@@ -539,7 +539,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::num::fmt::Part::Copy",
                           0
@@ -630,7 +630,7 @@ Module num.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::num::fmt::Part::Zero",
                                     0
@@ -705,7 +705,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::option::Option::Some",
                                                             0
@@ -726,7 +726,7 @@ Module num.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::num::fmt::Part::Num",
                                     0
@@ -831,7 +831,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::option::Option::Some",
                                                             0
@@ -868,7 +868,7 @@ Module num.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::num::fmt::Part::Copy",
                                     0
@@ -970,10 +970,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::fmt::Formatted"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::fmt::Formatted",
                         "sign"
+                      |)
                     ]
                   |));
                 ("parts",
@@ -988,10 +989,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::fmt::Formatted"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::fmt::Formatted",
                         "parts"
+                      |)
                     ]
                   |))
               ]))
@@ -1030,10 +1032,11 @@ Module num.
                     M.get_associated_function (| Ty.path "str", "len", [] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::fmt::Formatted"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::fmt::Formatted",
                           "sign"
+                        |)
                       |)
                     ]
                   |)
@@ -1054,10 +1057,11 @@ Module num.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::fmt::Formatted"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::fmt::Formatted",
                               "parts"
+                            |)
                           |)
                         ]
                       |)
@@ -1093,7 +1097,7 @@ Module num.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1175,10 +1179,11 @@ Module num.
                                       M.get_associated_function (| Ty.path "str", "len", [] |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::fmt::Formatted"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::fmt::Formatted",
                                             "sign"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -1223,10 +1228,11 @@ Module num.
                                       M.get_associated_function (| Ty.path "str", "len", [] |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::num::fmt::Formatted"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::num::fmt::Formatted",
                                             "sign"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -1237,10 +1243,11 @@ Module num.
                             M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::fmt::Formatted"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::fmt::Formatted",
                                   "sign"
+                                |)
                               |)
                             ]
                           |)
@@ -1253,10 +1260,11 @@ Module num.
                         M.get_associated_function (| Ty.path "str", "len", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::fmt::Formatted"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::fmt::Formatted",
                               "sign"
+                            |)
                           |)
                         ]
                       |)
@@ -1277,10 +1285,11 @@ Module num.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::num::fmt::Formatted"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::num::fmt::Formatted",
                                   "parts"
+                                |)
                               |)
                             ]
                           |)
@@ -1316,7 +1325,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -1377,7 +1386,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Break",
                                                             0
@@ -1415,7 +1424,7 @@ Module num.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Continue",
                                                             0

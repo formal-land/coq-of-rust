@@ -29,10 +29,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::rev::Rev"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::rev::Rev",
                           "iter"
+                        |)
                       ]
                     |))
                 ]))
@@ -73,10 +74,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::rev::Rev"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::rev::Rev",
                         "iter"
+                      |)
                     |))
                 ]
               |)))
@@ -143,10 +145,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -172,10 +175,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -202,10 +206,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -233,10 +238,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -270,10 +276,11 @@ Module iter.
                   [ B; F; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.read (| f |)
                 ]
@@ -307,7 +314,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::rev::Rev" "iter"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)
@@ -340,10 +351,11 @@ Module iter.
                   [ P ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| predicate |)
                 ]
               |)))
@@ -393,10 +405,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -423,10 +436,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -448,10 +462,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -485,10 +500,11 @@ Module iter.
                   [ B; F; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.read (| f |)
                 ]
@@ -522,7 +538,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::rev::Rev" "iter"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)
@@ -555,10 +575,11 @@ Module iter.
                   [ P ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
+                    "iter"
+                  |);
                   M.read (| predicate |)
                 ]
               |)))
@@ -606,10 +627,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -635,10 +657,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::rev::Rev"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::rev::Rev",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

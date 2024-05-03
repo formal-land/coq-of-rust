@@ -91,39 +91,44 @@ Module num.
                   M.read (| Value.String "mant" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::flt2dec::decoder::Decoded"
-                      "mant");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::flt2dec::decoder::Decoded",
+                      "mant"
+                    |));
                   M.read (| Value.String "minus" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::flt2dec::decoder::Decoded"
-                      "minus");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::flt2dec::decoder::Decoded",
+                      "minus"
+                    |));
                   M.read (| Value.String "plus" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::flt2dec::decoder::Decoded"
-                      "plus");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::flt2dec::decoder::Decoded",
+                      "plus"
+                    |));
                   M.read (| Value.String "exp" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::flt2dec::decoder::Decoded"
-                      "exp");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::flt2dec::decoder::Decoded",
+                      "exp"
+                    |));
                   M.read (| Value.String "inclusive" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::flt2dec::decoder::Decoded"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
+                      |)
                     |))
                 ]
               |)))
@@ -165,75 +170,85 @@ Module num.
                     LogicalOp.and (|
                       BinOp.Pure.eq
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::flt2dec::decoder::Decoded"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::flt2dec::decoder::Decoded",
                             "mant"
+                          |)
                         |))
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::num::flt2dec::decoder::Decoded"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::num::flt2dec::decoder::Decoded",
                             "mant"
+                          |)
                         |)),
                       ltac:(M.monadic
                         (BinOp.Pure.eq
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::num::flt2dec::decoder::Decoded"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::num::flt2dec::decoder::Decoded",
                               "minus"
+                            |)
                           |))
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "core::num::flt2dec::decoder::Decoded"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "core::num::flt2dec::decoder::Decoded",
                               "minus"
+                            |)
                           |))))
                     |),
                     ltac:(M.monadic
                       (BinOp.Pure.eq
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::num::flt2dec::decoder::Decoded"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::flt2dec::decoder::Decoded",
                             "plus"
+                          |)
                         |))
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::num::flt2dec::decoder::Decoded"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::num::flt2dec::decoder::Decoded",
                             "plus"
+                          |)
                         |))))
                   |),
                   ltac:(M.monadic
                     (BinOp.Pure.eq
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::num::flt2dec::decoder::Decoded"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::num::flt2dec::decoder::Decoded",
                           "exp"
+                        |)
                       |))
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "core::num::flt2dec::decoder::Decoded"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::num::flt2dec::decoder::Decoded",
                           "exp"
+                        |)
                       |))))
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::flt2dec::decoder::Decoded"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::num::flt2dec::decoder::Decoded"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
+                      |)
                     |))))
               |)))
           | _, _ => M.impossible
@@ -423,7 +438,7 @@ Module num.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::num::flt2dec::decoder::FullDecoded::Finite",
                             0
@@ -509,11 +524,11 @@ Module num.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let γ0_0 := M.read (| γ0_0 |) in
                                 let γ2_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "core::num::flt2dec::decoder::FullDecoded::Finite",
                                     0
@@ -521,7 +536,7 @@ Module num.
                                 let __self_0 := M.alloc (| γ2_0 |) in
                                 let γ0_1 := M.read (| γ0_1 |) in
                                 let γ2_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_1,
                                     "core::num::flt2dec::decoder::FullDecoded::Finite",
                                     0
@@ -705,9 +720,9 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                       let mant := M.copy (| γ0_0 |) in
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
@@ -807,7 +822,9 @@ Module num.
                                               (M.alloc (|
                                                 BinOp.Pure.eq
                                                   (M.read (| mant |))
-                                                  (M.read (| M.get_tuple_field minnorm 0 |))
+                                                  (M.read (|
+                                                    M.SubPointer.get_tuple_field (| minnorm, 0 |)
+                                                  |))
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|

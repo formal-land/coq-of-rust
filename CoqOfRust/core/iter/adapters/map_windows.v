@@ -332,10 +332,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::map_windows::MapWindowsInner"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::map_windows::MapWindowsInner",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -345,7 +346,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -382,7 +383,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -394,18 +395,20 @@ Module iter.
                       |) in
                     let _ :=
                       M.match_operator (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::MapWindowsInner"
-                          "buffer",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindowsInner",
+                          "buffer"
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::map_windows::MapWindowsInner"
-                                  "buffer",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::map_windows::MapWindowsInner",
+                                  "buffer"
+                                |),
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -420,7 +423,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -451,10 +454,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::map_windows::MapWindowsInner"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::map_windows::MapWindowsInner",
                                                 "iter"
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -474,10 +478,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::map_windows::MapWindowsInner"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::map_windows::MapWindowsInner",
                                                 "buffer"
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -485,7 +490,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -553,10 +558,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::map_windows::MapWindowsInner"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::map_windows::MapWindowsInner",
                                 "buffer"
+                              |)
                             ]
                           |);
                           M.get_associated_function (|
@@ -602,15 +608,16 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::map_windows::MapWindowsInner"
-                    "iter",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::map_windows::MapWindowsInner",
+                    "iter"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -632,8 +639,8 @@ Module iter.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let lo := M.copy (| γ0_0 |) in
                                 let hi := M.copy (| γ0_1 |) in
                                 M.match_operator (|
@@ -658,10 +665,11 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::map_windows::MapWindowsInner"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::map_windows::MapWindowsInner",
                                                     "buffer"
+                                                  |)
                                                 ]
                                               |)
                                             |)) in
@@ -828,7 +836,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -866,7 +874,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -971,10 +979,11 @@ Module iter.
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::Buffer"
-                          "buffer")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::Buffer",
+                          "buffer"
+                        |))
                     ]
                   |)
                 ]
@@ -1025,10 +1034,11 @@ Module iter.
                     [
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::Buffer"
-                          "buffer")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::Buffer",
+                          "buffer"
+                        |))
                     ]
                   |)
                 ]
@@ -1077,10 +1087,11 @@ Module iter.
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::map_windows::Buffer"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::map_windows::Buffer",
                                                     "start"
+                                                  |)
                                                 |),
                                                 M.read (|
                                                   M.get_constant (|
@@ -1150,10 +1161,11 @@ Module iter.
                             [ M.read (| self |) ]
                           |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::map_windows::Buffer"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::Buffer",
                               "start"
+                            |)
                           |)
                         ]
                       |)
@@ -1205,10 +1217,11 @@ Module iter.
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::map_windows::Buffer"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::map_windows::Buffer",
                                                     "start"
+                                                  |)
                                                 |),
                                                 M.read (|
                                                   M.get_constant (|
@@ -1282,10 +1295,11 @@ Module iter.
                             [ M.read (| self |) ]
                           |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::map_windows::Buffer"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::Buffer",
                               "start"
+                            |)
                           |)
                         ]
                       |)
@@ -1398,10 +1412,11 @@ Module iter.
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::map_windows::Buffer"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::map_windows::Buffer",
                                                     "start"
+                                                  |)
                                                 |),
                                                 M.read (|
                                                   M.get_constant (|
@@ -1455,10 +1470,11 @@ Module iter.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::map_windows::Buffer"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::map_windows::Buffer",
                                         "start"
+                                      |)
                                     |))
                                     (M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
@@ -1498,10 +1514,11 @@ Module iter.
                                               M.read (| buffer_mut_ptr |);
                                               BinOp.Panic.add (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::map_windows::Buffer"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::map_windows::Buffer",
                                                     "start"
+                                                  |)
                                                 |),
                                                 Value.Integer Integer.Usize 1
                                               |)
@@ -1574,10 +1591,11 @@ Module iter.
                                     [
                                       M.read (| buffer_mut_ptr |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::map_windows::Buffer"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::map_windows::Buffer",
                                           "start"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1585,10 +1603,11 @@ Module iter.
                               |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::map_windows::Buffer"
-                                  "start",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::map_windows::Buffer",
+                                  "start"
+                                |),
                                 Value.Integer Integer.Usize 0
                               |) in
                             to_drop));
@@ -1623,10 +1642,11 @@ Module iter.
                                             M.read (| buffer_mut_ptr |);
                                             BinOp.Panic.add (|
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::map_windows::Buffer"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::map_windows::Buffer",
                                                   "start"
+                                                |)
                                               |),
                                               M.read (|
                                                 M.get_constant (|
@@ -1656,10 +1676,11 @@ Module iter.
                                     [
                                       M.read (| buffer_mut_ptr |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::map_windows::Buffer"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::map_windows::Buffer",
                                           "start"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1667,10 +1688,11 @@ Module iter.
                               |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::map_windows::Buffer"
-                                  "start" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::map_windows::Buffer",
+                                  "start"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -1755,10 +1777,11 @@ Module iter.
                             ]);
                         ("start",
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::map_windows::Buffer"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::Buffer",
                               "start"
+                            |)
                           |))
                       ]
                   |) in
@@ -1847,10 +1870,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::MapWindowsInner"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindowsInner",
                           "iter"
+                        |)
                       ]
                     |));
                   ("buffer",
@@ -1869,10 +1893,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::MapWindowsInner"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindowsInner",
                           "buffer"
+                        |)
                       ]
                     |))
                 ]))
@@ -1947,10 +1972,11 @@ Module iter.
                                   [ M.read (| self |) ]
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::map_windows::Buffer"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::map_windows::Buffer",
                                     "start"
+                                  |)
                                 |)
                               ]
                             |)
@@ -2035,10 +2061,11 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::map_windows::MapWindows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::map_windows::MapWindows",
                                       "inner"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2048,7 +2075,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2079,7 +2106,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2107,10 +2134,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::map_windows::MapWindows"
-                              "f";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::map_windows::MapWindows",
+                              "f"
+                            |);
                             Value.Tuple [ M.read (| window |) ]
                           ]
                         |)
@@ -2141,10 +2169,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::map_windows::MapWindows"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::map_windows::MapWindows",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2233,13 +2262,15 @@ Module iter.
                       M.read (| Value.String "iter" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::map_windows::MapWindows"
-                            "inner")
-                          "core::iter::adapters::map_windows::MapWindowsInner"
-                          "iter")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::map_windows::MapWindows",
+                            "inner"
+                          |),
+                          "core::iter::adapters::map_windows::MapWindowsInner",
+                          "iter"
+                        |))
                     ]
                   |)
                 ]
@@ -2278,10 +2309,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::MapWindows"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindows",
                           "f"
+                        |)
                       ]
                     |));
                   ("inner",
@@ -2296,10 +2328,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::map_windows::MapWindows"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindows",
                           "inner"
+                        |)
                       ]
                     |))
                 ]))

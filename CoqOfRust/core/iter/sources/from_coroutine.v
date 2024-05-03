@@ -44,10 +44,11 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
                     [
-                      M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::iter::sources::from_coroutine::FromCoroutine"
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::iter::sources::from_coroutine::FromCoroutine",
                         0
+                      |)
                     ]
                   |)
                 ]))
@@ -103,10 +104,11 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_tuple_field
-                              (M.read (| self |))
-                              "core::iter::sources::from_coroutine::FromCoroutine"
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "core::iter::sources::from_coroutine::FromCoroutine",
                               0
+                            |)
                           ]
                         |);
                         Value.Tuple []
@@ -117,7 +119,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::coroutine::CoroutineState::Yielded",
                             0
@@ -129,7 +131,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::coroutine::CoroutineState::Complete",
                             0

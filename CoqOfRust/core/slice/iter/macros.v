@@ -33,10 +33,11 @@ Module slice.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::Iter",
                           "ptr"
+                        |)
                       |)
                     ]
                   |));
@@ -60,10 +61,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Iter"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Iter",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -80,10 +82,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -97,10 +100,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -142,7 +146,11 @@ Module slice.
             M.read (|
               let old :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Iter" "ptr"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::Iter",
+                    "ptr"
+                  |)
                 |) in
               let _ :=
                 let _ :=
@@ -164,10 +172,11 @@ Module slice.
                                   [ Ty.path "usize" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -189,18 +198,20 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::Iter"
-                              "ptr",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::Iter",
+                              "ptr"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
@@ -209,10 +220,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "ptr"
+                                  |)
                                 |);
                                 M.read (| offset |)
                               ]
@@ -274,10 +286,11 @@ Module slice.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Iter",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -289,10 +302,11 @@ Module slice.
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                           |)
                         |) in
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::Iter"
-                        "ptr"));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Iter",
+                        "ptr"
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let end_ :=
@@ -304,10 +318,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Iter",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -368,10 +383,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Iter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Iter",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -388,10 +404,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Iter",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -405,10 +422,11 @@ Module slice.
                           [
                             M.read (| end_ |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Iter",
                                 "ptr"
+                              |)
                             |)
                           ]
                         |)
@@ -449,10 +467,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Iter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Iter",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -471,10 +490,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Iter",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -488,10 +508,11 @@ Module slice.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::Iter"
-                              "ptr";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::Iter",
+                              "ptr"
+                            |);
                             end_
                           ]
                         |)
@@ -573,10 +594,11 @@ Module slice.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::Iter"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::Iter",
                                               "end_or_len"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -598,10 +620,11 @@ Module slice.
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::Iter"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::Iter",
                                             "end_or_len"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -615,10 +638,11 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
-                                          "ptr";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
+                                          "ptr"
+                                        |);
                                         end_
                                       ]
                                     |)
@@ -694,10 +718,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Iter"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Iter",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -714,10 +739,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -731,10 +757,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Iter",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -783,10 +810,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::slice::iter::Iter"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::Iter",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -802,7 +830,12 @@ Module slice.
                               "cast",
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
-                            [ M.get_struct_record_field self "core::slice::iter::Iter" "end_or_len"
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::Iter",
+                                "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -816,7 +849,11 @@ Module slice.
                           [
                             M.read (| end_ |);
                             M.read (|
-                              M.get_struct_record_field self "core::slice::iter::Iter" "ptr"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::Iter",
+                                "ptr"
+                              |)
                             |)
                           ]
                         |)
@@ -891,10 +928,11 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::slice::iter::Iter"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::Iter",
                                                           "end_or_len"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -917,10 +955,11 @@ Module slice.
                                                       ]
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::Iter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::Iter",
                                                         "end_or_len"
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
@@ -936,10 +975,11 @@ Module slice.
                                                   [
                                                     M.read (| end_ |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::Iter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::Iter",
                                                         "ptr"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -980,10 +1020,11 @@ Module slice.
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::Iter"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::Iter",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -1008,18 +1049,20 @@ Module slice.
                                                     ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::Iter"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::Iter",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Iter"
-                                                "ptr",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Iter",
+                                                "ptr"
+                                              |),
                                               M.read (| M.read (| end_ |) |)
                                             |)))
                                       ]
@@ -1119,10 +1162,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::Iter"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::Iter",
                                             "end_or_len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1141,10 +1185,11 @@ Module slice.
                                         [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "end_or_len"
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -1158,10 +1203,11 @@ Module slice.
                                     [
                                       M.read (| end_ |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "ptr"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1321,10 +1367,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "core::slice::iter::Iter"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "core::slice::iter::Iter",
                                                     "end_or_len"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1351,10 +1398,11 @@ Module slice.
                                                 ]
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  self
-                                                  "core::slice::iter::Iter"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::slice::iter::Iter",
                                                   "end_or_len"
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1374,10 +1422,11 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                self
-                                                "core::slice::iter::Iter"
-                                                "ptr";
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::slice::iter::Iter",
+                                                "ptr"
+                                              |);
                                               end_
                                             ]
                                           |)
@@ -1419,10 +1468,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          self
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::slice::iter::Iter",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1441,10 +1491,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        self
-                                        "core::slice::iter::Iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::Iter",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1458,7 +1509,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field self "core::slice::iter::Iter" "ptr"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::Iter",
+                                        "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1500,10 +1555,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::slice::iter::Iter"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::slice::iter::Iter",
                                                 "ptr"
+                                              |)
                                             |);
                                             M.read (| i |)
                                           ]
@@ -1588,7 +1644,7 @@ Module slice.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -1672,7 +1728,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1779,7 +1835,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1885,7 +1941,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -2004,7 +2060,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -2029,7 +2085,7 @@ Module slice.
                                             |)
                                           |) in
                                         let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -2125,10 +2181,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2147,10 +2204,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::Iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Iter",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -2164,10 +2222,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::Iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Iter",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2198,7 +2257,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -2343,10 +2402,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2365,10 +2425,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::Iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Iter",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -2382,10 +2443,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::Iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Iter",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2416,7 +2478,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -2538,7 +2600,11 @@ Module slice.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Iter" "ptr"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Iter",
+                        "ptr"
+                      |)
                     |)
                   ]
                 |);
@@ -2716,10 +2782,11 @@ Module slice.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::Iter"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::Iter",
                                               "end_or_len"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -2741,10 +2808,11 @@ Module slice.
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::Iter"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::Iter",
                                             "end_or_len"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -2758,10 +2826,11 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
-                                          "ptr";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
+                                          "ptr"
+                                        |);
                                         end_
                                       ]
                                     |)
@@ -2867,10 +2936,11 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::slice::iter::Iter"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::Iter",
                                                           "end_or_len"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -2893,10 +2963,11 @@ Module slice.
                                                       ]
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::Iter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::Iter",
                                                         "end_or_len"
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
@@ -2912,10 +2983,11 @@ Module slice.
                                                   [
                                                     M.read (| end_ |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::Iter"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::Iter",
                                                         "ptr"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -2956,10 +3028,11 @@ Module slice.
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::Iter"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::Iter",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -2984,20 +3057,22 @@ Module slice.
                                                     ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::Iter"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::Iter",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
                                             M.write (|
                                               M.read (| end_ |),
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::slice::iter::Iter"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Iter",
                                                   "ptr"
+                                                |)
                                               |)
                                             |)))
                                       ]
@@ -3097,10 +3172,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::Iter"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::Iter",
                                             "end_or_len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3119,10 +3195,11 @@ Module slice.
                                         [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "end_or_len"
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -3136,10 +3213,11 @@ Module slice.
                                     [
                                       M.read (| end_ |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Iter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Iter",
                                           "ptr"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3349,10 +3427,11 @@ Module slice.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::IterMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::IterMut",
                           "ptr"
+                        |)
                       |)
                     ]
                   |));
@@ -3376,10 +3455,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::IterMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::IterMut",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3396,10 +3476,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -3413,10 +3494,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -3458,7 +3540,11 @@ Module slice.
             M.read (|
               let old :=
                 M.copy (|
-                  M.get_struct_record_field (M.read (| self |)) "core::slice::iter::IterMut" "ptr"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::IterMut",
+                    "ptr"
+                  |)
                 |) in
               let _ :=
                 let _ :=
@@ -3480,10 +3566,11 @@ Module slice.
                                   [ Ty.path "usize" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -3505,18 +3592,20 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::IterMut"
-                              "ptr",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::IterMut",
+                              "ptr"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
@@ -3525,10 +3614,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "ptr"
+                                  |)
                                 |);
                                 M.read (| offset |)
                               ]
@@ -3590,10 +3680,11 @@ Module slice.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::IterMut",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -3605,10 +3696,11 @@ Module slice.
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                           |)
                         |) in
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::IterMut"
-                        "ptr"));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::IterMut",
+                        "ptr"
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let end_ :=
@@ -3620,10 +3712,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::IterMut",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -3684,10 +3777,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::IterMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::IterMut",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -3704,10 +3798,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::IterMut",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -3721,10 +3816,11 @@ Module slice.
                           [
                             M.read (| end_ |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::IterMut",
                                 "ptr"
+                              |)
                             |)
                           ]
                         |)
@@ -3765,10 +3861,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::IterMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::IterMut",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -3787,10 +3884,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::IterMut",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -3804,10 +3902,11 @@ Module slice.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::IterMut"
-                              "ptr";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::IterMut",
+                              "ptr"
+                            |);
                             end_
                           ]
                         |)
@@ -3889,10 +3988,11 @@ Module slice.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::IterMut"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::IterMut",
                                               "end_or_len"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -3914,10 +4014,11 @@ Module slice.
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::IterMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::IterMut",
                                             "end_or_len"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -3931,10 +4032,11 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
-                                          "ptr";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
+                                          "ptr"
+                                        |);
                                         end_
                                       ]
                                     |)
@@ -4010,10 +4112,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::IterMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::IterMut",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4030,10 +4133,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -4047,10 +4151,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -4099,10 +4204,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::slice::iter::IterMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::IterMut",
                                   "end_or_len"
+                                |)
                               |)
                             ]
                           |)
@@ -4119,10 +4225,11 @@ Module slice.
                               [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                self
-                                "core::slice::iter::IterMut"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::IterMut",
                                 "end_or_len"
+                              |)
                             ]
                           |)
                         |) in
@@ -4136,7 +4243,11 @@ Module slice.
                           [
                             M.read (| end_ |);
                             M.read (|
-                              M.get_struct_record_field self "core::slice::iter::IterMut" "ptr"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::IterMut",
+                                "ptr"
+                              |)
                             |)
                           ]
                         |)
@@ -4211,10 +4322,11 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::slice::iter::IterMut"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::IterMut",
                                                           "end_or_len"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -4237,10 +4349,11 @@ Module slice.
                                                       ]
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::IterMut"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::IterMut",
                                                         "end_or_len"
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
@@ -4256,10 +4369,11 @@ Module slice.
                                                   [
                                                     M.read (| end_ |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::IterMut"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::IterMut",
                                                         "ptr"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -4300,10 +4414,11 @@ Module slice.
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::IterMut"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::IterMut",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -4328,18 +4443,20 @@ Module slice.
                                                     ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::IterMut"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::IterMut",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::IterMut"
-                                                "ptr",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::IterMut",
+                                                "ptr"
+                                              |),
                                               M.read (| M.read (| end_ |) |)
                                             |)))
                                       ]
@@ -4439,10 +4556,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::IterMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::IterMut",
                                             "end_or_len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -4461,10 +4579,11 @@ Module slice.
                                         [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "end_or_len"
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -4478,10 +4597,11 @@ Module slice.
                                     [
                                       M.read (| end_ |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "ptr"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4641,10 +4761,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "core::slice::iter::IterMut"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "core::slice::iter::IterMut",
                                                     "end_or_len"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -4671,10 +4792,11 @@ Module slice.
                                                 ]
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  self
-                                                  "core::slice::iter::IterMut"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::slice::iter::IterMut",
                                                   "end_or_len"
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -4694,10 +4816,11 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                self
-                                                "core::slice::iter::IterMut"
-                                                "ptr";
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::slice::iter::IterMut",
+                                                "ptr"
+                                              |);
                                               end_
                                             ]
                                           |)
@@ -4739,10 +4862,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          self
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::slice::iter::IterMut",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4761,10 +4885,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        self
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::IterMut",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -4778,10 +4903,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::IterMut",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -4823,10 +4949,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::slice::iter::IterMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::slice::iter::IterMut",
                                                 "ptr"
+                                              |)
                                             |);
                                             M.read (| i |)
                                           ]
@@ -4911,7 +5038,7 @@ Module slice.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -4995,7 +5122,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5103,7 +5230,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5209,7 +5336,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5328,7 +5455,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5353,7 +5480,7 @@ Module slice.
                                             |)
                                           |) in
                                         let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -5449,10 +5576,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -5471,10 +5599,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::IterMut",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -5488,10 +5617,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::IterMut",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -5522,7 +5652,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5668,10 +5798,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "end_or_len"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -5690,10 +5821,11 @@ Module slice.
                                       [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::IterMut",
                                         "end_or_len"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -5707,10 +5839,11 @@ Module slice.
                                   [
                                     M.read (| end_ |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::IterMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::IterMut",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -5741,7 +5874,7 @@ Module slice.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -5863,10 +5996,11 @@ Module slice.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::IterMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::IterMut",
                         "ptr"
+                      |)
                     |)
                   ]
                 |);
@@ -5960,10 +6094,11 @@ Module slice.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::IterMut"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::IterMut",
                                               "end_or_len"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -5985,10 +6120,11 @@ Module slice.
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::IterMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::IterMut",
                                             "end_or_len"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -6002,10 +6138,11 @@ Module slice.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
-                                          "ptr";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
+                                          "ptr"
+                                        |);
                                         end_
                                       ]
                                     |)
@@ -6111,10 +6248,11 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "core::slice::iter::IterMut"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::IterMut",
                                                           "end_or_len"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -6137,10 +6275,11 @@ Module slice.
                                                       ]
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::IterMut"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::IterMut",
                                                         "end_or_len"
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
@@ -6156,10 +6295,11 @@ Module slice.
                                                   [
                                                     M.read (| end_ |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::IterMut"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::IterMut",
                                                         "ptr"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -6200,10 +6340,11 @@ Module slice.
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::IterMut"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::IterMut",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -6228,20 +6369,22 @@ Module slice.
                                                     ]
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::IterMut"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::IterMut",
                                                       "end_or_len"
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
                                             M.write (|
                                               M.read (| end_ |),
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::slice::iter::IterMut"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::IterMut",
                                                   "ptr"
+                                                |)
                                               |)
                                             |)))
                                       ]
@@ -6341,10 +6484,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::IterMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::IterMut",
                                             "end_or_len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -6363,10 +6507,11 @@ Module slice.
                                         [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "end_or_len"
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -6380,10 +6525,11 @@ Module slice.
                                     [
                                       M.read (| end_ |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::IterMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::IterMut",
                                           "ptr"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -6592,7 +6738,13 @@ Module slice.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::SplitN" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::SplitN",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6618,7 +6770,13 @@ Module slice.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::SplitN" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::SplitN",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6679,7 +6837,13 @@ Module slice.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitN" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitN",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6705,7 +6869,13 @@ Module slice.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitN" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitN",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -6766,7 +6936,12 @@ Module slice.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::SplitNMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::SplitNMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6793,7 +6968,12 @@ Module slice.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::SplitNMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::SplitNMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6856,10 +7036,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::RSplitNMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitNMut",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6887,10 +7068,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::RSplitNMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitNMut",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible

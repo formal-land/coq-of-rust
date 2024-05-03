@@ -286,7 +286,7 @@ Module checked.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -327,7 +327,7 @@ Module checked.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -369,7 +369,7 @@ Module checked.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -410,7 +410,7 @@ Module checked.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -463,7 +463,8 @@ Module checked.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let why := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -494,7 +495,8 @@ Module checked.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|

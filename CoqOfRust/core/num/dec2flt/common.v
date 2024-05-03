@@ -179,8 +179,8 @@ Module num.
                             ltac:(M.monadic
                               (let γ := s in
                               let γ := M.read (| γ |) in
-                              let γ1_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                              let γ1_rest := M.get_slice_rest_or_break_match (| γ, 1, 0 |) in
+                              let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                              let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                               let c := M.alloc (| γ1_0 |) in
                               let s_next := M.alloc (| γ1_rest |) in
                               let c :=
@@ -335,18 +335,20 @@ Module num.
                   M.read (| Value.String "f" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::dec2flt::common::BiasedFp"
-                      "f");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::dec2flt::common::BiasedFp",
+                      "f"
+                    |));
                   M.read (| Value.String "e" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::dec2flt::common::BiasedFp"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::dec2flt::common::BiasedFp",
                         "e"
+                      |)
                     |))
                 ]
               |)))
@@ -429,30 +431,34 @@ Module num.
               LogicalOp.and (|
                 BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::dec2flt::common::BiasedFp"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::dec2flt::common::BiasedFp",
                       "f"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::num::dec2flt::common::BiasedFp"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::num::dec2flt::common::BiasedFp",
                       "f"
+                    |)
                   |)),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::dec2flt::common::BiasedFp"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::dec2flt::common::BiasedFp",
                         "e"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "core::num::dec2flt::common::BiasedFp"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "core::num::dec2flt::common::BiasedFp",
                         "e"
+                      |)
                     |))))
               |)))
           | _, _ => M.impossible

@@ -38,16 +38,18 @@ Module slice.
                     M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::sort::InsertionHole"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::sort::InsertionHole",
                           "src"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::sort::InsertionHole"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::sort::InsertionHole",
                           "dest"
+                        |)
                       |);
                       Value.Integer Integer.Usize 1
                     ]
@@ -290,10 +292,11 @@ Module slice.
                             (* MutToConstPointer *)
                             M.pointer_coercion
                               (M.read (|
-                                M.get_struct_record_field
-                                  hole
-                                  "core::slice::sort::InsertionHole"
+                                M.SubPointer.get_struct_record_field (|
+                                  hole,
+                                  "core::slice::sort::InsertionHole",
                                   "dest"
+                                |)
                               |));
                             M.read (| i_ptr |);
                             Value.Integer Integer.Usize 1
@@ -374,7 +377,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -464,10 +467,11 @@ Module slice.
                                                     (* MutToConstPointer *)
                                                     M.pointer_coercion (M.read (| j_ptr |));
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        hole
-                                                        "core::slice::sort::InsertionHole"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        hole,
+                                                        "core::slice::sort::InsertionHole",
                                                         "dest"
+                                                      |)
                                                     |);
                                                     Value.Integer Integer.Usize 1
                                                   ]
@@ -475,10 +479,11 @@ Module slice.
                                               |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_struct_record_field
-                                                  hole
-                                                  "core::slice::sort::InsertionHole"
-                                                  "dest",
+                                                M.SubPointer.get_struct_record_field (|
+                                                  hole,
+                                                  "core::slice::sort::InsertionHole",
+                                                  "dest"
+                                                |),
                                                 M.read (| j_ptr |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)))
@@ -792,7 +797,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -910,10 +915,11 @@ Module slice.
                                               |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_struct_record_field
-                                                  hole
-                                                  "core::slice::sort::InsertionHole"
-                                                  "dest",
+                                                M.SubPointer.get_struct_record_field (|
+                                                  hole,
+                                                  "core::slice::sort::InsertionHole",
+                                                  "dest"
+                                                |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "*mut") [ T ],
@@ -1052,7 +1058,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -1245,7 +1251,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -1420,7 +1426,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -1902,11 +1908,11 @@ Module slice.
                                                                     is_less;
                                                                     Value.Tuple
                                                                       [
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           child
                                                                         |);
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           M.alloc (|
                                                                             BinOp.Panic.add (|
@@ -1960,11 +1966,11 @@ Module slice.
                                                                     is_less;
                                                                     Value.Tuple
                                                                       [
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           node
                                                                         |);
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           child
                                                                         |)
@@ -2094,7 +2100,7 @@ Module slice.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -2216,7 +2222,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -3005,7 +3011,7 @@ Module slice.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -3169,7 +3175,7 @@ Module slice.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -3420,7 +3426,7 @@ Module slice.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -3779,8 +3785,8 @@ Module slice.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ0_0 := M.get_tuple_field γ 0 in
-                                        let γ0_1 := M.get_tuple_field γ 1 in
+                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let left_val := M.copy (| γ0_0 |) in
                                         let right_val := M.copy (| γ0_1 |) in
                                         M.match_operator (|
@@ -3995,8 +4001,10 @@ Module slice.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let left_val := M.copy (| γ0_0 |) in
                                                 let right_val := M.copy (| γ0_1 |) in
                                                 M.match_operator (|
@@ -4360,13 +4368,13 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let pivot := M.copy (| γ0_0 |) in
                       let v := M.copy (| γ0_1 |) in
                       let pivot :=
                         M.alloc (|
-                          M.get_array_field (|
+                          M.SubPointer.get_array_field (|
                             M.read (| pivot |),
                             M.alloc (| Value.Integer Integer.Usize 0 |)
                           |)
@@ -4637,8 +4645,8 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let mid := M.copy (| γ0_0 |) in
                     let was_partitioned := M.copy (| γ0_1 |) in
                     let _ :=
@@ -4753,13 +4761,13 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let pivot := M.copy (| γ0_0 |) in
                         let v := M.copy (| γ0_1 |) in
                         let pivot :=
                           M.alloc (|
-                            M.get_array_field (|
+                            M.SubPointer.get_array_field (|
                               M.read (| pivot |),
                               M.alloc (| Value.Integer Integer.Usize 0 |)
                             |)
@@ -5346,7 +5354,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -6371,8 +6379,8 @@ Module slice.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let pivot := M.copy (| γ0_0 |) in
                                   let likely_sorted := M.copy (| γ0_1 |) in
                                   let _ :=
@@ -6439,7 +6447,7 @@ Module slice.
                                           ltac:(M.monadic
                                             (let γ := pred in
                                             let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -6473,7 +6481,7 @@ Module slice.
                                                                 Value.Tuple
                                                                   [
                                                                     M.read (| p |);
-                                                                    M.get_array_field (|
+                                                                    M.SubPointer.get_array_field (|
                                                                       M.read (| v |),
                                                                       pivot
                                                                     |)
@@ -6551,8 +6559,8 @@ Module slice.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let mid := M.copy (| γ0_0 |) in
                                           let was_p := M.copy (| γ0_1 |) in
                                           let _ :=
@@ -6593,8 +6601,10 @@ Module slice.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let left := M.copy (| γ0_0 |) in
                                                   let right := M.copy (| γ0_1 |) in
                                                   M.match_operator (|
@@ -6614,13 +6624,21 @@ Module slice.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
                                                           let pivot := M.copy (| γ0_0 |) in
                                                           let right := M.copy (| γ0_1 |) in
                                                           let pivot :=
                                                             M.alloc (|
-                                                              M.get_array_field (|
+                                                              M.SubPointer.get_array_field (|
                                                                 M.read (| pivot |),
                                                                 M.alloc (|
                                                                   Value.Integer Integer.Usize 0
@@ -6969,8 +6987,8 @@ Module slice.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let v_mid := M.copy (| γ0_0 |) in
                     let v_end := M.copy (| γ0_1 |) in
                     let hole := M.copy (| Value.DeclaredButUndefined |) in
@@ -7029,18 +7047,20 @@ Module slice.
                                 M.alloc (| Value.Tuple [] |) in
                               let left :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    hole
-                                    "core::slice::sort::merge::MergeHole"
+                                  M.SubPointer.get_struct_record_field (|
+                                    hole,
+                                    "core::slice::sort::merge::MergeHole",
                                     "start"
+                                  |)
                                 |) in
                               let right := M.copy (| v_mid |) in
                               let out :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    hole
-                                    "core::slice::sort::merge::MergeHole"
+                                  M.SubPointer.get_struct_record_field (|
+                                    hole,
+                                    "core::slice::sort::merge::MergeHole",
                                     "dest"
+                                  |)
                                 |) in
                               M.loop (|
                                 ltac:(M.monadic
@@ -7056,10 +7076,11 @@ Module slice.
                                                   BinOp.Pure.lt
                                                     (M.read (| M.read (| left |) |))
                                                     (M.read (|
-                                                      M.get_struct_record_field
-                                                        hole
-                                                        "core::slice::sort::merge::MergeHole"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        hole,
+                                                        "core::slice::sort::merge::MergeHole",
                                                         "end"
+                                                      |)
                                                     |)),
                                                   ltac:(M.monadic
                                                     (BinOp.Pure.lt
@@ -7239,17 +7260,19 @@ Module slice.
                                 M.alloc (| Value.Tuple [] |) in
                               let left :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    hole
-                                    "core::slice::sort::merge::MergeHole"
+                                  M.SubPointer.get_struct_record_field (|
+                                    hole,
+                                    "core::slice::sort::merge::MergeHole",
                                     "dest"
+                                  |)
                                 |) in
                               let right :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    hole
-                                    "core::slice::sort::merge::MergeHole"
+                                  M.SubPointer.get_struct_record_field (|
+                                    hole,
+                                    "core::slice::sort::merge::MergeHole",
                                     "end"
+                                  |)
                                 |) in
                               let out := M.copy (| v_end |) in
                               M.loop (|
@@ -7467,18 +7490,20 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::sort::merge::MergeHole"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::sort::merge::MergeHole",
                             "end"
+                          |)
                         |);
                         (* MutToConstPointer *)
                         M.pointer_coercion
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::sort::merge::MergeHole"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::sort::merge::MergeHole",
                               "start"
+                            |)
                           |))
                       ]
                     |)
@@ -7491,16 +7516,18 @@ Module slice.
                         (* MutToConstPointer *)
                         M.pointer_coercion
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::sort::merge::MergeHole"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::sort::merge::MergeHole",
                               "start"
+                            |)
                           |));
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::sort::merge::MergeHole"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::sort::merge::MergeHole",
                             "dest"
+                          |)
                         |);
                         M.read (| len |)
                       ]
@@ -7959,10 +7986,11 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            buf
-                            "core::slice::sort::merge_sort::BufGuard"
+                          M.SubPointer.get_struct_record_field (|
+                            buf,
+                            "core::slice::sort::merge_sort::BufGuard",
                             "buf_ptr"
+                          |)
                         |)
                       ]
                     |)
@@ -8034,8 +8062,8 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let streak_end := M.copy (| γ0_0 |) in
                                       let was_reversed := M.copy (| γ0_1 |) in
                                       let _ :=
@@ -8170,7 +8198,7 @@ Module slice.
                                                       |)
                                                     |) in
                                                   let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -8235,24 +8263,27 @@ Module slice.
                                                             [
                                                               ("start",
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    left
-                                                                    "core::slice::sort::TimSortRun"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    left,
+                                                                    "core::slice::sort::TimSortRun",
                                                                     "start"
+                                                                  |)
                                                                 |));
                                                               ("end_",
                                                                 BinOp.Panic.add (|
                                                                   M.read (|
-                                                                    M.get_struct_record_field
-                                                                      right
-                                                                      "core::slice::sort::TimSortRun"
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      right,
+                                                                      "core::slice::sort::TimSortRun",
                                                                       "start"
+                                                                    |)
                                                                   |),
                                                                   M.read (|
-                                                                    M.get_struct_record_field
-                                                                      right
-                                                                      "core::slice::sort::TimSortRun"
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      right,
+                                                                      "core::slice::sort::TimSortRun",
                                                                       "len"
+                                                                    |)
                                                                   |)
                                                                 |))
                                                             ]
@@ -8270,10 +8301,11 @@ Module slice.
                                                           [
                                                             M.read (| merge_slice |);
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                left
-                                                                "core::slice::sort::TimSortRun"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                left,
+                                                                "core::slice::sort::TimSortRun",
                                                                 "len"
+                                                              |)
                                                             |);
                                                             M.read (| buf_ptr |);
                                                             M.read (| is_less |)
@@ -8307,24 +8339,27 @@ Module slice.
                                                         [
                                                           ("start",
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                left
-                                                                "core::slice::sort::TimSortRun"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                left,
+                                                                "core::slice::sort::TimSortRun",
                                                                 "start"
+                                                              |)
                                                             |));
                                                           ("len",
                                                             BinOp.Panic.add (|
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  left
-                                                                  "core::slice::sort::TimSortRun"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  left,
+                                                                  "core::slice::sort::TimSortRun",
                                                                   "len"
+                                                                |)
                                                               |),
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  right
-                                                                  "core::slice::sort::TimSortRun"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  right,
+                                                                  "core::slice::sort::TimSortRun",
                                                                   "len"
+                                                                |)
                                                               |)
                                                             |))
                                                         ]
@@ -8417,8 +8452,8 @@ Module slice.
                                                 ltac:(M.monadic
                                                   (BinOp.Pure.eq
                                                     (M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.call_closure (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::ops::index::Index",
                                                             Ty.apply
@@ -8430,17 +8465,18 @@ Module slice.
                                                             []
                                                           |),
                                                           [ runs; Value.Integer Integer.Usize 0 ]
-                                                        |))
-                                                        "core::slice::sort::TimSortRun"
+                                                        |),
+                                                        "core::slice::sort::TimSortRun",
                                                         "start"
+                                                      |)
                                                     |))
                                                     (Value.Integer Integer.Usize 0)))
                                               |),
                                               ltac:(M.monadic
                                                 (BinOp.Pure.eq
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.call_closure (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::ops::index::Index",
                                                           Ty.apply
@@ -8452,9 +8488,10 @@ Module slice.
                                                           []
                                                         |),
                                                         [ runs; Value.Integer Integer.Usize 0 ]
-                                                      |))
-                                                      "core::slice::sort::TimSortRun"
+                                                      |),
+                                                      "core::slice::sort::TimSortRun",
                                                       "len"
+                                                    |)
                                                   |))
                                                   (M.read (| len |))))
                                             |))
@@ -8544,8 +8581,8 @@ Module slice.
                                       BinOp.Pure.eq
                                         (BinOp.Panic.add (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8553,13 +8590,14 @@ Module slice.
                                                     Value.Integer Integer.Usize 1
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "start"
+                                            |)
                                           |),
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8567,17 +8605,18 @@ Module slice.
                                                     Value.Integer Integer.Usize 1
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |)
                                         |))
                                         (M.read (| stop |)),
                                       ltac:(M.monadic
                                         (BinOp.Pure.le
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8585,13 +8624,14 @@ Module slice.
                                                     Value.Integer Integer.Usize 2
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8599,9 +8639,10 @@ Module slice.
                                                     Value.Integer Integer.Usize 1
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |))))
                                     |),
                                     ltac:(M.monadic
@@ -8612,8 +8653,8 @@ Module slice.
                                         ltac:(M.monadic
                                           (BinOp.Pure.le
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_array_field (|
                                                   M.read (| runs |),
                                                   M.alloc (|
                                                     BinOp.Panic.sub (|
@@ -8621,14 +8662,15 @@ Module slice.
                                                       Value.Integer Integer.Usize 3
                                                     |)
                                                   |)
-                                                |))
-                                                "core::slice::sort::TimSortRun"
+                                                |),
+                                                "core::slice::sort::TimSortRun",
                                                 "len"
+                                              |)
                                             |))
                                             (BinOp.Panic.add (|
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     M.read (| runs |),
                                                     M.alloc (|
                                                       BinOp.Panic.sub (|
@@ -8636,13 +8678,14 @@ Module slice.
                                                         Value.Integer Integer.Usize 2
                                                       |)
                                                     |)
-                                                  |))
-                                                  "core::slice::sort::TimSortRun"
+                                                  |),
+                                                  "core::slice::sort::TimSortRun",
                                                   "len"
+                                                |)
                                               |),
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.SubPointer.get_array_field (|
                                                     M.read (| runs |),
                                                     M.alloc (|
                                                       BinOp.Panic.sub (|
@@ -8650,9 +8693,10 @@ Module slice.
                                                         Value.Integer Integer.Usize 1
                                                       |)
                                                     |)
-                                                  |))
-                                                  "core::slice::sort::TimSortRun"
+                                                  |),
+                                                  "core::slice::sort::TimSortRun",
                                                   "len"
+                                                |)
                                               |)
                                             |))))
                                       |)))
@@ -8665,8 +8709,8 @@ Module slice.
                                       ltac:(M.monadic
                                         (BinOp.Pure.le
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8674,14 +8718,15 @@ Module slice.
                                                     Value.Integer Integer.Usize 4
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |))
                                           (BinOp.Panic.add (|
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_array_field (|
                                                   M.read (| runs |),
                                                   M.alloc (|
                                                     BinOp.Panic.sub (|
@@ -8689,13 +8734,14 @@ Module slice.
                                                       Value.Integer Integer.Usize 3
                                                     |)
                                                   |)
-                                                |))
-                                                "core::slice::sort::TimSortRun"
+                                                |),
+                                                "core::slice::sort::TimSortRun",
                                                 "len"
+                                              |)
                                             |),
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.get_array_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_array_field (|
                                                   M.read (| runs |),
                                                   M.alloc (|
                                                     BinOp.Panic.sub (|
@@ -8703,9 +8749,10 @@ Module slice.
                                                       Value.Integer Integer.Usize 2
                                                     |)
                                                   |)
-                                                |))
-                                                "core::slice::sort::TimSortRun"
+                                                |),
+                                                "core::slice::sort::TimSortRun",
                                                 "len"
+                                              |)
                                             |)
                                           |))))
                                     |)))
@@ -8728,8 +8775,8 @@ Module slice.
                                       ltac:(M.monadic
                                         (BinOp.Pure.lt
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8737,13 +8784,14 @@ Module slice.
                                                     Value.Integer Integer.Usize 3
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |))
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              (M.get_array_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| runs |),
                                                 M.alloc (|
                                                   BinOp.Panic.sub (|
@@ -8751,9 +8799,10 @@ Module slice.
                                                     Value.Integer Integer.Usize 1
                                                   |)
                                                 |)
-                                              |))
-                                              "core::slice::sort::TimSortRun"
+                                              |),
+                                              "core::slice::sort::TimSortRun",
                                               "len"
+                                            |)
                                           |))))
                                     |)
                                   |)) in
@@ -8907,10 +8956,11 @@ Module slice.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::sort::merge_sort::BufGuard"
-                          "elem_dealloc_fn";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::sort::merge_sort::BufGuard",
+                          "elem_dealloc_fn"
+                        |);
                         Value.Tuple
                           [
                             M.call_closure (|
@@ -8921,18 +8971,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::sort::merge_sort::BufGuard"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::sort::merge_sort::BufGuard",
                                     "buf_ptr"
+                                  |)
                                 |)
                               ]
                             |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::sort::merge_sort::BufGuard"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::sort::merge_sort::BufGuard",
                                 "capacity"
+                              |)
                             |)
                           ]
                       ]
@@ -9103,26 +9155,29 @@ Module slice.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::sort::merge_sort::RunVec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::sort::merge_sort::RunVec",
                                       "len"
+                                    |)
                                   |))
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::sort::merge_sort::RunVec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::sort::merge_sort::RunVec",
                                       "capacity"
+                                    |)
                                   |))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let old_capacity :=
                             M.copy (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::sort::merge_sort::RunVec"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::sort::merge_sort::RunVec",
                                 "capacity"
+                              |)
                             |) in
                           let old_buf_ptr :=
                             M.alloc (|
@@ -9136,36 +9191,40 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::sort::merge_sort::RunVec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::sort::merge_sort::RunVec",
                                       "buf_ptr"
+                                    |)
                                   |)
                                 ]
                               |)
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::sort::merge_sort::RunVec"
-                                "capacity",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::sort::merge_sort::RunVec",
+                                "capacity"
+                              |),
                               BinOp.Panic.mul (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::sort::merge_sort::RunVec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::sort::merge_sort::RunVec",
                                     "capacity"
+                                  |)
                                 |),
                                 Value.Integer Integer.Usize 2
                               |)
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::sort::merge_sort::RunVec"
-                                "buf_ptr",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::sort::merge_sort::RunVec",
+                                "buf_ptr"
+                              |),
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -9197,17 +9256,19 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::sort::merge_sort::RunVec"
-                                            "run_alloc_fn";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::sort::merge_sort::RunVec",
+                                            "run_alloc_fn"
+                                          |);
                                           Value.Tuple
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::slice::sort::merge_sort::RunVec"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::sort::merge_sort::RunVec",
                                                   "capacity"
+                                                |)
                                               |)
                                             ]
                                         ]
@@ -9238,10 +9299,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::sort::merge_sort::RunVec"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::sort::merge_sort::RunVec",
                                             "buf_ptr"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -9269,10 +9331,11 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::sort::merge_sort::RunVec"
-                                    "run_dealloc_fn";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::sort::merge_sort::RunVec",
+                                    "run_dealloc_fn"
+                                  |);
                                   Value.Tuple
                                     [ M.read (| old_buf_ptr |); M.read (| old_capacity |) ]
                                 ]
@@ -9309,18 +9372,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::sort::merge_sort::RunVec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::sort::merge_sort::RunVec",
                                       "buf_ptr"
+                                    |)
                                   |)
                                 ]
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::sort::merge_sort::RunVec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::sort::merge_sort::RunVec",
                                   "len"
+                                |)
                               |)
                             ]
                           |);
@@ -9331,10 +9396,11 @@ Module slice.
                   M.alloc (| Value.Tuple [] |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::sort::merge_sort::RunVec"
-                      "len" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::sort::merge_sort::RunVec",
+                      "len"
+                    |) in
                   M.write (|
                     β,
                     BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -9385,10 +9451,11 @@ Module slice.
                                 BinOp.Pure.ge
                                   (M.read (| index |))
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::sort::merge_sort::RunVec"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::sort::merge_sort::RunVec",
                                       "len"
+                                    |)
                                   |))
                               |)) in
                           let _ :=
@@ -9440,10 +9507,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::sort::merge_sort::RunVec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::sort::merge_sort::RunVec",
                                   "buf_ptr"
+                                |)
                               |)
                             ]
                           |);
@@ -9475,10 +9543,11 @@ Module slice.
                           BinOp.Panic.sub (|
                             BinOp.Panic.sub (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::sort::merge_sort::RunVec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::sort::merge_sort::RunVec",
                                   "len"
+                                |)
                               |),
                               M.read (| index |)
                             |),
@@ -9490,10 +9559,11 @@ Module slice.
                   M.alloc (| Value.Tuple [] |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::sort::merge_sort::RunVec"
-                      "len" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::sort::merge_sort::RunVec",
+                      "len"
+                    |) in
                   M.write (|
                     β,
                     BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -9540,18 +9610,20 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::sort::merge_sort::RunVec"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::sort::merge_sort::RunVec",
                             "buf_ptr"
+                          |)
                         |)
                       ]
                     |));
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::sort::merge_sort::RunVec"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::sort::merge_sort::RunVec",
                       "len"
+                    |)
                   |)
                 ]
               |)))
@@ -9577,10 +9649,11 @@ Module slice.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::sort::merge_sort::RunVec"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::sort::merge_sort::RunVec",
                   "len"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -9633,10 +9706,11 @@ Module slice.
                                       BinOp.Pure.lt
                                         (M.read (| index |))
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::sort::merge_sort::RunVec"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::sort::merge_sort::RunVec",
                                             "len"
+                                          |)
                                         |))
                                     |)) in
                                 let _ :=
@@ -9667,10 +9741,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::sort::merge_sort::RunVec"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::sort::merge_sort::RunVec",
                                                     "buf_ptr"
+                                                  |)
                                                 |)
                                               ]
                                             |);
@@ -9767,10 +9842,11 @@ Module slice.
                                       BinOp.Pure.lt
                                         (M.read (| index |))
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::sort::merge_sort::RunVec"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::sort::merge_sort::RunVec",
                                             "len"
+                                          |)
                                         |))
                                     |)) in
                                 let _ :=
@@ -9801,10 +9877,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::sort::merge_sort::RunVec"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::sort::merge_sort::RunVec",
                                                     "buf_ptr"
+                                                  |)
                                                 |)
                                               ]
                                             |);
@@ -9890,10 +9967,11 @@ Module slice.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::sort::merge_sort::RunVec"
-                          "run_dealloc_fn";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::sort::merge_sort::RunVec",
+                          "run_dealloc_fn"
+                        |);
                         Value.Tuple
                           [
                             M.call_closure (|
@@ -9906,18 +9984,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::sort::merge_sort::RunVec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::sort::merge_sort::RunVec",
                                     "buf_ptr"
+                                  |)
                                 |)
                               ]
                             |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::sort::merge_sort::RunVec"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::sort::merge_sort::RunVec",
                                 "capacity"
+                              |)
                             |)
                           ]
                       ]
@@ -10004,18 +10084,20 @@ Module slice.
                 M.read (| Value.String "len" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::sort::TimSortRun"
-                    "len");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::sort::TimSortRun",
+                    "len"
+                  |));
                 M.read (| Value.String "start" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::sort::TimSortRun"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::sort::TimSortRun",
                       "start"
+                    |)
                   |))
               ]
             |)))

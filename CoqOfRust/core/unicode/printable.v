@@ -107,14 +107,14 @@ Module unicode.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
                                             |) in
                                           let γ0_0 := M.read (| γ0_0 |) in
-                                          let γ2_0 := M.get_tuple_field γ0_0 0 in
-                                          let γ2_1 := M.get_tuple_field γ0_0 1 in
+                                          let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let upper := M.copy (| γ2_0 |) in
                                           let lowercount := M.copy (| γ2_1 |) in
                                           let lowerend :=
@@ -226,7 +226,7 @@ Module unicode.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0
@@ -377,7 +377,7 @@ Module unicode.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0

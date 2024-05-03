@@ -97,10 +97,11 @@ Module num.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::dec2flt::ParseFloatError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::dec2flt::ParseFloatError",
                       "kind"
+                    |)
                   |))
               ]
             |)))
@@ -137,10 +138,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::dec2flt::ParseFloatError"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::dec2flt::ParseFloatError",
                         "kind"
+                      |)
                     ]
                   |))
               ]))
@@ -185,14 +187,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::num::dec2flt::ParseFloatError"
-                  "kind";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::num::dec2flt::ParseFloatError"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::dec2flt::ParseFloatError",
                   "kind"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::num::dec2flt::ParseFloatError",
+                  "kind"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -451,10 +455,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::num::dec2flt::ParseFloatError"
-                  "kind",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::dec2flt::ParseFloatError",
+                  "kind"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -564,7 +569,13 @@ Module num.
           (let x := M.alloc (| x |) in
           M.read (|
             let word :=
-              M.copy (| M.get_struct_record_field x "core::num::dec2flt::common::BiasedFp" "f" |) in
+              M.copy (|
+                M.SubPointer.get_struct_record_field (|
+                  x,
+                  "core::num::dec2flt::common::BiasedFp",
+                  "f"
+                |)
+              |) in
             let _ :=
               let β := word in
               M.write (|
@@ -574,7 +585,11 @@ Module num.
                   (BinOp.Panic.shl (|
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field x "core::num::dec2flt::common::BiasedFp" "e"
+                        M.SubPointer.get_struct_record_field (|
+                          x,
+                          "core::num::dec2flt::common::BiasedFp",
+                          "e"
+                        |)
                       |)),
                     M.read (|
                       M.get_constant (|
@@ -680,7 +695,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -809,7 +824,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -829,7 +844,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -872,7 +887,11 @@ Module num.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field num "core::num::dec2flt::number::Number" "negative",
+                    M.SubPointer.get_struct_record_field (|
+                      num,
+                      "core::num::dec2flt::number::Number",
+                      "negative"
+                    |),
                     M.read (| negative |)
                   |) in
                 let _ :=
@@ -893,7 +912,7 @@ Module num.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -919,16 +938,18 @@ Module num.
                       M.get_function (| "core::num::dec2flt::lemire::compute_float", [ F ] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            num
-                            "core::num::dec2flt::number::Number"
+                          M.SubPointer.get_struct_record_field (|
+                            num,
+                            "core::num::dec2flt::number::Number",
                             "exponent"
+                          |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            num
-                            "core::num::dec2flt::number::Number"
+                          M.SubPointer.get_struct_record_field (|
+                            num,
+                            "core::num::dec2flt::number::Number",
                             "mantissa"
+                          |)
                         |)
                       ]
                     |)
@@ -945,18 +966,20 @@ Module num.
                                 LogicalOp.and (|
                                   LogicalOp.and (|
                                     M.read (|
-                                      M.get_struct_record_field
-                                        num
-                                        "core::num::dec2flt::number::Number"
+                                      M.SubPointer.get_struct_record_field (|
+                                        num,
+                                        "core::num::dec2flt::number::Number",
                                         "many_digits"
+                                      |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.Pure.ge
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            fp
-                                            "core::num::dec2flt::common::BiasedFp"
+                                          M.SubPointer.get_struct_record_field (|
+                                            fp,
+                                            "core::num::dec2flt::common::BiasedFp",
                                             "e"
+                                          |)
                                         |))
                                         (Value.Integer Integer.I32 0)))
                                   |),
@@ -979,17 +1002,19 @@ Module num.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  num
-                                                  "core::num::dec2flt::number::Number"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  num,
+                                                  "core::num::dec2flt::number::Number",
                                                   "exponent"
+                                                |)
                                               |);
                                               BinOp.Panic.add (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    num
-                                                    "core::num::dec2flt::number::Number"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    num,
+                                                    "core::num::dec2flt::number::Number",
                                                     "mantissa"
+                                                  |)
                                                 |),
                                                 Value.Integer Integer.U64 1
                                               |)
@@ -1004,10 +1029,11 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                fp
-                                "core::num::dec2flt::common::BiasedFp"
-                                "e",
+                              M.SubPointer.get_struct_record_field (|
+                                fp,
+                                "core::num::dec2flt::common::BiasedFp",
+                                "e"
+                              |),
                               Value.Integer Integer.I32 (-1)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -1025,10 +1051,11 @@ Module num.
                               (M.alloc (|
                                 BinOp.Pure.lt
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      fp
-                                      "core::num::dec2flt::common::BiasedFp"
+                                    M.SubPointer.get_struct_record_field (|
+                                      fp,
+                                      "core::num::dec2flt::common::BiasedFp",
                                       "e"
+                                    |)
                                   |))
                                   (Value.Integer Integer.I32 0)
                               |)) in
@@ -1064,10 +1091,11 @@ Module num.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_struct_record_field
-                                num
-                                "core::num::dec2flt::number::Number"
-                                "negative") in
+                              (M.SubPointer.get_struct_record_field (|
+                                num,
+                                "core::num::dec2flt::number::Number",
+                                "negative"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=

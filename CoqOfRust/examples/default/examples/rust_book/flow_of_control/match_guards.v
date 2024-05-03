@@ -51,7 +51,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field (| γ, "match_guards::Temperature::Celsius", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "match_guards::Temperature::Celsius",
+                    0
+                  |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
                   M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 30) |) in
@@ -102,7 +106,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field (| γ, "match_guards::Temperature::Celsius", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "match_guards::Temperature::Celsius",
+                    0
+                  |) in
                 let t := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -150,7 +158,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field (| γ, "match_guards::Temperature::Fahrenheit", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "match_guards::Temperature::Fahrenheit",
+                    0
+                  |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
                   M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 86) |) in
@@ -201,7 +213,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field (| γ, "match_guards::Temperature::Fahrenheit", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "match_guards::Temperature::Fahrenheit",
+                    0
+                  |) in
                 let t := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

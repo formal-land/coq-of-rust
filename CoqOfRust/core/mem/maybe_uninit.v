@@ -364,7 +364,11 @@ Module mem.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field self "core::mem::maybe_uninit::MaybeUninit" "value"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::mem::maybe_uninit::MaybeUninit",
+                        "value"
+                      |)
                     |)
                   ]
                 |)
@@ -853,8 +857,8 @@ Module mem.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -1012,7 +1016,7 @@ Module mem.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1029,12 +1033,13 @@ Module mem.
                                                 []
                                               |),
                                               [
-                                                M.get_array_field (|
+                                                M.SubPointer.get_array_field (|
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      guard
-                                                      "core::mem::maybe_uninit::write_slice_cloned::Guard"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      guard,
+                                                      "core::mem::maybe_uninit::write_slice_cloned::Guard",
                                                       "slice"
+                                                    |)
                                                   |),
                                                   i
                                                 |);
@@ -1046,17 +1051,23 @@ Module mem.
                                                     "clone",
                                                     []
                                                   |),
-                                                  [ M.get_array_field (| M.read (| src |), i |) ]
+                                                  [
+                                                    M.SubPointer.get_array_field (|
+                                                      M.read (| src |),
+                                                      i
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
                                           |) in
                                         let _ :=
                                           let β :=
-                                            M.get_struct_record_field
-                                              guard
-                                              "core::mem::maybe_uninit::write_slice_cloned::Guard"
-                                              "initialized" in
+                                            M.SubPointer.get_struct_record_field (|
+                                              guard,
+                                              "core::mem::maybe_uninit::write_slice_cloned::Guard",
+                                              "initialized"
+                                            |) in
                                           M.write (|
                                             β,
                                             BinOp.Panic.add (|

@@ -103,13 +103,21 @@ Module asserting.
           M.read (|
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| to |)) "core::asserting::Capture" "elem",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| to |),
+                  "core::asserting::Capture",
+                  "elem"
+                |),
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
                     M.read (|
                       M.read (|
-                        M.get_struct_tuple_field (M.read (| self |)) "core::asserting::Wrapper" 0
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::asserting::Wrapper",
+                          0
+                        |)
                       |)
                     |)
                   ]
@@ -152,7 +160,11 @@ Module asserting.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              M.get_struct_record_field (M.read (| self |)) "core::asserting::Capture" "elem",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::asserting::Capture",
+                "elem"
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -169,7 +181,7 @@ Module asserting.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0

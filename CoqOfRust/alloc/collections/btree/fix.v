@@ -126,13 +126,13 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "alloc::collections::btree::node::LeftOrRight::Left",
                                     0
@@ -222,13 +222,13 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "alloc::collections::btree::node::LeftOrRight::Right",
                                     0
@@ -318,7 +318,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -429,13 +429,13 @@ Module collections.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::result::Result::Ok",
                                       0
                                     |) in
                                   let γ1_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ0_0,
                                       "core::option::Option::Some",
                                       0
@@ -463,7 +463,7 @@ Module collections.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::result::Result::Ok",
                                       0
@@ -476,7 +476,7 @@ Module collections.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::result::Result::Err",
                                       0
@@ -1040,7 +1040,7 @@ Module collections.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "alloc::collections::btree::node::ForceResult::Internal",
                                 0
@@ -1330,7 +1330,7 @@ Module collections.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "alloc::collections::btree::node::ForceResult::Internal",
                                 0
@@ -1598,7 +1598,7 @@ Module collections.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "alloc::collections::btree::node::ForceResult::Internal",
                                 0

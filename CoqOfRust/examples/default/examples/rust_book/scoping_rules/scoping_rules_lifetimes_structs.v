@@ -30,7 +30,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "scoping_rules_lifetimes_structs::Borrowed",
                   0
@@ -82,7 +82,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (|
+              (M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "scoping_rules_lifetimes_structs::NamedBorrowed",
                 "x"
@@ -91,7 +91,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "scoping_rules_lifetimes_structs::NamedBorrowed",
                   "y"
@@ -148,7 +148,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let γ1_0 :=
-                    M.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "scoping_rules_lifetimes_structs::Either::Num",
                       0
@@ -172,7 +172,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let γ1_0 :=
-                    M.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "scoping_rules_lifetimes_structs::Either::Ref",
                       0

@@ -32,10 +32,11 @@ Module num.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::num::error::TryFromIntError"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::num::error::TryFromIntError",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -117,8 +118,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::error::TryFromIntError" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::error::TryFromIntError" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::error::TryFromIntError",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::error::TryFromIntError",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -320,10 +329,11 @@ Module num.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::num::error::ParseIntError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::num::error::ParseIntError",
                       "kind"
+                    |)
                   |))
               ]
             |)))
@@ -360,10 +370,11 @@ Module num.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::num::error::ParseIntError"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::num::error::ParseIntError",
                         "kind"
+                      |)
                     ]
                   |))
               ]))
@@ -408,14 +419,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::num::error::ParseIntError"
-                  "kind";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::num::error::ParseIntError"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::error::ParseIntError",
                   "kind"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::num::error::ParseIntError",
+                  "kind"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -710,7 +723,11 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field (M.read (| self |)) "core::num::error::ParseIntError" "kind"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::num::error::ParseIntError",
+              "kind"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -780,10 +797,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::num::error::ParseIntError"
-                  "kind",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::error::ParseIntError",
+                  "kind"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic

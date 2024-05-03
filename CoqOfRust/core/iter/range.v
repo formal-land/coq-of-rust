@@ -543,7 +543,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -558,7 +558,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -602,7 +602,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -617,7 +617,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -935,7 +935,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -976,7 +976,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -1033,7 +1033,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -1074,7 +1074,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -1372,7 +1372,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -1387,7 +1387,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -1431,7 +1431,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -1446,7 +1446,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -1764,7 +1764,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -1805,7 +1805,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -1862,7 +1862,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -1903,7 +1903,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -2201,7 +2201,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -2216,7 +2216,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -2260,7 +2260,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -2275,7 +2275,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -2593,7 +2593,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -2634,7 +2634,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -2691,7 +2691,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -2732,7 +2732,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3030,7 +3030,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3045,7 +3045,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3089,7 +3089,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3104,7 +3104,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3422,7 +3422,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3463,7 +3463,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3520,7 +3520,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3561,7 +3561,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3863,7 +3863,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3878,7 +3878,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -3922,7 +3922,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -3937,7 +3937,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -4255,7 +4255,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -4296,7 +4296,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -4353,7 +4353,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
@@ -4394,7 +4394,7 @@ Module iter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Err",
                           0
@@ -4961,7 +4961,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -5277,7 +5277,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -5310,7 +5310,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -5375,7 +5375,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -5408,7 +5408,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -5514,7 +5514,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -5547,7 +5547,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -5612,7 +5612,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -5645,7 +5645,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -5983,7 +5983,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6016,7 +6016,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6098,7 +6098,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6131,7 +6131,7 @@ Module iter.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6867,14 +6867,16 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           |)) in
@@ -6906,10 +6908,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::Range"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::Range",
                                         "start"
+                                      |)
                                     ]
                                   |);
                                   Value.Integer Integer.Usize 1
@@ -6926,10 +6929,11 @@ Module iter.
                             M.call_closure (|
                               M.get_function (| "core::mem::replace", [ A ] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
                                 M.read (| n |)
                               ]
                             |)
@@ -6994,10 +6998,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::Range"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::Range",
                                           "start"
+                                        |)
                                       ]
                                     |);
                                     M.read (| n |)
@@ -7005,7 +7010,7 @@ Module iter.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -7029,10 +7034,11 @@ Module iter.
                                             |),
                                             [
                                               plus_n;
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -7046,10 +7052,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
-                                                "start",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
+                                                "start"
+                                              |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "core::option::Option") [ A ],
@@ -7101,17 +7108,19 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::Range"
-                        "start",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "start"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
@@ -7164,14 +7173,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -7194,14 +7205,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |);
                                 M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -7221,7 +7234,11 @@ Module iter.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::range::Range",
+                    "start"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [ A ],
@@ -7241,10 +7258,11 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ops::range::Range"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ops::range::Range",
                                 "start"
+                              |)
                             ]
                           |);
                           M.read (| taken |)
@@ -7319,24 +7337,27 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
-                            "end",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
+                            "end"
+                          |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [ A ],
@@ -7362,10 +7383,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::Range"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::Range",
                                         "end"
+                                      |)
                                     ]
                                   |);
                                   Value.Integer Integer.Usize 1
@@ -7382,10 +7404,11 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           ]
@@ -7449,10 +7472,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::Range"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::Range",
                                           "end"
+                                        |)
                                       ]
                                     |);
                                     M.read (| n |)
@@ -7460,7 +7484,7 @@ Module iter.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -7484,10 +7508,11 @@ Module iter.
                                             |),
                                             [
                                               minus_n;
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -7501,10 +7526,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
-                                                "end",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
+                                                "end"
+                                              |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "core::option::Option") [ A ],
@@ -7544,10 +7570,11 @@ Module iter.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::ops::range::Range"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::ops::range::Range",
                                                       "end"
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -7563,14 +7590,19 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "end",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "end"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
                             "start"
+                          |)
                         ]
                       |)
                     |) in
@@ -7623,14 +7655,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -7653,14 +7687,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |);
                                 M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -7680,7 +7716,11 @@ Module iter.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::range::Range",
+                    "end"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [ A ],
@@ -7700,10 +7740,11 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ops::range::Range"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ops::range::Range",
                                 "end"
+                              |)
                             ]
                           |);
                           M.read (| taken |)
@@ -7800,31 +7841,35 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let old :=
                         M.copy (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
                             "start"
+                          |)
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
-                            "start",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
+                            "start"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::range::Step",
@@ -7890,17 +7935,18 @@ Module iter.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::Range"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::Range",
                                         "start"
+                                      |)
                                     |);
                                     M.read (| n |)
                                   ]
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -7924,10 +7970,11 @@ Module iter.
                                             |),
                                             [
                                               plus_n;
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -7941,10 +7988,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
-                                                "start",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
+                                                "start"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::range::Step",
@@ -7973,15 +8021,17 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::Range"
-                        "start",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "start"
+                      |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
@@ -8036,14 +8086,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -8066,14 +8118,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |);
                                 M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -8093,7 +8147,11 @@ Module iter.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::range::Range",
+                    "start"
+                  |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::range::Step",
@@ -8104,10 +8162,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::range::Range",
                           "start"
+                        |)
                       |);
                       M.read (| taken |)
                     ]
@@ -8178,24 +8237,27 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::Range"
-                            "end",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::Range",
+                            "end"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::range::Step",
@@ -8206,10 +8268,11 @@ Module iter.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               |);
                               Value.Integer Integer.Usize 1
                             ]
@@ -8220,10 +8283,11 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ops::range::Range"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ops::range::Range",
                                 "end"
+                              |)
                             |)
                           ]
                       |)));
@@ -8278,17 +8342,18 @@ Module iter.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::Range"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::Range",
                                         "end"
+                                      |)
                                     |);
                                     M.read (| n |)
                                   ]
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -8312,10 +8377,11 @@ Module iter.
                                             |),
                                             [
                                               minus_n;
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -8329,10 +8395,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::Range"
-                                                "end",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::Range",
+                                                "end"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::range::Step",
@@ -8352,10 +8419,11 @@ Module iter.
                                               "core::option::Option::Some"
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::ops::range::Range"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::ops::range::Range",
                                                     "end"
+                                                  |)
                                                 |)
                                               ]
                                           |)
@@ -8370,12 +8438,17 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "end",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::Range",
+                        "end"
+                      |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::range::Range",
                           "start"
+                        |)
                       |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
@@ -8427,14 +8500,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -8457,14 +8532,16 @@ Module iter.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
-                                      "start";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::Range"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::Range",
                                       "end"
+                                    |)
                                   ]
                                 |);
                                 M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -8484,7 +8561,11 @@ Module iter.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::range::Range",
+                    "end"
+                  |),
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::range::Step",
@@ -8495,10 +8576,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::range::Range"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::range::Range",
                           "end"
+                        |)
                       |);
                       M.read (| taken |)
                     ]
@@ -8615,14 +8697,16 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
-                                  "start";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::ops::range::Range"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ops::range::Range",
                                   "end"
+                                |)
                               ]
                             |)
                           |)) in
@@ -8638,14 +8722,16 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ops::range::Range"
-                                "start";
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::ops::range::Range"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ops::range::Range",
+                                "start"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::ops::range::Range",
                                 "end"
+                              |)
                             ]
                           |)
                         |) in
@@ -8710,8 +8796,16 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                               [
-                                M.get_struct_record_field self "core::ops::range::Range" "start";
-                                M.get_struct_record_field self "core::ops::range::Range" "end"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
                               ]
                             |)
                           |)) in
@@ -8733,8 +8827,16 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field self "core::ops::range::Range" "start";
-                                M.get_struct_record_field self "core::ops::range::Range" "end"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
                               ]
                             |);
                             M.read (| Value.String "count overflowed usize" |)
@@ -8915,7 +9017,12 @@ Module iter.
               [
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::ops::range::Range" "start"
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ops::range::Range",
+                      "start"
+                    |)
                   ]
                 |);
                 M.read (| idx |)
@@ -9504,10 +9611,11 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeFrom"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeFrom",
                             "start"
+                          |)
                         ]
                       |);
                       Value.Integer Integer.Usize 1
@@ -9521,10 +9629,11 @@ Module iter.
                     M.call_closure (|
                       M.get_function (| "core::mem::replace", [ A ] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::ops::range::RangeFrom"
-                          "start";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ops::range::RangeFrom",
+                          "start"
+                        |);
                         M.read (| n |)
                       ]
                     |)
@@ -9576,10 +9685,11 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeFrom"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeFrom",
                             "start"
+                          |)
                         ]
                       |);
                       M.read (| n |)
@@ -9588,10 +9698,11 @@ Module iter.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::ops::range::RangeFrom"
-                    "start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ops::range::RangeFrom",
+                    "start"
+                  |),
                   M.call_closure (|
                     M.get_trait_method (| "core::iter::range::Step", A, [], "forward", [] |),
                     [
@@ -9717,14 +9828,16 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
-                            "start";
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
@@ -9771,10 +9884,11 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::ops::range::RangeInclusive"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::ops::range::RangeInclusive",
                                                     "start"
+                                                  |)
                                                 ]
                                               |);
                                               Value.Integer Integer.Usize 1
@@ -9788,10 +9902,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ A ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "start";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -9800,10 +9915,11 @@ Module iter.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "exhausted",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "exhausted"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -9816,10 +9932,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "start"
+                                        |)
                                       ]
                                     |)
                                   |)))
@@ -9935,14 +10052,16 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
-                                            "start";
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |);
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
                                             "end"
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -9978,10 +10097,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::ops::range::RangeInclusive"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::ops::range::RangeInclusive",
                                                   "start"
+                                                |)
                                               ]
                                             |);
                                             Value.Integer Integer.Usize 1
@@ -9996,10 +10116,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ A ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "start";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -10039,7 +10160,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -10066,7 +10187,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -10096,10 +10217,11 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   let _ :=
@@ -10120,14 +10242,16 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "start";
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "start"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
                                         "end"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -10170,10 +10294,11 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::ops::range::RangeInclusive"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::ops::range::RangeInclusive",
                                                         "start"
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -10186,7 +10311,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -10213,7 +10338,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -10305,14 +10430,16 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
-                            "start";
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
@@ -10359,10 +10486,11 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::ops::range::RangeInclusive"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::ops::range::RangeInclusive",
                                                     "end"
+                                                  |)
                                                 ]
                                               |);
                                               Value.Integer Integer.Usize 1
@@ -10376,10 +10504,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ A ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "end";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -10388,10 +10517,11 @@ Module iter.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "exhausted",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "exhausted"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -10404,10 +10534,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "end"
+                                        |)
                                       ]
                                     |)
                                   |)))
@@ -10523,14 +10654,16 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
-                                            "start";
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |);
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
                                             "end"
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -10566,10 +10699,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::ops::range::RangeInclusive"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::ops::range::RangeInclusive",
                                                   "end"
+                                                |)
                                               ]
                                             |);
                                             Value.Integer Integer.Usize 1
@@ -10584,10 +10718,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ A ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "end";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -10627,7 +10762,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -10654,7 +10789,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -10684,10 +10819,11 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   let _ :=
@@ -10708,14 +10844,16 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "start";
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "start"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
                                         "end"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -10758,10 +10896,11 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::ops::range::RangeInclusive"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::ops::range::RangeInclusive",
                                                         "start"
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -10774,7 +10913,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -10801,7 +10940,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -10913,14 +11052,16 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
-                            "start";
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
@@ -10960,10 +11101,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
                                                 "start"
+                                              |)
                                             ]
                                           |);
                                           Value.Integer Integer.Usize 1
@@ -10974,10 +11116,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ T ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "start";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -10986,10 +11129,11 @@ Module iter.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "exhausted",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "exhausted"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -11002,10 +11146,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "start"
+                                        |)
                                       ]
                                     |)
                                   |)))
@@ -11121,14 +11266,16 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
-                                            "start";
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |);
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
                                             "end"
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -11157,10 +11304,11 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::ops::range::RangeInclusive"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
                                               "start"
+                                            |)
                                           ]
                                         |);
                                         Value.Integer Integer.Usize 1
@@ -11172,10 +11320,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ T ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "start";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "start"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -11215,7 +11364,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -11242,7 +11391,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -11272,10 +11421,11 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   let _ :=
@@ -11296,14 +11446,16 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "start";
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "start"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
                                         "end"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -11346,10 +11498,11 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::ops::range::RangeInclusive"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::ops::range::RangeInclusive",
                                                         "start"
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -11362,7 +11515,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -11389,7 +11542,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -11481,14 +11634,16 @@ Module iter.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
-                            "start";
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
@@ -11528,10 +11683,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
                                                 "end"
+                                              |)
                                             ]
                                           |);
                                           Value.Integer Integer.Usize 1
@@ -11542,10 +11698,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ T ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "end";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -11554,10 +11711,11 @@ Module iter.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "exhausted",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "exhausted"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -11570,10 +11728,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "end"
+                                        |)
                                       ]
                                     |)
                                   |)))
@@ -11689,14 +11848,16 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
-                                            "start";
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::ops::range::RangeInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |);
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
                                             "end"
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -11725,10 +11886,11 @@ Module iter.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::ops::range::RangeInclusive"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
                                               "end"
+                                            |)
                                           ]
                                         |);
                                         Value.Integer Integer.Usize 1
@@ -11740,10 +11902,11 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (| "core::mem::replace", [ T ] |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
-                                          "end";
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
+                                          "end"
+                                        |);
                                         M.read (| n |)
                                       ]
                                     |)
@@ -11783,7 +11946,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -11810,7 +11973,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -11840,10 +12003,11 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   let _ :=
@@ -11864,14 +12028,16 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
-                                        "start";
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::ops::range::RangeInclusive"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
+                                        "start"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::ops::range::RangeInclusive",
                                         "end"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -11914,10 +12080,11 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::ops::range::RangeInclusive"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::ops::range::RangeInclusive",
                                                         "start"
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -11930,7 +12097,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
@@ -11957,7 +12124,7 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
@@ -12105,14 +12272,16 @@ Module iter.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
-                            "start";
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
+                            "start"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |),
@@ -12120,7 +12289,7 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -12240,14 +12409,16 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  self
-                                  "core::ops::range::RangeInclusive"
-                                  "start";
-                                M.get_struct_record_field
-                                  self
-                                  "core::ops::range::RangeInclusive"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::RangeInclusive",
+                                  "start"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::RangeInclusive",
                                   "end"
+                                |)
                               ]
                             |);
                             M.closure
@@ -12378,10 +12549,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "start"
+                                        |)
                                       ]
                                     |);
                                     M.read (| n |)
@@ -12389,7 +12561,7 @@ Module iter.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -12407,10 +12579,11 @@ Module iter.
                                   |),
                                   [
                                     plus_n;
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::RangeInclusive"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::RangeInclusive",
                                       "end"
+                                    |)
                                   ]
                                 |)
                               |),
@@ -12418,7 +12591,7 @@ Module iter.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -12428,10 +12601,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "start",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::range::Step",
@@ -12466,7 +12640,7 @@ Module iter.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -12476,10 +12650,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "start",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "start"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::clone::Clone",
@@ -12493,10 +12668,11 @@ Module iter.
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "exhausted",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "exhausted"
+                                              |),
                                               Value.Bool true
                                             |) in
                                           M.return_ (|
@@ -12515,26 +12691,29 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "start",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "start"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "end"
+                          |)
                         ]
                       |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
@@ -12593,8 +12772,8 @@ Module iter.
             let init := M.alloc (| init |) in
             let fold := M.alloc (| fold |) in
             M.read (|
-              M.get_struct_tuple_field
-                (M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -12620,9 +12799,10 @@ Module iter.
                       |)
                     ]
                   |)
-                |))
-                "core::ops::try_trait::NeverShortCircuit"
+                |),
+                "core::ops::try_trait::NeverShortCircuit",
                 0
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12864,10 +13044,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::ops::range::RangeInclusive"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::ops::range::RangeInclusive",
                                           "end"
+                                        |)
                                       ]
                                     |);
                                     M.read (| n |)
@@ -12875,7 +13056,7 @@ Module iter.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -12893,10 +13074,11 @@ Module iter.
                                   |),
                                   [
                                     minus_n;
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::ops::range::RangeInclusive"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::ops::range::RangeInclusive",
                                       "start"
+                                    |)
                                   ]
                                 |)
                               |),
@@ -12904,7 +13086,7 @@ Module iter.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -12914,10 +13096,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "end",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::range::Step",
@@ -12952,7 +13135,7 @@ Module iter.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -12962,10 +13145,11 @@ Module iter.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "end",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "end"
+                                              |),
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::clone::Clone",
@@ -12979,10 +13163,11 @@ Module iter.
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::ops::range::RangeInclusive"
-                                                "exhausted",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::ops::range::RangeInclusive",
+                                                "exhausted"
+                                              |),
                                               Value.Bool true
                                             |) in
                                           M.return_ (|
@@ -13001,26 +13186,29 @@ Module iter.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "end",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "end"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::ops::range::RangeInclusive"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ops::range::RangeInclusive",
                             "start"
+                          |)
                         ]
                       |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::ops::range::RangeInclusive"
-                        "exhausted",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |),
                       Value.Bool true
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
@@ -13079,8 +13267,8 @@ Module iter.
             let init := M.alloc (| init |) in
             let fold := M.alloc (| fold |) in
             M.read (|
-              M.get_struct_tuple_field
-                (M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
@@ -13106,9 +13294,10 @@ Module iter.
                       |)
                     ]
                   |)
-                |))
-                "core::ops::try_trait::NeverShortCircuit"
+                |),
+                "core::ops::try_trait::NeverShortCircuit",
                 0
+              |)
             |)))
         | _, _ => M.impossible
         end.

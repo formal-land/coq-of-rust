@@ -33,7 +33,11 @@ Module future.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_tuple_field (M.read (| self |)) "core::future::ResumeTy" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::future::ResumeTy",
+                    0
+                  |)
                 |))
             ]
           |)))
@@ -134,7 +138,11 @@ Module future.
                 "as_ptr",
                 []
               |),
-              [ M.read (| M.get_struct_tuple_field cx "core::future::ResumeTy" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (| cx, "core::future::ResumeTy", 0 |)
+                |)
+              ]
             |)
           ]
         |)))

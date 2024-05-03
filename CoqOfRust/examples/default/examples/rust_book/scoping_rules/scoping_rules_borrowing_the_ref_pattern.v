@@ -175,13 +175,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ,
                                 "scoping_rules_borrowing_the_ref_pattern::Point",
                                 "x"
                               |) in
                             let γ0_1 :=
-                              M.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
                                 γ,
                                 "scoping_rules_borrowing_the_ref_pattern::Point",
                                 "y"
@@ -199,13 +199,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "scoping_rules_borrowing_the_ref_pattern::Point",
                               "x"
                             |) in
                           let γ0_1 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "scoping_rules_borrowing_the_ref_pattern::Point",
                               "y"
@@ -252,7 +252,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
                                             point,
                                             "scoping_rules_borrowing_the_ref_pattern::Point",
                                             "x"
@@ -266,7 +266,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
                                             point,
                                             "scoping_rules_borrowing_the_ref_pattern::Point",
                                             "y"
@@ -317,7 +317,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
                                             mutable_point,
                                             "scoping_rules_borrowing_the_ref_pattern::Point",
                                             "x"
@@ -331,7 +331,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
                                             mutable_point,
                                             "scoping_rules_borrowing_the_ref_pattern::Point",
                                             "y"
@@ -369,8 +369,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
                           let _ := M.write (| M.read (| last |), Value.Integer Integer.U32 2 |) in
                           M.alloc (| Value.Tuple [] |)))

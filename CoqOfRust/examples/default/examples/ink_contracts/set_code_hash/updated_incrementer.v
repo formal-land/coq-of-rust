@@ -181,7 +181,7 @@ Module Impl_updated_incrementer_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "updated_incrementer::Incrementer",
                 "count"
@@ -221,7 +221,7 @@ Module Impl_updated_incrementer_Incrementer.
                                     [ Ty.path "u32" ]
                                   |),
                                   [
-                                    M.get_struct_record_field (|
+                                    M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "updated_incrementer::Incrementer",
                                       "count"
@@ -254,7 +254,7 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
+          M.SubPointer.get_struct_record_field (|
             M.read (| self |),
             "updated_incrementer::Incrementer",
             "count"

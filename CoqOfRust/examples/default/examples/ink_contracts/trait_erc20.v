@@ -462,7 +462,7 @@ Module Impl_trait_erc20_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "trait_erc20::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "trait_erc20::Env", "caller" |)
         |)))
     | _, _ => M.impossible
     end.
@@ -659,7 +659,11 @@ Module Impl_trait_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (| M.read (| self |), "trait_erc20::Erc20", "balances" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "trait_erc20::Erc20",
+                  "balances"
+                |);
                 M.read (| owner |)
               ]
             |)
@@ -702,7 +706,7 @@ Module Impl_trait_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "trait_erc20::Erc20",
                   "allowances"
@@ -798,7 +802,7 @@ Module Impl_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "trait_erc20::Erc20",
                         "balances"
@@ -830,7 +834,7 @@ Module Impl_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "trait_erc20::Erc20",
                         "balances"
@@ -895,7 +899,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "trait_erc20::Erc20", "total_supply" |)
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "trait_erc20::Erc20",
+            "total_supply"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -1024,7 +1032,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "trait_erc20::Erc20",
                     "allowances"
@@ -1169,7 +1177,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -1205,7 +1213,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -1229,7 +1237,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "trait_erc20::Erc20",
                         "allowances"

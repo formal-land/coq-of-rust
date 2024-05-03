@@ -35,10 +35,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_tuple_field
-                        (M.read (| self |))
-                        "core::iter::adapters::by_ref_sized::ByRefSized"
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::by_ref_sized::ByRefSized",
                         0
+                      |)
                     |))
                 ]
               |)))
@@ -82,10 +83,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |)
                 ]
               |)))
@@ -113,10 +115,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |)
                 ]
               |)))
@@ -145,10 +148,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -172,10 +176,11 @@ Module iter.
                 M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -201,8 +206,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -217,10 +222,11 @@ Module iter.
                       |),
                       [
                         M.read (|
-                          M.get_struct_tuple_field
-                            self
-                            "core::iter::adapters::by_ref_sized::ByRefSized"
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::iter::adapters::by_ref_sized::ByRefSized",
                             0
+                          |)
                         |);
                         M.read (| init |);
                         M.call_closure (|
@@ -233,9 +239,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -267,10 +274,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)
@@ -322,10 +330,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |)
                 ]
               |)))
@@ -354,10 +363,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -387,10 +397,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -416,8 +427,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
@@ -432,10 +443,11 @@ Module iter.
                       |),
                       [
                         M.read (|
-                          M.get_struct_tuple_field
-                            self
-                            "core::iter::adapters::by_ref_sized::ByRefSized"
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::iter::adapters::by_ref_sized::ByRefSized",
                             0
+                          |)
                         |);
                         M.read (| init |);
                         M.call_closure (|
@@ -448,9 +460,10 @@ Module iter.
                         |)
                       ]
                     |)
-                  |))
-                  "core::ops::try_trait::NeverShortCircuit"
+                  |),
+                  "core::ops::try_trait::NeverShortCircuit",
                   0
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -482,10 +495,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
                       0
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)

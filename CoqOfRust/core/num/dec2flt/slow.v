@@ -136,7 +136,7 @@ Module num.
                                                 M.alloc (|
                                                   M.rust_cast
                                                     (M.read (|
-                                                      M.get_array_field (|
+                                                      M.SubPointer.get_array_field (|
                                                         M.get_constant (|
                                                           "core::num::dec2flt::slow::parse_long_mantissa::POWERS"
                                                         |),
@@ -204,19 +204,21 @@ Module num.
                                   LogicalOp.or (|
                                     BinOp.Pure.eq
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          d
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          d,
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "num_digits"
+                                        |)
                                       |))
                                       (Value.Integer Integer.Usize 0),
                                     ltac:(M.monadic
                                       (BinOp.Pure.lt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            d
-                                            "core::num::dec2flt::decimal::Decimal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            d,
+                                            "core::num::dec2flt::decimal::Decimal",
                                             "decimal_point"
+                                          |)
                                         |))
                                         (Value.Integer Integer.I32 (-324))))
                                   |)
@@ -238,10 +240,11 @@ Module num.
                                         (M.alloc (|
                                           BinOp.Pure.ge
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                d
-                                                "core::num::dec2flt::decimal::Decimal"
+                                              M.SubPointer.get_struct_record_field (|
+                                                d,
+                                                "core::num::dec2flt::decimal::Decimal",
                                                 "decimal_point"
+                                              |)
                                             |))
                                             (Value.Integer Integer.I32 310)
                                         |)) in
@@ -274,10 +277,11 @@ Module num.
                                     (M.alloc (|
                                       BinOp.Pure.gt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            d
-                                            "core::num::dec2flt::decimal::Decimal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            d,
+                                            "core::num::dec2flt::decimal::Decimal",
                                             "decimal_point"
+                                          |)
                                         |))
                                         (Value.Integer Integer.I32 0)
                                     |)) in
@@ -290,10 +294,11 @@ Module num.
                                   M.alloc (|
                                     M.rust_cast
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          d
-                                          "core::num::dec2flt::decimal::Decimal"
+                                        M.SubPointer.get_struct_record_field (|
+                                          d,
+                                          "core::num::dec2flt::decimal::Decimal",
                                           "decimal_point"
+                                        |)
                                       |))
                                   |) in
                                 let shift :=
@@ -333,10 +338,11 @@ Module num.
                                               (M.alloc (|
                                                 BinOp.Pure.lt
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      d
-                                                      "core::num::dec2flt::decimal::Decimal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      d,
+                                                      "core::num::dec2flt::decimal::Decimal",
                                                       "decimal_point"
+                                                    |)
                                                   |))
                                                   (UnOp.Panic.neg (|
                                                     M.read (|
@@ -398,10 +404,11 @@ Module num.
                                     (M.alloc (|
                                       BinOp.Pure.le
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            d
-                                            "core::num::dec2flt::decimal::Decimal"
+                                          M.SubPointer.get_struct_record_field (|
+                                            d,
+                                            "core::num::dec2flt::decimal::Decimal",
                                             "decimal_point"
+                                          |)
                                         |))
                                         (Value.Integer Integer.I32 0)
                                     |)) in
@@ -422,10 +429,11 @@ Module num.
                                                 (M.alloc (|
                                                   BinOp.Pure.eq
                                                     (M.read (|
-                                                      M.get_struct_record_field
-                                                        d
-                                                        "core::num::dec2flt::decimal::Decimal"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        d,
+                                                        "core::num::dec2flt::decimal::Decimal",
                                                         "decimal_point"
+                                                      |)
                                                     |))
                                                     (Value.Integer Integer.I32 0)
                                                 |)) in
@@ -435,11 +443,12 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.match_operator (|
-                                              M.get_array_field (|
-                                                M.get_struct_record_field
-                                                  d
-                                                  "core::num::dec2flt::decimal::Decimal"
-                                                  "digits",
+                                              M.SubPointer.get_array_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  d,
+                                                  "core::num::dec2flt::decimal::Decimal",
+                                                  "digits"
+                                                |),
                                                 M.alloc (| Value.Integer Integer.Usize 0 |)
                                               |),
                                               [
@@ -518,10 +527,11 @@ Module num.
                                                       M.rust_cast
                                                         (UnOp.Panic.neg (|
                                                           M.read (|
-                                                            M.get_struct_record_field
-                                                              d
-                                                              "core::num::dec2flt::decimal::Decimal"
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              d,
+                                                              "core::num::dec2flt::decimal::Decimal",
                                                               "decimal_point"
+                                                            |)
                                                           |)
                                                         |))
                                                     ]
@@ -553,10 +563,11 @@ Module num.
                                               (M.alloc (|
                                                 BinOp.Pure.gt
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      d
-                                                      "core::num::dec2flt::decimal::Decimal"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      d,
+                                                      "core::num::dec2flt::decimal::Decimal",
                                                       "decimal_point"
+                                                    |)
                                                   |))
                                                   (M.read (|
                                                     M.get_constant (|

@@ -45,10 +45,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::sources::repeat::Repeat"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::sources::repeat::Repeat",
                           "element"
+                        |)
                       ]
                     |))
                 ]))
@@ -89,10 +90,11 @@ Module iter.
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::sources::repeat::Repeat"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::repeat::Repeat",
                         "element"
+                      |)
                     |))
                 ]
               |)))
@@ -132,10 +134,11 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::sources::repeat::Repeat"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::repeat::Repeat",
                         "element"
+                      |)
                     ]
                   |)
                 ]))
@@ -216,10 +219,11 @@ Module iter.
                               M.call_closure (|
                                 M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::repeat::Repeat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat::Repeat",
                                     "element"
+                                  |)
                                 ]
                               |)
                             ]
@@ -303,10 +307,11 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::sources::repeat::Repeat"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::repeat::Repeat",
                         "element"
+                      |)
                     ]
                   |)
                 ]))
@@ -368,10 +373,11 @@ Module iter.
                               M.call_closure (|
                                 M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::sources::repeat::Repeat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat::Repeat",
                                     "element"
+                                  |)
                                 ]
                               |)
                             ]

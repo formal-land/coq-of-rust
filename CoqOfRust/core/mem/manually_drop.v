@@ -41,10 +41,11 @@ Module mem.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::mem::manually_drop::ManuallyDrop"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::mem::manually_drop::ManuallyDrop",
                         "value"
+                      |)
                     ]
                   |))
               ]))
@@ -85,10 +86,11 @@ Module mem.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::mem::manually_drop::ManuallyDrop"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::mem::manually_drop::ManuallyDrop",
                       "value"
+                    |)
                   |))
               ]
             |)))
@@ -163,14 +165,16 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::mem::manually_drop::ManuallyDrop"
-                  "value";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::mem::manually_drop::ManuallyDrop"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::manually_drop::ManuallyDrop",
                   "value"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::mem::manually_drop::ManuallyDrop",
+                  "value"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -243,14 +247,16 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::mem::manually_drop::ManuallyDrop"
-                  "value";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::mem::manually_drop::ManuallyDrop"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::manually_drop::ManuallyDrop",
                   "value"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::mem::manually_drop::ManuallyDrop",
+                  "value"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -280,14 +286,16 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::mem::manually_drop::ManuallyDrop"
-                  "value";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::mem::manually_drop::ManuallyDrop"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::manually_drop::ManuallyDrop",
                   "value"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::mem::manually_drop::ManuallyDrop",
+                  "value"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -317,10 +325,11 @@ Module mem.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::mem::manually_drop::ManuallyDrop"
-                  "value";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::manually_drop::ManuallyDrop",
+                  "value"
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -373,7 +382,11 @@ Module mem.
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.read (|
-              M.get_struct_record_field slot "core::mem::manually_drop::ManuallyDrop" "value"
+              M.SubPointer.get_struct_record_field (|
+                slot,
+                "core::mem::manually_drop::ManuallyDrop",
+                "value"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -398,10 +411,11 @@ Module mem.
             M.call_closure (|
               M.get_function (| "core::ptr::read", [ T ] |),
               [
-                M.get_struct_record_field
-                  (M.read (| slot |))
-                  "core::mem::manually_drop::ManuallyDrop"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| slot |),
+                  "core::mem::manually_drop::ManuallyDrop",
                   "value"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -427,10 +441,11 @@ Module mem.
             M.call_closure (|
               M.get_function (| "core::ptr::drop_in_place", [ T ] |),
               [
-                M.get_struct_record_field
-                  (M.read (| slot |))
-                  "core::mem::manually_drop::ManuallyDrop"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| slot |),
+                  "core::mem::manually_drop::ManuallyDrop",
                   "value"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -460,10 +475,11 @@ Module mem.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "core::mem::manually_drop::ManuallyDrop"
-              "value"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::mem::manually_drop::ManuallyDrop",
+              "value"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -492,10 +508,11 @@ Module mem.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "core::mem::manually_drop::ManuallyDrop"
-              "value"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::mem::manually_drop::ManuallyDrop",
+              "value"
+            |)))
         | _, _ => M.impossible
         end.
       

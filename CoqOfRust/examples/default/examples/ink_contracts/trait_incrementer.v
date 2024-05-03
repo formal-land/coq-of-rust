@@ -47,7 +47,7 @@ Module Impl_trait_incrementer_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "trait_incrementer::Incrementer",
                 "value"
@@ -92,7 +92,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
+          M.SubPointer.get_struct_record_field (|
             M.read (| self |),
             "trait_incrementer::Incrementer",
             "value"
@@ -125,7 +125,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "trait_incrementer::Incrementer",
                 "value"

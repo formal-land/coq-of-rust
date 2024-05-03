@@ -89,14 +89,14 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
                       |) in
                     let i := M.copy (| γ0_0 |) in
                     let _ :=
-                      let β := M.get_array_field (| M.read (| d |), i |) in
+                      let β := M.SubPointer.get_array_field (| M.read (| d |), i |) in
                       M.write (|
                         β,
                         BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U8 1 |)
@@ -166,7 +166,7 @@ Module num.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -174,7 +174,10 @@ Module num.
                                               let j := M.copy (| γ0_0 |) in
                                               let _ :=
                                                 M.write (|
-                                                  M.get_array_field (| M.read (| d |), j |),
+                                                  M.SubPointer.get_array_field (|
+                                                    M.read (| d |),
+                                                    j
+                                                  |),
                                                   M.read (| UnsupportedLiteral |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
@@ -203,7 +206,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.write (|
-                        M.get_array_field (|
+                        M.SubPointer.get_array_field (|
                           M.read (| d |),
                           M.alloc (| Value.Integer Integer.Usize 0 |)
                         |),
@@ -270,7 +273,7 @@ Module num.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -278,7 +281,10 @@ Module num.
                                               let j := M.copy (| γ0_0 |) in
                                               let _ :=
                                                 M.write (|
-                                                  M.get_array_field (| M.read (| d |), j |),
+                                                  M.SubPointer.get_array_field (|
+                                                    M.read (| d |),
+                                                    j
+                                                  |),
                                                   M.read (| UnsupportedLiteral |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
@@ -429,7 +435,7 @@ Module num.
                             UnOp.Pure.not
                               (BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     M.read (| buf |),
                                     M.alloc (| Value.Integer Integer.Usize 0 |)
                                   |)
@@ -504,7 +510,7 @@ Module num.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_array_field (|
+                        M.SubPointer.get_array_field (|
                           M.read (| parts |),
                           M.alloc (| Value.Integer Integer.Usize 0 |)
                         |),
@@ -525,7 +531,7 @@ Module num.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_array_field (|
+                        M.SubPointer.get_array_field (|
                           M.read (| parts |),
                           M.alloc (| Value.Integer Integer.Usize 1 |)
                         |),
@@ -546,7 +552,7 @@ Module num.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_array_field (|
+                        M.SubPointer.get_array_field (|
                           M.read (| parts |),
                           M.alloc (| Value.Integer Integer.Usize 2 |)
                         |),
@@ -600,7 +606,7 @@ Module num.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 3 |)
                                 |),
@@ -740,7 +746,7 @@ Module num.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -781,7 +787,7 @@ Module num.
                               |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 1 |)
                                 |),
@@ -805,7 +811,7 @@ Module num.
                               |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 2 |)
                                 |),
@@ -873,7 +879,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 3 |)
                                         |),
@@ -991,7 +997,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -1012,7 +1018,7 @@ Module num.
                               |) in
                             let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 1 |)
                                 |),
@@ -1062,7 +1068,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 2 |)
                                         |),
@@ -1086,7 +1092,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 3 |)
                                         |),
@@ -1287,7 +1293,7 @@ Module num.
                             UnOp.Pure.not
                               (BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_array_field (|
+                                  M.SubPointer.get_array_field (|
                                     M.read (| buf |),
                                     M.alloc (| Value.Integer Integer.Usize 0 |)
                                   |)
@@ -1348,7 +1354,7 @@ Module num.
             let n := M.alloc (| Value.Integer Integer.Usize 0 |) in
             let _ :=
               M.write (|
-                M.get_array_field (| M.read (| parts |), n |),
+                M.SubPointer.get_array_field (| M.read (| parts |), n |),
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -1415,7 +1421,7 @@ Module num.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (| M.read (| parts |), n |),
+                          M.SubPointer.get_array_field (| M.read (| parts |), n |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -1434,7 +1440,7 @@ Module num.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (|
+                          M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
                               BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
@@ -1507,7 +1513,7 @@ Module num.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_array_field (| M.read (| parts |), n |),
+                                  M.SubPointer.get_array_field (| M.read (| parts |), n |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -1569,7 +1575,7 @@ Module num.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (| M.read (| parts |), n |),
+                          M.SubPointer.get_array_field (| M.read (| parts |), n |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -1613,7 +1619,7 @@ Module num.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (|
+                          M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
                               BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
@@ -1639,7 +1645,7 @@ Module num.
                     ltac:(M.monadic
                       (let _ :=
                         M.write (|
-                          M.get_array_field (| M.read (| parts |), n |),
+                          M.SubPointer.get_array_field (| M.read (| parts |), n |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -1683,7 +1689,7 @@ Module num.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_array_field (|
+                          M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
                               BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
@@ -1964,13 +1970,13 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     Value.String ""));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1985,8 +1991,8 @@ Module num.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2165,8 +2171,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let negative := M.copy (| γ0_0 |) in
                     let full_decoded := M.copy (| γ0_1 |) in
                     let sign :=
@@ -2183,7 +2189,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -2253,7 +2259,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -2340,7 +2346,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -2364,7 +2370,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 1 |)
                                         |),
@@ -2432,7 +2438,7 @@ Module num.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -2504,7 +2510,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::num::flt2dec::decoder::FullDecoded::Finite",
                                 0
@@ -2547,8 +2553,8 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let buf := M.copy (| γ0_0 |) in
                                     let exp := M.copy (| γ0_1 |) in
                                     M.alloc (|
@@ -2741,8 +2747,8 @@ Module num.
                           (M.alloc (|
                             UnOp.Pure.not
                               (BinOp.Pure.le
-                                (M.read (| M.get_tuple_field dec_bounds 0 |))
-                                (M.read (| M.get_tuple_field dec_bounds 1 |)))
+                                (M.read (| M.SubPointer.get_tuple_field (| dec_bounds, 0 |) |))
+                                (M.read (| M.SubPointer.get_tuple_field (| dec_bounds, 1 |) |)))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2770,8 +2776,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let negative := M.copy (| γ0_0 |) in
                     let full_decoded := M.copy (| γ0_1 |) in
                     let sign :=
@@ -2788,7 +2794,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -2858,7 +2864,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -2928,7 +2934,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -2943,13 +2949,21 @@ Module num.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   BinOp.Pure.le
-                                                    (M.read (| M.get_tuple_field dec_bounds 0 |))
+                                                    (M.read (|
+                                                      M.SubPointer.get_tuple_field (|
+                                                        dec_bounds,
+                                                        0
+                                                      |)
+                                                    |))
                                                     (Value.Integer Integer.I16 0),
                                                   ltac:(M.monadic
                                                     (BinOp.Pure.lt
                                                       (Value.Integer Integer.I16 0)
                                                       (M.read (|
-                                                        M.get_tuple_field dec_bounds 1
+                                                        M.SubPointer.get_tuple_field (|
+                                                          dec_bounds,
+                                                          1
+                                                        |)
                                                       |))))
                                                 |)
                                               |)) in
@@ -3075,7 +3089,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::num::flt2dec::decoder::FullDecoded::Finite",
                                 0
@@ -3118,8 +3132,8 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let buf := M.copy (| γ0_0 |) in
                                     let exp := M.copy (| γ0_1 |) in
                                     let vis_exp :=
@@ -3143,7 +3157,10 @@ Module num.
                                                         BinOp.Pure.le
                                                           (M.rust_cast
                                                             (M.read (|
-                                                              M.get_tuple_field dec_bounds 0
+                                                              M.SubPointer.get_tuple_field (|
+                                                                dec_bounds,
+                                                                0
+                                                              |)
                                                             |)))
                                                           (M.read (| vis_exp |)),
                                                         ltac:(M.monadic
@@ -3151,7 +3168,10 @@ Module num.
                                                             (M.read (| vis_exp |))
                                                             (M.rust_cast
                                                               (M.read (|
-                                                                M.get_tuple_field dec_bounds 1
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  dec_bounds,
+                                                                  1
+                                                                |)
                                                               |)))))
                                                       |)
                                                     |)) in
@@ -3397,8 +3417,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let negative := M.copy (| γ0_0 |) in
                     let full_decoded := M.copy (| γ0_1 |) in
                     let sign :=
@@ -3415,7 +3435,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -3485,7 +3505,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -3572,7 +3592,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -3596,7 +3616,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 1 |)
                                         |),
@@ -3622,7 +3642,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 2 |)
                                         |),
@@ -3718,7 +3738,7 @@ Module num.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -3815,7 +3835,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::num::flt2dec::decoder::FullDecoded::Finite",
                                 0
@@ -3830,10 +3850,11 @@ Module num.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| decoded |))
-                                        "core::num::flt2dec::decoder::Decoded"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| decoded |),
+                                        "core::num::flt2dec::decoder::Decoded",
                                         "exp"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -3998,8 +4019,8 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let buf := M.copy (| γ0_0 |) in
                                     let exp := M.copy (| γ0_1 |) in
                                     M.alloc (|
@@ -4178,8 +4199,8 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let negative := M.copy (| γ0_0 |) in
                     let full_decoded := M.copy (| γ0_1 |) in
                     let sign :=
@@ -4196,7 +4217,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -4266,7 +4287,7 @@ Module num.
                           ltac:(M.monadic
                             (let _ :=
                               M.write (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| parts |),
                                   M.alloc (| Value.Integer Integer.Usize 0 |)
                                 |),
@@ -4353,7 +4374,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -4377,7 +4398,7 @@ Module num.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 1 |)
                                         |),
@@ -4445,7 +4466,7 @@ Module num.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.write (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| parts |),
                                           M.alloc (| Value.Integer Integer.Usize 0 |)
                                         |),
@@ -4517,7 +4538,7 @@ Module num.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::num::flt2dec::decoder::FullDecoded::Finite",
                                 0
@@ -4532,10 +4553,11 @@ Module num.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| decoded |))
-                                        "core::num::flt2dec::decoder::Decoded"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| decoded |),
+                                        "core::num::flt2dec::decoder::Decoded",
                                         "exp"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -4684,8 +4706,8 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let buf := M.copy (| γ0_0 |) in
                                     let exp := M.copy (| γ0_1 |) in
                                     M.match_operator (|
@@ -4744,8 +4766,15 @@ Module num.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_tuple_field γ 0 in
-                                                                let γ0_1 := M.get_tuple_field γ 1 in
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
                                                                 let left_val := M.copy (| γ0_0 |) in
                                                                 let right_val :=
                                                                   M.copy (| γ0_1 |) in
@@ -4847,7 +4876,7 @@ Module num.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_array_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
                                                           M.alloc (|
                                                             Value.Integer Integer.Usize 0
@@ -4875,7 +4904,7 @@ Module num.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_array_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
                                                           M.alloc (|
                                                             Value.Integer Integer.Usize 1
@@ -4957,7 +4986,7 @@ Module num.
                                                   ltac:(M.monadic
                                                     (let _ :=
                                                       M.write (|
-                                                        M.get_array_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
                                                           M.alloc (|
                                                             Value.Integer Integer.Usize 0

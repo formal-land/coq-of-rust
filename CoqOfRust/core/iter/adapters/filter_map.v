@@ -29,20 +29,22 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::filter_map::FilterMap"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter_map::FilterMap",
                           "iter"
+                        |)
                       ]
                     |));
                   ("f",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::filter_map::FilterMap"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter_map::FilterMap",
                           "f"
+                        |)
                       ]
                     |))
                 ]))
@@ -128,10 +130,11 @@ Module iter.
                       M.read (| Value.String "iter" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::filter_map::FilterMap"
-                          "iter")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter_map::FilterMap",
+                          "iter"
+                        |))
                     ]
                   |)
                 ]
@@ -200,7 +203,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -291,7 +294,7 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -369,14 +372,16 @@ Module iter.
                   [ B; Ty.apply (Ty.path "&mut") [ F ] ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::filter_map::FilterMap"
-                    "iter";
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::filter_map::FilterMap"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::filter_map::FilterMap",
+                    "iter"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::filter_map::FilterMap",
                     "f"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -490,10 +495,11 @@ Module iter.
                         ]
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::filter_map::FilterMap"
-                          "iter";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter_map::FilterMap",
+                          "iter"
+                        |);
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
@@ -508,10 +514,11 @@ Module iter.
                                         M.read (|
                                           let idx :=
                                             M.copy (|
-                                              M.get_struct_record_field
-                                                guard
-                                                "core::iter::adapters::filter_map::next_chunk::Guard"
+                                              M.SubPointer.get_struct_record_field (|
+                                                guard,
+                                                "core::iter::adapters::filter_map::next_chunk::Guard",
                                                 "initialized"
+                                              |)
                                             |) in
                                           let val :=
                                             M.alloc (|
@@ -524,20 +531,22 @@ Module iter.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::iter::adapters::filter_map::FilterMap"
-                                                    "f";
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::filter_map::FilterMap",
+                                                    "f"
+                                                  |);
                                                   Value.Tuple [ M.read (| element |) ]
                                                 ]
                                               |)
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                guard
-                                                "core::iter::adapters::filter_map::next_chunk::Guard"
-                                                "initialized",
+                                              M.SubPointer.get_struct_record_field (|
+                                                guard,
+                                                "core::iter::adapters::filter_map::next_chunk::Guard",
+                                                "initialized"
+                                              |),
                                               BinOp.Panic.add (|
                                                 M.read (| idx |),
                                                 M.rust_cast
@@ -636,10 +645,11 @@ Module iter.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            guard
-                                                            "core::iter::adapters::filter_map::next_chunk::Guard"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            guard,
+                                                            "core::iter::adapters::filter_map::next_chunk::Guard",
                                                             "array"
+                                                          |)
                                                         |)
                                                       ]
                                                     |);
@@ -691,10 +701,11 @@ Module iter.
                                                       (M.alloc (|
                                                         BinOp.Pure.lt
                                                           (M.read (|
-                                                            M.get_struct_record_field
-                                                              guard
-                                                              "core::iter::adapters::filter_map::next_chunk::Guard"
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              guard,
+                                                              "core::iter::adapters::filter_map::next_chunk::Guard",
                                                               "initialized"
+                                                            |)
                                                           |))
                                                           (M.read (|
                                                             M.get_constant (|
@@ -752,7 +763,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -774,15 +785,15 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
                           |) in
                         let initialized :=
                           M.copy (|
-                            M.get_struct_record_field
-                              (M.call_closure (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -798,9 +809,10 @@ Module iter.
                                   []
                                 |),
                                 [ guard ]
-                              |))
-                              "core::iter::adapters::filter_map::next_chunk::Guard"
+                              |),
+                              "core::iter::adapters::filter_map::next_chunk::Guard",
                               "initialized"
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -854,18 +866,19 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::filter_map::FilterMap"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter_map::FilterMap",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
                           Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
@@ -903,10 +916,11 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::filter_map::FilterMap"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::filter_map::FilterMap",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -914,10 +928,11 @@ Module iter.
                       [ Ty.associated; B; Acc; R; F; Fold ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::filter_map::FilterMap"
-                        "f";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::filter_map::FilterMap",
+                        "f"
+                      |);
                       M.read (| fold |)
                     ]
                   |)
@@ -952,10 +967,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::filter_map::FilterMap"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::filter_map::FilterMap",
                       "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -965,10 +981,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::filter_map::FilterMap"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::filter_map::FilterMap",
                           "f"
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -1040,18 +1057,20 @@ Module iter.
                       ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::filter_map::FilterMap"
-                        "iter";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::filter_map::FilterMap",
+                        "iter"
+                      |);
                       Value.Tuple [];
                       M.call_closure (|
                         M.get_associated_function (| Self, "find.next_back", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::filter_map::FilterMap"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::filter_map::FilterMap",
                             "f"
+                          |)
                         ]
                       |)
                     ]
@@ -1088,10 +1107,11 @@ Module iter.
                   [ Acc; Ty.associated; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::filter_map::FilterMap"
-                    "iter";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::filter_map::FilterMap",
+                    "iter"
+                  |);
                   M.read (| init |);
                   M.call_closure (|
                     M.get_function (|
@@ -1099,10 +1119,11 @@ Module iter.
                       [ Ty.associated; B; Acc; R; F; Fold ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::filter_map::FilterMap"
-                        "f";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::filter_map::FilterMap",
+                        "f"
+                      |);
                       M.read (| fold |)
                     ]
                   |)
@@ -1137,10 +1158,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      self
-                      "core::iter::adapters::filter_map::FilterMap"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::filter_map::FilterMap",
                       "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.call_closure (|
@@ -1150,10 +1172,11 @@ Module iter.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::filter_map::FilterMap"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::filter_map::FilterMap",
                           "f"
+                        |)
                       |);
                       M.read (| fold |)
                     ]
@@ -1225,10 +1248,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::filter_map::FilterMap"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::filter_map::FilterMap",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

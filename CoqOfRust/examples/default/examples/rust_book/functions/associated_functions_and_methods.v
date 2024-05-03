@@ -73,7 +73,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
+          M.SubPointer.get_struct_record_field (|
             M.read (| self |),
             "associated_functions_and_methods::Rectangle",
             "p1"
@@ -102,7 +102,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
               M.read (| self |),
               "associated_functions_and_methods::Rectangle",
               "p1"
@@ -111,13 +111,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       γ,
                       "associated_functions_and_methods::Point",
                       "x"
                     |) in
                   let γ0_1 :=
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       γ,
                       "associated_functions_and_methods::Point",
                       "y"
@@ -125,7 +125,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "associated_functions_and_methods::Rectangle",
                       "p2"
@@ -134,13 +134,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "associated_functions_and_methods::Point",
                               "x"
                             |) in
                           let γ0_1 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "associated_functions_and_methods::Point",
                               "y"
@@ -183,7 +183,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
               M.read (| self |),
               "associated_functions_and_methods::Rectangle",
               "p1"
@@ -192,13 +192,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       γ,
                       "associated_functions_and_methods::Point",
                       "x"
                     |) in
                   let γ0_1 :=
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       γ,
                       "associated_functions_and_methods::Point",
                       "y"
@@ -206,7 +206,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let x1 := M.copy (| γ0_0 |) in
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "associated_functions_and_methods::Rectangle",
                       "p2"
@@ -215,13 +215,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "associated_functions_and_methods::Point",
                               "x"
                             |) in
                           let γ0_1 :=
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "associated_functions_and_methods::Point",
                               "y"
@@ -272,8 +272,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "associated_functions_and_methods::Rectangle",
                   "p1"
@@ -284,8 +284,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "associated_functions_and_methods::Rectangle",
                   "p2"
@@ -296,8 +296,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "associated_functions_and_methods::Rectangle",
                   "p1"
@@ -308,8 +308,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
             M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (|
-                M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "associated_functions_and_methods::Rectangle",
                   "p2"
@@ -362,9 +362,17 @@ Module Impl_associated_functions_and_methods_Pair.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field (| γ, "associated_functions_and_methods::Pair", 0 |) in
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "associated_functions_and_methods::Pair",
+                      0
+                    |) in
                   let γ0_1 :=
-                    M.get_struct_tuple_field (| γ, "associated_functions_and_methods::Pair", 1 |) in
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "associated_functions_and_methods::Pair",
+                      1
+                    |) in
                   let first := M.copy (| γ0_0 |) in
                   let second := M.copy (| γ0_1 |) in
                   let _ :=

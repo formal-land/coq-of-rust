@@ -454,8 +454,8 @@ Module raw_vec.
                   M.call_closure (|
                     M.get_function (| "core::ptr::read", [ A ] |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -466,9 +466,10 @@ Module raw_vec.
                             []
                           |),
                           [ me ]
-                        |))
-                        "alloc::raw_vec::RawVec"
+                        |),
+                        "alloc::raw_vec::RawVec",
                         "alloc"
+                      |)
                     ]
                   |)
                 ]
@@ -575,7 +576,7 @@ Module raw_vec.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
@@ -585,7 +586,7 @@ Module raw_vec.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -622,7 +623,7 @@ Module raw_vec.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::result::Result::Ok",
                                   0
@@ -631,7 +632,7 @@ Module raw_vec.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::result::Result::Err",
                                   0
@@ -690,7 +691,7 @@ Module raw_vec.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
@@ -700,7 +701,7 @@ Module raw_vec.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -817,7 +818,11 @@ Module raw_vec.
             |),
             [
               M.read (|
-                M.get_struct_record_field (M.read (| self |)) "alloc::raw_vec::RawVec" "ptr"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::raw_vec::RawVec",
+                  "ptr"
+                |)
               |)
             ]
           |)))
@@ -851,7 +856,11 @@ Module raw_vec.
                     M.get_constant (| "core::num::MAX" |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.get_struct_record_field (M.read (| self |)) "alloc::raw_vec::RawVec" "cap"))
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::raw_vec::RawVec",
+                      "cap"
+                    |)))
               ]
             |)
           |)))
@@ -873,7 +882,11 @@ Module raw_vec.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.get_struct_record_field (M.read (| self |)) "alloc::raw_vec::RawVec" "alloc"))
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "alloc::raw_vec::RawVec",
+            "alloc"
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -922,10 +935,11 @@ Module raw_vec.
                             ltac:(M.monadic
                               (BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::raw_vec::RawVec"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::raw_vec::RawVec",
                                     "cap"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)))
                           |)
@@ -960,10 +974,11 @@ Module raw_vec.
                                       []
                                     |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::raw_vec::RawVec"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::raw_vec::RawVec",
                                         "cap"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1008,10 +1023,11 @@ Module raw_vec.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::raw_vec::RawVec"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::raw_vec::RawVec",
                                                   "ptr"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1211,7 +1227,7 @@ Module raw_vec.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1250,7 +1266,7 @@ Module raw_vec.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1409,7 +1425,7 @@ Module raw_vec.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1448,7 +1464,7 @@ Module raw_vec.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1583,7 +1599,11 @@ Module raw_vec.
           M.read (|
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "alloc::raw_vec::RawVec" "ptr",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::raw_vec::RawVec",
+                  "ptr"
+                |),
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
@@ -1615,7 +1635,11 @@ Module raw_vec.
               |) in
             let _ :=
               M.write (|
-                M.get_struct_record_field (M.read (| self |)) "alloc::raw_vec::RawVec" "cap",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::raw_vec::RawVec",
+                  "cap"
+                |),
                 M.read (| cap |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1794,7 +1818,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1833,7 +1857,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1850,10 +1874,11 @@ Module raw_vec.
                       [
                         BinOp.Panic.mul (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::raw_vec::RawVec"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::raw_vec::RawVec",
                               "cap"
+                            |)
                           |),
                           Value.Integer Integer.Usize 2
                         |);
@@ -1914,10 +1939,11 @@ Module raw_vec.
                                   |),
                                   [ M.read (| self |) ]
                                 |);
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::raw_vec::RawVec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::raw_vec::RawVec",
                                   "alloc"
+                                |)
                               ]
                             |)
                           ]
@@ -1927,7 +1953,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1966,7 +1992,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -2107,7 +2133,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -2146,7 +2172,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -2199,10 +2225,11 @@ Module raw_vec.
                                   |),
                                   [ M.read (| self |) ]
                                 |);
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::raw_vec::RawVec"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::raw_vec::RawVec",
                                   "alloc"
+                                |)
                               ]
                             |)
                           ]
@@ -2212,7 +2239,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -2251,7 +2278,7 @@ Module raw_vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -2394,7 +2421,7 @@ Module raw_vec.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -2417,8 +2444,8 @@ Module raw_vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let ptr := M.copy (| γ0_0 |) in
                         let layout := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -2455,10 +2482,11 @@ Module raw_vec.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::raw_vec::RawVec"
-                                                    "alloc";
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::raw_vec::RawVec",
+                                                    "alloc"
+                                                  |);
                                                   M.read (| ptr |);
                                                   M.read (| layout |)
                                                 ]
@@ -2466,10 +2494,11 @@ Module raw_vec.
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::raw_vec::RawVec"
-                                                "ptr",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::raw_vec::RawVec",
+                                                "ptr"
+                                              |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
@@ -2483,10 +2512,11 @@ Module raw_vec.
                                             |) in
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::raw_vec::RawVec"
-                                                "cap",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::raw_vec::RawVec",
+                                                "cap"
+                                              |),
                                               Value.Integer Integer.Usize 0
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
@@ -2599,10 +2629,11 @@ Module raw_vec.
                                                               []
                                                             |),
                                                             [
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "alloc::raw_vec::RawVec"
-                                                                "alloc";
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "alloc::raw_vec::RawVec",
+                                                                "alloc"
+                                                              |);
                                                               M.read (| ptr |);
                                                               M.read (| layout |);
                                                               M.read (| new_layout |)
@@ -2641,7 +2672,7 @@ Module raw_vec.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Break",
                                                           0
@@ -2684,7 +2715,7 @@ Module raw_vec.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                           0
@@ -2832,7 +2863,7 @@ Module raw_vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -2873,7 +2904,7 @@ Module raw_vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -2917,7 +2948,7 @@ Module raw_vec.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -2958,7 +2989,7 @@ Module raw_vec.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -2976,13 +3007,13 @@ Module raw_vec.
                         ltac:(M.monadic
                           (let γ := current_memory in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let ptr := M.copy (| γ1_0 |) in
                           let old_layout := M.copy (| γ1_1 |) in
                           let _ :=
@@ -3027,8 +3058,9 @@ Module raw_vec.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ0_0 := M.get_tuple_field γ 0 in
-                                              let γ0_1 := M.get_tuple_field γ 1 in
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let left_val := M.copy (| γ0_0 |) in
                                               let right_val := M.copy (| γ0_1 |) in
                                               M.match_operator (|
@@ -3237,23 +3269,24 @@ Module raw_vec.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
                       |) in
-                    let γ1_0 := M.get_tuple_field γ0_0 0 in
-                    let γ1_1 := M.get_tuple_field γ0_0 1 in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                     let ptr := M.copy (| γ1_0 |) in
                     let layout := M.copy (| γ1_1 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::raw_vec::RawVec"
-                            "alloc";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::raw_vec::RawVec",
+                            "alloc"
+                          |);
                           M.read (| ptr |);
                           M.read (| layout |)
                         ]
@@ -3337,11 +3370,7 @@ Module raw_vec.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
@@ -3353,13 +3382,9 @@ Module raw_vec.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let γ1_0 :=
-                    M.get_struct_record_field_or_break_match (|
+                    M.SubPointer.get_struct_record_field (|
                       γ0_0,
                       "alloc::collections::TryReserveErrorKind::AllocError",
                       "layout"
@@ -3376,11 +3401,7 @@ Module raw_vec.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
           |)

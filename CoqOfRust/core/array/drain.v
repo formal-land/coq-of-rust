@@ -111,7 +111,13 @@ Module array.
                     "as_mut_slice",
                     []
                   |),
-                  [ M.get_struct_tuple_field (M.read (| self |)) "core::array::drain::Drain" 0 ]
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::array::drain::Drain",
+                      0
+                    |)
+                  ]
                 |)
               ]
             |)))
@@ -173,10 +179,11 @@ Module array.
                                   []
                                 |),
                                 [
-                                  M.get_struct_tuple_field
-                                    (M.read (| self |))
-                                    "core::array::drain::Drain"
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.read (| self |),
+                                    "core::array::drain::Drain",
                                     0
+                                  |)
                                 ]
                               |)
                             ]
@@ -186,7 +193,7 @@ Module array.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -217,7 +224,7 @@ Module array.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -319,7 +326,13 @@ Module array.
                 "len",
                 []
               |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::array::drain::Drain" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::array::drain::Drain",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -374,7 +387,13 @@ Module array.
                       "next_unchecked",
                       []
                     |),
-                    [ M.get_struct_tuple_field (M.read (| self |)) "core::array::drain::Drain" 0 ]
+                    [
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::array::drain::Drain",
+                        0
+                      |)
+                    ]
                   |)
                 |) in
               M.alloc (|

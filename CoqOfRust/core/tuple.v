@@ -29,7 +29,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -60,7 +60,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -79,7 +82,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -154,7 +160,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -173,7 +182,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -192,7 +204,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -211,7 +226,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -230,7 +248,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -268,7 +289,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-            [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+            [
+              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -341,7 +365,7 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                     let value_T := M.copy (| γ0_0 |) in
                     M.alloc (| Value.Tuple [ M.read (| value_T |) ] |)))
               ]
@@ -380,7 +404,7 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let value_T := M.copy (| γ0_0 |) in
                     M.alloc (| Value.Array [ M.read (| value_T |) ] |)))
               ]
@@ -416,12 +440,17 @@ Module tuple.
           LogicalOp.and (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
-              [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+              [
+                M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 1; M.get_tuple_field (M.read (| other |)) 1
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                 ]
               |)))
           |)))
@@ -443,12 +472,17 @@ Module tuple.
           LogicalOp.or (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
-              [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0 ]
+              [
+                M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 1; M.get_tuple_field (M.read (| other |)) 1
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                 ]
               |)))
           |)))
@@ -534,8 +568,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -543,7 +577,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -558,8 +592,8 @@ Module tuple.
                           []
                         |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)));
@@ -591,8 +625,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -623,8 +657,8 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)))
@@ -652,8 +686,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -684,8 +718,8 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)))
@@ -713,8 +747,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -745,8 +779,8 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)))
@@ -774,8 +808,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -806,8 +840,8 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)))
@@ -854,8 +888,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -866,8 +900,8 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)
                     |)));
@@ -959,8 +993,8 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                     let value_U := M.copy (| γ0_0 |) in
                     let value_T := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Tuple [ M.read (| value_U |); M.read (| value_T |) ] |)))
@@ -1000,8 +1034,8 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value_U := M.copy (| γ0_0 |) in
                     let value_T := M.copy (| γ0_1 |) in
                     M.alloc (| Value.Array [ M.read (| value_U |); M.read (| value_T |) ] |)))
@@ -1039,22 +1073,26 @@ Module tuple.
             LogicalOp.and (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                 ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 1;
-                    M.get_tuple_field (M.read (| other |)) 1
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 2; M.get_tuple_field (M.read (| other |)) 2
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                 ]
               |)))
           |)))
@@ -1077,22 +1115,26 @@ Module tuple.
             LogicalOp.or (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 0; M.get_tuple_field (M.read (| other |)) 0
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                 ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 1;
-                    M.get_tuple_field (M.read (| other |)) 1
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 2; M.get_tuple_field (M.read (| other |)) 2
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                 ]
               |)))
           |)))
@@ -1178,8 +1220,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -1187,7 +1229,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1203,8 +1245,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -1212,7 +1254,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -1227,8 +1269,8 @@ Module tuple.
                                   []
                                 |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)));
@@ -1266,8 +1308,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -1305,8 +1347,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -1347,8 +1389,8 @@ Module tuple.
                                   []
                                 |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)))
@@ -1378,8 +1420,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -1417,8 +1459,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -1459,8 +1501,8 @@ Module tuple.
                                   []
                                 |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)))
@@ -1490,8 +1532,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -1529,8 +1571,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -1574,8 +1616,8 @@ Module tuple.
                                   []
                                 |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)))
@@ -1605,8 +1647,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -1644,8 +1686,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -1689,8 +1731,8 @@ Module tuple.
                                   []
                                 |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)))
@@ -1739,8 +1781,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -1752,8 +1794,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -1764,8 +1806,8 @@ Module tuple.
                               M.call_closure (|
                                 M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)
                             |)));
@@ -1873,9 +1915,9 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                     let value_V := M.copy (| γ0_0 |) in
                     let value_U := M.copy (| γ0_1 |) in
                     let value_T := M.copy (| γ0_2 |) in
@@ -1919,9 +1961,9 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                     let value_V := M.copy (| γ0_0 |) in
                     let value_U := M.copy (| γ0_1 |) in
                     let value_T := M.copy (| γ0_2 |) in
@@ -1965,16 +2007,16 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 1;
-                      M.get_tuple_field (M.read (| other |)) 1
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                     ]
                   |)))
               |),
@@ -1982,15 +2024,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 2;
-                    M.get_tuple_field (M.read (| other |)) 2
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 3; M.get_tuple_field (M.read (| other |)) 3
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                 ]
               |)))
           |)))
@@ -2015,16 +2059,16 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 1;
-                      M.get_tuple_field (M.read (| other |)) 1
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                     ]
                   |)))
               |),
@@ -2032,15 +2076,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 2;
-                    M.get_tuple_field (M.read (| other |)) 2
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 3; M.get_tuple_field (M.read (| other |)) 3
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                 ]
               |)))
           |)))
@@ -2126,8 +2172,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -2135,7 +2181,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -2151,8 +2197,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -2160,7 +2206,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -2176,8 +2222,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -2185,7 +2231,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -2200,8 +2246,8 @@ Module tuple.
                                           []
                                         |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)));
@@ -2245,8 +2291,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -2284,8 +2330,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -2327,8 +2373,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -2378,8 +2424,8 @@ Module tuple.
                                           []
                                         |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)))
@@ -2411,8 +2457,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -2450,8 +2496,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -2493,8 +2539,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -2544,8 +2590,8 @@ Module tuple.
                                           []
                                         |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)))
@@ -2577,8 +2623,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -2616,8 +2662,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -2662,8 +2708,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -2713,8 +2759,8 @@ Module tuple.
                                           []
                                         |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)))
@@ -2746,8 +2792,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -2785,8 +2831,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -2831,8 +2877,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -2882,8 +2928,8 @@ Module tuple.
                                           []
                                         |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)))
@@ -2934,8 +2980,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -2947,8 +2993,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -2960,8 +3006,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -2972,8 +3018,8 @@ Module tuple.
                                       M.call_closure (|
                                         M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
                                         [
-                                          M.get_tuple_field (M.read (| self |)) 3;
-                                          M.get_tuple_field (M.read (| other |)) 3
+                                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                         ]
                                       |)
                                     |)));
@@ -3097,10 +3143,10 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                     let value_W := M.copy (| γ0_0 |) in
                     let value_V := M.copy (| γ0_1 |) in
                     let value_U := M.copy (| γ0_2 |) in
@@ -3150,10 +3196,10 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                     let value_W := M.copy (| γ0_0 |) in
                     let value_V := M.copy (| γ0_1 |) in
                     let value_U := M.copy (| γ0_2 |) in
@@ -3204,16 +3250,16 @@ Module tuple.
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 0;
-                      M.get_tuple_field (M.read (| other |)) 0
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                     ]
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 1;
-                        M.get_tuple_field (M.read (| other |)) 1
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                       ]
                     |)))
                 |),
@@ -3221,8 +3267,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 2;
-                      M.get_tuple_field (M.read (| other |)) 2
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                     ]
                   |)))
               |),
@@ -3230,15 +3276,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 3;
-                    M.get_tuple_field (M.read (| other |)) 3
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 4; M.get_tuple_field (M.read (| other |)) 4
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                 ]
               |)))
           |)))
@@ -3264,16 +3312,16 @@ Module tuple.
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 0;
-                      M.get_tuple_field (M.read (| other |)) 0
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                     ]
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 1;
-                        M.get_tuple_field (M.read (| other |)) 1
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                       ]
                     |)))
                 |),
@@ -3281,8 +3329,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 2;
-                      M.get_tuple_field (M.read (| other |)) 2
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                     ]
                   |)))
               |),
@@ -3290,15 +3338,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 3;
-                    M.get_tuple_field (M.read (| other |)) 3
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 4; M.get_tuple_field (M.read (| other |)) 4
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                 ]
               |)))
           |)))
@@ -3385,8 +3435,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -3394,7 +3444,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -3410,8 +3460,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -3419,7 +3469,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -3435,8 +3485,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -3444,7 +3494,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -3460,8 +3510,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -3469,7 +3519,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -3484,8 +3534,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)));
@@ -3535,8 +3591,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -3574,8 +3630,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -3617,8 +3673,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -3669,8 +3725,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -3725,8 +3781,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)))
@@ -3760,8 +3822,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -3799,8 +3861,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -3842,8 +3904,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -3894,8 +3956,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -3950,8 +4012,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)))
@@ -3985,8 +4053,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -4024,8 +4092,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -4070,8 +4138,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -4122,8 +4190,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -4180,8 +4248,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)))
@@ -4215,8 +4289,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -4254,8 +4328,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -4300,8 +4374,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -4352,8 +4426,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -4410,8 +4484,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)))
@@ -4464,8 +4544,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -4477,8 +4557,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -4490,8 +4570,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -4509,8 +4589,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -4527,8 +4607,14 @@ Module tuple.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_tuple_field (M.read (| self |)) 4;
-                                                  M.get_tuple_field (M.read (| other |)) 4
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| self |),
+                                                    4
+                                                  |);
+                                                  M.SubPointer.get_tuple_field (|
+                                                    M.read (| other |),
+                                                    4
+                                                  |)
                                                 ]
                                               |)
                                             |)));
@@ -4668,11 +4754,11 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
                     let value_X := M.copy (| γ0_0 |) in
                     let value_W := M.copy (| γ0_1 |) in
                     let value_V := M.copy (| γ0_2 |) in
@@ -4724,11 +4810,11 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
                     let value_X := M.copy (| γ0_0 |) in
                     let value_W := M.copy (| γ0_1 |) in
                     let value_V := M.copy (| γ0_2 |) in
@@ -4782,16 +4868,16 @@ Module tuple.
                     M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 0;
-                        M.get_tuple_field (M.read (| other |)) 0
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                       ]
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)))
                   |),
@@ -4799,8 +4885,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 2;
-                        M.get_tuple_field (M.read (| other |)) 2
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                       ]
                     |)))
                 |),
@@ -4808,8 +4894,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 3;
-                      M.get_tuple_field (M.read (| other |)) 3
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                     ]
                   |)))
               |),
@@ -4817,15 +4903,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 4;
-                    M.get_tuple_field (M.read (| other |)) 4
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 5; M.get_tuple_field (M.read (| other |)) 5
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                 ]
               |)))
           |)))
@@ -4852,16 +4940,16 @@ Module tuple.
                     M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 0;
-                        M.get_tuple_field (M.read (| other |)) 0
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                       ]
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 1;
-                          M.get_tuple_field (M.read (| other |)) 1
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                         ]
                       |)))
                   |),
@@ -4869,8 +4957,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 2;
-                        M.get_tuple_field (M.read (| other |)) 2
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                       ]
                     |)))
                 |),
@@ -4878,8 +4966,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 3;
-                      M.get_tuple_field (M.read (| other |)) 3
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                     ]
                   |)))
               |),
@@ -4887,15 +4975,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 4;
-                    M.get_tuple_field (M.read (| other |)) 4
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 5; M.get_tuple_field (M.read (| other |)) 5
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                 ]
               |)))
           |)))
@@ -4984,8 +5074,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -4993,7 +5083,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -5009,8 +5099,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -5018,7 +5108,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -5034,8 +5124,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -5043,7 +5133,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -5059,8 +5149,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -5068,7 +5158,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -5084,8 +5174,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -5093,7 +5189,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -5108,8 +5204,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)));
@@ -5165,8 +5267,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -5204,8 +5306,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -5247,8 +5349,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -5299,8 +5401,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -5356,8 +5458,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -5414,8 +5522,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)))
@@ -5451,8 +5565,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -5490,8 +5604,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -5533,8 +5647,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -5585,8 +5699,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -5642,8 +5756,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -5700,8 +5820,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)))
@@ -5737,8 +5863,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -5776,8 +5902,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -5822,8 +5948,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -5874,8 +6000,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -5933,8 +6059,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -5991,8 +6123,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)))
@@ -6028,8 +6166,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -6067,8 +6205,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -6113,8 +6251,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -6165,8 +6303,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -6224,8 +6362,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -6282,8 +6426,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)))
@@ -6338,8 +6488,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -6351,8 +6501,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -6364,8 +6514,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -6383,8 +6533,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -6402,8 +6552,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -6420,8 +6576,14 @@ Module tuple.
                                                           []
                                                         |),
                                                         [
-                                                          M.get_tuple_field (M.read (| self |)) 5;
-                                                          M.get_tuple_field (M.read (| other |)) 5
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| self |),
+                                                            5
+                                                          |);
+                                                          M.SubPointer.get_tuple_field (|
+                                                            M.read (| other |),
+                                                            5
+                                                          |)
                                                         ]
                                                       |)
                                                     |)));
@@ -6577,12 +6739,12 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
                     let value_Y := M.copy (| γ0_0 |) in
                     let value_X := M.copy (| γ0_1 |) in
                     let value_W := M.copy (| γ0_2 |) in
@@ -6636,12 +6798,12 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
                     let value_Y := M.copy (| γ0_0 |) in
                     let value_X := M.copy (| γ0_1 |) in
                     let value_W := M.copy (| γ0_2 |) in
@@ -6698,16 +6860,16 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 0;
-                          M.get_tuple_field (M.read (| other |)) 0
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                         ]
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)))
                     |),
@@ -6715,8 +6877,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 2;
-                          M.get_tuple_field (M.read (| other |)) 2
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                         ]
                       |)))
                   |),
@@ -6724,8 +6886,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 3;
-                        M.get_tuple_field (M.read (| other |)) 3
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                       ]
                     |)))
                 |),
@@ -6733,8 +6895,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 4;
-                      M.get_tuple_field (M.read (| other |)) 4
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                     ]
                   |)))
               |),
@@ -6742,15 +6904,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 5;
-                    M.get_tuple_field (M.read (| other |)) 5
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 6; M.get_tuple_field (M.read (| other |)) 6
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                 ]
               |)))
           |)))
@@ -6778,16 +6942,16 @@ Module tuple.
                       M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 0;
-                          M.get_tuple_field (M.read (| other |)) 0
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                         ]
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)))
                     |),
@@ -6795,8 +6959,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 2;
-                          M.get_tuple_field (M.read (| other |)) 2
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                         ]
                       |)))
                   |),
@@ -6804,8 +6968,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 3;
-                        M.get_tuple_field (M.read (| other |)) 3
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                       ]
                     |)))
                 |),
@@ -6813,8 +6977,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 4;
-                      M.get_tuple_field (M.read (| other |)) 4
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                     ]
                   |)))
               |),
@@ -6822,15 +6986,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 5;
-                    M.get_tuple_field (M.read (| other |)) 5
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 6; M.get_tuple_field (M.read (| other |)) 6
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                 ]
               |)))
           |)))
@@ -6919,8 +7085,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -6928,7 +7094,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -6944,8 +7110,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -6953,7 +7119,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -6969,8 +7135,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -6978,7 +7144,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -6994,8 +7160,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -7003,7 +7169,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -7019,8 +7185,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -7028,7 +7200,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -7044,8 +7216,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -7053,7 +7231,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -7068,12 +7246,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)));
@@ -7135,8 +7315,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -7174,8 +7354,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -7217,8 +7397,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -7269,8 +7449,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -7326,8 +7506,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -7385,8 +7571,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -7443,12 +7635,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)))
@@ -7486,8 +7680,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -7525,8 +7719,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -7568,8 +7762,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -7620,8 +7814,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -7677,8 +7871,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -7736,8 +7936,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -7794,12 +8000,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)))
@@ -7837,8 +8045,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -7876,8 +8084,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -7922,8 +8130,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -7974,8 +8182,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -8033,8 +8241,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -8092,8 +8306,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -8150,12 +8370,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)))
@@ -8193,8 +8415,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -8232,8 +8454,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -8278,8 +8500,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -8330,8 +8552,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -8389,8 +8611,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -8448,8 +8676,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -8506,12 +8740,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)))
@@ -8568,8 +8804,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -8581,8 +8817,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -8594,8 +8830,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -8613,8 +8849,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -8632,8 +8868,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -8651,8 +8893,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -8669,12 +8917,14 @@ Module tuple.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.get_tuple_field
-                                                                    (M.read (| self |))
-                                                                    6;
-                                                                  M.get_tuple_field
-                                                                    (M.read (| other |))
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| self |),
                                                                     6
+                                                                  |);
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    M.read (| other |),
+                                                                    6
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |)));
@@ -8846,13 +9096,13 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                     let value_Z := M.copy (| γ0_0 |) in
                     let value_Y := M.copy (| γ0_1 |) in
                     let value_X := M.copy (| γ0_2 |) in
@@ -8908,13 +9158,13 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
                     let value_Z := M.copy (| γ0_0 |) in
                     let value_Y := M.copy (| γ0_1 |) in
                     let value_X := M.copy (| γ0_2 |) in
@@ -8974,16 +9224,16 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 0;
-                            M.get_tuple_field (M.read (| other |)) 0
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                           ]
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 1;
-                              M.get_tuple_field (M.read (| other |)) 1
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                             ]
                           |)))
                       |),
@@ -8991,8 +9241,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 2;
-                            M.get_tuple_field (M.read (| other |)) 2
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                           ]
                         |)))
                     |),
@@ -9000,8 +9250,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 3;
-                          M.get_tuple_field (M.read (| other |)) 3
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                         ]
                       |)))
                   |),
@@ -9009,8 +9259,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 4;
-                        M.get_tuple_field (M.read (| other |)) 4
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                       ]
                     |)))
                 |),
@@ -9018,8 +9268,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 5;
-                      M.get_tuple_field (M.read (| other |)) 5
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                     ]
                   |)))
               |),
@@ -9027,15 +9277,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 6;
-                    M.get_tuple_field (M.read (| other |)) 6
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 7; M.get_tuple_field (M.read (| other |)) 7
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                 ]
               |)))
           |)))
@@ -9064,16 +9316,16 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 0;
-                            M.get_tuple_field (M.read (| other |)) 0
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                           ]
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 1;
-                              M.get_tuple_field (M.read (| other |)) 1
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                             ]
                           |)))
                       |),
@@ -9081,8 +9333,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 2;
-                            M.get_tuple_field (M.read (| other |)) 2
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                           ]
                         |)))
                     |),
@@ -9090,8 +9342,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 3;
-                          M.get_tuple_field (M.read (| other |)) 3
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                         ]
                       |)))
                   |),
@@ -9099,8 +9351,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 4;
-                        M.get_tuple_field (M.read (| other |)) 4
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                       ]
                     |)))
                 |),
@@ -9108,8 +9360,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 5;
-                      M.get_tuple_field (M.read (| other |)) 5
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                     ]
                   |)))
               |),
@@ -9117,15 +9369,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 6;
-                    M.get_tuple_field (M.read (| other |)) 6
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 7; M.get_tuple_field (M.read (| other |)) 7
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                 ]
               |)))
           |)))
@@ -9214,8 +9468,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -9223,7 +9477,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -9239,8 +9493,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -9248,7 +9502,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -9264,8 +9518,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -9273,7 +9527,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -9289,8 +9543,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -9298,7 +9552,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -9314,8 +9568,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -9323,7 +9583,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -9339,8 +9599,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -9348,7 +9614,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -9364,12 +9630,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -9377,7 +9645,7 @@ Module tuple.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -9392,12 +9660,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)));
@@ -9466,8 +9736,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -9505,8 +9775,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -9548,8 +9818,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -9600,8 +9870,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -9657,8 +9927,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -9716,8 +9992,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -9775,12 +10057,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -9837,12 +10121,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)))
@@ -9882,8 +10168,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -9921,8 +10207,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -9964,8 +10250,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -10016,8 +10302,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -10073,8 +10359,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -10132,8 +10424,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -10191,12 +10489,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -10253,12 +10553,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)))
@@ -10298,8 +10600,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -10337,8 +10639,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -10383,8 +10685,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -10435,8 +10737,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -10494,8 +10796,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -10553,8 +10861,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -10612,12 +10926,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -10674,12 +10990,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)))
@@ -10719,8 +11037,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -10758,8 +11076,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -10804,8 +11122,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -10856,8 +11174,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -10915,8 +11233,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -10974,8 +11298,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -11033,12 +11363,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -11095,12 +11427,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)))
@@ -11159,8 +11493,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -11172,8 +11506,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -11185,8 +11519,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -11204,8 +11538,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -11223,8 +11557,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -11242,8 +11582,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -11261,12 +11607,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -11283,12 +11631,14 @@ Module tuple.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.get_tuple_field
-                                                                            (M.read (| self |))
-                                                                            7;
-                                                                          M.get_tuple_field
-                                                                            (M.read (| other |))
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| self |),
                                                                             7
+                                                                          |);
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| other |),
+                                                                            7
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     |)));
@@ -11477,14 +11827,14 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                     let value_A := M.copy (| γ0_0 |) in
                     let value_Z := M.copy (| γ0_1 |) in
                     let value_Y := M.copy (| γ0_2 |) in
@@ -11542,14 +11892,14 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
-                    let γ0_7 := M.get_tuple_field γ 7 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
                     let value_A := M.copy (| γ0_0 |) in
                     let value_Z := M.copy (| γ0_1 |) in
                     let value_Y := M.copy (| γ0_2 |) in
@@ -11612,16 +11962,16 @@ Module tuple.
                           M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 0;
-                              M.get_tuple_field (M.read (| other |)) 0
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                             ]
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 1;
-                                M.get_tuple_field (M.read (| other |)) 1
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                               ]
                             |)))
                         |),
@@ -11629,8 +11979,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 2;
-                              M.get_tuple_field (M.read (| other |)) 2
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                             ]
                           |)))
                       |),
@@ -11638,8 +11988,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 3;
-                            M.get_tuple_field (M.read (| other |)) 3
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                           ]
                         |)))
                     |),
@@ -11647,8 +11997,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 4;
-                          M.get_tuple_field (M.read (| other |)) 4
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                         ]
                       |)))
                   |),
@@ -11656,8 +12006,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 5;
-                        M.get_tuple_field (M.read (| other |)) 5
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                       ]
                     |)))
                 |),
@@ -11665,8 +12015,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 6;
-                      M.get_tuple_field (M.read (| other |)) 6
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                     ]
                   |)))
               |),
@@ -11674,15 +12024,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 7;
-                    M.get_tuple_field (M.read (| other |)) 7
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 8; M.get_tuple_field (M.read (| other |)) 8
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                 ]
               |)))
           |)))
@@ -11712,16 +12064,16 @@ Module tuple.
                           M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 0;
-                              M.get_tuple_field (M.read (| other |)) 0
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                             ]
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 1;
-                                M.get_tuple_field (M.read (| other |)) 1
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                               ]
                             |)))
                         |),
@@ -11729,8 +12081,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 2;
-                              M.get_tuple_field (M.read (| other |)) 2
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                             ]
                           |)))
                       |),
@@ -11738,8 +12090,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 3;
-                            M.get_tuple_field (M.read (| other |)) 3
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                           ]
                         |)))
                     |),
@@ -11747,8 +12099,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 4;
-                          M.get_tuple_field (M.read (| other |)) 4
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                         ]
                       |)))
                   |),
@@ -11756,8 +12108,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 5;
-                        M.get_tuple_field (M.read (| other |)) 5
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                       ]
                     |)))
                 |),
@@ -11765,8 +12117,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 6;
-                      M.get_tuple_field (M.read (| other |)) 6
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                     ]
                   |)))
               |),
@@ -11774,15 +12126,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 7;
-                    M.get_tuple_field (M.read (| other |)) 7
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 8; M.get_tuple_field (M.read (| other |)) 8
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                 ]
               |)))
           |)))
@@ -11871,8 +12225,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -11880,7 +12234,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -11896,8 +12250,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -11905,7 +12259,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -11921,8 +12275,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -11930,7 +12284,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -11946,8 +12300,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -11955,7 +12309,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -11971,8 +12325,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -11980,7 +12340,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -11996,8 +12356,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -12005,7 +12371,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -12021,12 +12387,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -12034,7 +12402,7 @@ Module tuple.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -12050,12 +12418,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -12063,7 +12433,7 @@ Module tuple.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0
@@ -12078,16 +12448,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)));
@@ -12163,8 +12535,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -12202,8 +12574,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -12245,8 +12617,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -12297,8 +12669,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -12354,8 +12726,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -12413,8 +12791,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -12472,12 +12856,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -12535,12 +12921,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -12599,16 +12987,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)))
@@ -12650,8 +13040,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -12689,8 +13079,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -12732,8 +13122,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -12784,8 +13174,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -12841,8 +13231,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -12900,8 +13296,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -12959,12 +13361,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -13022,12 +13426,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -13086,16 +13492,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)))
@@ -13137,8 +13545,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -13176,8 +13584,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -13222,8 +13630,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -13274,8 +13682,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -13333,8 +13741,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -13392,8 +13806,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -13451,12 +13871,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -13514,12 +13936,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -13578,16 +14002,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)))
@@ -13629,8 +14055,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -13668,8 +14094,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -13714,8 +14140,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -13766,8 +14192,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -13825,8 +14251,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -13884,8 +14316,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -13943,12 +14381,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -14006,12 +14446,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -14070,16 +14512,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)))
@@ -14140,8 +14584,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -14153,8 +14597,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -14166,8 +14610,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -14185,8 +14629,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -14204,8 +14648,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -14223,8 +14673,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -14242,12 +14698,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -14265,12 +14723,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -14287,16 +14747,18 @@ Module tuple.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    8;
-                                                                                  M.get_tuple_field
-                                                                                    (M.read (|
-                                                                                      other
-                                                                                    |))
+                                                                                    |),
                                                                                     8
+                                                                                  |);
+                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                    M.read (|
+                                                                                      other
+                                                                                    |),
+                                                                                    8
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |)));
@@ -14502,15 +14964,15 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
-                    let γ0_8 := M.get_slice_index_or_break_match (| γ, 8 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_slice_index (| γ, 8 |) in
                     let value_B := M.copy (| γ0_0 |) in
                     let value_A := M.copy (| γ0_1 |) in
                     let value_Z := M.copy (| γ0_2 |) in
@@ -14570,15 +15032,15 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
-                    let γ0_7 := M.get_tuple_field γ 7 in
-                    let γ0_8 := M.get_tuple_field γ 8 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
                     let value_B := M.copy (| γ0_0 |) in
                     let value_A := M.copy (| γ0_1 |) in
                     let value_Z := M.copy (| γ0_2 |) in
@@ -14645,16 +15107,16 @@ Module tuple.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", C, [ C ], "eq", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 0;
-                                M.get_tuple_field (M.read (| other |)) 0
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                               ]
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 1;
-                                  M.get_tuple_field (M.read (| other |)) 1
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                 ]
                               |)))
                           |),
@@ -14662,8 +15124,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 2;
-                                M.get_tuple_field (M.read (| other |)) 2
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                               ]
                             |)))
                         |),
@@ -14671,8 +15133,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 3;
-                              M.get_tuple_field (M.read (| other |)) 3
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                             ]
                           |)))
                       |),
@@ -14680,8 +15142,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 4;
-                            M.get_tuple_field (M.read (| other |)) 4
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                           ]
                         |)))
                     |),
@@ -14689,8 +15151,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 5;
-                          M.get_tuple_field (M.read (| other |)) 5
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                         ]
                       |)))
                   |),
@@ -14698,8 +15160,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 6;
-                        M.get_tuple_field (M.read (| other |)) 6
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                       ]
                     |)))
                 |),
@@ -14707,8 +15169,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 7;
-                      M.get_tuple_field (M.read (| other |)) 7
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                     ]
                   |)))
               |),
@@ -14716,15 +15178,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 8;
-                    M.get_tuple_field (M.read (| other |)) 8
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 9; M.get_tuple_field (M.read (| other |)) 9
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                 ]
               |)))
           |)))
@@ -14755,16 +15219,16 @@ Module tuple.
                             M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", C, [ C ], "ne", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 0;
-                                M.get_tuple_field (M.read (| other |)) 0
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                               ]
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 1;
-                                  M.get_tuple_field (M.read (| other |)) 1
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                 ]
                               |)))
                           |),
@@ -14772,8 +15236,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 2;
-                                M.get_tuple_field (M.read (| other |)) 2
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                               ]
                             |)))
                         |),
@@ -14781,8 +15245,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 3;
-                              M.get_tuple_field (M.read (| other |)) 3
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                             ]
                           |)))
                       |),
@@ -14790,8 +15254,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 4;
-                            M.get_tuple_field (M.read (| other |)) 4
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                           ]
                         |)))
                     |),
@@ -14799,8 +15263,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 5;
-                          M.get_tuple_field (M.read (| other |)) 5
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                         ]
                       |)))
                   |),
@@ -14808,8 +15272,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 6;
-                        M.get_tuple_field (M.read (| other |)) 6
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                       ]
                     |)))
                 |),
@@ -14817,8 +15281,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 7;
-                      M.get_tuple_field (M.read (| other |)) 7
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                     ]
                   |)))
               |),
@@ -14826,15 +15290,17 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 8;
-                    M.get_tuple_field (M.read (| other |)) 8
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                   ]
                 |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
-                [ M.get_tuple_field (M.read (| self |)) 9; M.get_tuple_field (M.read (| other |)) 9
+                [
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                 ]
               |)))
           |)))
@@ -14928,8 +15394,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -14937,7 +15403,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -14953,8 +15419,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -14962,7 +15428,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -14978,8 +15444,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -14987,7 +15453,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -15003,8 +15469,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -15012,7 +15478,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -15028,8 +15494,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -15037,7 +15509,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -15053,8 +15525,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -15062,7 +15540,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -15078,12 +15556,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -15091,7 +15571,7 @@ Module tuple.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -15107,12 +15587,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -15120,7 +15602,7 @@ Module tuple.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0
@@ -15136,16 +15618,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -15153,7 +15637,7 @@ Module tuple.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let γ0_0 :=
-                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                         γ,
                                                                                         "core::option::Option::Some",
                                                                                         0
@@ -15168,16 +15652,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)));
@@ -15262,8 +15748,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -15301,8 +15787,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -15344,8 +15830,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -15396,8 +15882,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -15453,8 +15939,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -15512,8 +16004,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -15571,12 +16069,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -15634,12 +16134,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -15699,16 +16201,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -15774,16 +16278,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)))
@@ -15827,8 +16333,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -15866,8 +16372,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -15909,8 +16415,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -15961,8 +16467,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -16018,8 +16524,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -16077,8 +16589,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -16136,12 +16654,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -16199,12 +16719,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -16264,16 +16786,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -16339,16 +16863,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)))
@@ -16392,8 +16918,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -16431,8 +16957,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -16477,8 +17003,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -16529,8 +17055,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -16588,8 +17114,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -16647,8 +17179,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -16706,12 +17244,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -16769,12 +17309,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -16834,16 +17376,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -16909,16 +17453,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)))
@@ -16962,8 +17508,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -17001,8 +17547,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -17047,8 +17593,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -17099,8 +17645,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -17158,8 +17704,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -17217,8 +17769,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -17276,12 +17834,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -17339,12 +17899,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -17404,16 +17966,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -17479,16 +18043,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)))
@@ -17552,8 +18118,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -17565,8 +18131,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -17578,8 +18144,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -17597,8 +18163,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -17616,8 +18182,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -17635,8 +18207,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -17654,12 +18232,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -17677,12 +18257,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -17700,16 +18282,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -17726,16 +18310,18 @@ Module tuple.
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
                                                                                               self
-                                                                                            |))
-                                                                                            9;
-                                                                                          M.get_tuple_field
-                                                                                            (M.read (|
-                                                                                              other
-                                                                                            |))
+                                                                                            |),
                                                                                             9
+                                                                                          |);
+                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                            M.read (|
+                                                                                              other
+                                                                                            |),
+                                                                                            9
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     |)));
@@ -17961,16 +18547,16 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
-                    let γ0_8 := M.get_slice_index_or_break_match (| γ, 8 |) in
-                    let γ0_9 := M.get_slice_index_or_break_match (| γ, 9 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_slice_index (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_slice_index (| γ, 9 |) in
                     let value_C := M.copy (| γ0_0 |) in
                     let value_B := M.copy (| γ0_1 |) in
                     let value_A := M.copy (| γ0_2 |) in
@@ -18032,16 +18618,16 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
-                    let γ0_7 := M.get_tuple_field γ 7 in
-                    let γ0_8 := M.get_tuple_field γ 8 in
-                    let γ0_9 := M.get_tuple_field γ 9 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
                     let value_C := M.copy (| γ0_0 |) in
                     let value_B := M.copy (| γ0_1 |) in
                     let value_A := M.copy (| γ0_2 |) in
@@ -18111,8 +18697,8 @@ Module tuple.
                               M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", D, [ D ], "eq", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 0;
-                                  M.get_tuple_field (M.read (| other |)) 0
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                                 ]
                               |),
                               ltac:(M.monadic
@@ -18125,8 +18711,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 1;
-                                    M.get_tuple_field (M.read (| other |)) 1
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                   ]
                                 |)))
                             |),
@@ -18134,8 +18720,8 @@ Module tuple.
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)))
                           |),
@@ -18143,8 +18729,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 3;
-                                M.get_tuple_field (M.read (| other |)) 3
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                               ]
                             |)))
                         |),
@@ -18152,8 +18738,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 4;
-                              M.get_tuple_field (M.read (| other |)) 4
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                             ]
                           |)))
                       |),
@@ -18161,8 +18747,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 5;
-                            M.get_tuple_field (M.read (| other |)) 5
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                           ]
                         |)))
                     |),
@@ -18170,8 +18756,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 6;
-                          M.get_tuple_field (M.read (| other |)) 6
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                         ]
                       |)))
                   |),
@@ -18179,8 +18765,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 7;
-                        M.get_tuple_field (M.read (| other |)) 7
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                       ]
                     |)))
                 |),
@@ -18188,8 +18774,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 8;
-                      M.get_tuple_field (M.read (| other |)) 8
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                     ]
                   |)))
               |),
@@ -18197,8 +18783,8 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 9;
-                    M.get_tuple_field (M.read (| other |)) 9
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                   ]
                 |)))
             |),
@@ -18206,8 +18792,8 @@ Module tuple.
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
                 [
-                  M.get_tuple_field (M.read (| self |)) 10;
-                  M.get_tuple_field (M.read (| other |)) 10
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
                 ]
               |)))
           |)))
@@ -18239,8 +18825,8 @@ Module tuple.
                               M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", D, [ D ], "ne", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 0;
-                                  M.get_tuple_field (M.read (| other |)) 0
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                                 ]
                               |),
                               ltac:(M.monadic
@@ -18253,8 +18839,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 1;
-                                    M.get_tuple_field (M.read (| other |)) 1
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                   ]
                                 |)))
                             |),
@@ -18262,8 +18848,8 @@ Module tuple.
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 2;
-                                  M.get_tuple_field (M.read (| other |)) 2
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                 ]
                               |)))
                           |),
@@ -18271,8 +18857,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 3;
-                                M.get_tuple_field (M.read (| other |)) 3
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                               ]
                             |)))
                         |),
@@ -18280,8 +18866,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 4;
-                              M.get_tuple_field (M.read (| other |)) 4
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                             ]
                           |)))
                       |),
@@ -18289,8 +18875,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 5;
-                            M.get_tuple_field (M.read (| other |)) 5
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                           ]
                         |)))
                     |),
@@ -18298,8 +18884,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 6;
-                          M.get_tuple_field (M.read (| other |)) 6
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                         ]
                       |)))
                   |),
@@ -18307,8 +18893,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 7;
-                        M.get_tuple_field (M.read (| other |)) 7
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                       ]
                     |)))
                 |),
@@ -18316,8 +18902,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 8;
-                      M.get_tuple_field (M.read (| other |)) 8
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                     ]
                   |)))
               |),
@@ -18325,8 +18911,8 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 9;
-                    M.get_tuple_field (M.read (| other |)) 9
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                   ]
                 |)))
             |),
@@ -18334,8 +18920,8 @@ Module tuple.
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
                 [
-                  M.get_tuple_field (M.read (| self |)) 10;
-                  M.get_tuple_field (M.read (| other |)) 10
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
                 ]
               |)))
           |)))
@@ -18429,8 +19015,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -18438,7 +19024,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -18454,8 +19040,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -18463,7 +19049,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -18479,8 +19065,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -18488,7 +19074,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -18504,8 +19090,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -18513,7 +19099,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -18529,8 +19115,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -18538,7 +19130,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -18554,8 +19146,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -18563,7 +19161,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -18579,12 +19177,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -18592,7 +19192,7 @@ Module tuple.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -18608,12 +19208,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -18621,7 +19223,7 @@ Module tuple.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0
@@ -18637,16 +19239,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -18654,7 +19258,7 @@ Module tuple.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let γ0_0 :=
-                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                         γ,
                                                                                         "core::option::Option::Some",
                                                                                         0
@@ -18670,16 +19274,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |),
@@ -18688,7 +19294,7 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::option::Option::Some",
                                                                                                 0
@@ -18705,16 +19311,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)));
@@ -18809,8 +19417,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -18848,8 +19456,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -18891,8 +19499,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -18943,8 +19551,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -19000,8 +19608,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -19059,8 +19673,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -19118,12 +19738,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -19181,12 +19803,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -19246,16 +19870,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -19322,16 +19948,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -19401,16 +20029,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)))
@@ -19456,8 +20086,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -19495,8 +20125,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -19538,8 +20168,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -19590,8 +20220,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -19647,8 +20277,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -19706,8 +20342,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -19765,12 +20407,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -19828,12 +20472,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -19893,16 +20539,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -19969,16 +20617,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -20048,16 +20698,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)))
@@ -20103,8 +20755,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -20142,8 +20794,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -20188,8 +20840,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -20240,8 +20892,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -20299,8 +20951,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -20358,8 +21016,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -20417,12 +21081,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -20480,12 +21146,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -20545,16 +21213,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -20621,16 +21291,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -20700,16 +21372,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)))
@@ -20755,8 +21429,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -20794,8 +21468,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -20840,8 +21514,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -20892,8 +21566,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -20951,8 +21625,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -21010,8 +21690,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -21069,12 +21755,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -21132,12 +21820,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -21197,16 +21887,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -21273,16 +21965,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -21352,16 +22046,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)))
@@ -21427,8 +22123,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", D, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -21440,8 +22136,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -21453,8 +22149,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -21472,8 +22168,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -21491,8 +22187,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -21510,8 +22212,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -21529,12 +22237,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -21552,12 +22262,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -21575,16 +22287,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -21602,16 +22316,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |),
@@ -21628,16 +22344,18 @@ Module tuple.
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
                                                                                                       self
-                                                                                                    |))
-                                                                                                    10;
-                                                                                                  M.get_tuple_field
-                                                                                                    (M.read (|
-                                                                                                      other
-                                                                                                    |))
+                                                                                                    |),
                                                                                                     10
+                                                                                                  |);
+                                                                                                  M.SubPointer.get_tuple_field (|
+                                                                                                    M.read (|
+                                                                                                      other
+                                                                                                    |),
+                                                                                                    10
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |)));
@@ -21883,17 +22601,17 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
-                    let γ0_8 := M.get_slice_index_or_break_match (| γ, 8 |) in
-                    let γ0_9 := M.get_slice_index_or_break_match (| γ, 9 |) in
-                    let γ0_10 := M.get_slice_index_or_break_match (| γ, 10 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_slice_index (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_slice_index (| γ, 9 |) in
+                    let γ0_10 := M.SubPointer.get_slice_index (| γ, 10 |) in
                     let value_D := M.copy (| γ0_0 |) in
                     let value_C := M.copy (| γ0_1 |) in
                     let value_B := M.copy (| γ0_2 |) in
@@ -21957,17 +22675,17 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
-                    let γ0_7 := M.get_tuple_field γ 7 in
-                    let γ0_8 := M.get_tuple_field γ 8 in
-                    let γ0_9 := M.get_tuple_field γ 9 in
-                    let γ0_10 := M.get_tuple_field γ 10 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
+                    let γ0_10 := M.SubPointer.get_tuple_field (| γ, 10 |) in
                     let value_D := M.copy (| γ0_0 |) in
                     let value_C := M.copy (| γ0_1 |) in
                     let value_B := M.copy (| γ0_2 |) in
@@ -22046,8 +22764,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 0;
-                                    M.get_tuple_field (M.read (| other |)) 0
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                                   ]
                                 |),
                                 ltac:(M.monadic
@@ -22060,8 +22778,8 @@ Module tuple.
                                       []
                                     |),
                                     [
-                                      M.get_tuple_field (M.read (| self |)) 1;
-                                      M.get_tuple_field (M.read (| other |)) 1
+                                      M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                      M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                     ]
                                   |)))
                               |),
@@ -22075,8 +22793,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)))
                             |),
@@ -22084,8 +22802,8 @@ Module tuple.
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 3;
-                                  M.get_tuple_field (M.read (| other |)) 3
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                 ]
                               |)))
                           |),
@@ -22093,8 +22811,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 4;
-                                M.get_tuple_field (M.read (| other |)) 4
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                               ]
                             |)))
                         |),
@@ -22102,8 +22820,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 5;
-                              M.get_tuple_field (M.read (| other |)) 5
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                             ]
                           |)))
                       |),
@@ -22111,8 +22829,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 6;
-                            M.get_tuple_field (M.read (| other |)) 6
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                           ]
                         |)))
                     |),
@@ -22120,8 +22838,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 7;
-                          M.get_tuple_field (M.read (| other |)) 7
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                         ]
                       |)))
                   |),
@@ -22129,8 +22847,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 8;
-                        M.get_tuple_field (M.read (| other |)) 8
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                       ]
                     |)))
                 |),
@@ -22138,8 +22856,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 9;
-                      M.get_tuple_field (M.read (| other |)) 9
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                     ]
                   |)))
               |),
@@ -22147,8 +22865,8 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 10;
-                    M.get_tuple_field (M.read (| other |)) 10
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
                   ]
                 |)))
             |),
@@ -22156,8 +22874,8 @@ Module tuple.
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
                 [
-                  M.get_tuple_field (M.read (| self |)) 11;
-                  M.get_tuple_field (M.read (| other |)) 11
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 11 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 11 |)
                 ]
               |)))
           |)))
@@ -22196,8 +22914,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 0;
-                                    M.get_tuple_field (M.read (| other |)) 0
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                                   ]
                                 |),
                                 ltac:(M.monadic
@@ -22210,8 +22928,8 @@ Module tuple.
                                       []
                                     |),
                                     [
-                                      M.get_tuple_field (M.read (| self |)) 1;
-                                      M.get_tuple_field (M.read (| other |)) 1
+                                      M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                                      M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                                     ]
                                   |)))
                               |),
@@ -22225,8 +22943,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)))
                             |),
@@ -22234,8 +22952,8 @@ Module tuple.
                               (M.call_closure (|
                                 M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
                                 [
-                                  M.get_tuple_field (M.read (| self |)) 3;
-                                  M.get_tuple_field (M.read (| other |)) 3
+                                  M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                  M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                 ]
                               |)))
                           |),
@@ -22243,8 +22961,8 @@ Module tuple.
                             (M.call_closure (|
                               M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
                               [
-                                M.get_tuple_field (M.read (| self |)) 4;
-                                M.get_tuple_field (M.read (| other |)) 4
+                                M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
+                                M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
                               ]
                             |)))
                         |),
@@ -22252,8 +22970,8 @@ Module tuple.
                           (M.call_closure (|
                             M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
                             [
-                              M.get_tuple_field (M.read (| self |)) 5;
-                              M.get_tuple_field (M.read (| other |)) 5
+                              M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
+                              M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
                             ]
                           |)))
                       |),
@@ -22261,8 +22979,8 @@ Module tuple.
                         (M.call_closure (|
                           M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 6;
-                            M.get_tuple_field (M.read (| other |)) 6
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
                           ]
                         |)))
                     |),
@@ -22270,8 +22988,8 @@ Module tuple.
                       (M.call_closure (|
                         M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
                         [
-                          M.get_tuple_field (M.read (| self |)) 7;
-                          M.get_tuple_field (M.read (| other |)) 7
+                          M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
+                          M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
                         ]
                       |)))
                   |),
@@ -22279,8 +22997,8 @@ Module tuple.
                     (M.call_closure (|
                       M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
                       [
-                        M.get_tuple_field (M.read (| self |)) 8;
-                        M.get_tuple_field (M.read (| other |)) 8
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
+                        M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
                       ]
                     |)))
                 |),
@@ -22288,8 +23006,8 @@ Module tuple.
                   (M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
                     [
-                      M.get_tuple_field (M.read (| self |)) 9;
-                      M.get_tuple_field (M.read (| other |)) 9
+                      M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
+                      M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
                     ]
                   |)))
               |),
@@ -22297,8 +23015,8 @@ Module tuple.
                 (M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 10;
-                    M.get_tuple_field (M.read (| other |)) 10
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
                   ]
                 |)))
             |),
@@ -22306,8 +23024,8 @@ Module tuple.
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
                 [
-                  M.get_tuple_field (M.read (| self |)) 11;
-                  M.get_tuple_field (M.read (| other |)) 11
+                  M.SubPointer.get_tuple_field (| M.read (| self |), 11 |);
+                  M.SubPointer.get_tuple_field (| M.read (| other |), 11 |)
                 ]
               |)))
           |)))
@@ -22405,8 +23123,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -22414,7 +23132,7 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -22430,8 +23148,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -22439,7 +23157,7 @@ Module tuple.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -22455,8 +23173,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -22464,7 +23182,7 @@ Module tuple.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -22480,8 +23198,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -22489,7 +23207,7 @@ Module tuple.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -22505,8 +23223,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -22514,7 +23238,7 @@ Module tuple.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -22530,8 +23254,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -22539,7 +23269,7 @@ Module tuple.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -22555,12 +23285,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -22568,7 +23300,7 @@ Module tuple.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -22584,12 +23316,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -22597,7 +23331,7 @@ Module tuple.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=
-                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
                                                                                 "core::option::Option::Some",
                                                                                 0
@@ -22613,16 +23347,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -22630,7 +23366,7 @@ Module tuple.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let γ0_0 :=
-                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                         γ,
                                                                                         "core::option::Option::Some",
                                                                                         0
@@ -22646,16 +23382,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |),
@@ -22664,7 +23402,7 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::option::Option::Some",
                                                                                                 0
@@ -22682,16 +23420,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |),
@@ -22701,7 +23441,7 @@ Module tuple.
                                                                                                   ltac:(M.monadic
                                                                                                     (let
                                                                                                           γ0_0 :=
-                                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                                         γ,
                                                                                                         "core::option::Option::Some",
                                                                                                         0
@@ -22718,16 +23458,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)));
@@ -22833,8 +23575,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -22872,8 +23614,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -22915,8 +23657,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -22967,8 +23709,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -23024,8 +23766,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -23083,8 +23831,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -23142,12 +23896,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -23205,12 +23961,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -23270,16 +24028,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -23346,16 +24106,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -23427,16 +24189,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |) in
@@ -23509,16 +24273,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)))
@@ -23566,8 +24332,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -23605,8 +24371,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -23648,8 +24414,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -23700,8 +24466,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -23757,8 +24523,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -23816,8 +24588,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -23875,12 +24653,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -23938,12 +24718,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -24003,16 +24785,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -24079,16 +24863,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -24160,16 +24946,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |) in
@@ -24242,16 +25030,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)))
@@ -24299,8 +25089,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -24338,8 +25128,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -24384,8 +25174,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -24436,8 +25226,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -24495,8 +25285,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -24554,8 +25350,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -24613,12 +25415,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -24676,12 +25480,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -24741,16 +25547,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -24817,16 +25625,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -24898,16 +25708,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |) in
@@ -24980,16 +25792,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)))
@@ -25037,8 +25851,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |) in
@@ -25076,8 +25890,8 @@ Module tuple.
                             []
                           |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |) in
@@ -25122,8 +25936,8 @@ Module tuple.
                                     []
                                   |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |) in
@@ -25174,8 +25988,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |) in
@@ -25233,8 +26047,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -25292,8 +26112,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -25351,12 +26177,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -25414,12 +26242,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |) in
@@ -25479,16 +26309,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |) in
@@ -25555,16 +26387,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |) in
@@ -25636,16 +26470,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |) in
@@ -25718,16 +26554,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)))
@@ -25795,8 +26633,8 @@ Module tuple.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", E, [], "cmp", [] |),
                   [
-                    M.get_tuple_field (M.read (| self |)) 0;
-                    M.get_tuple_field (M.read (| other |)) 0
+                    M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                    M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
                   ]
                 |)
               |),
@@ -25808,8 +26646,8 @@ Module tuple.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", D, [], "cmp", [] |),
                           [
-                            M.get_tuple_field (M.read (| self |)) 1;
-                            M.get_tuple_field (M.read (| other |)) 1
+                            M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                            M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
                           ]
                         |)
                       |),
@@ -25821,8 +26659,8 @@ Module tuple.
                                 M.call_closure (|
                                   M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
                                   [
-                                    M.get_tuple_field (M.read (| self |)) 2;
-                                    M.get_tuple_field (M.read (| other |)) 2
+                                    M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
+                                    M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
                                   ]
                                 |)
                               |),
@@ -25840,8 +26678,8 @@ Module tuple.
                                             []
                                           |),
                                           [
-                                            M.get_tuple_field (M.read (| self |)) 3;
-                                            M.get_tuple_field (M.read (| other |)) 3
+                                            M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
+                                            M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
                                           ]
                                         |)
                                       |),
@@ -25859,8 +26697,14 @@ Module tuple.
                                                     []
                                                   |),
                                                   [
-                                                    M.get_tuple_field (M.read (| self |)) 4;
-                                                    M.get_tuple_field (M.read (| other |)) 4
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| self |),
+                                                      4
+                                                    |);
+                                                    M.SubPointer.get_tuple_field (|
+                                                      M.read (| other |),
+                                                      4
+                                                    |)
                                                   ]
                                                 |)
                                               |),
@@ -25878,8 +26722,14 @@ Module tuple.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_tuple_field (M.read (| self |)) 5;
-                                                            M.get_tuple_field (M.read (| other |)) 5
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| self |),
+                                                              5
+                                                            |);
+                                                            M.SubPointer.get_tuple_field (|
+                                                              M.read (| other |),
+                                                              5
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
@@ -25897,12 +26747,14 @@ Module tuple.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.get_tuple_field
-                                                                      (M.read (| self |))
-                                                                      6;
-                                                                    M.get_tuple_field
-                                                                      (M.read (| other |))
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| self |),
                                                                       6
+                                                                    |);
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      M.read (| other |),
+                                                                      6
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |),
@@ -25920,12 +26772,14 @@ Module tuple.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.get_tuple_field
-                                                                              (M.read (| self |))
-                                                                              7;
-                                                                            M.get_tuple_field
-                                                                              (M.read (| other |))
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| self |),
                                                                               7
+                                                                            |);
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              M.read (| other |),
+                                                                              7
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |),
@@ -25943,16 +26797,18 @@ Module tuple.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      8;
-                                                                                    M.get_tuple_field
-                                                                                      (M.read (|
-                                                                                        other
-                                                                                      |))
+                                                                                      |),
                                                                                       8
+                                                                                    |);
+                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                      M.read (|
+                                                                                        other
+                                                                                      |),
+                                                                                      8
+                                                                                    |)
                                                                                   ]
                                                                                 |)
                                                                               |),
@@ -25970,16 +26826,18 @@ Module tuple.
                                                                                             []
                                                                                           |),
                                                                                           [
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
                                                                                                 self
-                                                                                              |))
-                                                                                              9;
-                                                                                            M.get_tuple_field
-                                                                                              (M.read (|
-                                                                                                other
-                                                                                              |))
+                                                                                              |),
                                                                                               9
+                                                                                            |);
+                                                                                            M.SubPointer.get_tuple_field (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |),
+                                                                                              9
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       |),
@@ -25997,16 +26855,18 @@ Module tuple.
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
                                                                                                         self
-                                                                                                      |))
-                                                                                                      10;
-                                                                                                    M.get_tuple_field
-                                                                                                      (M.read (|
-                                                                                                        other
-                                                                                                      |))
+                                                                                                      |),
                                                                                                       10
+                                                                                                    |);
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      M.read (|
+                                                                                                        other
+                                                                                                      |),
+                                                                                                      10
+                                                                                                    |)
                                                                                                   ]
                                                                                                 |)
                                                                                               |),
@@ -26024,16 +26884,18 @@ Module tuple.
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
                                                                                                               self
-                                                                                                            |))
-                                                                                                            11;
-                                                                                                          M.get_tuple_field
-                                                                                                            (M.read (|
-                                                                                                              other
-                                                                                                            |))
+                                                                                                            |),
                                                                                                             11
+                                                                                                          |);
+                                                                                                          M.SubPointer.get_tuple_field (|
+                                                                                                            M.read (|
+                                                                                                              other
+                                                                                                            |),
+                                                                                                            11
+                                                                                                          |)
                                                                                                         ]
                                                                                                       |)
                                                                                                     |)));
@@ -26300,18 +27162,18 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_slice_index_or_break_match (| γ, 0 |) in
-                    let γ0_1 := M.get_slice_index_or_break_match (| γ, 1 |) in
-                    let γ0_2 := M.get_slice_index_or_break_match (| γ, 2 |) in
-                    let γ0_3 := M.get_slice_index_or_break_match (| γ, 3 |) in
-                    let γ0_4 := M.get_slice_index_or_break_match (| γ, 4 |) in
-                    let γ0_5 := M.get_slice_index_or_break_match (| γ, 5 |) in
-                    let γ0_6 := M.get_slice_index_or_break_match (| γ, 6 |) in
-                    let γ0_7 := M.get_slice_index_or_break_match (| γ, 7 |) in
-                    let γ0_8 := M.get_slice_index_or_break_match (| γ, 8 |) in
-                    let γ0_9 := M.get_slice_index_or_break_match (| γ, 9 |) in
-                    let γ0_10 := M.get_slice_index_or_break_match (| γ, 10 |) in
-                    let γ0_11 := M.get_slice_index_or_break_match (| γ, 11 |) in
+                    (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_slice_index (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_slice_index (| γ, 9 |) in
+                    let γ0_10 := M.SubPointer.get_slice_index (| γ, 10 |) in
+                    let γ0_11 := M.SubPointer.get_slice_index (| γ, 11 |) in
                     let value_E := M.copy (| γ0_0 |) in
                     let value_D := M.copy (| γ0_1 |) in
                     let value_C := M.copy (| γ0_2 |) in
@@ -26377,18 +27239,18 @@ Module tuple.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
-                    let γ0_2 := M.get_tuple_field γ 2 in
-                    let γ0_3 := M.get_tuple_field γ 3 in
-                    let γ0_4 := M.get_tuple_field γ 4 in
-                    let γ0_5 := M.get_tuple_field γ 5 in
-                    let γ0_6 := M.get_tuple_field γ 6 in
-                    let γ0_7 := M.get_tuple_field γ 7 in
-                    let γ0_8 := M.get_tuple_field γ 8 in
-                    let γ0_9 := M.get_tuple_field γ 9 in
-                    let γ0_10 := M.get_tuple_field γ 10 in
-                    let γ0_11 := M.get_tuple_field γ 11 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ0_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ0_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ0_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ0_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                    let γ0_8 := M.SubPointer.get_tuple_field (| γ, 8 |) in
+                    let γ0_9 := M.SubPointer.get_tuple_field (| γ, 9 |) in
+                    let γ0_10 := M.SubPointer.get_tuple_field (| γ, 10 |) in
+                    let γ0_11 := M.SubPointer.get_tuple_field (| γ, 11 |) in
                     let value_E := M.copy (| γ0_0 |) in
                     let value_D := M.copy (| γ0_1 |) in
                     let value_C := M.copy (| γ0_2 |) in

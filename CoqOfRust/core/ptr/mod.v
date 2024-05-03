@@ -1875,7 +1875,7 @@ Module ptr.
               M.alloc (|
                 M.rust_cast
                   (M.read (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
                       M.alloc (|
                         BinOp.Panic.shr (|
@@ -1956,8 +1956,8 @@ Module ptr.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let new_gate := M.copy (| γ0_0 |) in
                           let overflow := M.copy (| γ0_1 |) in
                           let _ :=

@@ -44,7 +44,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -89,7 +89,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -166,7 +166,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ M.read (| Value.String "./hosts" |) ]
                     |)
                   |) in
-                let γ0_0 := M.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let lines := M.copy (| γ0_0 |) in
                 M.use
                   (M.match_operator (|
@@ -223,7 +224,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -236,7 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               ltac:(M.monadic
                                                 (let γ := line in
                                                 let γ0_0 :=
-                                                  M.get_struct_tuple_field (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::result::Result::Ok",
                                                     0

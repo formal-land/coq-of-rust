@@ -1028,14 +1028,14 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
-                      let γ1_3 := M.get_tuple_field γ 3 in
-                      let γ1_4 := M.get_tuple_field γ 4 in
-                      let γ1_5 := M.get_tuple_field γ 5 in
-                      let γ1_6 := M.get_tuple_field γ 6 in
-                      let γ1_7 := M.get_tuple_field γ 7 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                      let γ1_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
                       let value_A := M.alloc (| γ1_0 |) in
                       let value_B := M.alloc (| γ1_1 |) in
                       let value_C := M.alloc (| γ1_2 |) in
@@ -1189,13 +1189,13 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
-                      let γ1_3 := M.get_tuple_field γ 3 in
-                      let γ1_4 := M.get_tuple_field γ 4 in
-                      let γ1_5 := M.get_tuple_field γ 5 in
-                      let γ1_6 := M.get_tuple_field γ 6 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                      let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
                       let value_B := M.alloc (| γ1_0 |) in
                       let value_C := M.alloc (| γ1_1 |) in
                       let value_D := M.alloc (| γ1_2 |) in
@@ -1335,12 +1335,12 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
-                      let γ1_3 := M.get_tuple_field γ 3 in
-                      let γ1_4 := M.get_tuple_field γ 4 in
-                      let γ1_5 := M.get_tuple_field γ 5 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
                       let value_C := M.alloc (| γ1_0 |) in
                       let value_D := M.alloc (| γ1_1 |) in
                       let value_E := M.alloc (| γ1_2 |) in
@@ -1466,11 +1466,11 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
-                      let γ1_3 := M.get_tuple_field γ 3 in
-                      let γ1_4 := M.get_tuple_field γ 4 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
                       let value_D := M.alloc (| γ1_0 |) in
                       let value_E := M.alloc (| γ1_1 |) in
                       let value_F := M.alloc (| γ1_2 |) in
@@ -1582,10 +1582,10 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
-                      let γ1_3 := M.get_tuple_field γ 3 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                       let value_E := M.alloc (| γ1_0 |) in
                       let value_F := M.alloc (| γ1_1 |) in
                       let value_G := M.alloc (| γ1_2 |) in
@@ -1683,9 +1683,9 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
-                      let γ1_2 := M.get_tuple_field γ 2 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                       let value_F := M.alloc (| γ1_0 |) in
                       let value_G := M.alloc (| γ1_1 |) in
                       let value_H := M.alloc (| γ1_2 |) in
@@ -1769,8 +1769,8 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
-                      let γ1_1 := M.get_tuple_field γ 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let value_G := M.alloc (| γ1_0 |) in
                       let value_H := M.alloc (| γ1_1 |) in
                       M.alloc (|
@@ -1840,7 +1840,7 @@ Module vec.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let γ1_0 := M.get_tuple_field γ 0 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let value_H := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
@@ -2871,7 +2871,13 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], "is_zero", [] |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::num::wrapping::Wrapping" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::wrapping::Wrapping",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2902,7 +2908,13 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], "is_zero", [] |),
-              [ M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0 ]
+              [
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.

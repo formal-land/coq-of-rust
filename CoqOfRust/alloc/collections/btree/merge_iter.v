@@ -58,7 +58,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::merge_iter::Peeked::A",
                             0
@@ -84,7 +84,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::merge_iter::Peeked::B",
                             0
@@ -141,7 +141,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::merge_iter::Peeked::A",
                             0
@@ -165,7 +165,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::merge_iter::Peeked::B",
                             0
@@ -222,20 +222,22 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::merge_iter::MergeIterInner"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::merge_iter::MergeIterInner",
                           "a"
+                        |)
                       ]
                     |));
                   ("b",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::merge_iter::MergeIterInner"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::merge_iter::MergeIterInner",
                           "b"
+                        |)
                       ]
                     |));
                   ("peeked",
@@ -251,10 +253,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::merge_iter::MergeIterInner"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::merge_iter::MergeIterInner",
                           "peeked"
+                        |)
                       ]
                     |))
                 ]))
@@ -326,26 +329,29 @@ Module collections.
                               |);
                               (* Unsize *)
                               M.pointer_coercion
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::btree::merge_iter::MergeIterInner"
-                                  "a")
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::btree::merge_iter::MergeIterInner",
+                                  "a"
+                                |))
                             ]
                           |);
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::merge_iter::MergeIterInner"
-                              "b")
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                              "b"
+                            |))
                         ]
                       |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::merge_iter::MergeIterInner"
-                          "peeked")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                          "peeked"
+                        |))
                     ]
                   |)
                 ]
@@ -452,10 +458,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::merge_iter::MergeIterInner"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
                             "peeked"
+                          |)
                         ]
                       |)
                     |),
@@ -463,13 +470,13 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
                           let γ1_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ0_0,
                               "alloc::collections::btree::merge_iter::Peeked::A",
                               0
@@ -492,10 +499,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "b"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -503,13 +511,13 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
                             |) in
                           let γ1_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ0_0,
                               "alloc::collections::btree::merge_iter::Peeked::B",
                               0
@@ -532,10 +540,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "a"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -554,10 +563,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "a"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -573,10 +583,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "b"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -590,11 +601,11 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.alloc (| Value.Tuple [ a_next; b_next ] |) in
-                          let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ0_0,
                               "core::option::Option::Some",
                               0
@@ -602,7 +613,7 @@ Module collections.
                           let a1 := M.alloc (| γ2_0 |) in
                           let γ0_1 := M.read (| γ0_1 |) in
                           let γ2_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ0_1,
                               "core::option::Option::Some",
                               0
@@ -631,10 +642,11 @@ Module collections.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::btree::merge_iter::MergeIterInner"
-                                      "peeked",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "peeked"
+                                    |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
@@ -671,10 +683,11 @@ Module collections.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::btree::merge_iter::MergeIterInner"
-                                      "peeked",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "peeked"
+                                    |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
@@ -743,21 +756,22 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::btree::merge_iter::MergeIterInner"
-                    "peeked",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::merge_iter::MergeIterInner",
+                    "peeked"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::merge_iter::Peeked::A",
                             0
@@ -776,10 +790,11 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::btree::merge_iter::MergeIterInner"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
                                       "a"
+                                    |)
                                   ]
                                 |)
                               |);
@@ -792,10 +807,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "b"
+                                  |)
                                 ]
                               |)
                             ]
@@ -803,13 +819,13 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::merge_iter::Peeked::B",
                             0
@@ -826,10 +842,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "a"
+                                  |)
                                 ]
                               |);
                               BinOp.Panic.add (|
@@ -843,10 +860,11 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::btree::merge_iter::MergeIterInner"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
                                       "b"
+                                    |)
                                   ]
                                 |)
                               |)
@@ -866,10 +884,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "a"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -881,10 +900,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::merge_iter::MergeIterInner"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::merge_iter::MergeIterInner",
                                     "b"
+                                  |)
                                 ]
                               |)
                             ]

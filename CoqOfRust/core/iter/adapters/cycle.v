@@ -29,20 +29,22 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::cycle::Cycle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::cycle::Cycle",
                           "orig"
+                        |)
                       ]
                     |));
                   ("iter",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::cycle::Cycle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::cycle::Cycle",
                           "iter"
+                        |)
                       ]
                     |))
                 ]))
@@ -82,18 +84,20 @@ Module iter.
                   M.read (| Value.String "orig" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::cycle::Cycle"
-                      "orig");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::cycle::Cycle",
+                      "orig"
+                    |));
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::cycle::Cycle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::cycle::Cycle",
                         "iter"
+                      |)
                     |))
                 ]
               |)))
@@ -178,10 +182,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::cycle::Cycle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::cycle::Cycle",
                           "iter"
+                        |)
                       ]
                     |)
                   |),
@@ -190,17 +195,19 @@ Module iter.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::cycle::Cycle"
-                              "iter",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::cycle::Cycle",
+                              "iter"
+                            |),
                             M.call_closure (|
                               M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::cycle::Cycle"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::cycle::Cycle",
                                   "orig"
+                                |)
                               ]
                             |)
                           |) in
@@ -214,10 +221,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::cycle::Cycle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::cycle::Cycle",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)));
@@ -259,10 +267,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::cycle::Cycle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::cycle::Cycle",
                           "orig"
+                        |)
                       ]
                     |)
                   |),
@@ -270,15 +279,15 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let sz := M.copy (| γ |) in
-                        let γ1_0 := M.get_tuple_field γ 0 in
-                        let γ1_1 := M.get_tuple_field γ 1 in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
                           M.is_constant_or_break_match (|
                             M.read (| γ1_0 |),
                             Value.Integer Integer.Usize 0
                           |) in
                         let γ2_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ1_1,
                             "core::option::Option::Some",
                             0
@@ -291,8 +300,8 @@ Module iter.
                         sz));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
                           M.is_constant_or_break_match (|
                             M.read (| γ0_0 |),
@@ -385,10 +394,11 @@ Module iter.
                                       [ Acc; Ty.apply (Ty.path "&mut") [ F ]; R ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::cycle::Cycle"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::cycle::Cycle",
+                                        "iter"
+                                      |);
                                       M.read (| acc |);
                                       f
                                     ]
@@ -400,7 +410,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -427,7 +437,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -440,17 +450,19 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::cycle::Cycle"
-                          "iter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::cycle::Cycle",
+                          "iter"
+                        |),
                         M.call_closure (|
                           M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::cycle::Cycle"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::cycle::Cycle",
                               "orig"
+                            |)
                           ]
                         |)
                       |) in
@@ -479,10 +491,11 @@ Module iter.
                                       [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.associated ] ] R; R ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::cycle::Cycle"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::cycle::Cycle",
+                                        "iter"
+                                      |);
                                       M.read (| acc |);
                                       M.closure
                                         (fun γ =>
@@ -545,7 +558,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -572,7 +585,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -623,10 +636,11 @@ Module iter.
                             ltac:(M.monadic
                               (let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::cycle::Cycle"
-                                    "iter",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::cycle::Cycle",
+                                    "iter"
+                                  |),
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::clone::Clone",
@@ -636,10 +650,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::cycle::Cycle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::cycle::Cycle",
                                         "orig"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -667,10 +682,11 @@ Module iter.
                                                 [ Acc; Ty.apply (Ty.path "&mut") [ F ]; R ]
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::cycle::Cycle"
-                                                  "iter";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::cycle::Cycle",
+                                                  "iter"
+                                                |);
                                                 M.read (| acc |);
                                                 f
                                               ]
@@ -682,7 +698,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -709,7 +725,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -772,10 +788,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::cycle::Cycle"
-                                  "iter";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::cycle::Cycle",
+                                  "iter"
+                                |);
                                 M.read (| n |)
                               ]
                             |)
@@ -784,7 +801,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
@@ -803,7 +820,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -844,10 +861,11 @@ Module iter.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::cycle::Cycle"
-                                        "iter",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::cycle::Cycle",
+                                        "iter"
+                                      |),
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::clone::Clone",
@@ -857,10 +875,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::cycle::Cycle"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::cycle::Cycle",
                                             "orig"
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -879,10 +898,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::cycle::Cycle"
-                                                  "iter";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::cycle::Cycle",
+                                                  "iter"
+                                                |);
                                                 M.read (| n |)
                                               ]
                                             |)
@@ -891,7 +911,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::result::Result::Ok",
                                                     0
@@ -911,7 +931,7 @@ Module iter.
                                               ltac:(M.monadic
                                                 (let e := M.copy (| γ |) in
                                                 let γ1_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::result::Result::Err",
                                                     0
@@ -944,7 +964,7 @@ Module iter.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::result::Result::Err",
                                                     0

@@ -740,31 +740,33 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
-Definition get_tuple_field (value : Value.t) (index : Z) : M :=
-  get_sub_pointer value (Pointer.Index.Tuple index).
+Module SubPointer.
+  Definition get_tuple_field (value : Value.t) (index : Z) : M :=
+    get_sub_pointer value (Pointer.Index.Tuple index).
 
-Definition get_array_field (value : Value.t) (index : Value.t) : M :=
-  match index with
-  | Value.Integer Integer.Usize index =>
-    get_sub_pointer value (Pointer.Index.Array index)
-  | _ => impossible
-  end.
+  Definition get_array_field (value : Value.t) (index : Value.t) : M :=
+    match index with
+    | Value.Integer Integer.Usize index =>
+      get_sub_pointer value (Pointer.Index.Array index)
+    | _ => impossible
+    end.
 
-Definition get_struct_tuple_field (value : Value.t) (constructor : string) (index : Z) : M :=
-  get_sub_pointer value (Pointer.Index.StructTuple constructor index).
+  Definition get_struct_tuple_field (value : Value.t) (constructor : string) (index : Z) : M :=
+    get_sub_pointer value (Pointer.Index.StructTuple constructor index).
 
-Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
-  get_sub_pointer value (Pointer.Index.StructRecord constructor field).
+  Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
+    get_sub_pointer value (Pointer.Index.StructRecord constructor field).
 
-(** Get an element of a slice by index. *)
-Parameter get_slice_index : Value.t -> Z -> M.
+  (** Get an element of a slice by index. *)
+  Parameter get_slice_index : Value.t -> Z -> M.
 
-(** Get an element of a slice by index counting from the end. *)
-Parameter get_slice_rev_index : Value.t -> Z -> M.
+  (** Get an element of a slice by index counting from the end. *)
+  Parameter get_slice_rev_index : Value.t -> Z -> M.
 
-(** For two indices n and k, get all elements of a slice without
-    the first n elements and without the last k elements. *)
-Parameter get_slice_rest : Value.t -> Z -> Z -> M.
+  (** For two indices n and k, get all elements of a slice without
+      the first n elements and without the last k elements. *)
+  Parameter get_slice_rest : Value.t -> Z -> Z -> M.
+End SubPointer.
 
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   if Value.eqb value expected_value then

@@ -127,10 +127,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| this |))
-                          "alloc::collections::btree::node::LeafNode"
-                          "parent";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| this |),
+                          "alloc::collections::btree::node::LeafNode",
+                          "parent"
+                        |);
                         Value.StructTuple "core::option::Option::None" []
                       ]
                     |)
@@ -144,10 +145,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| this |))
-                          "alloc::collections::btree::node::LeafNode"
-                          "len";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| this |),
+                          "alloc::collections::btree::node::LeafNode",
+                          "len"
+                        |);
                         Value.Integer Integer.U16 0
                       ]
                     |)
@@ -320,8 +322,8 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.call_closure (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -334,9 +336,10 @@ Module collections.
                               []
                             |),
                             [ M.read (| node |) ]
-                          |))
-                          "alloc::collections::btree::node::InternalNode"
+                          |),
+                          "alloc::collections::btree::node::InternalNode",
                           "data"
+                        |)
                       ]
                     |)
                   |) in
@@ -710,18 +713,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_array_field (|
-                          M.get_struct_record_field
-                            (M.read (| new_node |))
-                            "alloc::collections::btree::node::InternalNode"
-                            "edges",
+                        M.SubPointer.get_array_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| new_node |),
+                            "alloc::collections::btree::node::InternalNode",
+                            "edges"
+                          |),
                           M.alloc (| Value.Integer Integer.Usize 0 |)
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            child
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            child,
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -744,10 +749,11 @@ Module collections.
                       M.read (| new_node |);
                       BinOp.Panic.add (|
                         M.read (|
-                          M.get_struct_record_field
-                            child
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            child,
+                            "alloc::collections::btree::node::NodeRef",
                             "height"
+                          |)
                         |),
                         Value.Integer Integer.Usize 1
                       |)
@@ -1064,10 +1070,11 @@ Module collections.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| this |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| this |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |)
                   ]
                 |))))
@@ -1096,17 +1103,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -1229,8 +1238,8 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -1244,9 +1253,10 @@ Module collections.
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        "alloc::collections::btree::node::InternalNode"
+                        |),
+                        "alloc::collections::btree::node::InternalNode",
                         "edges"
+                      |)
                     ]
                   |);
                   M.read (| index |)
@@ -1321,7 +1331,7 @@ Module collections.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1608,17 +1618,19 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        edge
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        edge,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |))
                                     (BinOp.Panic.sub (|
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::btree::node::NodeRef"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::btree::node::NodeRef",
                                           "height"
+                                        |)
                                       |),
                                       Value.Integer Integer.Usize 1
                                     |)))
@@ -1821,10 +1833,11 @@ Module collections.
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            edge
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            edge,
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -1927,8 +1940,8 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.call_closure (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -1937,9 +1950,10 @@ Module collections.
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      "alloc::collections::btree::node::LeafNode"
+                      |),
+                      "alloc::collections::btree::node::LeafNode",
                       "len"
+                    |)
                   |)
                 ]
               |)))
@@ -1962,10 +1976,11 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::btree::node::NodeRef"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::btree::node::NodeRef",
                   "height"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1990,17 +2005,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -2042,10 +2059,11 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| this |))
-                      "alloc::collections::btree::node::NodeRef"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| this |),
+                      "alloc::collections::btree::node::NodeRef",
                       "node"
+                    |)
                   |)
                 ]
               |)))
@@ -2214,10 +2232,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| leaf_ptr |))
-                                "alloc::collections::btree::node::LeafNode"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf_ptr |),
+                                "alloc::collections::btree::node::LeafNode",
                                 "parent"
+                              |)
                             ]
                           |);
                           M.closure
@@ -2254,10 +2273,11 @@ Module collections.
                                                     M.read (| M.read (| parent |) |);
                                                     BinOp.Panic.add (|
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          self
-                                                          "alloc::collections::btree::node::NodeRef"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          self,
+                                                          "alloc::collections::btree::node::NodeRef",
                                                           "height"
+                                                        |)
                                                       |),
                                                       Value.Integer Integer.Usize 1
                                                     |)
@@ -2284,10 +2304,11 @@ Module collections.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| leaf_ptr |))
-                                                            "alloc::collections::btree::node::LeafNode"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| leaf_ptr |),
+                                                            "alloc::collections::btree::node::LeafNode",
                                                             "parent_idx"
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -2596,19 +2617,19 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::NodeRef",
                             "node"
                           |) in
                         let γ1_1 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::NodeRef",
                             "height"
                           |) in
                         let γ1_2 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::NodeRef",
                             "_marker"
@@ -2650,10 +2671,11 @@ Module collections.
                                         |),
                                         [
                                           M.read (| node |);
-                                          M.get_struct_record_field
-                                            (M.read (| other |))
-                                            "alloc::collections::btree::node::NodeRef"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| other |),
+                                            "alloc::collections::btree::node::NodeRef",
                                             "node"
+                                          |)
                                         ]
                                       |)
                                     |)) in
@@ -2680,17 +2702,20 @@ Module collections.
                                                 Value.Tuple
                                                   [
                                                     M.read (| height |);
-                                                    M.get_struct_record_field
-                                                      (M.read (| other |))
-                                                      "alloc::collections::btree::node::NodeRef"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| other |),
+                                                      "alloc::collections::btree::node::NodeRef",
                                                       "height"
+                                                    |)
                                                   ]
                                               |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                    let γ0_1 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                     let left_val := M.copy (| γ0_0 |) in
                                                     let right_val := M.copy (| γ0_1 |) in
                                                     M.match_operator (|
@@ -2863,10 +2888,11 @@ Module collections.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| leaf |))
-                              "alloc::collections::btree::node::LeafNode"
-                              "keys");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |));
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [
@@ -2881,10 +2907,11 @@ Module collections.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| leaf |))
-                                        "alloc::collections::btree::node::LeafNode"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| leaf |),
+                                        "alloc::collections::btree::node::LeafNode",
                                         "len"
+                                      |)
                                     |)
                                   ]
                                 |))
@@ -2945,14 +2972,19 @@ Module collections.
               M.read (|
                 let height :=
                   M.copy (|
-                    M.get_struct_record_field
-                      self
-                      "alloc::collections::btree::node::NodeRef"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::NodeRef",
                       "height"
+                    |)
                   |) in
                 let node :=
                   M.copy (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::NodeRef" "node"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::NodeRef",
+                      "node"
+                    |)
                   |) in
                 let ret :=
                   M.alloc (|
@@ -3114,17 +3146,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -3223,17 +3257,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -3279,8 +3315,8 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -3290,9 +3326,10 @@ Module collections.
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        "alloc::collections::btree::node::LeafNode"
+                        |),
+                        "alloc::collections::btree::node::LeafNode",
                         "keys"
+                      |)
                     ]
                   |);
                   M.read (| index |)
@@ -3341,8 +3378,8 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -3352,9 +3389,10 @@ Module collections.
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        "alloc::collections::btree::node::LeafNode"
+                        |),
+                        "alloc::collections::btree::node::LeafNode",
                         "vals"
+                      |)
                     ]
                   |);
                   M.read (| index |)
@@ -3377,8 +3415,8 @@ Module collections.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.get_struct_record_field
-                (M.call_closure (|
+              M.SubPointer.get_struct_record_field (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -3387,9 +3425,10 @@ Module collections.
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                "alloc::collections::btree::node::LeafNode"
-                "len"))
+                |),
+                "alloc::collections::btree::node::LeafNode",
+                "len"
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -3420,17 +3459,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -3533,17 +3574,19 @@ Module collections.
                   |) in
                 let keys :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| leaf |))
-                      "alloc::collections::btree::node::LeafNode"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| leaf |),
+                      "alloc::collections::btree::node::LeafNode",
                       "keys"
+                    |)
                   |) in
                 let vals :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| leaf |))
-                      "alloc::collections::btree::node::LeafNode"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| leaf |),
+                      "alloc::collections::btree::node::LeafNode",
                       "vals"
+                    |)
                   |) in
                 let keys := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| keys |)) |) in
                 let vals := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| vals |)) |) in
@@ -3663,10 +3706,11 @@ Module collections.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| leaf |))
-                      "alloc::collections::btree::node::LeafNode"
-                      "parent",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| leaf |),
+                      "alloc::collections::btree::node::LeafNode",
+                      "parent"
+                    |),
                     Value.StructTuple "core::option::Option::Some" [ M.read (| parent |) ]
                   |) in
                 let _ :=
@@ -3678,10 +3722,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| leaf |))
-                          "alloc::collections::btree::node::LeafNode"
-                          "parent_idx";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| leaf |),
+                          "alloc::collections::btree::node::LeafNode",
+                          "parent_idx"
+                        |);
                         M.rust_cast (M.read (| parent_idx |))
                       ]
                     |)
@@ -3728,10 +3773,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.eq
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::NodeRef"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::NodeRef",
                                                   "height"
+                                                |)
                                               |))
                                               (Value.Integer Integer.Usize 0))
                                         |)) in
@@ -3765,17 +3811,19 @@ Module collections.
                     [
                       ("height",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::NodeRef",
                             "height"
+                          |)
                         |));
                       ("node",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -3822,10 +3870,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.gt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::NodeRef"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::NodeRef",
                                                   "height"
+                                                |)
                                               |))
                                               (Value.Integer Integer.Usize 0))
                                         |)) in
@@ -3859,17 +3908,19 @@ Module collections.
                     [
                       ("height",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::NodeRef",
                             "height"
+                          |)
                         |));
                       ("node",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -3952,7 +4003,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::result::Result::Ok",
                             0
@@ -3985,7 +4036,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Ok",
                                     0
@@ -4088,7 +4139,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::result::Result::Err",
                                     0
@@ -4123,7 +4174,7 @@ Module collections.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Ok",
                                             0
@@ -4226,7 +4277,7 @@ Module collections.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::result::Result::Err",
                                             0
@@ -4279,7 +4330,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::result::Result::Err",
                             0
@@ -4362,10 +4413,11 @@ Module collections.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| leaf |))
-                      "alloc::collections::btree::node::LeafNode"
-                      "parent",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| leaf |),
+                      "alloc::collections::btree::node::LeafNode",
+                      "parent"
+                    |),
                     Value.StructTuple "core::option::Option::None" []
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -4545,17 +4597,19 @@ Module collections.
                     [
                       ("height",
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::NodeRef",
                             "height"
+                          |)
                         |));
                       ("node",
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -4608,10 +4662,11 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.gt
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0))
                               |)) in
@@ -4630,10 +4685,11 @@ Module collections.
                   |) in
                 let top :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::NodeRef"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::NodeRef",
                       "node"
+                    |)
                   |) in
                 let internal_self :=
                   M.alloc (|
@@ -4689,10 +4745,11 @@ Module collections.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::NodeRef"
-                      "node",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::NodeRef",
+                      "node"
+                    |),
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -4710,11 +4767,12 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_array_field (|
-                          M.get_struct_record_field
-                            (M.read (| internal_node |))
-                            "alloc::collections::btree::node::InternalNode"
-                            "edges",
+                        M.SubPointer.get_array_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| internal_node |),
+                            "alloc::collections::btree::node::InternalNode",
+                            "edges"
+                          |),
                           M.alloc (| Value.Integer Integer.Usize 0 |)
                         |)
                       ]
@@ -4722,10 +4780,11 @@ Module collections.
                   |) in
                 let _ :=
                   let β :=
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::NodeRef"
-                      "height" in
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::NodeRef",
+                      "height"
+                    |) in
                   M.write (|
                     β,
                     BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -4816,17 +4875,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -4853,17 +4914,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -4890,17 +4953,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -5109,17 +5174,19 @@ Module collections.
                 [
                   ("height",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "height"
+                      |)
                     |));
                   ("node",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::NodeRef"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::NodeRef",
                         "node"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -5177,10 +5244,11 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "alloc::collections::btree::node::NodeRef"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::NodeRef",
                                     "height"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -5195,17 +5263,19 @@ Module collections.
                                 [
                                   ("height",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |));
                                   ("node",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "node"
+                                      |)
                                     |));
                                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                                 ]
@@ -5222,17 +5292,19 @@ Module collections.
                                 [
                                   ("height",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |));
                                   ("node",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "node"
+                                      |)
                                     |));
                                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                                 ]
@@ -5319,7 +5391,11 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field self "alloc::collections::btree::node::Handle" "node"
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "alloc::collections::btree::node::Handle",
+                  "node"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -5340,10 +5416,11 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::btree::node::Handle"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::btree::node::Handle",
                   "idx"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -5486,10 +5563,18 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "node"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "node"
+                    |)
                   |);
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |)
                 ]
               |)))
@@ -5533,11 +5618,19 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "node"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "node"
+                    |)
                   |);
                   BinOp.Panic.add (|
                     M.read (|
-                      M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::Handle",
+                        "idx"
+                      |)
                     |),
                     Value.Integer Integer.Usize 1
                   |)
@@ -5590,19 +5683,19 @@ Module collections.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let γ1_0 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "node"
                           |) in
                         let γ1_1 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "idx"
                           |) in
                         let γ1_2 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "_marker"
@@ -5622,20 +5715,22 @@ Module collections.
                               |),
                               [
                                 M.read (| node |);
-                                M.get_struct_record_field
-                                  (M.read (| other |))
-                                  "alloc::collections::btree::node::Handle"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| other |),
+                                  "alloc::collections::btree::node::Handle",
                                   "node"
+                                |)
                               ]
                             |),
                             ltac:(M.monadic
                               (BinOp.Pure.eq
                                 (M.read (| M.read (| idx |) |))
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| other |))
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| other |),
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |))))
                           |)
                         |)))
@@ -5694,18 +5789,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |));
                   ("idx",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::Handle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::Handle",
                         "idx"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -5763,18 +5860,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |));
                   ("idx",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::Handle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::Handle",
                         "idx"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -5817,18 +5916,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |));
                   ("idx",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::Handle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::Handle",
                         "idx"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -5884,16 +5985,21 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |));
                   ("idx",
                     M.read (|
-                      M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::Handle",
+                        "idx"
+                      |)
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
@@ -6045,10 +6151,11 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -6073,17 +6180,19 @@ Module collections.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "node"
+                                    |)
                                   |);
                                   BinOp.Panic.sub (|
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |),
                                     Value.Integer Integer.Usize 1
                                   |)
@@ -6139,10 +6248,11 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.lt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
@@ -6153,10 +6263,11 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "node"
+                                    |)
                                   ]
                                 |))
                             |)) in
@@ -6181,16 +6292,18 @@ Module collections.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "node"
+                                    |)
                                   |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "idx"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -6480,10 +6593,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |))
                                               (M.read (|
@@ -6534,10 +6648,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         ]
                       |),
                       Value.Integer Integer.Usize 1
@@ -6567,20 +6682,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |);
                         M.read (| key |)
                       ]
@@ -6610,20 +6727,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |);
                         M.read (| val |)
                       ]
@@ -6645,10 +6764,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |),
                     M.rust_cast (M.read (| new_len |))
@@ -6674,16 +6794,18 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "idx"
+                        |)
                       |)
                     ]
                   |)
@@ -6761,10 +6883,11 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "node"
+                                    |)
                                   ]
                                 |))
                                 (M.read (|
@@ -6833,10 +6956,11 @@ Module collections.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |)
                               ]
                             |)
@@ -6844,8 +6968,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let middle_kv_idx := M.copy (| γ0_0 |) in
                                 let insertion := M.copy (| γ0_1 |) in
                                 let middle :=
@@ -6872,10 +6996,11 @@ Module collections.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "alloc::collections::btree::node::Handle"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "alloc::collections::btree::node::Handle",
                                             "node"
+                                          |)
                                         |);
                                         M.read (| middle_kv_idx |)
                                       ]
@@ -6914,7 +7039,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Left",
                                                 0
@@ -6962,10 +7087,11 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        result
-                                                        "alloc::collections::btree::node::SplitResult"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        result,
+                                                        "alloc::collections::btree::node::SplitResult",
                                                         "left"
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| insert_idx |)
@@ -6975,7 +7101,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Right",
                                                 0
@@ -7023,10 +7149,11 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        result
-                                                        "alloc::collections::btree::node::SplitResult"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        result,
+                                                        "alloc::collections::btree::node::SplitResult",
                                                         "right"
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| insert_idx |)
@@ -7196,8 +7323,8 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let handle := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 M.never_to_any (|
@@ -7231,10 +7358,10 @@ Module collections.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::option::Option::Some",
                                   0
@@ -7266,8 +7393,8 @@ Module collections.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let split := M.copy (| γ0_0 |) in
                             let handle := M.copy (| γ0_1 |) in
                             M.alloc (|
@@ -7299,10 +7426,11 @@ Module collections.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        split
-                                                        "alloc::collections::btree::node::SplitResult"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        split,
+                                                        "alloc::collections::btree::node::SplitResult",
                                                         "left"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -7311,7 +7439,7 @@ Module collections.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::result::Result::Ok",
                                                         0
@@ -7345,26 +7473,31 @@ Module collections.
                                                           [
                                                             M.read (| parent |);
                                                             M.read (|
-                                                              M.get_tuple_field
-                                                                (M.get_struct_record_field
-                                                                  split
-                                                                  "alloc::collections::btree::node::SplitResult"
-                                                                  "kv")
+                                                              M.SubPointer.get_tuple_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  split,
+                                                                  "alloc::collections::btree::node::SplitResult",
+                                                                  "kv"
+                                                                |),
                                                                 0
+                                                              |)
                                                             |);
                                                             M.read (|
-                                                              M.get_tuple_field
-                                                                (M.get_struct_record_field
-                                                                  split
-                                                                  "alloc::collections::btree::node::SplitResult"
-                                                                  "kv")
+                                                              M.SubPointer.get_tuple_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  split,
+                                                                  "alloc::collections::btree::node::SplitResult",
+                                                                  "kv"
+                                                                |),
                                                                 1
+                                                              |)
                                                             |);
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                split
-                                                                "alloc::collections::btree::node::SplitResult"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                split,
+                                                                "alloc::collections::btree::node::SplitResult",
                                                                 "right"
+                                                              |)
                                                             |);
                                                             M.call_closure (|
                                                               M.get_trait_method (|
@@ -7418,7 +7551,7 @@ Module collections.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -7447,7 +7580,7 @@ Module collections.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::result::Result::Err",
                                                         0
@@ -7606,10 +7739,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
                               "node"
+                            |)
                           ]
                         |)
                       ]
@@ -7617,7 +7751,11 @@ Module collections.
                   |) in
                 let idx :=
                   M.copy (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |) in
                 let child :=
                   M.alloc (|
@@ -7731,10 +7869,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |))
                                               (M.read (|
@@ -7789,20 +7928,23 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.eq
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  edge
-                                                  "alloc::collections::btree::node::NodeRef"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  edge,
+                                                  "alloc::collections::btree::node::NodeRef",
                                                   "height"
+                                                |)
                                               |))
                                               (BinOp.Panic.sub (|
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "alloc::collections::btree::node::Handle"
-                                                      "node")
-                                                    "alloc::collections::btree::node::NodeRef"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::btree::node::Handle",
+                                                      "node"
+                                                    |),
+                                                    "alloc::collections::btree::node::NodeRef",
                                                     "height"
+                                                  |)
                                                 |),
                                                 Value.Integer Integer.Usize 1
                                               |)))
@@ -7849,10 +7991,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         ]
                       |),
                       Value.Integer Integer.Usize 1
@@ -7882,20 +8025,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |);
                         M.read (| key |)
                       ]
@@ -7925,20 +8070,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |);
                         M.read (| val |)
                       ]
@@ -7991,10 +8138,11 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [
@@ -8008,18 +8156,20 @@ Module collections.
                         |);
                         BinOp.Panic.add (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
                               "idx"
+                            |)
                           |),
                           Value.Integer Integer.Usize 1
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            edge
-                            "alloc::collections::btree::node::NodeRef"
+                          M.SubPointer.get_struct_record_field (|
+                            edge,
+                            "alloc::collections::btree::node::NodeRef",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -8040,10 +8190,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |),
                     M.rust_cast (M.read (| new_len |))
@@ -8064,20 +8215,22 @@ Module collections.
                         [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
-                          "node";
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
+                          "node"
+                        |);
                         Value.StructRecord
                           "core::ops::range::Range"
                           [
                             ("start",
                               BinOp.Panic.add (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |),
                                 Value.Integer Integer.Usize 1
                               |));
@@ -8152,20 +8305,23 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        edge
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        edge,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |))
                                     (BinOp.Panic.sub (|
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.get_struct_record_field
-                                            self
-                                            "alloc::collections::btree::node::Handle"
-                                            "node")
-                                          "alloc::collections::btree::node::NodeRef"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "alloc::collections::btree::node::Handle",
+                                            "node"
+                                          |),
+                                          "alloc::collections::btree::node::NodeRef",
                                           "height"
+                                        |)
                                       |),
                                       Value.Integer Integer.Usize 1
                                     |)))
@@ -8211,10 +8367,11 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      self
-                                      "alloc::collections::btree::node::Handle"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "alloc::collections::btree::node::Handle",
                                       "node"
+                                    |)
                                   ]
                                 |))
                                 (M.read (|
@@ -8258,10 +8415,11 @@ Module collections.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "alloc::collections::btree::node::Handle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::collections::btree::node::Handle",
                                     "idx"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8269,8 +8427,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let middle_kv_idx := M.copy (| γ0_0 |) in
                                 let insertion := M.copy (| γ0_1 |) in
                                 let middle :=
@@ -8297,10 +8455,11 @@ Module collections.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "alloc::collections::btree::node::Handle"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "alloc::collections::btree::node::Handle",
                                             "node"
+                                          |)
                                         |);
                                         M.read (| middle_kv_idx |)
                                       ]
@@ -8339,7 +8498,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Left",
                                                 0
@@ -8387,10 +8546,11 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        result
-                                                        "alloc::collections::btree::node::SplitResult"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        result,
+                                                        "alloc::collections::btree::node::SplitResult",
                                                         "left"
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| insert_idx |)
@@ -8400,7 +8560,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Right",
                                                 0
@@ -8448,10 +8608,11 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        result
-                                                        "alloc::collections::btree::node::SplitResult"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        result,
+                                                        "alloc::collections::btree::node::SplitResult",
                                                         "right"
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| insert_idx |)
@@ -8565,10 +8726,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -8614,15 +8776,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| parent_ptr |))
-                                "alloc::collections::btree::node::InternalNode"
-                                "edges");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| parent_ptr |),
+                                "alloc::collections::btree::node::InternalNode",
+                                "edges"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -8637,13 +8801,15 @@ Module collections.
                       ("height",
                         BinOp.Panic.sub (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
-                                "node")
-                              "alloc::collections::btree::node::NodeRef"
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
+                                "node"
+                              |),
+                              "alloc::collections::btree::node::NodeRef",
                               "height"
+                            |)
                           |),
                           Value.Integer Integer.Usize 1
                         |));
@@ -8708,15 +8874,20 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       |)
                     ]
                   |);
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |)
                 ]
               |)))
@@ -8779,10 +8950,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -8800,10 +8972,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -8845,10 +9018,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -8873,15 +9047,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "keys");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "keys"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -8908,15 +9084,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "vals");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "vals"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -8974,15 +9152,17 @@ Module collections.
                       ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::Handle"
-                        "node";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::Handle",
+                        "node"
+                      |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "idx"
+                        |)
                       |)
                     ]
                   |)
@@ -9030,10 +9210,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -9051,10 +9232,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -9096,10 +9278,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -9123,15 +9306,17 @@ Module collections.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| leaf |))
-                              "alloc::collections::btree::node::LeafNode"
-                              "vals");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |));
                           M.read (|
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
                               "idx"
+                            |)
                           |)
                         ]
                       |)
@@ -9183,10 +9368,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -9204,10 +9390,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -9249,10 +9436,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -9277,15 +9465,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "keys");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "keys"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9312,15 +9502,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "vals");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "vals"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9376,10 +9568,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -9397,10 +9590,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -9441,10 +9635,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -9468,15 +9663,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "keys");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "keys"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9503,15 +9700,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "vals");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "vals"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9568,8 +9767,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let key := M.copy (| γ0_0 |) in
                         let val := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -9647,10 +9846,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -9668,10 +9868,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -9712,10 +9913,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -9725,10 +9927,11 @@ Module collections.
                       BinOp.Panic.sub (|
                         M.read (| old_len |),
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |)
                       |),
                       Value.Integer Integer.Usize 1
@@ -9736,10 +9939,11 @@ Module collections.
                   |) in
                 let _ :=
                   M.write (|
-                    M.get_struct_record_field
-                      (M.read (| new_node |))
-                      "alloc::collections::btree::node::LeafNode"
-                      "len",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| new_node |),
+                      "alloc::collections::btree::node::LeafNode",
+                      "len"
+                    |),
                     M.rust_cast (M.read (| new_len |))
                   |) in
                 let k :=
@@ -9768,15 +9972,17 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9809,15 +10015,17 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -9848,20 +10056,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
                                 ("start",
                                   BinOp.Panic.add (|
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |),
                                     Value.Integer Integer.Usize 1
                                   |));
@@ -9880,10 +10090,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| new_node |))
-                              "alloc::collections::btree::node::LeafNode"
-                              "keys";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| new_node |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
@@ -9916,20 +10127,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
                                 ("start",
                                   BinOp.Panic.add (|
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |),
                                     Value.Integer Integer.Usize 1
                                   |));
@@ -9948,10 +10161,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| new_node |))
-                              "alloc::collections::btree::node::LeafNode"
-                              "vals";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| new_node |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| new_len |)) ]
@@ -9972,18 +10186,20 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |),
                     M.rust_cast
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::Handle",
                           "idx"
+                        |)
                       |))
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
@@ -10031,10 +10247,18 @@ Module collections.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "node"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "node"
+                    |)
                   |);
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |)
                 ]
               |)))
@@ -10097,10 +10321,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -10118,10 +10343,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -10162,10 +10388,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -10189,15 +10416,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "keys");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "keys"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -10224,15 +10453,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "vals");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "vals"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -10286,10 +10517,11 @@ Module collections.
                                           UnOp.Pure.not
                                             (BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "alloc::collections::btree::node::Handle"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::collections::btree::node::Handle",
                                                   "idx"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -10307,10 +10539,11 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  M.get_struct_record_field
-                                                    self
-                                                    "alloc::collections::btree::node::Handle"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::collections::btree::node::Handle",
                                                     "node"
+                                                  |)
                                                 ]
                                               |)))
                                         |)) in
@@ -10351,10 +10584,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -10378,15 +10612,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "keys");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "keys"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -10413,15 +10649,17 @@ Module collections.
                           [
                             (* Unsize *)
                             M.pointer_coercion
-                              (M.get_struct_record_field
-                                (M.read (| leaf |))
-                                "alloc::collections::btree::node::LeafNode"
-                                "vals");
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| leaf |),
+                                "alloc::collections::btree::node::LeafNode",
+                                "vals"
+                              |));
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "alloc::collections::btree::node::Handle"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::collections::btree::node::Handle",
                                 "idx"
+                              |)
                             |)
                           ]
                         |)
@@ -10531,10 +10769,11 @@ Module collections.
                     [
                       ("left",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |));
                       ("kv", M.read (| kv |));
                       ("right", M.read (| right |))
@@ -10584,10 +10823,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -10615,20 +10855,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| old_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |)
                       ]
                     |)
@@ -10657,20 +10899,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [ ("end_", M.read (| old_len |)) ]
                           ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |)
                       ]
                     |)
@@ -10691,10 +10935,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |),
                     M.rust_cast
@@ -10797,10 +11042,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       ]
                     |)
                   |) in
@@ -10837,10 +11083,11 @@ Module collections.
                       |),
                       [
                         self;
-                        M.get_struct_record_field
-                          (M.read (| new_node |))
-                          "alloc::collections::btree::node::InternalNode"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| new_node |),
+                          "alloc::collections::btree::node::InternalNode",
                           "data"
+                        |)
                       ]
                     |)
                   |) in
@@ -10856,13 +11103,15 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| new_node |))
-                              "alloc::collections::btree::node::InternalNode"
-                              "data")
-                            "alloc::collections::btree::node::LeafNode"
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| new_node |),
+                              "alloc::collections::btree::node::InternalNode",
+                              "data"
+                            |),
+                            "alloc::collections::btree::node::LeafNode",
                             "len"
+                          |)
                         |)
                       ]
                     |)
@@ -10914,20 +11163,22 @@ Module collections.
                             ]
                           |),
                           [
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::Handle"
-                              "node";
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::Handle",
+                              "node"
+                            |);
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
                                 ("start",
                                   BinOp.Panic.add (|
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |),
                                     Value.Integer Integer.Usize 1
                                   |));
@@ -10962,10 +11213,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| new_node |))
-                              "alloc::collections::btree::node::InternalNode"
-                              "edges";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| new_node |),
+                              "alloc::collections::btree::node::InternalNode",
+                              "edges"
+                            |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
                               [
@@ -10982,13 +11234,15 @@ Module collections.
                   |) in
                 let height :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::Handle"
-                        "node")
-                      "alloc::collections::btree::node::NodeRef"
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::Handle",
+                        "node"
+                      |),
+                      "alloc::collections::btree::node::NodeRef",
                       "height"
+                    |)
                   |) in
                 let right :=
                   M.alloc (|
@@ -11014,10 +11268,11 @@ Module collections.
                     [
                       ("left",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |));
                       ("kv", M.read (| kv |));
                       ("right", M.read (| right |))
@@ -11268,10 +11523,11 @@ Module collections.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::btree::node::BalancingContext"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::node::BalancingContext",
                     "left_child"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -11306,10 +11562,11 @@ Module collections.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::btree::node::BalancingContext"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::node::BalancingContext",
                     "right_child"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -11331,10 +11588,11 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  self
-                  "alloc::collections::btree::node::BalancingContext"
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "alloc::collections::btree::node::BalancingContext",
                   "left_child"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -11355,10 +11613,11 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                M.get_struct_record_field
-                  self
-                  "alloc::collections::btree::node::BalancingContext"
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "alloc::collections::btree::node::BalancingContext",
                   "right_child"
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -11395,10 +11654,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::btree::node::BalancingContext"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::node::BalancingContext",
                           "left_child"
+                        |)
                       ]
                     |),
                     Value.Integer Integer.Usize 1
@@ -11417,10 +11677,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::btree::node::BalancingContext"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::node::BalancingContext",
                         "right_child"
+                      |)
                     ]
                   |)
                 |))
@@ -11505,27 +11766,28 @@ Module collections.
               let alloc := M.alloc (| alloc |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    self
-                    "alloc::collections::btree::node::BalancingContext"
-                    "parent",
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "alloc::collections::btree::node::BalancingContext",
+                    "parent"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "node"
                           |) in
                         let γ0_1 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "idx"
                           |) in
                         let γ0_2 :=
-                          M.get_struct_record_field_or_break_match (|
+                          M.SubPointer.get_struct_record_field (|
                             γ,
                             "alloc::collections::btree::node::Handle",
                             "_marker"
@@ -11553,10 +11815,11 @@ Module collections.
                           |) in
                         let left_node :=
                           M.copy (|
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::BalancingContext"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::BalancingContext",
                               "left_child"
+                            |)
                           |) in
                         let old_left_len :=
                           M.alloc (|
@@ -11579,10 +11842,11 @@ Module collections.
                           |) in
                         let right_node :=
                           M.copy (|
-                            M.get_struct_record_field
-                              self
-                              "alloc::collections::btree::node::BalancingContext"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::collections::btree::node::BalancingContext",
                               "right_child"
+                            |)
                           |) in
                         let right_len :=
                           M.alloc (|
@@ -12125,10 +12389,11 @@ Module collections.
                                       (M.alloc (|
                                         BinOp.Pure.gt
                                           (M.read (|
-                                            M.get_struct_record_field
-                                              parent_node
-                                              "alloc::collections::btree::node::NodeRef"
+                                            M.SubPointer.get_struct_record_field (|
+                                              parent_node,
+                                              "alloc::collections::btree::node::NodeRef",
                                               "height"
+                                            |)
                                           |))
                                           (Value.Integer Integer.Usize 1)
                                       |)) in
@@ -12385,10 +12650,11 @@ Module collections.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  right_node
-                                                  "alloc::collections::btree::node::NodeRef"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  right_node,
+                                                  "alloc::collections::btree::node::NodeRef",
                                                   "node"
+                                                |)
                                               |)
                                             ]
                                           |);
@@ -12438,10 +12704,11 @@ Module collections.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  right_node
-                                                  "alloc::collections::btree::node::NodeRef"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  right_node,
+                                                  "alloc::collections::btree::node::NodeRef",
                                                   "node"
+                                                |)
                                               |)
                                             ]
                                           |);
@@ -12749,10 +13016,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::BalancingContext"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::BalancingContext",
                           "left_child"
+                        |)
                       ]
                     |)
                   |) in
@@ -12772,10 +13040,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::BalancingContext"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::BalancingContext",
                           "right_child"
+                        |)
                       ]
                     |)
                   |) in
@@ -12796,7 +13065,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Left",
                                                 0
@@ -12810,7 +13079,7 @@ Module collections.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "alloc::collections::btree::node::LeftOrRight::Right",
                                                 0
@@ -12867,7 +13136,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "alloc::collections::btree::node::LeftOrRight::Left",
                                 0
@@ -12877,7 +13146,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "alloc::collections::btree::node::LeftOrRight::Right",
                                 0
@@ -12979,10 +13248,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::BalancingContext"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::BalancingContext",
                           "right_child"
+                        |)
                       |);
                       BinOp.Panic.add (|
                         Value.Integer Integer.Usize 1,
@@ -13050,10 +13320,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::BalancingContext"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::BalancingContext",
                           "left_child"
+                        |)
                       |);
                       M.read (| track_left_edge_idx |)
                     ]
@@ -13167,10 +13438,11 @@ Module collections.
                   |) in
                 let left_node :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::BalancingContext"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::BalancingContext",
                       "left_child"
+                    |)
                   |) in
                 let old_left_len :=
                   M.alloc (|
@@ -13192,10 +13464,11 @@ Module collections.
                   |) in
                 let right_node :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::BalancingContext"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::BalancingContext",
                       "right_child"
+                    |)
                   |) in
                 let old_right_len :=
                   M.alloc (|
@@ -13633,10 +13906,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::BalancingContext"
-                            "parent";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::BalancingContext",
+                            "parent"
+                          |);
                           M.read (| k |);
                           M.read (| v |)
                         ]
@@ -13645,8 +13919,8 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let k := M.copy (| γ0_0 |) in
                           let v := M.copy (| γ0_1 |) in
                           let _ :=
@@ -13805,17 +14079,17 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::node::ForceResult::Internal",
                             0
                           |) in
                         let left := M.copy (| γ1_0 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "alloc::collections::btree::node::ForceResult::Internal",
                             0
@@ -14030,16 +14304,16 @@ Module collections.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::node::ForceResult::Leaf",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "alloc::collections::btree::node::ForceResult::Leaf",
                             0
@@ -14167,10 +14441,11 @@ Module collections.
                   |) in
                 let left_node :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::BalancingContext"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::BalancingContext",
                       "left_child"
+                    |)
                   |) in
                 let old_left_len :=
                   M.alloc (|
@@ -14192,10 +14467,11 @@ Module collections.
                   |) in
                 let right_node :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::BalancingContext"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::BalancingContext",
                       "right_child"
+                    |)
                   |) in
                 let old_right_len :=
                   M.alloc (|
@@ -14423,10 +14699,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::btree::node::BalancingContext"
-                            "parent";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::node::BalancingContext",
+                            "parent"
+                          |);
                           M.read (| k |);
                           M.read (| v |)
                         ]
@@ -14435,8 +14712,8 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let k := M.copy (| γ0_0 |) in
                           let v := M.copy (| γ0_1 |) in
                           let _ :=
@@ -14847,17 +15124,17 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::node::ForceResult::Internal",
                             0
                           |) in
                         let left := M.copy (| γ1_0 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "alloc::collections::btree::node::ForceResult::Internal",
                             0
@@ -15106,16 +15383,16 @@ Module collections.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "alloc::collections::btree::node::ForceResult::Leaf",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
                             "alloc::collections::btree::node::ForceResult::Leaf",
                             0
@@ -15202,15 +15479,20 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       |)
                     ]
                   |);
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |)
                 ]
               |)))
@@ -15284,15 +15566,20 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::btree::node::Handle"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::btree::node::Handle",
                           "node"
+                        |)
                       |)
                     ]
                   |);
                   M.read (|
-                    M.get_struct_record_field self "alloc::collections::btree::node::Handle" "idx"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "alloc::collections::btree::node::Handle",
+                      "idx"
+                    |)
                   |)
                 ]
               |)))
@@ -15364,10 +15651,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -15376,7 +15664,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::node::ForceResult::Leaf",
                             0
@@ -15392,10 +15680,11 @@ Module collections.
                                   ("node", M.read (| node |));
                                   ("idx",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |));
                                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                                 ]
@@ -15404,7 +15693,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "alloc::collections::btree::node::ForceResult::Internal",
                             0
@@ -15420,10 +15709,11 @@ Module collections.
                                   ("node", M.read (| node |));
                                   ("idx",
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::btree::node::Handle"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::btree::node::Handle",
                                         "idx"
+                                      |)
                                     |));
                                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                                 ]
@@ -15492,10 +15782,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "node"
+                          |)
                         |)
                       ]
                     |)
@@ -15507,10 +15798,11 @@ Module collections.
                       ("node", M.read (| node |));
                       ("idx",
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::Handle"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
                             "idx"
+                          |)
                         |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -15596,10 +15888,11 @@ Module collections.
               M.read (|
                 let new_left_len :=
                   M.copy (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::btree::node::Handle"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::node::Handle",
                       "idx"
+                    |)
                   |) in
                 let left_node :=
                   M.alloc (|
@@ -15744,16 +16037,18 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        left_node
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        left_node,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |))
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        right_node
-                                        "alloc::collections::btree::node::NodeRef"
+                                      M.SubPointer.get_struct_record_field (|
+                                        right_node,
+                                        "alloc::collections::btree::node::NodeRef",
                                         "height"
+                                      |)
                                     |)))
                               |)) in
                           let _ :=
@@ -16025,17 +16320,17 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "alloc::collections::btree::node::ForceResult::Internal",
                                     0
                                   |) in
                                 let left := M.copy (| γ1_0 |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_1,
                                     "alloc::collections::btree::node::ForceResult::Internal",
                                     0
@@ -16201,16 +16496,16 @@ Module collections.
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "alloc::collections::btree::node::ForceResult::Leaf",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_1,
                                     "alloc::collections::btree::node::ForceResult::Leaf",
                                     0
@@ -16318,19 +16613,21 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::SplitResult"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::SplitResult",
                             "left"
+                          |)
                         |)
                       ]
                     |));
                   ("kv",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::SplitResult"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::SplitResult",
                         "kv"
+                      |)
                     |));
                   ("right",
                     M.call_closure (|
@@ -16348,10 +16645,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::SplitResult"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::SplitResult",
                             "right"
+                          |)
                         |)
                       ]
                     |))
@@ -16400,19 +16698,21 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::SplitResult"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::SplitResult",
                             "left"
+                          |)
                         |)
                       ]
                     |));
                   ("kv",
                     M.read (|
-                      M.get_struct_record_field
-                        self
-                        "alloc::collections::btree::node::SplitResult"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "alloc::collections::btree::node::SplitResult",
                         "kv"
+                      |)
                     |));
                   ("right",
                     M.call_closure (|
@@ -16430,10 +16730,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::btree::node::SplitResult"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::SplitResult",
                             "right"
+                          |)
                         |)
                       ]
                     |))

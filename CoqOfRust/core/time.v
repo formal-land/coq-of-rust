@@ -83,9 +83,19 @@ Module time.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           BinOp.Pure.eq
-            (M.read (| M.get_struct_tuple_field (M.read (| self |)) "core::time::Nanoseconds" 0 |))
             (M.read (|
-              M.get_struct_tuple_field (M.read (| other |)) "core::time::Nanoseconds" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::time::Nanoseconds",
+                0
+              |)
+            |))
+            (M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| other |),
+                "core::time::Nanoseconds",
+                0
+              |)
             |))))
       | _, _ => M.impossible
       end.
@@ -155,8 +165,16 @@ Module time.
               []
             |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::time::Nanoseconds" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "core::time::Nanoseconds" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::time::Nanoseconds",
+                0
+              |);
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| other |),
+                "core::time::Nanoseconds",
+                0
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -183,8 +201,16 @@ Module time.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::time::Nanoseconds" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "core::time::Nanoseconds" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::time::Nanoseconds",
+                0
+              |);
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| other |),
+                "core::time::Nanoseconds",
+                0
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -211,7 +237,11 @@ Module time.
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "core::time::Nanoseconds" 0;
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::time::Nanoseconds",
+                0
+              |);
               M.read (| state |)
             ]
           |)))
@@ -326,10 +356,18 @@ Module time.
           LogicalOp.and (|
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "secs"
+                |)
               |))
               (M.read (|
-                M.get_struct_record_field (M.read (| other |)) "core::time::Duration" "secs"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::time::Duration",
+                  "secs"
+                |)
               |)),
             ltac:(M.monadic
               (M.call_closure (|
@@ -341,8 +379,16 @@ Module time.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos";
-                  M.get_struct_record_field (M.read (| other |)) "core::time::Duration" "nanos"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "nanos"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::time::Duration",
+                    "nanos"
+                  |)
                 ]
               |)))
           |)))
@@ -424,8 +470,16 @@ Module time.
                     []
                   |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs";
-                    M.get_struct_record_field (M.read (| other |)) "core::time::Duration" "secs"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "secs"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::time::Duration",
+                      "secs"
+                    |)
                   ]
                 |)
               |),
@@ -433,7 +487,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -448,14 +502,16 @@ Module time.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::time::Duration"
-                            "nanos";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::time::Duration"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::time::Duration",
                             "nanos"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::time::Duration",
+                            "nanos"
+                          |)
                         ]
                       |)
                     |)));
@@ -493,8 +549,16 @@ Module time.
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs";
-                    M.get_struct_record_field (M.read (| other |)) "core::time::Duration" "secs"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "secs"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::time::Duration",
+                      "secs"
+                    |)
                   ]
                 |)
               |),
@@ -511,14 +575,16 @@ Module time.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::time::Duration"
-                            "nanos";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "core::time::Duration"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::time::Duration",
                             "nanos"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "core::time::Duration",
+                            "nanos"
+                          |)
                         ]
                       |)
                     |)));
@@ -556,7 +622,11 @@ Module time.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
                   [
-                    M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "secs"
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -571,7 +641,11 @@ Module time.
                   [ __H ]
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "nanos"
+                  |);
                   M.read (| state |)
                 ]
               |)
@@ -767,7 +841,7 @@ Module time.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -949,16 +1023,25 @@ Module time.
           LogicalOp.and (|
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "secs"
+                |)
               |))
               (Value.Integer Integer.U64 0),
             ltac:(M.monadic
               (BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_tuple_field
-                    (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                    "core::time::Nanoseconds"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "nanos"
+                    |),
+                    "core::time::Nanoseconds",
                     0
+                  |)
                 |))
                 (Value.Integer Integer.U32 0)))
           |)))
@@ -977,7 +1060,13 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::time::Duration",
+              "secs"
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -995,10 +1084,15 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Panic.div (|
             M.read (|
-              M.get_struct_tuple_field
-                (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                "core::time::Nanoseconds"
+              M.SubPointer.get_struct_tuple_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "nanos"
+                |),
+                "core::time::Nanoseconds",
                 0
+              |)
             |),
             M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
           |)))
@@ -1020,10 +1114,15 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Panic.div (|
             M.read (|
-              M.get_struct_tuple_field
-                (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                "core::time::Nanoseconds"
+              M.SubPointer.get_struct_tuple_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "nanos"
+                |),
+                "core::time::Nanoseconds",
                 0
+              |)
             |),
             M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
           |)))
@@ -1044,10 +1143,15 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.get_struct_tuple_field
-              (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-              "core::time::Nanoseconds"
+            M.SubPointer.get_struct_tuple_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::time::Duration",
+                "nanos"
+              |),
+              "core::time::Nanoseconds",
               0
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -1068,17 +1172,26 @@ Module time.
             BinOp.Panic.mul (|
               M.rust_cast
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "secs"
+                  |)
                 |)),
               M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
             M.rust_cast
               (BinOp.Panic.div (|
                 M.read (|
-                  M.get_struct_tuple_field
-                    (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                    "core::time::Nanoseconds"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "nanos"
+                    |),
+                    "core::time::Nanoseconds",
                     0
+                  |)
                 |),
                 M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
               |))
@@ -1102,17 +1215,26 @@ Module time.
             BinOp.Panic.mul (|
               M.rust_cast
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "secs"
+                  |)
                 |)),
               M.rust_cast (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
             |),
             M.rust_cast
               (BinOp.Panic.div (|
                 M.read (|
-                  M.get_struct_tuple_field
-                    (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                    "core::time::Nanoseconds"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "nanos"
+                    |),
+                    "core::time::Nanoseconds",
                     0
+                  |)
                 |),
                 M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
               |))
@@ -1136,16 +1258,25 @@ Module time.
             BinOp.Panic.mul (|
               M.rust_cast
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "secs"
+                  |)
                 |)),
               M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |),
             M.rust_cast
               (M.read (|
-                M.get_struct_tuple_field
-                  (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                  "core::time::Nanoseconds"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::Duration",
+                    "nanos"
+                  |),
+                  "core::time::Nanoseconds",
                   0
+                |)
               |))
           |)))
       | _, _ => M.impossible
@@ -1182,7 +1313,7 @@ Module time.
                         |)
                       |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1259,16 +1390,24 @@ Module time.
                               M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::time::Duration" "secs"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::time::Duration",
+                                    "secs"
+                                  |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field rhs "core::time::Duration" "secs"
+                                  M.SubPointer.get_struct_record_field (|
+                                    rhs,
+                                    "core::time::Duration",
+                                    "secs"
+                                  |)
                                 |)
                               ]
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1278,16 +1417,26 @@ Module time.
                           M.alloc (|
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_tuple_field
-                                  (M.get_struct_record_field self "core::time::Duration" "nanos")
-                                  "core::time::Nanoseconds"
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::time::Duration",
+                                    "nanos"
+                                  |),
+                                  "core::time::Nanoseconds",
                                   0
+                                |)
                               |),
                               M.read (|
-                                M.get_struct_tuple_field
-                                  (M.get_struct_record_field rhs "core::time::Duration" "nanos")
-                                  "core::time::Nanoseconds"
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    rhs,
+                                    "core::time::Duration",
+                                    "nanos"
+                                  |),
+                                  "core::time::Nanoseconds",
                                   0
+                                |)
                               |)
                             |)
                           |) in
@@ -1339,7 +1488,7 @@ Module time.
                                               |)
                                             |) in
                                           let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -1470,7 +1619,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1525,16 +1674,24 @@ Module time.
                               M.get_associated_function (| Ty.path "u64", "checked_sub", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::time::Duration" "secs"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::time::Duration",
+                                    "secs"
+                                  |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field rhs "core::time::Duration" "secs"
+                                  M.SubPointer.get_struct_record_field (|
+                                    rhs,
+                                    "core::time::Duration",
+                                    "secs"
+                                  |)
                                 |)
                               ]
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1552,22 +1709,26 @@ Module time.
                                         (M.alloc (|
                                           BinOp.Pure.ge
                                             (M.read (|
-                                              M.get_struct_tuple_field
-                                                (M.get_struct_record_field
-                                                  self
-                                                  "core::time::Duration"
-                                                  "nanos")
-                                                "core::time::Nanoseconds"
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::time::Duration",
+                                                  "nanos"
+                                                |),
+                                                "core::time::Nanoseconds",
                                                 0
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_tuple_field
-                                                (M.get_struct_record_field
-                                                  rhs
-                                                  "core::time::Duration"
-                                                  "nanos")
-                                                "core::time::Nanoseconds"
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  rhs,
+                                                  "core::time::Duration",
+                                                  "nanos"
+                                                |),
+                                                "core::time::Nanoseconds",
                                                 0
+                                              |)
                                             |))
                                         |)) in
                                     let _ :=
@@ -1578,22 +1739,26 @@ Module time.
                                     M.alloc (|
                                       BinOp.Panic.sub (|
                                         M.read (|
-                                          M.get_struct_tuple_field
-                                            (M.get_struct_record_field
-                                              self
-                                              "core::time::Duration"
-                                              "nanos")
-                                            "core::time::Nanoseconds"
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::time::Duration",
+                                              "nanos"
+                                            |),
+                                            "core::time::Nanoseconds",
                                             0
+                                          |)
                                         |),
                                         M.read (|
-                                          M.get_struct_tuple_field
-                                            (M.get_struct_record_field
-                                              rhs
-                                              "core::time::Duration"
-                                              "nanos")
-                                            "core::time::Nanoseconds"
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              rhs,
+                                              "core::time::Duration",
+                                              "nanos"
+                                            |),
+                                            "core::time::Nanoseconds",
                                             0
+                                          |)
                                         |)
                                       |)
                                     |)));
@@ -1616,7 +1781,7 @@ Module time.
                                                 |)
                                               |) in
                                             let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -1627,26 +1792,30 @@ Module time.
                                               BinOp.Panic.sub (|
                                                 BinOp.Panic.add (|
                                                   M.read (|
-                                                    M.get_struct_tuple_field
-                                                      (M.get_struct_record_field
-                                                        self
-                                                        "core::time::Duration"
-                                                        "nanos")
-                                                      "core::time::Nanoseconds"
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        self,
+                                                        "core::time::Duration",
+                                                        "nanos"
+                                                      |),
+                                                      "core::time::Nanoseconds",
                                                       0
+                                                    |)
                                                   |),
                                                   M.read (|
                                                     M.get_constant (| "core::time::NANOS_PER_SEC" |)
                                                   |)
                                                 |),
                                                 M.read (|
-                                                  M.get_struct_tuple_field
-                                                    (M.get_struct_record_field
-                                                      rhs
-                                                      "core::time::Duration"
-                                                      "nanos")
-                                                    "core::time::Nanoseconds"
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      rhs,
+                                                      "core::time::Duration",
+                                                      "nanos"
+                                                    |),
+                                                    "core::time::Nanoseconds",
                                                     0
+                                                  |)
                                                 |)
                                               |)
                                             |)));
@@ -1775,7 +1944,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1821,10 +1990,15 @@ Module time.
                     BinOp.Panic.mul (|
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_tuple_field
-                            (M.get_struct_record_field self "core::time::Duration" "nanos")
-                            "core::time::Nanoseconds"
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::time::Duration",
+                              "nanos"
+                            |),
+                            "core::time::Nanoseconds",
                             0
+                          |)
                         |)),
                       M.rust_cast (M.read (| rhs |))
                     |)
@@ -1856,14 +2030,18 @@ Module time.
                                 M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field self "core::time::Duration" "secs"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::time::Duration",
+                                      "secs"
+                                    |)
                                   |);
                                   M.rust_cast (M.read (| rhs |))
                                 ]
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -1886,7 +2064,7 @@ Module time.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -2013,7 +2191,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -2068,13 +2246,21 @@ Module time.
                           [
                             BinOp.Panic.div (|
                               M.read (|
-                                M.get_struct_record_field self "core::time::Duration" "secs"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::time::Duration",
+                                  "secs"
+                                |)
                               |),
                               M.rust_cast (M.read (| rhs |))
                             |);
                             BinOp.Panic.rem (|
                               M.read (|
-                                M.get_struct_record_field self "core::time::Duration" "secs"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::time::Duration",
+                                  "secs"
+                                |)
                               |),
                               M.rust_cast (M.read (| rhs |))
                             |)
@@ -2083,8 +2269,8 @@ Module time.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let secs := M.copy (| γ0_0 |) in
                             let extra_secs := M.copy (| γ0_1 |) in
                             M.match_operator (|
@@ -2093,25 +2279,29 @@ Module time.
                                   [
                                     BinOp.Panic.div (|
                                       M.read (|
-                                        M.get_struct_tuple_field
-                                          (M.get_struct_record_field
-                                            self
-                                            "core::time::Duration"
-                                            "nanos")
-                                          "core::time::Nanoseconds"
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::time::Duration",
+                                            "nanos"
+                                          |),
+                                          "core::time::Nanoseconds",
                                           0
+                                        |)
                                       |),
                                       M.read (| rhs |)
                                     |);
                                     BinOp.Panic.rem (|
                                       M.read (|
-                                        M.get_struct_tuple_field
-                                          (M.get_struct_record_field
-                                            self
-                                            "core::time::Duration"
-                                            "nanos")
-                                          "core::time::Nanoseconds"
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::time::Duration",
+                                            "nanos"
+                                          |),
+                                          "core::time::Nanoseconds",
                                           0
+                                        |)
                                       |),
                                       M.read (| rhs |)
                                     |)
@@ -2120,8 +2310,8 @@ Module time.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let nanos := M.copy (| γ0_0 |) in
                                     let extra_nanos := M.copy (| γ0_1 |) in
                                     let _ :=
@@ -2249,15 +2439,24 @@ Module time.
           BinOp.Panic.add (|
             M.rust_cast
               (M.read (|
-                M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "secs"
+                |)
               |)),
             BinOp.Panic.div (|
               M.rust_cast
                 (M.read (|
-                  M.get_struct_tuple_field
-                    (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                    "core::time::Nanoseconds"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "nanos"
+                    |),
+                    "core::time::Nanoseconds",
                     0
+                  |)
                 |)),
               M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
@@ -2280,15 +2479,24 @@ Module time.
           BinOp.Panic.add (|
             M.rust_cast
               (M.read (|
-                M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "secs"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::time::Duration",
+                  "secs"
+                |)
               |)),
             BinOp.Panic.div (|
               M.rust_cast
                 (M.read (|
-                  M.get_struct_tuple_field
-                    (M.get_struct_record_field (M.read (| self |)) "core::time::Duration" "nanos")
-                    "core::time::Nanoseconds"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::Duration",
+                      "nanos"
+                    |),
+                    "core::time::Nanoseconds",
                     0
+                  |)
                 |)),
               M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
@@ -2327,21 +2535,13 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let v := M.copy (| γ0_0 |) in
                     v));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -2404,21 +2604,13 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let v := M.copy (| γ0_0 |) in
                     v));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -3198,8 +3390,8 @@ Module time.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let secs := M.copy (| γ0_0 |) in
                         let nanos := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -3807,8 +3999,8 @@ Module time.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let secs := M.copy (| γ0_0 |) in
                         let nanos := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -4270,7 +4462,7 @@ Module time.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -4297,10 +4489,11 @@ Module time.
                                                 [
                                                   M.read (| total_secs |);
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      entry
-                                                      "core::time::Duration"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      entry,
+                                                      "core::time::Duration",
                                                       "secs"
+                                                    |)
                                                   |)
                                                 ]
                                               |);
@@ -4326,13 +4519,15 @@ Module time.
                                                     M.read (| total_nanos |);
                                                     M.rust_cast
                                                       (M.read (|
-                                                        M.get_struct_tuple_field
-                                                          (M.get_struct_record_field
-                                                            entry
-                                                            "core::time::Duration"
-                                                            "nanos")
-                                                          "core::time::Nanoseconds"
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            entry,
+                                                            "core::time::Duration",
+                                                            "nanos"
+                                                          |),
+                                                          "core::time::Nanoseconds",
                                                           0
+                                                        |)
                                                       |))
                                                   ]
                                                 |)
@@ -4341,7 +4536,7 @@ Module time.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -4401,13 +4596,15 @@ Module time.
                                                         |),
                                                         M.rust_cast
                                                           (M.read (|
-                                                            M.get_struct_tuple_field
-                                                              (M.get_struct_record_field
-                                                                entry
-                                                                "core::time::Duration"
-                                                                "nanos")
-                                                              "core::time::Nanoseconds"
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                entry,
+                                                                "core::time::Duration",
+                                                                "nanos"
+                                                              |),
+                                                              "core::time::Nanoseconds",
                                                               0
+                                                            |)
                                                           |))
                                                       |)
                                                     |)))
@@ -4533,7 +4730,7 @@ Module time.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -4560,10 +4757,11 @@ Module time.
                                                 [
                                                   M.read (| total_secs |);
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| entry |))
-                                                      "core::time::Duration"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| entry |),
+                                                      "core::time::Duration",
                                                       "secs"
+                                                    |)
                                                   |)
                                                 ]
                                               |);
@@ -4589,13 +4787,15 @@ Module time.
                                                     M.read (| total_nanos |);
                                                     M.rust_cast
                                                       (M.read (|
-                                                        M.get_struct_tuple_field
-                                                          (M.get_struct_record_field
-                                                            (M.read (| entry |))
-                                                            "core::time::Duration"
-                                                            "nanos")
-                                                          "core::time::Nanoseconds"
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| entry |),
+                                                            "core::time::Duration",
+                                                            "nanos"
+                                                          |),
+                                                          "core::time::Nanoseconds",
                                                           0
+                                                        |)
                                                       |))
                                                   ]
                                                 |)
@@ -4604,7 +4804,7 @@ Module time.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -4664,13 +4864,15 @@ Module time.
                                                         |),
                                                         M.rust_cast
                                                           (M.read (|
-                                                            M.get_struct_tuple_field
-                                                              (M.get_struct_record_field
-                                                                (M.read (| entry |))
-                                                                "core::time::Duration"
-                                                                "nanos")
-                                                              "core::time::Nanoseconds"
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| entry |),
+                                                                "core::time::Duration",
+                                                                "nanos"
+                                                              |),
+                                                              "core::time::Nanoseconds",
                                                               0
+                                                            |)
                                                           |))
                                                       |)
                                                     |)))
@@ -4972,10 +5174,11 @@ Module time.
                         (M.alloc (|
                           BinOp.Pure.gt
                             (M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::time::Duration"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::time::Duration",
                                 "secs"
+                              |)
                             |))
                             (Value.Integer Integer.U64 0)
                         |)) in
@@ -4986,19 +5189,22 @@ Module time.
                         [
                           M.read (| f |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::time::Duration"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::time::Duration",
                               "secs"
+                            |)
                           |);
                           M.read (|
-                            M.get_struct_tuple_field
-                              (M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::time::Duration"
-                                "nanos")
-                              "core::time::Nanoseconds"
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::time::Duration",
+                                "nanos"
+                              |),
+                              "core::time::Nanoseconds",
                               0
+                            |)
                           |);
                           BinOp.Panic.div (|
                             M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
@@ -5021,13 +5227,15 @@ Module time.
                                 (M.alloc (|
                                   BinOp.Pure.ge
                                     (M.read (|
-                                      M.get_struct_tuple_field
-                                        (M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::time::Duration"
-                                          "nanos")
-                                        "core::time::Nanoseconds"
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::time::Duration",
+                                          "nanos"
+                                        |),
+                                        "core::time::Nanoseconds",
                                         0
+                                      |)
                                     |))
                                     (M.read (|
                                       M.get_constant (| "core::time::NANOS_PER_MILLI" |)
@@ -5043,13 +5251,15 @@ Module time.
                                   M.rust_cast
                                     (BinOp.Panic.div (|
                                       M.read (|
-                                        M.get_struct_tuple_field
-                                          (M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::time::Duration"
-                                            "nanos")
-                                          "core::time::Nanoseconds"
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::time::Duration",
+                                            "nanos"
+                                          |),
+                                          "core::time::Nanoseconds",
                                           0
+                                        |)
                                       |),
                                       M.read (|
                                         M.get_constant (| "core::time::NANOS_PER_MILLI" |)
@@ -5057,13 +5267,15 @@ Module time.
                                     |));
                                   BinOp.Panic.rem (|
                                     M.read (|
-                                      M.get_struct_tuple_field
-                                        (M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::time::Duration"
-                                          "nanos")
-                                        "core::time::Nanoseconds"
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::time::Duration",
+                                          "nanos"
+                                        |),
+                                        "core::time::Nanoseconds",
                                         0
+                                      |)
                                     |),
                                     M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
                                   |);
@@ -5088,13 +5300,15 @@ Module time.
                                         (M.alloc (|
                                           BinOp.Pure.ge
                                             (M.read (|
-                                              M.get_struct_tuple_field
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::time::Duration"
-                                                  "nanos")
-                                                "core::time::Nanoseconds"
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::time::Duration",
+                                                  "nanos"
+                                                |),
+                                                "core::time::Nanoseconds",
                                                 0
+                                              |)
                                             |))
                                             (M.read (|
                                               M.get_constant (| "core::time::NANOS_PER_MICRO" |)
@@ -5113,13 +5327,15 @@ Module time.
                                           M.rust_cast
                                             (BinOp.Panic.div (|
                                               M.read (|
-                                                M.get_struct_tuple_field
-                                                  (M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::time::Duration"
-                                                    "nanos")
-                                                  "core::time::Nanoseconds"
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::time::Duration",
+                                                    "nanos"
+                                                  |),
+                                                  "core::time::Nanoseconds",
                                                   0
+                                                |)
                                               |),
                                               M.read (|
                                                 M.get_constant (| "core::time::NANOS_PER_MICRO" |)
@@ -5127,13 +5343,15 @@ Module time.
                                             |));
                                           BinOp.Panic.rem (|
                                             M.read (|
-                                              M.get_struct_tuple_field
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::time::Duration"
-                                                  "nanos")
-                                                "core::time::Nanoseconds"
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::time::Duration",
+                                                  "nanos"
+                                                |),
+                                                "core::time::Nanoseconds",
                                                 0
+                                              |)
                                             |),
                                             M.read (|
                                               M.get_constant (| "core::time::NANOS_PER_MICRO" |)
@@ -5159,13 +5377,15 @@ Module time.
                                           M.read (| f |);
                                           M.rust_cast
                                             (M.read (|
-                                              M.get_struct_tuple_field
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::time::Duration"
-                                                  "nanos")
-                                                "core::time::Nanoseconds"
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::time::Duration",
+                                                  "nanos"
+                                                |),
+                                                "core::time::Nanoseconds",
                                                 0
+                                              |)
                                             |));
                                           Value.Integer Integer.U32 0;
                                           Value.Integer Integer.U32 1;
@@ -5222,10 +5442,11 @@ Module time.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::time::TryFromFloatSecsError"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::time::TryFromFloatSecsError",
                     "kind"
+                  |)
                 |))
             ]
           |)))
@@ -5262,10 +5483,11 @@ Module time.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::time::TryFromFloatSecsError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::time::TryFromFloatSecsError",
                       "kind"
+                    |)
                   ]
                 |))
             ]))
@@ -5310,14 +5532,16 @@ Module time.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::time::TryFromFloatSecsError"
-                "kind";
-              M.get_struct_record_field
-                (M.read (| other |))
-                "core::time::TryFromFloatSecsError"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::time::TryFromFloatSecsError",
                 "kind"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "core::time::TryFromFloatSecsError",
+                "kind"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -5391,10 +5615,11 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::time::TryFromFloatSecsError"
-                "kind",
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::time::TryFromFloatSecsError",
+                "kind"
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic

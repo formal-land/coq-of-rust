@@ -37,12 +37,12 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_tuple_field (|
+              M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "generics_phantom_type::PhantomTuple",
                 0
               |);
-              M.get_struct_tuple_field (|
+              M.SubPointer.get_struct_tuple_field (|
                 M.read (| other |),
                 "generics_phantom_type::PhantomTuple",
                 0
@@ -59,12 +59,12 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
                 []
               |),
               [
-                M.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_phantom_type::PhantomTuple",
                   1
                 |);
-                M.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
                   M.read (| other |),
                   "generics_phantom_type::PhantomTuple",
                   1
@@ -120,12 +120,12 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "generics_phantom_type::PhantomStruct",
                 "first"
               |);
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| other |),
                 "generics_phantom_type::PhantomStruct",
                 "first"
@@ -142,12 +142,12 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "generics_phantom_type::PhantomStruct",
                   "phantom"
                 |);
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "generics_phantom_type::PhantomStruct",
                   "phantom"

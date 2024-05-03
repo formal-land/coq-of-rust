@@ -33,13 +33,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
                         let number := M.copy (| γ0_0 |) in
                         number));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
                         let e := M.copy (| γ0_0 |) in
                         M.alloc (|
                           M.never_to_any (|

@@ -36,10 +36,11 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "iter"
+                        |)
                       ]
                     |));
                   ("peeked",
@@ -54,10 +55,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |))
                 ]))
@@ -97,18 +99,20 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::peekable::Peekable"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::peekable::Peekable",
+                      "iter"
+                    |));
                   M.read (| Value.String "peeked" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::peekable::Peekable"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::peekable::Peekable",
                         "peeked"
+                      |)
                     |))
                 ]
               |)))
@@ -166,10 +170,11 @@ Module iter.
               M.read (|
                 let iter :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::peekable::Peekable"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::peekable::Peekable",
                       "iter"
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -192,10 +197,11 @@ Module iter.
                           ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::peekable::Peekable"
-                            "peeked";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |);
                           M.closure
                             (fun γ =>
                               ltac:(M.monadic
@@ -248,10 +254,11 @@ Module iter.
               M.read (|
                 let iter :=
                   M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::peekable::Peekable"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::peekable::Peekable",
                       "iter"
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -274,10 +281,11 @@ Module iter.
                           ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::peekable::Peekable"
-                            "peeked";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |);
                           M.closure
                             (fun γ =>
                               ltac:(M.monadic
@@ -353,7 +361,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -403,10 +411,11 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::peekable::Peekable"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::peekable::Peekable",
                                                 "peeked"
+                                              |)
                                             ]
                                           |))
                                       |)) in
@@ -432,10 +441,11 @@ Module iter.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::peekable::Peekable"
-                              "peeked",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::peekable::Peekable",
+                              "peeked"
+                            |),
                             Value.StructTuple "core::option::Option::Some" [ M.read (| other |) ]
                           |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -545,10 +555,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |)
                   |),
@@ -556,7 +567,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -575,10 +586,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::peekable::Peekable"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::peekable::Peekable",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)))
@@ -615,10 +627,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          self
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |)
                   |),
@@ -626,7 +639,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -635,13 +648,13 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -659,10 +672,11 @@ Module iter.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::peekable::Peekable"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::peekable::Peekable",
                                     "iter"
+                                  |)
                                 |)
                               ]
                             |)
@@ -681,10 +695,11 @@ Module iter.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::peekable::Peekable"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::peekable::Peekable",
                                   "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -724,10 +739,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |)
                   |),
@@ -735,7 +751,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -744,14 +760,14 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let v := M.copy (| γ0_0 |) in
                         let γ2_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -766,13 +782,13 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -787,10 +803,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::peekable::Peekable"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "iter"
+                              |);
                               BinOp.Panic.sub (| M.read (| n |), Value.Integer Integer.Usize 1 |)
                             ]
                           |)
@@ -807,10 +824,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::peekable::Peekable"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "iter"
+                              |);
                               M.read (| n |)
                             ]
                           |)
@@ -853,10 +871,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::peekable::Peekable"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::peekable::Peekable",
                                   "peeked"
+                                |)
                               ]
                             |)
                           |),
@@ -864,7 +883,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -881,7 +900,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -912,10 +931,11 @@ Module iter.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::peekable::Peekable"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::peekable::Peekable",
                                   "iter"
+                                |)
                               |)
                             ]
                           |);
@@ -956,15 +976,16 @@ Module iter.
                     let peek_len :=
                       M.copy (|
                         M.match_operator (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::peekable::Peekable"
-                            "peeked",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -987,13 +1008,13 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "core::option::Option::Some",
                                     0
@@ -1014,18 +1035,19 @@ Module iter.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::iter::adapters::peekable::Peekable"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::peekable::Peekable",
                               "iter"
+                            |)
                           ]
                         |)
                       |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let lo := M.copy (| γ0_0 |) in
                             let hi := M.copy (| γ0_1 |) in
                             let lo :=
@@ -1047,7 +1069,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -1118,10 +1140,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::peekable::Peekable"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::peekable::Peekable",
                                   "peeked"
+                                |)
                               ]
                             |)
                           |),
@@ -1129,7 +1152,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1155,13 +1178,13 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "core::option::Option::Some",
                                     0
@@ -1195,7 +1218,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -1222,7 +1245,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
@@ -1245,10 +1268,11 @@ Module iter.
                           [ B; F; R ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::iter::adapters::peekable::Peekable"
-                            "iter";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::peekable::Peekable",
+                            "iter"
+                          |);
                           M.read (| acc |);
                           M.read (| f |)
                         ]
@@ -1286,15 +1310,16 @@ Module iter.
                     let acc :=
                       M.copy (|
                         M.match_operator (|
-                          M.get_struct_record_field
-                            self
-                            "core::iter::adapters::peekable::Peekable"
-                            "peeked",
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::peekable::Peekable",
+                            "peeked"
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1307,13 +1332,13 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
                                   |) in
                                 let γ1_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ0_0,
                                     "core::option::Option::Some",
                                     0
@@ -1346,10 +1371,11 @@ Module iter.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::peekable::Peekable"
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::peekable::Peekable",
                               "iter"
+                            |)
                           |);
                           M.read (| acc |);
                           M.read (| fold |)
@@ -1411,10 +1437,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |)
                   |),
@@ -1422,7 +1449,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1430,7 +1457,7 @@ Module iter.
                         let v := M.copy (| γ0_0 |) in
                         let γ0_0 := M.read (| γ0_0 |) in
                         let γ3_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -1456,10 +1483,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::peekable::Peekable"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::peekable::Peekable",
                                     "iter"
+                                  |)
                                 ]
                               |);
                               M.closure
@@ -1492,7 +1520,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1511,10 +1539,11 @@ Module iter.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::peekable::Peekable"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::peekable::Peekable",
                                 "iter"
+                              |)
                             ]
                           |)
                         |)))
@@ -1564,10 +1593,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::peekable::Peekable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::peekable::Peekable",
                           "peeked"
+                        |)
                       ]
                     |)
                   |),
@@ -1575,7 +1605,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1595,13 +1625,13 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -1627,10 +1657,11 @@ Module iter.
                                     [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::peekable::Peekable"
-                                      "iter";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::peekable::Peekable",
+                                      "iter"
+                                    |);
                                     M.read (| init |);
                                     f
                                   ]
@@ -1642,7 +1673,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1663,7 +1694,7 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1671,10 +1702,11 @@ Module iter.
                                 let r := M.copy (| γ0_0 |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::peekable::Peekable"
-                                      "peeked",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::peekable::Peekable",
+                                      "peeked"
+                                    |),
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [
@@ -1709,10 +1741,11 @@ Module iter.
                               [ B; F; R ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::iter::adapters::peekable::Peekable"
-                                "iter";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::peekable::Peekable",
+                                "iter"
+                              |);
                               M.read (| init |);
                               M.read (| f |)
                             ]
@@ -1749,15 +1782,16 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 M.match_operator (|
-                  M.get_struct_record_field
-                    self
-                    "core::iter::adapters::peekable::Peekable"
-                    "peeked",
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::iter::adapters::peekable::Peekable",
+                    "peeked"
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1766,13 +1800,13 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
                           |) in
                         let γ1_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
                             "core::option::Option::Some",
                             0
@@ -1790,10 +1824,11 @@ Module iter.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::iter::adapters::peekable::Peekable"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::peekable::Peekable",
                                     "iter"
+                                  |)
                                 |);
                                 M.read (| init |);
                                 fold
@@ -1825,10 +1860,11 @@ Module iter.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::iter::adapters::peekable::Peekable"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::iter::adapters::peekable::Peekable",
                                   "iter"
+                                |)
                               |);
                               M.read (| init |);
                               M.read (| fold |)
@@ -1917,10 +1953,11 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::peekable::Peekable"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::peekable::Peekable",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

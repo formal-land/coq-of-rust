@@ -78,15 +78,17 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::binary_heap::PeekMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::binary_heap::PeekMut",
                                 "heap"
-                            |))
-                            "alloc::collections::binary_heap::BinaryHeap"
-                            "data";
+                              |)
+                            |),
+                            "alloc::collections::binary_heap::BinaryHeap",
+                            "data"
+                          |);
                           Value.Integer Integer.Usize 0
                         ]
                       |))
@@ -138,12 +140,13 @@ Module collections.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::binary_heap::PeekMut"
-                          "original_len" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::binary_heap::PeekMut",
+                          "original_len"
+                        |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -158,15 +161,17 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::binary_heap::PeekMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::binary_heap::PeekMut",
                                     "heap"
-                                |))
-                                "alloc::collections::binary_heap::BinaryHeap"
-                                "data";
+                                  |)
+                                |),
+                                "alloc::collections::binary_heap::BinaryHeap",
+                                "data"
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
@@ -190,10 +195,11 @@ Module collections.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::binary_heap::PeekMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::binary_heap::PeekMut",
                                   "heap"
+                                |)
                               |);
                               Value.Integer Integer.Usize 0
                             ]
@@ -268,10 +274,11 @@ Module collections.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::binary_heap::PeekMut"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::binary_heap::PeekMut",
                                                     "heap"
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -317,15 +324,17 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::PeekMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::PeekMut",
                               "heap"
-                          |))
-                          "alloc::collections::binary_heap::BinaryHeap"
+                            |)
+                          |),
+                          "alloc::collections::binary_heap::BinaryHeap",
                           "data"
+                        |)
                       ]
                     |);
                     Value.Integer Integer.Usize 0
@@ -416,10 +425,11 @@ Module collections.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::binary_heap::PeekMut"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::binary_heap::PeekMut",
                                                     "heap"
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -458,10 +468,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::binary_heap::PeekMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::binary_heap::PeekMut",
                           "heap"
+                        |)
                       |)
                     ]
                   |)
@@ -481,10 +492,11 @@ Module collections.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::PeekMut"
-                              "original_len",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::PeekMut",
+                              "original_len"
+                            |),
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
@@ -507,15 +519,17 @@ Module collections.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::binary_heap::PeekMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::binary_heap::PeekMut",
                                       "heap"
-                                  |))
-                                  "alloc::collections::binary_heap::BinaryHeap"
-                                  "data";
+                                    |)
+                                  |),
+                                  "alloc::collections::binary_heap::BinaryHeap",
+                                  "data"
+                                |);
                                 Value.Integer Integer.Usize 1
                               ]
                             |)
@@ -541,15 +555,17 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::PeekMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::PeekMut",
                               "heap"
-                          |))
-                          "alloc::collections::binary_heap::BinaryHeap"
+                            |)
+                          |),
+                          "alloc::collections::binary_heap::BinaryHeap",
                           "data"
+                        |)
                       ]
                     |);
                     Value.Integer Integer.Usize 0
@@ -611,15 +627,16 @@ Module collections.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  this
-                                  "alloc::collections::binary_heap::PeekMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  this,
+                                  "alloc::collections::binary_heap::PeekMut",
                                   "original_len"
+                                |)
                               ]
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -634,15 +651,17 @@ Module collections.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (|
-                                    M.get_struct_record_field
-                                      this
-                                      "alloc::collections::binary_heap::PeekMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      this,
+                                      "alloc::collections::binary_heap::PeekMut",
                                       "heap"
-                                  |))
-                                  "alloc::collections::binary_heap::BinaryHeap"
-                                  "data";
+                                    |)
+                                  |),
+                                  "alloc::collections::binary_heap::BinaryHeap",
+                                  "data"
+                                |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::num::nonzero::NonZeroUsize",
@@ -674,10 +693,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            this
-                            "alloc::collections::binary_heap::PeekMut"
+                          M.SubPointer.get_struct_record_field (|
+                            this,
+                            "alloc::collections::binary_heap::PeekMut",
                             "heap"
+                          |)
                         |)
                       ]
                     |)
@@ -721,10 +741,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
                         "data"
+                      |)
                     ]
                   |))
               ]))
@@ -755,14 +776,16 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
-                      M.get_struct_record_field
-                        (M.read (| source |))
-                        "alloc::collections::binary_heap::BinaryHeap"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
                         "data"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| source |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |)
                     ]
                   |)
                 |) in
@@ -929,16 +952,18 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::binary_heap::RebuildOnDrop"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::binary_heap::RebuildOnDrop",
                           "heap"
+                        |)
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::binary_heap::RebuildOnDrop"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::binary_heap::RebuildOnDrop",
                           "rebuild_from"
+                        |)
                       |)
                     ]
                   |)
@@ -1181,10 +1206,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::binary_heap::BinaryHeap"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::binary_heap::BinaryHeap",
                       "data"
+                    |)
                   ]
                 |);
                 M.closure
@@ -1243,10 +1269,11 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::collections::binary_heap::BinaryHeap"
-                                                          "data";
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::collections::binary_heap::BinaryHeap",
+                                                          "data"
+                                                        |);
                                                         Value.Integer Integer.Usize 0
                                                       ]
                                                     |)
@@ -1324,10 +1351,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       M.read (| item |)
                     ]
                   |)
@@ -1422,10 +1450,11 @@ Module collections.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        self
-                                        "alloc::collections::binary_heap::BinaryHeap"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::collections::binary_heap::BinaryHeap",
                                         "data"
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1544,10 +1573,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::BinaryHeap"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::BinaryHeap",
                             "data"
+                          |)
                         ]
                       |);
                       M.read (| pos |)
@@ -1770,10 +1800,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::binary_heap::BinaryHeap"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::binary_heap::BinaryHeap",
                                 "data"
+                              |)
                             ]
                           |);
                           M.read (| pos |)
@@ -2187,10 +2218,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::BinaryHeap"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::BinaryHeap",
                             "data"
+                          |)
                         ]
                       |);
                       M.read (| pos |)
@@ -2696,7 +2728,7 @@ Module collections.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::option::Option::Some",
                                                       0
@@ -2908,10 +2940,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
                         "data"
+                      |)
                     ]
                   |)
                 |) in
@@ -2924,14 +2957,16 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "alloc::collections::binary_heap::BinaryHeap"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
                         "data"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |)
                     ]
                   |)
                 |) in
@@ -3033,15 +3068,17 @@ Module collections.
                       [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] (Ty.path "bool") ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (|
-                          M.get_struct_record_field
-                            guard
-                            "alloc::collections::binary_heap::RebuildOnDrop"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            guard,
+                            "alloc::collections::binary_heap::RebuildOnDrop",
                             "heap"
-                        |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                          |)
+                        |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       M.closure
                         (fun γ =>
                           ltac:(M.monadic
@@ -3082,10 +3119,11 @@ Module collections.
                                                             (BinOp.Pure.lt
                                                               (M.read (| i |))
                                                               (M.read (|
-                                                                M.get_struct_record_field
-                                                                  guard
-                                                                  "alloc::collections::binary_heap::RebuildOnDrop"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "alloc::collections::binary_heap::RebuildOnDrop",
                                                                   "rebuild_from"
+                                                                |)
                                                               |))))
                                                         |)
                                                       |)) in
@@ -3096,10 +3134,11 @@ Module collections.
                                                     |) in
                                                   let _ :=
                                                     M.write (|
-                                                      M.get_struct_record_field
-                                                        guard
-                                                        "alloc::collections::binary_heap::RebuildOnDrop"
-                                                        "rebuild_from",
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        guard,
+                                                        "alloc::collections::binary_heap::RebuildOnDrop",
+                                                        "rebuild_from"
+                                                      |),
                                                       M.read (| i |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -3160,10 +3199,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::BinaryHeap"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::BinaryHeap",
                             "data"
+                          |)
                         ]
                       |)
                     ]
@@ -3224,10 +3264,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::binary_heap::BinaryHeap"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::binary_heap::BinaryHeap",
                       "data"
+                    |)
                   ]
                 |);
                 Value.Integer Integer.Usize 0
@@ -3258,10 +3299,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
                   "data"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3293,10 +3335,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       M.read (| additional |)
                     ]
                   |)
@@ -3332,10 +3375,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       M.read (| additional |)
                     ]
                   |)
@@ -3368,10 +3412,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
-                  "data";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
+                  "data"
+                |);
                 M.read (| additional |)
               ]
             |)))
@@ -3401,10 +3446,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
-                  "data";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
+                  "data"
+                |);
                 M.read (| additional |)
               ]
             |)))
@@ -3436,10 +3482,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
                         "data"
+                      |)
                     ]
                   |)
                 |) in
@@ -3471,10 +3518,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
-                  "data";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
+                  "data"
+                |);
                 M.read (| min_capacity |)
               ]
             |)))
@@ -3503,10 +3551,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
                   "data"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3562,10 +3611,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
                   "data"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3593,10 +3643,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::BinaryHeap"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::BinaryHeap",
                   "data"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3656,10 +3707,11 @@ Module collections.
                       [ Ty.path "core::ops::range::RangeFull" ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       Value.StructTuple "core::ops::range::RangeFull" []
                     ]
                   |))
@@ -3844,10 +3896,11 @@ Module collections.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "alloc::collections::binary_heap::Hole"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::binary_heap::Hole",
                 "pos"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3876,10 +3929,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Hole"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Hole",
                   "elt"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3926,10 +3980,11 @@ Module collections.
                                           (BinOp.Pure.ne
                                             (M.read (| index |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::collections::binary_heap::Hole"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::binary_heap::Hole",
                                                 "pos"
+                                              |)
                                             |)))
                                       |)) in
                                   let _ :=
@@ -3985,10 +4040,11 @@ Module collections.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::binary_heap::Hole"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::binary_heap::Hole",
                                                     "data"
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -4026,10 +4082,11 @@ Module collections.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::Hole"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::Hole",
                         "data"
+                      |)
                     |);
                     M.read (| index |)
                   ]
@@ -4086,10 +4143,11 @@ Module collections.
                                           (BinOp.Pure.ne
                                             (M.read (| index |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::collections::binary_heap::Hole"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::binary_heap::Hole",
                                                 "pos"
+                                              |)
                                             |)))
                                       |)) in
                                   let _ :=
@@ -4145,10 +4203,11 @@ Module collections.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::binary_heap::Hole"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::binary_heap::Hole",
                                                     "data"
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -4188,10 +4247,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::Hole"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::Hole",
                             "data"
+                          |)
                         |)
                       ]
                     |)
@@ -4212,10 +4272,11 @@ Module collections.
                       [
                         M.read (| ptr |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::Hole"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::Hole",
                             "pos"
+                          |)
                         |)
                       ]
                     |)
@@ -4231,10 +4292,11 @@ Module collections.
                 M.alloc (| Value.Tuple [] |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::binary_heap::Hole"
-                    "pos",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::Hole",
+                    "pos"
+                  |),
                   M.read (| index |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4269,10 +4331,11 @@ Module collections.
             M.read (|
               let pos :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::binary_heap::Hole"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::Hole",
                     "pos"
+                  |)
                 |) in
               let _ :=
                 M.alloc (|
@@ -4288,10 +4351,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::binary_heap::Hole"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::Hole",
                             "elt"
+                          |)
                         ]
                       |);
                       M.call_closure (|
@@ -4302,10 +4366,11 @@ Module collections.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::Hole"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::Hole",
                               "data"
+                            |)
                           |);
                           M.read (| pos |)
                         ]
@@ -4385,10 +4450,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::Iter"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::Iter",
                               "iter"
+                            |)
                           ]
                         |)
                       |))
@@ -4436,10 +4502,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::Iter"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::Iter",
                         "iter"
+                      |)
                     ]
                   |))
               ]))
@@ -4482,10 +4549,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Iter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Iter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4511,10 +4579,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Iter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Iter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4541,7 +4610,11 @@ Module collections.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "alloc::collections::binary_heap::Iter" "iter"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "alloc::collections::binary_heap::Iter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -4587,10 +4660,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Iter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Iter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4629,10 +4703,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Iter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Iter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4691,10 +4766,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::IntoIter"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::IntoIter",
                         "iter"
+                      |)
                     ]
                   |))
               ]))
@@ -4732,10 +4808,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4796,10 +4873,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::binary_heap::IntoIter"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::IntoIter",
                               "iter"
+                            |)
                           ]
                         |)
                       |))
@@ -4846,10 +4924,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4875,10 +4954,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4922,10 +5002,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4964,10 +5045,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIter",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5160,10 +5242,11 @@ Module collections.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "alloc::collections::binary_heap::IntoIter"
-              "iter"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "alloc::collections::binary_heap::IntoIter",
+              "iter"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5212,10 +5295,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::IntoIterSorted"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::IntoIterSorted",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -5256,10 +5340,11 @@ Module collections.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::binary_heap::IntoIterSorted"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::binary_heap::IntoIterSorted",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -5297,10 +5382,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIterSorted"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIterSorted",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5336,10 +5422,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::IntoIterSorted"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::IntoIterSorted",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5367,10 +5454,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::binary_heap::IntoIterSorted"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::binary_heap::IntoIterSorted",
                         "inner"
+                      |)
                     ]
                   |)
                 |) in
@@ -5470,10 +5558,11 @@ Module collections.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::binary_heap::Drain"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::binary_heap::Drain",
                       "iter"
+                    |)
                   |))
               ]
             |)))
@@ -5511,10 +5600,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Drain"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Drain",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5552,10 +5642,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Drain"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Drain",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5581,10 +5672,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Drain"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Drain",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5628,10 +5720,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Drain"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Drain",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5670,10 +5763,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::binary_heap::Drain"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::binary_heap::Drain",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5739,10 +5833,11 @@ Module collections.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::binary_heap::DrainSorted"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::binary_heap::DrainSorted",
                       "inner"
+                    |)
                   |))
               ]
             |)))
@@ -5781,10 +5876,11 @@ Module collections.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::binary_heap::DrainSorted"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::DrainSorted",
                     "inner"
+                  |)
                 |)
               ]
             |)))
@@ -5843,16 +5939,17 @@ Module collections.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::binary_heap::DrainSorted"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::binary_heap::DrainSorted",
                                       "inner"
+                                    |)
                                   |)
                                 ]
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -5939,10 +6036,11 @@ Module collections.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::binary_heap::DrainSorted"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::DrainSorted",
                     "inner"
+                  |)
                 |)
               ]
             |)))
@@ -5972,10 +6070,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::binary_heap::DrainSorted"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::binary_heap::DrainSorted",
                           "inner"
+                        |)
                       |)
                     ]
                   |)
@@ -6149,7 +6248,11 @@ Module collections.
           ltac:(M.monadic
             (let heap := M.alloc (| heap |) in
             M.read (|
-              M.get_struct_record_field heap "alloc::collections::binary_heap::BinaryHeap" "data"
+              M.SubPointer.get_struct_record_field (|
+                heap,
+                "alloc::collections::binary_heap::BinaryHeap",
+                "data"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6263,10 +6366,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::binary_heap::BinaryHeap"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::binary_heap::BinaryHeap",
                           "data"
+                        |)
                       |)
                     ]
                   |))
@@ -6385,15 +6489,17 @@ Module collections.
                       [ I ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (|
-                          M.get_struct_record_field
-                            guard
-                            "alloc::collections::binary_heap::RebuildOnDrop"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            guard,
+                            "alloc::collections::binary_heap::RebuildOnDrop",
                             "heap"
-                        |))
-                        "alloc::collections::binary_heap::BinaryHeap"
-                        "data";
+                          |)
+                        |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |);
                       M.read (| iter |)
                     ]
                   |)

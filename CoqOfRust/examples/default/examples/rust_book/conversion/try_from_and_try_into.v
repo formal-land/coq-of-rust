@@ -30,7 +30,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "try_from_and_try_into::EvenNumber",
                   0
@@ -72,10 +72,14 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
           (M.read (|
-            M.get_struct_tuple_field (| M.read (| self |), "try_from_and_try_into::EvenNumber", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "try_from_and_try_into::EvenNumber",
+              0
+            |)
           |))
           (M.read (|
-            M.get_struct_tuple_field (|
+            M.SubPointer.get_struct_tuple_field (|
               M.read (| other |),
               "try_from_and_try_into::EvenNumber",
               0
@@ -201,8 +205,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -296,8 +300,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -401,8 +405,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -498,8 +502,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

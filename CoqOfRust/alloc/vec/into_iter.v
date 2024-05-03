@@ -105,10 +105,11 @@ Module vec.
               M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
                     "ptr"
+                  |)
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -175,10 +176,11 @@ Module vec.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::vec::into_iter::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::into_iter::IntoIter",
                   "alloc"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -204,10 +206,11 @@ Module vec.
               [
                 M.rust_cast
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::into_iter::IntoIter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::into_iter::IntoIter",
                       "ptr"
+                    |)
                   |));
                 M.call_closure (|
                   M.get_trait_method (|
@@ -273,18 +276,20 @@ Module vec.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
-                    "cap",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
+                    "cap"
+                  |),
                   Value.Integer Integer.Usize 0
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
-                    "buf",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
+                    "buf"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
@@ -307,10 +312,11 @@ Module vec.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
-                    "ptr",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
+                    "ptr"
+                  |),
                   (* MutToConstPointer *)
                   M.pointer_coercion
                     (M.call_closure (|
@@ -321,20 +327,22 @@ Module vec.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::into_iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::into_iter::IntoIter",
                             "buf"
+                          |)
                         |)
                       ]
                     |))
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
-                    "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
+                    "end"
+                  |),
                   (* MutToConstPointer *)
                   M.pointer_coercion
                     (M.call_closure (|
@@ -345,10 +353,11 @@ Module vec.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::into_iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::into_iter::IntoIter",
                             "buf"
+                          |)
                         |)
                       ]
                     |))
@@ -391,15 +400,17 @@ Module vec.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::into_iter::IntoIter"
-                    "end",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::into_iter::IntoIter",
+                    "end"
+                  |),
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::into_iter::IntoIter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::into_iter::IntoIter",
                       "ptr"
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -470,8 +481,8 @@ Module vec.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.call_closure (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -482,9 +493,10 @@ Module vec.
                               []
                             |),
                             [ this ]
-                          |))
-                          "alloc::vec::into_iter::IntoIter"
+                          |),
+                          "alloc::vec::into_iter::IntoIter",
                           "buf"
+                        |)
                       |)
                     ]
                   |)
@@ -550,8 +562,8 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.call_closure (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -566,9 +578,10 @@ Module vec.
                                               []
                                             |),
                                             [ this ]
-                                          |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                          |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "ptr"
+                                        |)
                                       |);
                                       (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
                                     ]
@@ -582,8 +595,8 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.call_closure (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -598,9 +611,10 @@ Module vec.
                                               []
                                             |),
                                             [ this ]
-                                          |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                          |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "end"
+                                        |)
                                       |);
                                       (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
                                     ]
@@ -612,8 +626,8 @@ Module vec.
                 |) in
               let cap :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.call_closure (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.apply
@@ -624,9 +638,10 @@ Module vec.
                         []
                       |),
                       [ this ]
-                    |))
-                    "alloc::vec::into_iter::IntoIter"
+                    |),
+                    "alloc::vec::into_iter::IntoIter",
                     "cap"
+                  |)
                 |) in
               let alloc :=
                 M.alloc (|
@@ -637,8 +652,8 @@ Module vec.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::DerefMut",
                             Ty.apply
@@ -649,9 +664,10 @@ Module vec.
                             []
                           |),
                           [ this ]
-                        |))
-                        "alloc::vec::into_iter::IntoIter"
+                        |),
+                        "alloc::vec::into_iter::IntoIter",
                         "alloc"
+                      |)
                     ]
                   |)
                 |) in
@@ -779,16 +795,18 @@ Module vec.
                           (M.alloc (|
                             BinOp.Pure.eq
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "ptr"
+                                |)
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "end"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -810,10 +828,11 @@ Module vec.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
-                                    "end",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
+                                    "end"
+                                  |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [ T ],
@@ -822,10 +841,11 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "end"
+                                        |)
                                       |);
                                       Value.Integer Integer.Usize 1
                                     ]
@@ -845,17 +865,19 @@ Module vec.
                             ltac:(M.monadic
                               (let old :=
                                 M.copy (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
-                                    "ptr",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
+                                    "ptr"
+                                  |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [ T ],
@@ -864,10 +886,11 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "ptr"
+                                        |)
                                       |);
                                       Value.Integer Integer.Usize 1
                                     ]
@@ -931,10 +954,11 @@ Module vec.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::vec::into_iter::IntoIter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::vec::into_iter::IntoIter",
                                         "end"
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -946,10 +970,11 @@ Module vec.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::vec::into_iter::IntoIter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::vec::into_iter::IntoIter",
                                         "ptr"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -967,16 +992,18 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "end"
+                                  |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1049,10 +1076,11 @@ Module vec.
                     [
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::into_iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::into_iter::IntoIter",
                             "ptr"
+                          |)
                         |));
                       M.read (| step_size |)
                     ]
@@ -1070,10 +1098,11 @@ Module vec.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "end"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [ T ],
@@ -1082,10 +1111,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "end"
+                                  |)
                                 |);
                                 M.read (| step_size |)
                               ]
@@ -1096,10 +1126,11 @@ Module vec.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
-                              "ptr",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "ptr"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [ T ],
@@ -1108,10 +1139,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |);
                                 M.read (| step_size |)
                               ]
@@ -1355,10 +1387,11 @@ Module vec.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::into_iter::IntoIter"
-                                          "end",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
+                                          "end"
+                                        |),
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*const") [ T ],
@@ -1367,10 +1400,11 @@ Module vec.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::vec::into_iter::IntoIter"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::vec::into_iter::IntoIter",
                                                 "end"
+                                              |)
                                             |);
                                             M.read (|
                                               M.get_constant (|
@@ -1450,10 +1484,11 @@ Module vec.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::vec::into_iter::IntoIter"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::vec::into_iter::IntoIter",
                                                 "ptr"
+                                              |)
                                             |);
                                             M.rust_cast
                                               (M.call_closure (|
@@ -1526,10 +1561,11 @@ Module vec.
                               M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |);
                                 M.rust_cast
                                   (M.call_closure (|
@@ -1554,10 +1590,11 @@ Module vec.
                           |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
-                              "ptr",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "ptr"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [ T ],
@@ -1566,10 +1603,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |);
                                 M.read (|
                                   M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |)
@@ -1665,10 +1703,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "ptr"
+                                  |)
                                 |);
                                 M.read (| i |)
                               ]
@@ -1738,16 +1777,18 @@ Module vec.
                           (M.alloc (|
                             BinOp.Pure.eq
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "end"
+                                |)
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::vec::into_iter::IntoIter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::into_iter::IntoIter",
                                   "ptr"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1769,10 +1810,11 @@ Module vec.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
-                                    "end",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
+                                    "end"
+                                  |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [ T ],
@@ -1781,10 +1823,11 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "end"
+                                        |)
                                       |);
                                       Value.Integer Integer.Usize 1
                                     ]
@@ -1804,10 +1847,11 @@ Module vec.
                             ltac:(M.monadic
                               (let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
-                                    "end",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
+                                    "end"
+                                  |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [ T ],
@@ -1816,10 +1860,11 @@ Module vec.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::into_iter::IntoIter"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
                                           "end"
+                                        |)
                                       |);
                                       Value.Integer Integer.Usize 1
                                     ]
@@ -1833,10 +1878,11 @@ Module vec.
                                       M.get_function (| "core::ptr::read", [ T ] |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::into_iter::IntoIter"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::into_iter::IntoIter",
                                             "end"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1909,10 +1955,11 @@ Module vec.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "end"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [ T ],
@@ -1921,10 +1968,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "end"
+                                  |)
                                 |);
                                 M.read (| step_size |)
                               ]
@@ -1935,10 +1983,11 @@ Module vec.
                       ltac:(M.monadic
                         (let _ :=
                           M.write (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
-                              "end",
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "end"
+                            |),
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [ T ],
@@ -1947,10 +1996,11 @@ Module vec.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::vec::into_iter::IntoIter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::into_iter::IntoIter",
                                     "end"
+                                  |)
                                 |);
                                 M.read (| step_size |)
                               ]
@@ -1966,10 +2016,11 @@ Module vec.
                     [
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::into_iter::IntoIter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::into_iter::IntoIter",
                             "end"
+                          |)
                         |));
                       M.read (| step_size |)
                     ]
@@ -2053,16 +2104,18 @@ Module vec.
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::vec::into_iter::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::into_iter::IntoIter",
                   "ptr"
+                |)
               |))
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::vec::into_iter::IntoIter"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::into_iter::IntoIter",
                   "end"
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -2252,10 +2305,11 @@ Module vec.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::vec::into_iter::IntoIter"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
                               "alloc"
+                            |)
                           ]
                         |)
                       ]
@@ -2330,10 +2384,11 @@ Module vec.
                         |),
                         [
                           M.read (|
-                            M.get_struct_tuple_field
-                              guard
-                              "alloc::vec::into_iter::drop::DropGuard"
+                            M.SubPointer.get_struct_tuple_field (|
+                              guard,
+                              "alloc::vec::into_iter::drop::DropGuard",
                               0
+                            |)
                           |)
                         ]
                       |)

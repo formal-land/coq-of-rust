@@ -108,10 +108,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -137,8 +145,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU8" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -171,8 +187,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU8" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -199,7 +223,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU8" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU8",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -362,7 +390,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU8" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU8", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -383,7 +413,12 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u8" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU8" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU8",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -409,7 +444,12 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u8" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU8" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU8",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -464,7 +504,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -626,7 +666,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -699,7 +739,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::u8", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU8" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU8", 0 |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -808,7 +852,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -988,7 +1032,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1179,7 +1223,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroU8" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU8", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1785,10 +1831,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -1814,8 +1868,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU16" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1848,8 +1910,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU16" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1876,7 +1946,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU16" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU16",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -2039,7 +2113,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU16" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU16", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2060,7 +2136,12 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u16" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU16" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU16",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -2086,7 +2167,12 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u16" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU16" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU16",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -2141,7 +2227,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -2303,7 +2389,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -2376,7 +2462,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::u16", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU16" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::nonzero::NonZeroU16",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2485,7 +2579,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -2665,7 +2759,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -2856,7 +2950,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroU16" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU16", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3462,10 +3558,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -3491,8 +3595,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU32" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3525,8 +3637,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU32" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3553,7 +3673,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU32" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU32",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -3716,7 +3840,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU32" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU32", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3739,7 +3865,12 @@ Module num.
                     M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u32" ] |),
                     [
                       M.read (|
-                        M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU32" 0)
+                        M.use
+                          (M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::nonzero::NonZeroU32",
+                            0
+                          |))
                       |)
                     ]
                   |)
@@ -3769,7 +3900,12 @@ Module num.
                     M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u32" ] |),
                     [
                       M.read (|
-                        M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU32" 0)
+                        M.use
+                          (M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::nonzero::NonZeroU32",
+                            0
+                          |))
                       |)
                     ]
                   |)
@@ -3826,7 +3962,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -3988,7 +4124,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -4061,7 +4197,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::u32", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU32" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::nonzero::NonZeroU32",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4170,7 +4314,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -4350,7 +4494,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -4541,7 +4685,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroU32" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU32", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5147,10 +5293,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -5176,8 +5330,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU64" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5210,8 +5372,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU64" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5238,7 +5408,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU64" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU64",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -5401,7 +5575,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU64" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU64", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5422,7 +5598,12 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u64" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU64" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU64",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -5448,7 +5629,12 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u64" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU64" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU64",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -5503,7 +5689,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -5665,7 +5851,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -5738,7 +5924,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::u64", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU64" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::nonzero::NonZeroU64",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -5847,7 +6041,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -6027,7 +6221,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -6218,7 +6412,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroU64" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU64", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6824,10 +7020,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -6853,8 +7057,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU128" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6887,8 +7099,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU128" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroU128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6915,7 +7135,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "u128", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroU128" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroU128",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -7078,7 +7302,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU128" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU128", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7099,7 +7325,12 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u128" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU128" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU128",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -7125,7 +7356,12 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u128" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroU128" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroU128",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -7180,7 +7416,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -7342,7 +7578,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -7415,7 +7651,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::u128", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroU128" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::nonzero::NonZeroU128",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -7524,7 +7768,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -7704,7 +7948,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -7895,7 +8139,13 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroU128" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                nonzero,
+                "core::num::nonzero::NonZeroU128",
+                0
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8501,10 +8751,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroUsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroUsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -8530,8 +8788,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroUsize" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroUsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -8564,8 +8830,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroUsize" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroUsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -8592,7 +8866,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroUsize" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroUsize",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -8756,7 +9034,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroUsize" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroUsize", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8777,7 +9057,12 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "usize" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroUsize" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroUsize",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -8803,7 +9088,12 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "usize" ] |),
                 [
                   M.read (|
-                    M.use (M.get_struct_tuple_field self "core::num::nonzero::NonZeroUsize" 0)
+                    M.use
+                      (M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroUsize",
+                        0
+                      |))
                   |)
                 ]
               |))))
@@ -8858,7 +9148,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -9020,7 +9310,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -9093,7 +9383,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::num::int_log10::usize", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroUsize" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::nonzero::NonZeroUsize",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -9202,7 +9500,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -9382,7 +9680,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -9573,7 +9871,13 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroUsize" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                nonzero,
+                "core::num::nonzero::NonZeroUsize",
+                0
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10179,10 +10483,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -10208,8 +10520,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI8" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10242,8 +10562,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI8" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI8" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -10270,7 +10598,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "i8", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI8" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI8",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -10433,7 +10765,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI8" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI8", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10454,7 +10788,13 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u8" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI8" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI8",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -10479,7 +10819,13 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u8" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI8" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI8",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -10563,7 +10909,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -10629,8 +10975,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -10869,7 +11215,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -10938,8 +11284,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -10999,7 +11345,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -11118,7 +11464,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -11298,7 +11644,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -11454,7 +11800,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroI8" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI8", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12060,10 +12408,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -12089,8 +12445,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "i16", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI16" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12123,8 +12487,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI16" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI16" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12151,7 +12523,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "i16", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI16" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI16",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -12314,7 +12690,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI16" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI16", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12335,7 +12713,13 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u16" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI16" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI16",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -12360,7 +12744,13 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u16" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI16" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI16",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -12444,7 +12834,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -12510,8 +12900,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -12750,7 +13140,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -12819,8 +13209,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -12880,7 +13270,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -12999,7 +13389,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -13179,7 +13569,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -13335,7 +13725,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroI16" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI16", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13941,10 +14333,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -13970,8 +14370,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI32" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14004,8 +14412,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI32" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI32" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -14032,7 +14448,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "i32", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI32" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI32",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -14195,7 +14615,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI32" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI32", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14219,7 +14641,11 @@ Module num.
                     [
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_tuple_field self "core::num::nonzero::NonZeroI32" 0
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::nonzero::NonZeroI32",
+                            0
+                          |)
                         |))
                     ]
                   |)
@@ -14250,7 +14676,11 @@ Module num.
                     [
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_tuple_field self "core::num::nonzero::NonZeroI32" 0
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::nonzero::NonZeroI32",
+                            0
+                          |)
                         |))
                     ]
                   |)
@@ -14337,7 +14767,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -14403,8 +14833,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -14643,7 +15073,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -14712,8 +15142,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -14773,7 +15203,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -14892,7 +15322,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -15072,7 +15502,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -15228,7 +15658,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroI32" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI32", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15834,10 +16266,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -15863,8 +16303,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "i64", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI64" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15897,8 +16345,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI64" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI64" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -15925,7 +16381,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "i64", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI64" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI64",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -16088,7 +16548,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI64" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI64", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16109,7 +16571,13 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u64" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI64" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI64",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -16134,7 +16602,13 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u64" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI64" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI64",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -16218,7 +16692,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -16284,8 +16758,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -16524,7 +16998,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -16593,8 +17067,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -16654,7 +17128,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -16773,7 +17247,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -16953,7 +17427,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -17109,7 +17583,9 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroI64" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI64", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17715,10 +18191,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -17744,8 +18228,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI128" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17778,8 +18270,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI128" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroI128" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -17806,7 +18306,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "i128", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroI128" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroI128",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -17969,7 +18473,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI128" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI128", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17990,7 +18496,13 @@ Module num.
                 M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u128" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI128" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI128",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -18015,7 +18527,13 @@ Module num.
                 M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u128" ] |),
                 [
                   M.rust_cast
-                    (M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroI128" 0 |))
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroI128",
+                        0
+                      |)
+                    |))
                 ]
               |))))
         | _, _ => M.impossible
@@ -18099,7 +18617,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -18165,8 +18683,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -18405,7 +18923,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -18474,8 +18992,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -18535,7 +19053,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -18654,7 +19172,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -18834,7 +19352,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -18990,7 +19508,13 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroI128" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                nonzero,
+                "core::num::nonzero::NonZeroI128",
+                0
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19596,10 +20120,18 @@ Module num.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroIsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |)
               |))
               (M.read (|
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroIsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -19625,8 +20157,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroIsize" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroIsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -19659,8 +20199,16 @@ Module num.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroIsize" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::nonzero::NonZeroIsize" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -19687,7 +20235,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::nonzero::NonZeroIsize" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::nonzero::NonZeroIsize",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -19851,7 +20403,9 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_tuple_field self "core::num::nonzero::NonZeroIsize" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroIsize", 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19873,7 +20427,11 @@ Module num.
                 [
                   M.rust_cast
                     (M.read (|
-                      M.get_struct_tuple_field self "core::num::nonzero::NonZeroIsize" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroIsize",
+                        0
+                      |)
                     |))
                 ]
               |))))
@@ -19900,7 +20458,11 @@ Module num.
                 [
                   M.rust_cast
                     (M.read (|
-                      M.get_struct_tuple_field self "core::num::nonzero::NonZeroIsize" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::nonzero::NonZeroIsize",
+                        0
+                      |)
                     |))
                 ]
               |))))
@@ -19985,7 +20547,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -20051,8 +20613,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let nz := M.copy (| γ0_0 |) in
                       let flag := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -20295,7 +20857,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -20364,8 +20926,8 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let result := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -20425,7 +20987,7 @@ Module num.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -20544,7 +21106,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -20724,7 +21286,7 @@ Module num.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -20880,7 +21442,13 @@ Module num.
         | [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
-            M.read (| M.get_struct_tuple_field nonzero "core::num::nonzero::NonZeroIsize" 0 |)))
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                nonzero,
+                "core::num::nonzero::NonZeroIsize",
+                0
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21446,7 +22014,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -21485,7 +22053,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -21580,7 +22148,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -21619,7 +22187,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -21714,7 +22282,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -21753,7 +22321,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -21848,7 +22416,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -21887,7 +22455,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -21982,7 +22550,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22021,7 +22589,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22116,7 +22684,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22155,7 +22723,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22250,7 +22818,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22289,7 +22857,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22384,7 +22952,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22423,7 +22991,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22518,7 +23086,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22557,7 +23125,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22652,7 +23220,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22691,7 +23259,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22786,7 +23354,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22825,7 +23393,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -22920,7 +23488,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -22959,7 +23527,7 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0

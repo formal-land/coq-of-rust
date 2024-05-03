@@ -178,10 +178,11 @@ Module boxed.
               (M.read (|
                 M.use
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::boxed::thin::ThinBox"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::boxed::thin::ThinBox",
                       "ptr"
+                    |)
                   |))
               |))))
         | _, _ => M.impossible
@@ -577,7 +578,15 @@ Module boxed.
               M.alloc (|
                 Value.StructTuple
                   "alloc::boxed::thin::WithOpaqueHeader"
-                  [ M.read (| M.get_struct_tuple_field ptr "alloc::boxed::thin::WithHeader" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        ptr,
+                        "alloc::boxed::thin::WithHeader",
+                        0
+                      |)
+                    |)
+                  ]
               |)
             |)))
         | _, _ => M.impossible
@@ -666,13 +675,13 @@ Module boxed.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let layout := M.copy (| γ1_0 |) in
                       let value_offset := M.copy (| γ1_1 |) in
                       let ptr :=
@@ -972,10 +981,11 @@ Module boxed.
                     [
                       ("ptr",
                         M.read (|
-                          M.get_struct_tuple_field
-                            (M.read (| self |))
-                            "alloc::boxed::thin::WithHeader"
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| self |),
+                            "alloc::boxed::thin::WithHeader",
                             0
+                          |)
                         |));
                       ("value_layout",
                         M.call_closure (|
@@ -1044,10 +1054,11 @@ Module boxed.
                           |),
                           [
                             M.read (|
-                              M.get_struct_tuple_field
-                                (M.read (| self |))
-                                "alloc::boxed::thin::WithHeader"
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "alloc::boxed::thin::WithHeader",
                                 0
+                              |)
                             |)
                           ]
                         |);
@@ -1142,7 +1153,11 @@ Module boxed.
               |),
               [
                 M.read (|
-                  M.get_struct_tuple_field (M.read (| self |)) "alloc::boxed::thin::WithHeader" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "alloc::boxed::thin::WithHeader",
+                    0
+                  |)
                 |)
               ]
             |)))

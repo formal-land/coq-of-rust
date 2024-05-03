@@ -199,7 +199,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
                   let _ :=
@@ -319,7 +320,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
                   let _ :=
@@ -484,13 +486,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let γ1_0 := M.get_tuple_field (| γ0_0, 0 |) in
-                                let γ1_1 := M.get_tuple_field (| γ0_0, 1 |) in
+                                let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                 let contact := M.copy (| γ1_0 |) in
                                 let γ1_1 := M.read (| γ1_1 |) in
                                 let number := M.copy (| γ1_1 |) in

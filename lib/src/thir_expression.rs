@@ -95,7 +95,7 @@ fn build_inner_match(
                             is_monadic: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
-                                func: Expr::local_var("M.get_struct_record_field"),
+                                func: Expr::local_var("M.SubPointer.get_struct_record_field"),
                                 args: vec![
                                     Expr::local_var(&scrutinee),
                                     Rc::new(Expr::InternalString(path.to_string())),
@@ -123,7 +123,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_struct_tuple_field"),
+                            func: Expr::local_var("M.SubPointer.get_struct_tuple_field"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalString(path.to_string())),
@@ -208,7 +208,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_tuple_field"),
+                            func: Expr::local_var("M.SubPointer.get_tuple_field"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(index)),
@@ -273,7 +273,7 @@ fn build_inner_match(
                                 is_monadic: false,
                                 name: Some(format!("γ{depth}_rev{index}")),
                                 init: Rc::new(Expr::Call {
-                                    func: Expr::local_var("M.get_slice_rev_index"),
+                                    func: Expr::local_var("M.SubPointer.get_slice_rev_index"),
                                     args: vec![
                                         Expr::local_var(&scrutinee),
                                         Rc::new(Expr::InternalInteger(index)),
@@ -290,7 +290,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_rest")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_slice_rest"),
+                            func: Expr::local_var("M.SubPointer.get_slice_rest"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(prefix_patterns.len())),
@@ -310,7 +310,7 @@ fn build_inner_match(
                             is_monadic: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
-                                func: Expr::local_var("M.get_slice_index"),
+                                func: Expr::local_var("M.SubPointer.get_slice_index"),
                                 args: vec![
                                     Expr::local_var(&scrutinee),
                                     Rc::new(Expr::InternalInteger(index)),
@@ -678,9 +678,9 @@ pub(crate) fn compile_expr<'a>(
                     let name = variant.fields.get(*name).unwrap().name.to_string();
                     let is_name_a_number = name.chars().all(|c| c.is_ascii_digit());
                     let getter_name = if is_name_a_number {
-                        "M.get_struct_tuple_field"
+                        "M.SubPointer.get_struct_tuple_field"
                     } else {
-                        "M.get_struct_record_field"
+                        "M.SubPointer.get_struct_record_field"
                     };
                     let constructor_name = compile_def_id(env, adt_def.did()).to_string();
                     let constructor = Rc::new(Expr::InternalString(constructor_name));
@@ -699,7 +699,7 @@ pub(crate) fn compile_expr<'a>(
                 None => {
                     // We assume that we are in the case of a tuple.
                     Rc::new(Expr::Call {
-                        func: Expr::local_var("M.get_tuple_field"),
+                        func: Expr::local_var("M.SubPointer.get_tuple_field"),
                         args: vec![base, Rc::new(Expr::InternalInteger(name.as_usize()))],
                         kind: CallKind::Effectful,
                     })

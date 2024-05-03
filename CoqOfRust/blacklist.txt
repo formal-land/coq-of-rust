@@ -1,6 +1,3 @@
-alloc/
-core/
-examples/axiomatized/
 move/
 alloc/boxed.v
 core/any.v

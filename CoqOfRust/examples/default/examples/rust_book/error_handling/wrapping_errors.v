@@ -52,7 +52,11 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let γ1_0 :=
-                    M.get_struct_tuple_field (| γ, "wrapping_errors::DoubleError::Parse", 0 |) in
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "wrapping_errors::DoubleError::Parse",
+                      0
+                    |) in
                   let __self_0 := M.alloc (| γ1_0 |) in
                   M.alloc (|
                     M.call_closure (|
@@ -218,7 +222,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field (| γ, "wrapping_errors::DoubleError::Parse", 0 |) in
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "wrapping_errors::DoubleError::Parse",
+                      0
+                    |) in
                   let e := M.alloc (| γ0_0 |) in
                   M.alloc (|
                     Value.StructTuple
@@ -346,7 +354,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -382,7 +390,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -418,7 +426,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -454,7 +462,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -498,7 +506,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -545,7 +554,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
                 let _ :=
                   let _ :=
@@ -610,7 +620,11 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
                         let source := M.copy (| γ0_0 |) in
                         let _ :=
                           let _ :=

@@ -30,12 +30,20 @@ Module Impl_core_fmt_Debug_for_structures_Person.
             M.read (| Value.String "name" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (| M.read (| self |), "structures::Person", "name" |));
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "structures::Person",
+                "name"
+              |));
             M.read (| Value.String "age" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (| M.read (| self |), "structures::Person", "age" |)
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "structures::Person",
+                  "age"
+                |)
               |))
           ]
         |)))
@@ -232,7 +240,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "f32" ]
                                 |),
-                                [ M.get_struct_record_field (| point, "structures::Point", "x" |) ]
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    point,
+                                    "structures::Point",
+                                    "x"
+                                  |)
+                                ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -240,7 +254,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "f32" ]
                                 |),
-                                [ M.get_struct_record_field (| point, "structures::Point", "y" |) ]
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    point,
+                                    "structures::Point",
+                                    "y"
+                                  |)
+                                ]
                               |)
                             ]
                         |))
@@ -286,7 +306,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     bottom_right,
                                     "structures::Point",
                                     "x"
@@ -300,7 +320,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "f32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     bottom_right,
                                     "structures::Point",
                                     "y"
@@ -320,8 +340,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_struct_record_field (| γ, "structures::Point", "x" |) in
-                let γ0_1 := M.get_struct_record_field (| γ, "structures::Point", "y" |) in
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_record_field (| γ, "structures::Point", "x" |) in
+                let γ0_1 :=
+                  M.SubPointer.get_struct_record_field (| γ, "structures::Point", "y" |) in
                 let left_edge := M.copy (| γ0_0 |) in
                 let top_edge := M.copy (| γ0_1 |) in
                 let _rectangle :=
@@ -379,7 +401,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                         |),
                                         [
-                                          M.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             pair_,
                                             "structures::Pair",
                                             0
@@ -393,7 +415,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "f32" ]
                                         |),
                                         [
-                                          M.get_struct_tuple_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             pair_,
                                             "structures::Pair",
                                             1
@@ -413,8 +435,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_struct_tuple_field (| γ, "structures::Pair", 0 |) in
-                        let γ0_1 := M.get_struct_tuple_field (| γ, "structures::Pair", 1 |) in
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (| γ, "structures::Pair", 0 |) in
+                        let γ0_1 :=
+                          M.SubPointer.get_struct_tuple_field (| γ, "structures::Pair", 1 |) in
                         let integer := M.copy (| γ0_0 |) in
                         let decimal := M.copy (| γ0_1 |) in
                         let _ :=

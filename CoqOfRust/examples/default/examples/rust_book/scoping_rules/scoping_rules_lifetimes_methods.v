@@ -24,7 +24,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_tuple_field (|
+              M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "scoping_rules_lifetimes_methods::Owner",
                 0
@@ -77,7 +77,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                                     [ Ty.path "i32" ]
                                   |),
                                   [
-                                    M.get_struct_tuple_field (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       M.read (| self |),
                                       "scoping_rules_lifetimes_methods::Owner",
                                       0

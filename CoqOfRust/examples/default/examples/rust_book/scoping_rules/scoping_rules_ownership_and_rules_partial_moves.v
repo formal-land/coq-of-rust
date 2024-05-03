@@ -68,13 +68,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     γ,
                     "scoping_rules_ownership_and_rules_partial_moves::main::Person",
                     "name"
                   |) in
                 let γ0_1 :=
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     γ,
                     "scoping_rules_ownership_and_rules_partial_moves::main::Person",
                     "age"
@@ -218,7 +218,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field (|
+                                          M.SubPointer.get_struct_record_field (|
                                             person,
                                             "scoping_rules_ownership_and_rules_partial_moves::main::Person",
                                             "age"
@@ -276,7 +276,7 @@ Module main.
               M.read (| Value.String "name" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field (|
+                (M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "scoping_rules_ownership_and_rules_partial_moves::main::Person",
                   "name"
@@ -285,7 +285,7 @@ Module main.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "scoping_rules_ownership_and_rules_partial_moves::main::Person",
                     "age"

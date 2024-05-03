@@ -190,7 +190,11 @@ Module ops.
               "core::ops::control_flow::ControlFlow::Continue"
               [
                 M.read (|
-                  M.get_struct_tuple_field self "core::ops::try_trait::NeverShortCircuit" 0
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::ops::try_trait::NeverShortCircuit",
+                    0
+                  |)
                 |)
               ]))
         | _, _ => M.impossible
@@ -301,7 +305,11 @@ Module ops.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field (M.read (| self |)) "core::ops::try_trait::Yeet" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::ops::try_trait::Yeet",
+                      0
+                    |)
                   |))
               ]
             |)))

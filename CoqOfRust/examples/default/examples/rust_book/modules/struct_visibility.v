@@ -108,7 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     open_box,
                                     "struct_visibility::my::OpenBox",
                                     "contents"

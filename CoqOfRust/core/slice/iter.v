@@ -342,21 +342,27 @@ Module slice.
               [
                 ("ptr",
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Iter" "ptr"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Iter",
+                      "ptr"
+                    |)
                   |));
                 ("end_or_len",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Iter",
                       "end_or_len"
+                    |)
                   |));
                 ("_marker",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Iter",
                       "_marker"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -656,7 +662,15 @@ Module slice.
                     "as_ptr",
                     []
                   |),
-                  [ M.read (| M.get_struct_record_field self "core::slice::iter::IterMut" "ptr" |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::slice::iter::IterMut",
+                        "ptr"
+                      |)
+                    |)
+                  ]
                 |);
                 M.read (|
                   M.match_operator (|
@@ -678,10 +692,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::slice::iter::IterMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::IterMut",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -698,10 +713,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    self
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -715,7 +731,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::IterMut" "ptr"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::IterMut",
+                                    "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -783,10 +803,11 @@ Module slice.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::IterMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::IterMut",
                         "ptr"
+                      |)
                     |)
                   ]
                 |);
@@ -810,10 +831,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::IterMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::IterMut",
                                       "end_or_len"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -830,10 +852,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "end_or_len"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -847,10 +870,11 @@ Module slice.
                               [
                                 M.read (| end_ |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::IterMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::IterMut",
                                     "ptr"
+                                  |)
                                 |)
                               ]
                             |)
@@ -965,10 +989,11 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
@@ -977,10 +1002,11 @@ Module slice.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
                             "v"
+                          |)
                         |)
                       |)))
                 ]
@@ -1043,19 +1069,21 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::Split"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Split",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -1091,24 +1119,30 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Split" "v"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Split",
+                      "v"
+                    |)
                   |));
                 ("pred",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::Split"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Split",
                         "pred"
+                      |)
                     ]
                   |));
                 ("finished",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Split"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Split",
                       "finished"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -1163,10 +1197,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Split"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Split",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1203,10 +1238,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Split"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Split",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1231,10 +1267,11 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Split"
-                                                "pred";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Split",
+                                                "pred"
+                                              |);
                                               Value.Tuple [ M.read (| x |) ]
                                             ]
                                           |)))
@@ -1263,7 +1300,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -1288,10 +1325,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Split"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Split",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
@@ -1302,10 +1340,11 @@ Module slice.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Split"
-                                "v",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Split",
+                                "v"
+                              |),
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
@@ -1320,10 +1359,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Split"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Split",
                                       "v"
+                                    |)
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
@@ -1370,10 +1410,11 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
@@ -1402,10 +1443,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Split"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Split",
                                           "v"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1470,10 +1512,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Split"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Split",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1510,10 +1553,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Split"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Split",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1538,10 +1582,11 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Split"
-                                                "pred";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Split",
+                                                "pred"
+                                              |);
                                               Value.Tuple [ M.read (| x |) ]
                                             ]
                                           |)))
@@ -1570,7 +1615,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -1595,10 +1640,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Split"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Split",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
@@ -1615,10 +1661,11 @@ Module slice.
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Split"
-                                "v",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Split",
+                                "v"
+                              |),
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
@@ -1633,10 +1680,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Split"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Split",
                                       "v"
+                                    |)
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
@@ -1688,20 +1736,22 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Split"
-                            "finished",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Split",
+                            "finished"
+                          |),
                           Value.Bool true
                         |) in
                       M.alloc (|
@@ -1709,10 +1759,11 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Split"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Split",
                                 "v"
+                              |)
                             |)
                           ]
                       |)))
@@ -1855,19 +1906,21 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusive"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusive",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitInclusive"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitInclusive",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -1904,27 +1957,30 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::SplitInclusive"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitInclusive",
                       "v"
+                    |)
                   |));
                 ("pred",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitInclusive"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitInclusive",
                         "pred"
+                      |)
                     ]
                   |));
                 ("finished",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::SplitInclusive"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitInclusive",
                       "finished"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -1980,10 +2036,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2037,10 +2094,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusive",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2065,10 +2123,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::SplitInclusive"
-                                                        "pred";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::SplitInclusive",
+                                                        "pred"
+                                                      |);
                                                       Value.Tuple [ M.read (| x |) ]
                                                     ]
                                                   |)))
@@ -2107,10 +2166,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -2136,10 +2196,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusive",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -2148,10 +2209,11 @@ Module slice.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
-                                  "finished",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
+                                  "finished"
+                                |),
                                 Value.Bool true
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -2174,10 +2236,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
@@ -2188,10 +2251,11 @@ Module slice.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitInclusive"
-                        "v",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitInclusive",
+                        "v"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
@@ -2202,10 +2266,11 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::SplitInclusive"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::SplitInclusive",
                               "v"
+                            |)
                           |);
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
@@ -2245,10 +2310,11 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusive"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusive",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
@@ -2280,10 +2346,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusive",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2352,10 +2419,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2386,10 +2454,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusive"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusive",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2419,10 +2488,11 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::SplitInclusive"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::SplitInclusive",
                                         "v"
+                                      |)
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
@@ -2437,10 +2507,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::iter::SplitInclusive"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::iter::SplitInclusive",
                                                     "v"
+                                                  |)
                                                 |)
                                               ]
                                             |),
@@ -2515,10 +2586,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::SplitInclusive"
-                                                        "pred";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::SplitInclusive",
+                                                        "pred"
+                                                      |);
                                                       Value.Tuple [ M.read (| x |) ]
                                                     ]
                                                   |)))
@@ -2568,10 +2640,11 @@ Module slice.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
-                                  "finished",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
+                                  "finished"
+                                |),
                                 Value.Bool true
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -2594,10 +2667,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusive"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusive",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
@@ -2608,10 +2682,11 @@ Module slice.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitInclusive"
-                        "v",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitInclusive",
+                        "v"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
@@ -2622,10 +2697,11 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::SplitInclusive"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::SplitInclusive",
                               "v"
+                            |)
                           |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
@@ -2754,19 +2830,21 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitMut"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitMut",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitMut"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitMut",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -2811,20 +2889,22 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitMut"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitMut",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitMut"
-                            "finished",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitMut",
+                            "finished"
+                          |),
                           Value.Bool true
                         |) in
                       M.alloc (|
@@ -2837,10 +2917,11 @@ Module slice.
                                 [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitMut",
                                   "v"
+                                |)
                               ]
                             |)
                           ]
@@ -2906,10 +2987,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitMut"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitMut",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2946,10 +3028,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::SplitMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::SplitMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -2974,10 +3057,11 @@ Module slice.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::SplitMut"
-                                                "pred";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::SplitMut",
+                                                "pred"
+                                              |);
                                               Value.Tuple [ M.read (| x |) ]
                                             ]
                                           |)))
@@ -3006,7 +3090,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -3020,10 +3104,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::SplitMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::SplitMut",
                                     "v"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -3047,16 +3132,17 @@ Module slice.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let head := M.copy (| γ0_0 |) in
                                   let tail := M.copy (| γ0_1 |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::SplitMut"
-                                        "v",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::SplitMut",
+                                        "v"
+                                      |),
                                       M.read (| tail |)
                                     |) in
                                   M.alloc (|
@@ -3118,10 +3204,11 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitMut"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitMut",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
@@ -3150,10 +3237,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::SplitMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::SplitMut",
                                           "v"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -3225,10 +3313,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitMut"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitMut",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3245,10 +3334,11 @@ Module slice.
                     M.copy (|
                       let pred :=
                         M.alloc (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitMut",
                             "pred"
+                          |)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -3273,10 +3363,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::SplitMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::SplitMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3330,7 +3421,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -3344,10 +3435,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::SplitMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::SplitMut",
                                     "v"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -3365,16 +3457,17 @@ Module slice.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let head := M.copy (| γ0_0 |) in
                                   let tail := M.copy (| γ0_1 |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::SplitMut"
-                                        "v",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::SplitMut",
+                                        "v"
+                                      |),
                                       M.read (| head |)
                                     |) in
                                   M.alloc (|
@@ -3545,19 +3638,21 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusiveMut"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusiveMut",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitInclusiveMut"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitInclusiveMut",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -3620,10 +3715,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusiveMut"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusiveMut",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -3640,10 +3736,11 @@ Module slice.
                     M.copy (|
                       let pred :=
                         M.alloc (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusiveMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusiveMut",
                             "pred"
+                          |)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -3668,10 +3765,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::SplitInclusiveMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::SplitInclusiveMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3754,10 +3852,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusiveMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusiveMut",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -3783,10 +3882,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusiveMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusiveMut",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -3795,10 +3895,11 @@ Module slice.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusiveMut"
-                                  "finished",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusiveMut",
+                                  "finished"
+                                |),
                                 Value.Bool true
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -3813,10 +3914,11 @@ Module slice.
                           [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusiveMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusiveMut",
                             "v"
+                          |)
                         ]
                       |)
                     |) in
@@ -3834,16 +3936,17 @@ Module slice.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let head := M.copy (| γ0_0 |) in
                           let tail := M.copy (| γ0_1 |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::SplitInclusiveMut"
-                                "v",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::SplitInclusiveMut",
+                                "v"
+                              |),
                               M.read (| tail |)
                             |) in
                           M.alloc (|
@@ -3882,10 +3985,11 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusiveMut"
-                            "finished") in
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusiveMut",
+                            "finished"
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
@@ -3917,10 +4021,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusiveMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusiveMut",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3998,10 +4103,11 @@ Module slice.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusiveMut"
-                                  "finished") in
+                                (M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusiveMut",
+                                  "finished"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -4032,10 +4138,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::SplitInclusiveMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::SplitInclusiveMut",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -4050,10 +4157,11 @@ Module slice.
                             ltac:(M.monadic
                               (let pred :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::SplitInclusiveMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::SplitInclusiveMut",
                                     "pred"
+                                  |)
                                 |) in
                               let remainder :=
                                 M.alloc (|
@@ -4071,10 +4179,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::SplitInclusiveMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::SplitInclusiveMut",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
@@ -4089,10 +4198,11 @@ Module slice.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::SplitInclusiveMut"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::SplitInclusiveMut",
                                                       "v"
+                                                    |)
                                                   |)
                                                 ]
                                               |),
@@ -4221,10 +4331,11 @@ Module slice.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::SplitInclusiveMut"
-                                  "finished",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::SplitInclusiveMut",
+                                  "finished"
+                                |),
                                 Value.Bool true
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -4239,10 +4350,11 @@ Module slice.
                           [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::SplitInclusiveMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::SplitInclusiveMut",
                             "v"
+                          |)
                         ]
                       |)
                     |) in
@@ -4260,16 +4372,17 @@ Module slice.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let head := M.copy (| γ0_0 |) in
                           let tail := M.copy (| γ0_1 |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::SplitInclusiveMut"
-                                "v",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::SplitInclusiveMut",
+                                "v"
+                              |),
                               M.read (| head |)
                             |) in
                           M.alloc (|
@@ -4401,25 +4514,29 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::RSplit"
-                              "inner")
-                            "core::slice::iter::Split"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::RSplit",
+                              "inner"
+                            |),
+                            "core::slice::iter::Split",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RSplit"
-                          "inner")
-                        "core::slice::iter::Split"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RSplit",
+                          "inner"
+                        |),
+                        "core::slice::iter::Split",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -4464,10 +4581,11 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RSplit"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RSplit",
                         "inner"
+                      |)
                     ]
                   |))
               ]))
@@ -4510,7 +4628,13 @@ Module slice.
                 "next_back",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplit" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplit",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4534,7 +4658,13 @@ Module slice.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplit" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplit",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4576,7 +4706,13 @@ Module slice.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplit" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplit",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4613,7 +4749,13 @@ Module slice.
                 "finish",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplit" "inner" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplit",
+                  "inner"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -4737,25 +4879,29 @@ Module slice.
                         M.read (| Value.String "v" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::RSplitMut"
-                              "inner")
-                            "core::slice::iter::SplitMut"
-                            "v")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::RSplitMut",
+                              "inner"
+                            |),
+                            "core::slice::iter::SplitMut",
+                            "v"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "finished" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RSplitMut"
-                          "inner")
-                        "core::slice::iter::SplitMut"
-                        "finished")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RSplitMut",
+                          "inner"
+                        |),
+                        "core::slice::iter::SplitMut",
+                        "finished"
+                      |))
                   ]
                 |)
               ]
@@ -4795,7 +4941,12 @@ Module slice.
                 "finish",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4837,7 +4988,12 @@ Module slice.
                 "next_back",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4862,7 +5018,12 @@ Module slice.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4905,7 +5066,12 @@ Module slice.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RSplitMut" "inner"
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RSplitMut",
+                  "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4964,18 +5130,20 @@ Module slice.
                 M.read (| Value.String "iter" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::GenericSplitN"
-                    "iter");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::GenericSplitN",
+                    "iter"
+                  |));
                 M.read (| Value.String "count" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::GenericSplitN"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::GenericSplitN",
                       "count"
+                    |)
                   |))
               ]
             |)))
@@ -5021,10 +5189,11 @@ Module slice.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::GenericSplitN"
-                  "count",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::GenericSplitN",
+                  "count"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5043,10 +5212,11 @@ Module slice.
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::GenericSplitN"
-                            "count" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::GenericSplitN",
+                            "count"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -5061,10 +5231,11 @@ Module slice.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::GenericSplitN"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::GenericSplitN",
                               "iter"
+                            |)
                           ]
                         |)
                       |)));
@@ -5072,10 +5243,11 @@ Module slice.
                     ltac:(M.monadic
                       (let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::GenericSplitN"
-                            "count" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::GenericSplitN",
+                            "count"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -5090,10 +5262,11 @@ Module slice.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::GenericSplitN"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::GenericSplitN",
                               "iter"
+                            |)
                           ]
                         |)
                       |)))
@@ -5130,18 +5303,19 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::GenericSplitN"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::GenericSplitN",
                         "iter"
+                      |)
                     ]
                   |)
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lower := M.copy (| γ0_0 |) in
                       let upper_opt := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -5151,10 +5325,11 @@ Module slice.
                               M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GenericSplitN"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GenericSplitN",
                                     "count"
+                                  |)
                                 |);
                                 M.read (| lower |)
                               ]
@@ -5174,10 +5349,11 @@ Module slice.
                                   [
                                     M.read (| upper_opt |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::GenericSplitN"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::GenericSplitN",
                                         "count"
+                                      |)
                                     |);
                                     M.closure
                                       (fun γ =>
@@ -5197,10 +5373,11 @@ Module slice.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::slice::iter::GenericSplitN"
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::slice::iter::GenericSplitN",
                                                             "count"
+                                                          |)
                                                         |);
                                                         M.read (| upper |)
                                                       ]
@@ -5322,10 +5499,11 @@ Module slice.
                     M.read (| Value.String "inner" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitN"
-                        "inner")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitN",
+                        "inner"
+                      |))
                   ]
                 |)
               ]
@@ -5430,10 +5608,11 @@ Module slice.
                     M.read (| Value.String "inner" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RSplitN"
-                        "inner")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RSplitN",
+                        "inner"
+                      |))
                   ]
                 |)
               ]
@@ -5538,10 +5717,11 @@ Module slice.
                     M.read (| Value.String "inner" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::SplitNMut"
-                        "inner")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::SplitNMut",
+                        "inner"
+                      |))
                   ]
                 |)
               ]
@@ -5646,10 +5826,11 @@ Module slice.
                     M.read (| Value.String "inner" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RSplitNMut"
-                        "inner")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RSplitNMut",
+                        "inner"
+                      |))
                   ]
                 |)
               ]
@@ -5700,15 +5881,20 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Windows" "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::Windows",
+                    "v"
+                  |));
                 M.read (| Value.String "size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Windows"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Windows",
                       "size"
+                    |)
                   |))
               ]
             |)))
@@ -5769,14 +5955,19 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Windows" "v"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Windows",
+                      "v"
+                    |)
                   |));
                 ("size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Windows"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Windows",
                       "size"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -5833,10 +6024,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "size"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -5848,10 +6040,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -5879,10 +6072,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
@@ -5896,10 +6090,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Windows"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Windows",
                                                 "size"
+                                              |)
                                             |)
                                           ]
                                         |))
@@ -5910,10 +6105,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Windows"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Windows",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -5925,10 +6121,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Windows"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Windows",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
@@ -5977,10 +6174,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "size"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -5992,10 +6190,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -6024,10 +6223,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |),
@@ -6039,10 +6239,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "size"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -6121,10 +6322,11 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::Windows"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::Windows",
                               "size"
+                            |)
                           |)
                         ]
                       |);
@@ -6135,8 +6337,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -6158,10 +6360,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Windows"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Windows",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -6175,10 +6378,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Windows"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6200,10 +6404,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Windows"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Windows",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -6213,10 +6418,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Windows"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |),
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
@@ -6231,10 +6437,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Windows"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Windows",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
@@ -6293,10 +6500,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::Windows",
                                       "size"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -6308,7 +6516,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field self "core::slice::iter::Windows" "v"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::Windows",
+                                      "v"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -6328,7 +6540,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::Windows" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |),
@@ -6340,7 +6556,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::Windows" "size"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::Windows",
+                                    "size"
+                                  |)
                                 |)
                               ]
                             |)
@@ -6364,7 +6584,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::Windows" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
@@ -6409,10 +6633,11 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Windows"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Windows",
                             "v"
+                          |)
                         |)
                       ]
                     |);
@@ -6427,10 +6652,11 @@ Module slice.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::Windows"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Windows",
                         "size"
+                      |)
                     |)
                   ]
                 |)
@@ -6495,10 +6721,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "size"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -6510,10 +6737,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -6541,10 +6769,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Windows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Windows",
                                       "v"
+                                    |)
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
@@ -6559,10 +6788,11 @@ Module slice.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::slice::iter::Windows"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Windows",
                                                   "v"
+                                                |)
                                               |)
                                             ]
                                           |),
@@ -6574,10 +6804,11 @@ Module slice.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::slice::iter::Windows"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Windows",
                                                   "size"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -6589,10 +6820,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Windows"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Windows",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -6604,10 +6836,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Windows"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Windows",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
@@ -6622,10 +6855,11 @@ Module slice.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::Windows"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::Windows",
                                               "v"
+                                            |)
                                           |)
                                         ]
                                       |),
@@ -6672,10 +6906,11 @@ Module slice.
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::Windows"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::Windows",
                               "v"
+                            |)
                           |)
                         ]
                       |);
@@ -6686,8 +6921,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -6709,10 +6944,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Windows"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Windows",
                                                 "size"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -6726,10 +6962,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Windows"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6751,10 +6988,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Windows"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Windows",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -6770,10 +7008,11 @@ Module slice.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::slice::iter::Windows"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::slice::iter::Windows",
                                                       "size"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -6785,10 +7024,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Windows"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Windows",
+                                    "v"
+                                  |),
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
@@ -6803,10 +7043,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Windows"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Windows",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
@@ -6945,15 +7186,20 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Chunks" "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::Chunks",
+                    "v"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Chunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Chunks",
                       "chunk_size"
+                    |)
                   |))
               ]
             |)))
@@ -7014,14 +7260,19 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "core::slice::iter::Chunks" "v"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Chunks",
+                      "v"
+                    |)
                   |));
                 ("chunk_size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::Chunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Chunks",
                       "chunk_size"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -7078,10 +7329,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7103,18 +7355,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Chunks"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Chunks",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -7129,10 +7383,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "v"
+                                |)
                               |);
                               M.read (| chunksz |)
                             ]
@@ -7141,16 +7396,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |),
                                   M.read (| snd |)
                                 |) in
                               M.alloc (|
@@ -7199,10 +7455,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7230,18 +7487,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Chunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -7256,18 +7515,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Chunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -7369,10 +7630,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::Chunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::Chunks",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -7380,8 +7642,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let start := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -7403,10 +7665,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Chunks"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Chunks",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -7420,10 +7683,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -7442,10 +7706,11 @@ Module slice.
                                         [
                                           M.read (| start |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::Chunks"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::Chunks",
                                               "chunk_size"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -7454,7 +7719,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -7475,10 +7740,11 @@ Module slice.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::Chunks"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::Chunks",
                                                         "v"
+                                                      |)
                                                     |)
                                                   ]
                                                 |);
@@ -7497,10 +7763,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::iter::Chunks"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::iter::Chunks",
                                                     "v"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -7524,10 +7791,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Chunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Chunks",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -7538,10 +7806,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |),
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
@@ -7556,10 +7825,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::Chunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Chunks",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
@@ -7611,7 +7881,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::Chunks" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7633,24 +7907,30 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field self "core::slice::iter::Chunks" "v"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::Chunks",
+                                        "v"
+                                      |)
                                     |)
                                   ]
                                 |),
                                 Value.Integer Integer.Usize 1
                               |),
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::Chunks",
                                   "chunk_size"
+                                |)
                               |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::Chunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -7672,7 +7952,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::Chunks" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
@@ -7716,10 +8000,11 @@ Module slice.
                   BinOp.Panic.mul (|
                     M.read (| idx |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::Chunks"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::Chunks",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -7739,10 +8024,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "v"
+                                |)
                               |)
                             ]
                           |);
@@ -7750,10 +8036,11 @@ Module slice.
                         ]
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::Chunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::Chunks",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -7773,10 +8060,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Chunks",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -7862,10 +8150,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7885,18 +8174,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Chunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -7922,10 +8213,11 @@ Module slice.
                                   remainder));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
-                                    "chunk_size"))
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
+                                    "chunk_size"
+                                  |)))
                             ]
                           |)
                         |) in
@@ -7939,10 +8231,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.call_closure (|
@@ -7953,10 +8246,11 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::Chunks"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Chunks",
                                         "v"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -7968,16 +8262,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::Chunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::Chunks",
+                                    "v"
+                                  |),
                                   M.read (| fst |)
                                 |) in
                               M.alloc (|
@@ -8042,10 +8337,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Chunks"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Chunks",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -8059,10 +8355,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::Chunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::Chunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -8075,10 +8372,11 @@ Module slice.
                                 [
                                   M.read (| start |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::Chunks"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::Chunks",
                                       "chunk_size"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -8087,7 +8385,7 @@ Module slice.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -8105,10 +8403,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::Chunks"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::Chunks",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -8127,10 +8426,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::Chunks"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::Chunks",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -8150,10 +8450,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -8163,10 +8464,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::Chunks"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::Chunks",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -8178,10 +8480,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::Chunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::Chunks",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
@@ -8314,25 +8617,28 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksMut"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksMut",
+                    "v"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksMut"
-                    "chunk_size");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksMut",
+                    "chunk_size"
+                  |));
                 M.read (| Value.String "_marker" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksMut"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksMut",
                       "_marker"
+                    |)
                   |))
               ]
             |)))
@@ -8422,10 +8728,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8447,18 +8754,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksMut",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -8473,10 +8782,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksMut",
                                   "v"
+                                |)
                               |);
                               M.read (| sz |)
                             ]
@@ -8485,16 +8795,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
+                                    "v"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -8543,10 +8854,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8574,18 +8886,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -8600,18 +8914,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -8717,10 +9033,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::ChunksMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::ChunksMut",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -8728,8 +9045,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let start := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -8753,10 +9070,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::ChunksMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::ChunksMut",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -8770,10 +9088,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -8792,10 +9111,11 @@ Module slice.
                                         [
                                           M.read (| start |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::ChunksMut"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::ChunksMut",
                                               "chunk_size"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -8804,7 +9124,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -8827,10 +9147,11 @@ Module slice.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::ChunksMut"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::ChunksMut",
                                                         "v"
+                                                      |)
                                                     |)
                                                   ]
                                                 |);
@@ -8851,10 +9172,11 @@ Module slice.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::iter::ChunksMut"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::iter::ChunksMut",
                                                     "v"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -8874,10 +9196,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::ChunksMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::ChunksMut",
                                           "v"
+                                        |)
                                       |);
                                       M.read (| end_ |)
                                     ]
@@ -8886,8 +9209,8 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let head := M.copy (| γ0_0 |) in
                                       let tail := M.copy (| γ0_1 |) in
                                       M.match_operator (|
@@ -8906,15 +9229,17 @@ Module slice.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ0_0 := M.get_tuple_field γ 0 in
-                                              let γ0_1 := M.get_tuple_field γ 1 in
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let nth := M.copy (| γ0_1 |) in
                                               let _ :=
                                                 M.write (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::iter::ChunksMut"
-                                                    "v",
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::iter::ChunksMut",
+                                                    "v"
+                                                  |),
                                                   M.read (| tail |)
                                                 |) in
                                               M.alloc (|
@@ -8968,7 +9293,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::ChunksMut" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::ChunksMut",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8990,27 +9319,30 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        self
-                                        "core::slice::iter::ChunksMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::ChunksMut",
                                         "v"
+                                      |)
                                     |)
                                   ]
                                 |),
                                 Value.Integer Integer.Usize 1
                               |),
                               M.read (|
-                                M.get_struct_record_field
-                                  self
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::ChunksMut",
                                   "chunk_size"
+                                |)
                               |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "core::slice::iter::ChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::ChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -9030,7 +9362,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::ChunksMut" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::ChunksMut",
+                                    "v"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
@@ -9073,10 +9409,11 @@ Module slice.
                   BinOp.Panic.mul (|
                     M.read (| idx |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksMut",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -9098,10 +9435,11 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |);
@@ -9109,10 +9447,11 @@ Module slice.
                             ]
                           |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::ChunksMut"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::ChunksMut",
                               "chunk_size"
+                            |)
                           |)
                         ]
                       |)
@@ -9136,10 +9475,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |);
@@ -9216,10 +9556,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -9239,18 +9580,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -9276,10 +9619,11 @@ Module slice.
                                   remainder));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
-                                    "chunk_size"))
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
+                                    "chunk_size"
+                                  |)))
                             ]
                           |)
                         |) in
@@ -9293,10 +9637,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksMut",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -9311,10 +9656,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksMut",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (| M.read (| len |), M.read (| sz |) |)
                             ]
@@ -9323,16 +9669,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksMut",
+                                    "v"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -9401,10 +9748,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksMut"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksMut",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -9418,10 +9766,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -9434,10 +9783,11 @@ Module slice.
                                 [
                                   M.read (| start |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksMut",
                                       "chunk_size"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9446,7 +9796,7 @@ Module slice.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -9466,10 +9816,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::ChunksMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::ChunksMut",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -9490,10 +9841,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::ChunksMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::ChunksMut",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -9511,10 +9863,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksMut",
                                   "v"
+                                |)
                               |);
                               M.read (| end_ |)
                             ]
@@ -9523,8 +9876,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let temp := M.copy (| γ0_0 |) in
                               let _tail := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -9543,16 +9896,17 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let head := M.copy (| γ0_0 |) in
                                       let nth_back := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::ChunksMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::ChunksMut",
+                                            "v"
+                                          |),
                                           M.read (| head |)
                                         |) in
                                       M.alloc (|
@@ -9710,25 +10064,28 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExact"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExact",
+                    "v"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExact"
-                    "rem");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExact",
+                    "rem"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksExact",
                       "chunk_size"
+                    |)
                   |))
               ]
             |)))
@@ -9799,8 +10156,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let fst := M.copy (| γ0_0 |) in
                       let snd := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -9834,7 +10191,11 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::slice::iter::ChunksExact" "rem"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::slice::iter::ChunksExact",
+                "rem"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9864,24 +10225,27 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksExact",
                       "v"
+                    |)
                   |));
                 ("rem",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksExact",
                       "rem"
+                    |)
                   |));
                 ("chunk_size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksExact",
                       "chunk_size"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -9939,18 +10303,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksExact"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksExact",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9967,16 +10333,18 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "v"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -9984,16 +10352,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExact",
+                                    "v"
+                                  |),
                                   M.read (| snd |)
                                 |) in
                               M.alloc (|
@@ -10027,18 +10396,20 @@ Module slice.
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksExact"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksExact",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -10105,10 +10476,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::ChunksExact"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::ChunksExact",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -10116,8 +10488,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let start := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -10139,10 +10511,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::ChunksExact"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::ChunksExact",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -10156,10 +10529,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExact",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -10175,10 +10549,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::ChunksExact"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::ChunksExact",
                                           "v"
+                                        |)
                                       |);
                                       M.read (| start |)
                                     ]
@@ -10187,15 +10562,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let snd := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::ChunksExact"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::ChunksExact",
+                                            "v"
+                                          |),
                                           M.read (| snd |)
                                         |) in
                                       M.alloc (|
@@ -10266,10 +10642,11 @@ Module slice.
                   BinOp.Panic.mul (|
                     M.read (| idx |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -10288,10 +10665,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExact",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -10299,10 +10677,11 @@ Module slice.
                       ]
                     |);
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   ]
                 |)
@@ -10368,18 +10747,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksExact"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksExact",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10396,10 +10777,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.call_closure (|
@@ -10410,18 +10792,20 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ChunksExact"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ChunksExact",
                                         "v"
+                                      |)
                                     |)
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExact"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExact",
                                     "chunk_size"
+                                  |)
                                 |)
                               |)
                             ]
@@ -10430,16 +10814,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExact",
+                                    "v"
+                                  |),
                                   M.read (| fst |)
                                 |) in
                               M.alloc (|
@@ -10501,10 +10886,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksExact"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksExact",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -10518,10 +10904,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExact",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -10530,10 +10917,11 @@ Module slice.
                           BinOp.Panic.add (|
                             M.read (| start |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExact",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -10549,10 +10937,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -10562,10 +10951,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksExact"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksExact",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -10577,10 +10967,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExact",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
@@ -10629,7 +11020,11 @@ Module slice.
               M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "is_empty", [] |),
               [
                 M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::slice::iter::ChunksExact" "v"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExact",
+                    "v"
+                  |)
                 |)
               ]
             |)))
@@ -10742,32 +11137,36 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExactMut"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExactMut",
+                    "v"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExactMut"
-                    "rem");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExactMut",
+                    "rem"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExactMut"
-                    "chunk_size");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExactMut",
+                    "chunk_size"
+                  |));
                 M.read (| Value.String "_marker" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ChunksExactMut"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunksExactMut",
                       "_marker"
+                    |)
                   |))
               ]
             |)))
@@ -10838,8 +11237,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let fst := M.copy (| γ0_0 |) in
                       let snd := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -10873,7 +11272,13 @@ Module slice.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_record_field self "core::slice::iter::ChunksExactMut" "rem" |)))
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::slice::iter::ChunksExactMut",
+                "rem"
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10927,18 +11332,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksExactMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksExactMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExactMut",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10955,16 +11362,18 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExactMut",
                                   "v"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExactMut",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -10972,16 +11381,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "v"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -11019,18 +11429,20 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksExactMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksExactMut",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -11098,10 +11510,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::ChunksExactMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::ChunksExactMut",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -11109,8 +11522,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let start := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -11134,10 +11547,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::ChunksExactMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::ChunksExactMut",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -11151,10 +11565,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -11172,10 +11587,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::ChunksExactMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::ChunksExactMut",
                                           "v"
+                                        |)
                                       |);
                                       M.read (| start |)
                                     ]
@@ -11184,15 +11600,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let snd := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::ChunksExactMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::ChunksExactMut",
+                                            "v"
+                                          |),
                                           M.read (| snd |)
                                         |) in
                                       M.alloc (|
@@ -11263,10 +11680,11 @@ Module slice.
                   BinOp.Panic.mul (|
                     M.read (| idx |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -11285,10 +11703,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExactMut",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -11296,10 +11715,11 @@ Module slice.
                       ]
                     |);
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   ]
                 |)
@@ -11367,18 +11787,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::ChunksExactMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::ChunksExactMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExactMut",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11395,10 +11817,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ChunksExactMut",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.call_closure (|
@@ -11409,18 +11832,20 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ChunksExactMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ChunksExactMut",
                                         "v"
+                                      |)
                                     |)
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExactMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExactMut",
                                     "chunk_size"
+                                  |)
                                 |)
                               |)
                             ]
@@ -11429,16 +11854,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "v"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -11504,10 +11930,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::ChunksExactMut"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::ChunksExactMut",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -11521,10 +11948,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -11533,10 +11961,11 @@ Module slice.
                           BinOp.Panic.add (|
                             M.read (| start |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::ChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -11555,10 +11984,11 @@ Module slice.
                                   [ Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ChunksExactMut"
-                                    "v";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "v"
+                                  |);
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 ]
                               |);
@@ -11569,8 +11999,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let temp := M.copy (| γ0_0 |) in
                               let _tail := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -11589,16 +12019,17 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let head := M.copy (| γ0_0 |) in
                                       let nth_back := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::ChunksExactMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::ChunksExactMut",
+                                            "v"
+                                          |),
                                           M.read (| head |)
                                         |) in
                                       M.alloc (|
@@ -11652,10 +12083,11 @@ Module slice.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ChunksExactMut"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ChunksExactMut",
                     "v"
+                  |)
                 |)
               ]
             |)))
@@ -11795,25 +12227,28 @@ Module slice.
                 M.read (| Value.String "slice_head" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ArrayWindows"
-                    "slice_head");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ArrayWindows",
+                    "slice_head"
+                  |));
                 M.read (| Value.String "num" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ArrayWindows"
-                    "num");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ArrayWindows",
+                    "num"
+                  |));
                 M.read (| Value.String "marker" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ArrayWindows"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ArrayWindows",
                       "marker"
+                    |)
                   |))
               ]
             |)))
@@ -11853,20 +12288,22 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
                         "slice_head"
+                      |)
                     ]
                   |));
                 ("num",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
                         "num"
+                      |)
                     ]
                   |));
                 ("marker",
@@ -11881,10 +12318,11 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
                         "marker"
+                      |)
                     ]
                   |))
               ]))
@@ -12016,10 +12454,11 @@ Module slice.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
                                         "num"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0)
                                 |)) in
@@ -12045,20 +12484,22 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::ArrayWindows"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::ArrayWindows",
                               "slice_head"
+                            |)
                           |)
                         ]
                       |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "slice_head",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "slice_head"
+                      |),
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [ T ],
@@ -12067,10 +12508,11 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::ArrayWindows"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::ArrayWindows",
                               "slice_head"
+                            |)
                           |);
                           Value.Integer Integer.Usize 1
                         ]
@@ -12078,10 +12520,11 @@ Module slice.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "num" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "num"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -12106,19 +12549,21 @@ Module slice.
             Value.Tuple
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ArrayWindows"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ArrayWindows",
                     "num"
+                  |)
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
                         "num"
+                      |)
                     |)
                   ]
               ]))
@@ -12136,7 +12581,13 @@ Module slice.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_record_field self "core::slice::iter::ArrayWindows" "num" |)))
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::slice::iter::ArrayWindows",
+                "num"
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12177,10 +12628,11 @@ Module slice.
                                 (M.alloc (|
                                   BinOp.Pure.le
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
                                         "num"
+                                      |)
                                     |))
                                     (M.read (| n |))
                                 |)) in
@@ -12191,10 +12643,11 @@ Module slice.
                                 M.read (|
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
-                                        "num",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
+                                        "num"
+                                      |),
                                       Value.Integer Integer.Usize 0
                                     |) in
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -12221,10 +12674,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ArrayWindows"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ArrayWindows",
                                   "slice_head"
+                                |)
                               |);
                               M.read (| n |)
                             ]
@@ -12234,10 +12688,11 @@ Module slice.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "slice_head",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "slice_head"
+                      |),
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [ T ],
@@ -12246,10 +12701,11 @@ Module slice.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::ArrayWindows"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::ArrayWindows",
                               "slice_head"
+                            |)
                           |);
                           BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
                         ]
@@ -12257,10 +12713,11 @@ Module slice.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "num" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "num"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.sub (|
@@ -12313,10 +12770,11 @@ Module slice.
                                 M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      self
-                                      "core::slice::iter::ArrayWindows"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::ArrayWindows",
                                       "num"
+                                    |)
                                   |);
                                   Value.Integer Integer.Usize 1
                                 ]
@@ -12328,7 +12786,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -12365,7 +12823,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -12433,10 +12891,11 @@ Module slice.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
                                         "num"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0)
                                 |)) in
@@ -12469,17 +12928,19 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ArrayWindows"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ArrayWindows",
                                   "slice_head"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ArrayWindows"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ArrayWindows",
                                     "num"
+                                  |)
                                 |),
                                 Value.Integer Integer.Usize 1
                               |)
@@ -12490,10 +12951,11 @@ Module slice.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "num" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "num"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -12537,10 +12999,11 @@ Module slice.
                                 (M.alloc (|
                                   BinOp.Pure.le
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
                                         "num"
+                                      |)
                                     |))
                                     (M.read (| n |))
                                 |)) in
@@ -12551,10 +13014,11 @@ Module slice.
                                 M.read (|
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::ArrayWindows"
-                                        "num",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::ArrayWindows",
+                                        "num"
+                                      |),
                                       Value.Integer Integer.Usize 0
                                     |) in
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -12581,17 +13045,19 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::ArrayWindows"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::ArrayWindows",
                                   "slice_head"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::ArrayWindows"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::ArrayWindows",
                                     "num"
+                                  |)
                                 |),
                                 BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
                               |)
@@ -12602,10 +13068,11 @@ Module slice.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayWindows"
-                        "num" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayWindows",
+                        "num"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.sub (|
@@ -12649,10 +13116,11 @@ Module slice.
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayWindows"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayWindows",
                   "num"
+                |)
               |))
               (Value.Integer Integer.Usize 0)))
         | _, _ => M.impossible
@@ -12703,18 +13171,20 @@ Module slice.
                 M.read (| Value.String "iter" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ArrayChunks"
-                    "iter");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ArrayChunks",
+                    "iter"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ArrayChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ArrayChunks",
                       "rem"
+                    |)
                   |))
               ]
             |)))
@@ -12761,8 +13231,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let array_slice := M.copy (| γ0_0 |) in
                       let rem := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -12803,7 +13273,11 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::slice::iter::ArrayChunks" "rem"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::slice::iter::ArrayChunks",
+                "rem"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12843,18 +13317,20 @@ Module slice.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::ArrayChunks"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::ArrayChunks",
                         "iter"
+                      |)
                     ]
                   |));
                 ("rem",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ArrayChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ArrayChunks",
                       "rem"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -12897,10 +13373,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12926,10 +13403,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12954,7 +13432,14 @@ Module slice.
                 "count",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::slice::iter::ArrayChunks" "iter" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::slice::iter::ArrayChunks",
+                    "iter"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -12981,10 +13466,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
+                  "iter"
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -13010,7 +13496,14 @@ Module slice.
                 "last",
                 []
               |),
-              [ M.read (| M.get_struct_record_field self "core::slice::iter::ArrayChunks" "iter" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::slice::iter::ArrayChunks",
+                    "iter"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13039,10 +13532,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
+                  "iter"
+                |);
                 M.read (| i |)
               ]
             |)))
@@ -13091,10 +13585,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13121,10 +13616,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
+                  "iter"
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -13168,10 +13664,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunks"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13281,18 +13778,20 @@ Module slice.
                 M.read (| Value.String "iter" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::ArrayChunksMut"
-                    "iter");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::ArrayChunksMut",
+                    "iter"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::ArrayChunksMut"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ArrayChunksMut",
                       "rem"
+                    |)
                   |))
               ]
             |)))
@@ -13339,8 +13838,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let array_slice := M.copy (| γ0_0 |) in
                       let rem := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -13380,7 +13879,13 @@ Module slice.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_record_field self "core::slice::iter::ArrayChunksMut" "rem" |)))
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::slice::iter::ArrayChunksMut",
+                "rem"
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13419,10 +13924,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13450,10 +13956,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13482,7 +13989,11 @@ Module slice.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::slice::iter::ArrayChunksMut" "iter"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::slice::iter::ArrayChunksMut",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -13512,10 +14023,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
+                  "iter"
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -13545,7 +14057,11 @@ Module slice.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::slice::iter::ArrayChunksMut" "iter"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::slice::iter::ArrayChunksMut",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -13577,10 +14093,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
+                  "iter"
+                |);
                 M.read (| i |)
               ]
             |)))
@@ -13631,10 +14148,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13663,10 +14181,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
-                  "iter";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
+                  "iter"
+                |);
                 M.read (| n |)
               ]
             |)))
@@ -13712,10 +14231,11 @@ Module slice.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::slice::iter::ArrayChunksMut"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
                   "iter"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -13823,15 +14343,20 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RChunks" "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunks",
+                    "v"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunks",
                       "chunk_size"
+                    |)
                   |))
               ]
             |)))
@@ -13892,14 +14417,19 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RChunks" "v"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunks",
+                      "v"
+                    |)
                   |));
                 ("chunk_size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunks"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunks",
                       "chunk_size"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -13962,10 +14492,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -13984,10 +14515,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -13999,10 +14531,11 @@ Module slice.
                             [
                               M.read (| len |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -14017,10 +14550,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (| M.read (| len |), M.read (| chunksz |) |)
                             ]
@@ -14029,16 +14563,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |),
                                   M.read (| fst |)
                                 |) in
                               M.alloc (|
@@ -14087,10 +14622,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -14118,18 +14654,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -14144,18 +14682,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -14259,10 +14799,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunks",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -14270,8 +14811,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -14293,10 +14834,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::RChunks"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::RChunks",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -14310,10 +14852,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -14330,10 +14873,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunks"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunks",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -14353,10 +14897,11 @@ Module slice.
                                         [
                                           M.read (| end_ |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::RChunks"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::RChunks",
                                               "chunk_size"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -14365,7 +14910,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -14394,10 +14939,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunks",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -14408,10 +14954,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |),
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
@@ -14426,10 +14973,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunks",
                                           "v"
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -14485,7 +15033,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunks" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -14505,15 +15057,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunks" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::RChunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -14536,10 +15093,11 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.get_struct_record_field
-                                    self
-                                    "core::slice::iter::RChunks"
-                                    "chunk_size"));
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunks",
+                                    "chunk_size"
+                                  |)));
                               fun γ => ltac:(M.monadic rem)
                             ]
                           |)
@@ -14559,7 +15117,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunks" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
@@ -14603,20 +15165,22 @@ Module slice.
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunks"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunks",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     BinOp.Panic.mul (|
                       M.read (| idx |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunks"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunks",
                           "chunk_size"
+                        |)
                       |)
                     |)
                   |)
@@ -14630,10 +15194,11 @@ Module slice.
                         [
                           M.read (| end_ |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::RChunks"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::RChunks",
                               "chunk_size"
+                            |)
                           |)
                         ]
                       |)
@@ -14643,7 +15208,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -14668,10 +15233,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunks",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -14744,10 +15310,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -14767,18 +15334,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -14804,10 +15373,11 @@ Module slice.
                                   remainder));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
-                                    "chunk_size"))
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
+                                    "chunk_size"
+                                  |)))
                             ]
                           |)
                         |) in
@@ -14821,10 +15391,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "v"
+                                |)
                               |);
                               M.read (| chunksz |)
                             ]
@@ -14833,16 +15404,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
+                                    "v"
+                                  |),
                                   M.read (| snd |)
                                 |) in
                               M.alloc (|
@@ -14906,10 +15478,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunks"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunks",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -14923,10 +15496,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunks"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunks",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -14941,10 +15515,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunks"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunks",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
@@ -14958,10 +15533,11 @@ Module slice.
                             [
                               M.read (| end_ |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -14978,10 +15554,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -14991,10 +15568,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunks"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunks",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -15006,10 +15584,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunks"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunks",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
@@ -15142,25 +15721,28 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksMut"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksMut",
+                    "v"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksMut"
-                    "chunk_size");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksMut",
+                    "chunk_size"
+                  |));
                 M.read (| Value.String "_marker" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksMut"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksMut",
                       "_marker"
+                    |)
                   |))
               ]
             |)))
@@ -15255,10 +15837,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -15280,18 +15863,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::RChunksMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::RChunksMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -15306,10 +15891,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -15324,10 +15910,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (| M.read (| len |), M.read (| sz |) |)
                             ]
@@ -15336,16 +15923,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -15394,10 +15982,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -15425,18 +16014,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -15451,18 +16042,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -15572,10 +16165,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksMut",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -15583,8 +16177,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -15608,10 +16202,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::RChunksMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::RChunksMut",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -15625,10 +16220,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -15647,10 +16243,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunksMut"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunksMut",
                                             "v"
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -15670,10 +16267,11 @@ Module slice.
                                         [
                                           M.read (| end_ |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::slice::iter::RChunksMut"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::slice::iter::RChunksMut",
                                               "chunk_size"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -15682,7 +16280,7 @@ Module slice.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -15707,10 +16305,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunksMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunksMut",
                                           "v"
+                                        |)
                                       |);
                                       M.read (| start |)
                                     ]
@@ -15719,8 +16318,8 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let head := M.copy (| γ0_0 |) in
                                       let tail := M.copy (| γ0_1 |) in
                                       M.match_operator (|
@@ -15745,15 +16344,17 @@ Module slice.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ0_0 := M.get_tuple_field γ 0 in
-                                              let γ0_1 := M.get_tuple_field γ 1 in
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let nth := M.copy (| γ0_0 |) in
                                               let _ :=
                                                 M.write (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::slice::iter::RChunksMut"
-                                                    "v",
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::slice::iter::RChunksMut",
+                                                    "v"
+                                                  |),
                                                   M.read (| head |)
                                                 |) in
                                               M.alloc (|
@@ -15808,7 +16409,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunksMut" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -15828,15 +16433,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunksMut" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                self
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::slice::iter::RChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -15859,10 +16469,11 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.get_struct_record_field
-                                    self
-                                    "core::slice::iter::RChunksMut"
-                                    "chunk_size"));
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunksMut",
+                                    "chunk_size"
+                                  |)));
                               fun γ => ltac:(M.monadic rem)
                             ]
                           |)
@@ -15879,7 +16490,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::slice::iter::RChunksMut" "v"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
@@ -15928,20 +16543,22 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksMut",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     BinOp.Panic.mul (|
                       M.read (| idx |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksMut",
                           "chunk_size"
+                        |)
                       |)
                     |)
                   |)
@@ -15955,10 +16572,11 @@ Module slice.
                         [
                           M.read (| end_ |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::slice::iter::RChunksMut"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::slice::iter::RChunksMut",
                               "chunk_size"
+                            |)
                           |)
                         ]
                       |)
@@ -15968,7 +16586,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -15993,10 +16611,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksMut",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -16070,10 +16689,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |)
@@ -16093,18 +16713,20 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -16130,10 +16752,11 @@ Module slice.
                                   remainder));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
-                                    "chunk_size"))
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
+                                    "chunk_size"
+                                  |)))
                             ]
                           |)
                         |) in
@@ -16147,10 +16770,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "v"
+                                |)
                               |);
                               M.read (| sz |)
                             ]
@@ -16159,16 +16783,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
+                                    "v"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -16236,10 +16861,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksMut"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksMut",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -16253,10 +16879,11 @@ Module slice.
                               M.read (| n |)
                             |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -16271,10 +16898,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
@@ -16288,10 +16916,11 @@ Module slice.
                             [
                               M.read (| end_ |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -16306,10 +16935,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksMut",
                                   "v"
+                                |)
                               |);
                               M.read (| end_ |)
                             ]
@@ -16318,8 +16948,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let tmp := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -16338,15 +16968,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let nth_back := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunksMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunksMut",
+                                            "v"
+                                          |),
                                           M.read (| tail |)
                                         |) in
                                       M.alloc (|
@@ -16504,25 +17135,28 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExact"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExact",
+                    "v"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExact"
-                    "rem");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExact",
+                    "rem"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksExact",
                       "chunk_size"
+                    |)
                   |))
               ]
             |)))
@@ -16582,8 +17216,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let fst := M.copy (| γ0_0 |) in
                       let snd := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -16617,7 +17251,11 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::slice::iter::RChunksExact" "rem"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::slice::iter::RChunksExact",
+                "rem"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16647,24 +17285,27 @@ Module slice.
               [
                 ("v",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksExact",
                       "v"
+                    |)
                   |));
                 ("rem",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksExact",
                       "rem"
+                    |)
                   |));
                 ("chunk_size",
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksExact"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksExact",
                       "chunk_size"
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -16722,18 +17363,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::RChunksExact"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::RChunksExact",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16750,10 +17393,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.call_closure (|
@@ -16764,18 +17408,20 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::RChunksExact"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::RChunksExact",
                                         "v"
+                                      |)
                                     |)
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExact"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExact",
                                     "chunk_size"
+                                  |)
                                 |)
                               |)
                             ]
@@ -16784,16 +17430,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExact",
+                                    "v"
+                                  |),
                                   M.read (| fst |)
                                 |) in
                               M.alloc (|
@@ -16827,18 +17474,20 @@ Module slice.
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExact"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExact",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -16905,10 +17554,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksExact"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksExact",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -16916,8 +17566,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -16939,10 +17589,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::RChunksExact"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::RChunksExact",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -16956,10 +17607,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExact",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -16975,10 +17627,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunksExact"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunksExact",
                                           "v"
+                                        |)
                                       |);
                                       BinOp.Panic.sub (|
                                         M.call_closure (|
@@ -16989,10 +17642,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::RChunksExact"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::RChunksExact",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |),
@@ -17004,15 +17658,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let fst := M.copy (| γ0_0 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunksExact"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunksExact",
+                                            "v"
+                                          |),
                                           M.read (| fst |)
                                         |) in
                                       M.alloc (|
@@ -17086,20 +17741,22 @@ Module slice.
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExact"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExact",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     BinOp.Panic.mul (|
                       M.read (| idx |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksExact"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksExact",
                           "chunk_size"
+                        |)
                       |)
                     |)
                   |)
@@ -17109,10 +17766,11 @@ Module slice.
                   BinOp.Panic.sub (|
                     M.read (| end_ |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -17131,10 +17789,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExact",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -17142,10 +17801,11 @@ Module slice.
                       ]
                     |);
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExact"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExact",
                         "chunk_size"
+                      |)
                     |)
                   ]
                 |)
@@ -17211,18 +17871,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::RChunksExact"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::RChunksExact",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17239,16 +17901,18 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "v"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -17256,16 +17920,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let fst := M.copy (| γ0_0 |) in
                               let snd := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExact"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExact",
+                                    "v"
+                                  |),
                                   M.read (| snd |)
                                 |) in
                               M.alloc (|
@@ -17330,10 +17995,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExact"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExact",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -17344,10 +18010,11 @@ Module slice.
                           BinOp.Panic.mul (|
                             BinOp.Panic.sub (| M.read (| len |), M.read (| n |) |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExact",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -17362,10 +18029,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExact"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExact",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
@@ -17377,10 +18045,11 @@ Module slice.
                           BinOp.Panic.add (|
                             M.read (| start |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExact"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExact",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -17396,10 +18065,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -17409,10 +18079,11 @@ Module slice.
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExact"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExact",
+                            "v"
+                          |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
@@ -17424,10 +18095,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExact"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExact",
                                   "v"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
@@ -17476,10 +18148,11 @@ Module slice.
               M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "is_empty", [] |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExact"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExact",
                     "v"
+                  |)
                 |)
               ]
             |)))
@@ -17590,25 +18263,28 @@ Module slice.
                 M.read (| Value.String "v" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExactMut"
-                    "v");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExactMut",
+                    "v"
+                  |));
                 M.read (| Value.String "rem" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExactMut"
-                    "rem");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExactMut",
+                    "rem"
+                  |));
                 M.read (| Value.String "chunk_size" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::slice::iter::RChunksExactMut"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RChunksExactMut",
                       "chunk_size"
+                    |)
                   |))
               ]
             |)))
@@ -17668,8 +18344,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let fst := M.copy (| γ0_0 |) in
                       let snd := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -17702,7 +18378,13 @@ Module slice.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_record_field self "core::slice::iter::RChunksExactMut" "rem" |)))
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::slice::iter::RChunksExactMut",
+                "rem"
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17757,18 +18439,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::RChunksExactMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::RChunksExactMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17785,10 +18469,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "v"
+                                |)
                               |)
                             ]
                           |)
@@ -17803,18 +18488,20 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "v"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExactMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExactMut",
                                     "chunk_size"
+                                  |)
                                 |)
                               |)
                             ]
@@ -17823,16 +18510,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExactMut",
+                                    "v"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -17870,18 +18558,20 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExactMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExactMut",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -17950,10 +18640,11 @@ Module slice.
                     [
                       M.read (| n |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksExactMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksExactMut",
                           "chunk_size"
+                        |)
                       |)
                     ]
                   |)
@@ -17961,8 +18652,8 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let end_ := M.copy (| γ0_0 |) in
                       let overflow := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -17986,10 +18677,11 @@ Module slice.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::slice::iter::RChunksExactMut"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::slice::iter::RChunksExactMut",
                                                 "v"
+                                              |)
                                             |)
                                           ]
                                         |)),
@@ -18003,10 +18695,11 @@ Module slice.
                                 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExactMut",
+                                    "v"
+                                  |),
                                   (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -18024,10 +18717,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunksExactMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunksExactMut",
                                           "v"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -18044,10 +18738,11 @@ Module slice.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::slice::iter::RChunksExactMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::RChunksExactMut",
                                           "v"
+                                        |)
                                       |);
                                       BinOp.Panic.sub (| M.read (| len |), M.read (| end_ |) |)
                                     ]
@@ -18056,15 +18751,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let fst := M.copy (| γ0_0 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunksExactMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunksExactMut",
+                                            "v"
+                                          |),
                                           M.read (| fst |)
                                         |) in
                                       M.alloc (|
@@ -18142,20 +18838,22 @@ Module slice.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExactMut"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExactMut",
                             "v"
+                          |)
                         |)
                       ]
                     |),
                     BinOp.Panic.mul (|
                       M.read (| idx |),
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::slice::iter::RChunksExactMut"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::RChunksExactMut",
                           "chunk_size"
+                        |)
                       |)
                     |)
                   |)
@@ -18165,10 +18863,11 @@ Module slice.
                   BinOp.Panic.sub (|
                     M.read (| end_ |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   |)
                 |) in
@@ -18187,10 +18886,11 @@ Module slice.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExactMut",
                                 "v"
+                              |)
                             |)
                           ]
                         |);
@@ -18198,10 +18898,11 @@ Module slice.
                       ]
                     |);
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::RChunksExactMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RChunksExactMut",
                         "chunk_size"
+                      |)
                     |)
                   ]
                 |)
@@ -18269,18 +18970,20 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::slice::iter::RChunksExactMut"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::slice::iter::RChunksExactMut",
                                       "v"
+                                    |)
                                   |)
                                 ]
                               |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "chunk_size"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -18297,16 +19000,18 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "v"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "chunk_size"
+                                |)
                               |)
                             ]
                           |)
@@ -18314,16 +19019,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExactMut"
-                                    "v",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExactMut",
+                                    "v"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -18392,10 +19098,11 @@ Module slice.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::slice::iter::RChunksExactMut"
-                            "v",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RChunksExactMut",
+                            "v"
+                          |),
                           (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -18406,10 +19113,11 @@ Module slice.
                           BinOp.Panic.mul (|
                             BinOp.Panic.sub (| M.read (| len |), M.read (| n |) |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -18424,10 +19132,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::RChunksExactMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::RChunksExactMut",
                                     "v"
+                                  |)
                                 |)
                               ]
                             |),
@@ -18439,10 +19148,11 @@ Module slice.
                           BinOp.Panic.add (|
                             M.read (| start |),
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::RChunksExactMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
+                              |)
                             |)
                           |)
                         |) in
@@ -18456,10 +19166,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::RChunksExactMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::RChunksExactMut",
                                   "v"
+                                |)
                               |);
                               M.read (| end_ |)
                             ]
@@ -18468,8 +19179,8 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let tmp := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -18488,15 +19199,16 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let nth_back := M.copy (| γ0_1 |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::slice::iter::RChunksExactMut"
-                                            "v",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::slice::iter::RChunksExactMut",
+                                            "v"
+                                          |),
                                           M.read (| tail |)
                                         |) in
                                       M.alloc (|
@@ -18550,10 +19262,11 @@ Module slice.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::slice::iter::RChunksExactMut"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::slice::iter::RChunksExactMut",
                     "v"
+                  |)
                 |)
               ]
             |)))
@@ -18799,10 +19512,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupBy"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupBy",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -18822,10 +19536,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupBy",
                                   "slice"
+                                |)
                               |);
                               Value.Integer Integer.Usize 2
                             ]
@@ -18853,14 +19568,14 @@ Module slice.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
                                       |) in
                                     let γ0_0 := M.read (| γ0_0 |) in
-                                    let γ2_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                                    let γ2_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
+                                    let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                                    let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                     let l := M.alloc (| γ2_0 |) in
                                     let r := M.alloc (| γ2_1 |) in
                                     M.match_operator (|
@@ -18886,10 +19601,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::GroupBy"
-                                                        "predicate";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::GroupBy",
+                                                        "predicate"
+                                                      |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
                                                     ]
                                                   |)
@@ -18940,10 +19656,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupBy",
                                   "slice"
+                                |)
                               |);
                               M.read (| len |)
                             ]
@@ -18952,16 +19669,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupBy"
-                                    "slice",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupBy",
+                                    "slice"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -19003,10 +19721,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupBy"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupBy",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -19038,10 +19757,11 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::GroupBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::GroupBy",
                                         "slice"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -19136,10 +19856,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupBy"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupBy",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -19159,10 +19880,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupBy",
                                   "slice"
+                                |)
                               |);
                               Value.Integer Integer.Usize 2
                             ]
@@ -19190,14 +19912,14 @@ Module slice.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
                                       |) in
                                     let γ0_0 := M.read (| γ0_0 |) in
-                                    let γ2_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                                    let γ2_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
+                                    let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                                    let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                     let l := M.alloc (| γ2_0 |) in
                                     let r := M.alloc (| γ2_1 |) in
                                     M.match_operator (|
@@ -19223,10 +19945,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::GroupBy"
-                                                        "predicate";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::GroupBy",
+                                                        "predicate"
+                                                      |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
                                                     ]
                                                   |)
@@ -19277,10 +20000,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupBy"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupBy",
                                   "slice"
+                                |)
                               |);
                               BinOp.Panic.sub (|
                                 M.call_closure (|
@@ -19291,10 +20015,11 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::GroupBy"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::GroupBy",
                                         "slice"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -19306,16 +20031,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupBy"
-                                    "slice",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupBy",
+                                    "slice"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -19394,10 +20120,11 @@ Module slice.
                     M.read (| Value.String "slice" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::GroupBy"
-                        "slice")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::GroupBy",
+                        "slice"
+                      |))
                   ]
                 |)
               ]
@@ -19500,10 +20227,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupByMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupByMut",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -19523,10 +20251,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupByMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupByMut",
                                   "slice"
+                                |)
                               |);
                               Value.Integer Integer.Usize 2
                             ]
@@ -19554,14 +20283,14 @@ Module slice.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
                                       |) in
                                     let γ0_0 := M.read (| γ0_0 |) in
-                                    let γ2_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                                    let γ2_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
+                                    let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                                    let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                     let l := M.alloc (| γ2_0 |) in
                                     let r := M.alloc (| γ2_1 |) in
                                     M.match_operator (|
@@ -19587,10 +20316,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::GroupByMut"
-                                                        "predicate";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::GroupByMut",
+                                                        "predicate"
+                                                      |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
                                                     ]
                                                   |)
@@ -19639,10 +20369,11 @@ Module slice.
                               [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::GroupByMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::GroupByMut",
                                 "slice"
+                              |)
                             ]
                           |)
                         |) in
@@ -19660,16 +20391,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupByMut"
-                                    "slice",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupByMut",
+                                    "slice"
+                                  |),
                                   M.read (| tail |)
                                 |) in
                               M.alloc (|
@@ -19711,10 +20443,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupByMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupByMut",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -19746,10 +20479,11 @@ Module slice.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::slice::iter::GroupByMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::GroupByMut",
                                         "slice"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -19845,10 +20579,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupByMut"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupByMut",
                                     "slice"
+                                  |)
                                 |)
                               ]
                             |)
@@ -19868,10 +20603,11 @@ Module slice.
                             |),
                             [
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::slice::iter::GroupByMut"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::slice::iter::GroupByMut",
                                   "slice"
+                                |)
                               |);
                               Value.Integer Integer.Usize 2
                             ]
@@ -19899,14 +20635,14 @@ Module slice.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
                                       |) in
                                     let γ0_0 := M.read (| γ0_0 |) in
-                                    let γ2_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                                    let γ2_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
+                                    let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                                    let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                     let l := M.alloc (| γ2_0 |) in
                                     let r := M.alloc (| γ2_1 |) in
                                     M.match_operator (|
@@ -19932,10 +20668,11 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::slice::iter::GroupByMut"
-                                                        "predicate";
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::slice::iter::GroupByMut",
+                                                        "predicate"
+                                                      |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
                                                     ]
                                                   |)
@@ -19984,10 +20721,11 @@ Module slice.
                               [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::slice::iter::GroupByMut"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::slice::iter::GroupByMut",
                                 "slice"
+                              |)
                             ]
                           |)
                         |) in
@@ -20018,16 +20756,17 @@ Module slice.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let head := M.copy (| γ0_0 |) in
                               let tail := M.copy (| γ0_1 |) in
                               let _ :=
                                 M.write (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::slice::iter::GroupByMut"
-                                    "slice",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::slice::iter::GroupByMut",
+                                    "slice"
+                                  |),
                                   M.read (| head |)
                                 |) in
                               M.alloc (|
@@ -20106,10 +20845,11 @@ Module slice.
                     M.read (| Value.String "slice" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::slice::iter::GroupByMut"
-                        "slice")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::GroupByMut",
+                        "slice"
+                      |))
                   ]
                 |)
               ]

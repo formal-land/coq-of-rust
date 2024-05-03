@@ -115,7 +115,10 @@ Module unicode.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_array_field (| M.read (| chunk_idx_map |), chunk_map_idx |)));
+                            M.SubPointer.get_array_field (|
+                              M.read (| chunk_idx_map |),
+                              chunk_map_idx
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
@@ -128,8 +131,8 @@ Module unicode.
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
-                        M.get_array_field (|
-                          M.get_array_field (|
+                        M.SubPointer.get_array_field (|
+                          M.SubPointer.get_array_field (|
                             M.read (| bitset_chunk_idx |),
                             M.alloc (| M.rust_cast (M.read (| chunk_idx |)) |)
                           |),
@@ -163,11 +166,11 @@ Module unicode.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_array_field (| M.read (| bitset_canonical |), idx |)));
+                            M.SubPointer.get_array_field (| M.read (| bitset_canonical |), idx |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.get_array_field (|
+                              M.SubPointer.get_array_field (|
                                 M.read (| bitset_canonicalized |),
                                 M.alloc (|
                                   BinOp.Panic.sub (|
@@ -189,13 +192,13 @@ Module unicode.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let real_idx := M.copy (| γ0_0 |) in
                                     let mapping := M.copy (| γ0_1 |) in
                                     let word :=
                                       M.copy (|
-                                        M.get_array_field (|
+                                        M.SubPointer.get_array_field (|
                                           M.read (| bitset_canonical |),
                                           M.alloc (| M.rust_cast (M.read (| real_idx |)) |)
                                         |)
@@ -457,7 +460,7 @@ Module unicode.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::result::Result::Ok",
                             0
@@ -469,7 +472,7 @@ Module unicode.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::result::Result::Err",
                             0
@@ -483,7 +486,11 @@ Module unicode.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::unicode::unicode_data::decode_length", [] |),
-                  [ M.read (| M.get_array_field (| M.read (| short_offset_runs |), last_idx |) |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (| M.read (| short_offset_runs |), last_idx |)
+                    |)
+                  ]
                 |)
               |) in
             let length :=
@@ -511,7 +518,7 @@ Module unicode.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -585,7 +592,7 @@ Module unicode.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_array_field (|
+                                              M.SubPointer.get_array_field (|
                                                 M.read (| short_offset_runs |),
                                                 prev
                                               |)
@@ -662,14 +669,17 @@ Module unicode.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
                                         |) in
                                       let offset :=
                                         M.copy (|
-                                          M.get_array_field (| M.read (| offsets |), offset_idx |)
+                                          M.SubPointer.get_array_field (|
+                                            M.read (| offsets |),
+                                            offset_idx
+                                          |)
                                         |) in
                                       let _ :=
                                         let β := prefix_sum in
@@ -6452,7 +6462,7 @@ Module unicode.
                         BinOp.Pure.ne
                           (BinOp.Pure.bit_and
                             (M.read (|
-                              M.get_array_field (|
+                              M.SubPointer.get_array_field (|
                                 M.read (|
                                   M.get_constant (|
                                     "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
@@ -6491,7 +6501,7 @@ Module unicode.
                         BinOp.Pure.ne
                           (BinOp.Pure.bit_and
                             (M.read (|
-                              M.get_array_field (|
+                              M.SubPointer.get_array_field (|
                                 M.read (|
                                   M.get_constant (|
                                     "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
@@ -6649,8 +6659,10 @@ Module unicode.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ := M.read (| γ |) in
-                                                    let γ1_0 := M.get_tuple_field γ 0 in
-                                                    let γ1_1 := M.get_tuple_field γ 1 in
+                                                    let γ1_0 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                    let γ1_1 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                     let key := M.copy (| γ1_0 |) in
                                                     M.call_closure (|
                                                       M.get_trait_method (|
@@ -6682,8 +6694,8 @@ Module unicode.
                                                 M.read (|
                                                   let u :=
                                                     M.copy (|
-                                                      M.get_tuple_field
-                                                        (M.get_array_field (|
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (|
                                                             M.read (|
                                                               M.get_constant (|
@@ -6692,8 +6704,9 @@ Module unicode.
                                                             |)
                                                           |),
                                                           i
-                                                        |))
+                                                        |),
                                                         1
+                                                      |)
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -6956,8 +6969,10 @@ Module unicode.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ := M.read (| γ |) in
-                                                    let γ1_0 := M.get_tuple_field γ 0 in
-                                                    let γ1_1 := M.get_tuple_field γ 1 in
+                                                    let γ1_0 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                    let γ1_1 :=
+                                                      M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                     let key := M.copy (| γ1_0 |) in
                                                     M.call_closure (|
                                                       M.get_trait_method (|
@@ -6989,8 +7004,8 @@ Module unicode.
                                                 M.read (|
                                                   let u :=
                                                     M.copy (|
-                                                      M.get_tuple_field
-                                                        (M.get_array_field (|
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (|
                                                             M.read (|
                                                               M.get_constant (|
@@ -6999,8 +7014,9 @@ Module unicode.
                                                             |)
                                                           |),
                                                           i
-                                                        |))
+                                                        |),
                                                         1
+                                                      |)
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|

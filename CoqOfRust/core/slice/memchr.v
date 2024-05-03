@@ -192,7 +192,10 @@ Module slice.
                                             (M.alloc (|
                                               BinOp.Pure.eq
                                                 (M.read (|
-                                                  M.get_array_field (| M.read (| text |), i |)
+                                                  M.SubPointer.get_array_field (|
+                                                    M.read (| text |),
+                                                    i
+                                                  |)
                                                 |))
                                                 (M.read (| x |))
                                             |)) in
@@ -418,7 +421,7 @@ Module slice.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -644,7 +647,7 @@ Module slice.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -764,9 +767,9 @@ Module slice.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let prefix := M.copy (| γ0_0 |) in
                           let suffix := M.copy (| γ0_2 |) in
                           M.alloc (|
@@ -798,8 +801,8 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let min_aligned_offset := M.copy (| γ0_0 |) in
                         let max_aligned_offset := M.copy (| γ0_1 |) in
                         let offset := M.copy (| max_aligned_offset |) in
@@ -879,7 +882,7 @@ Module slice.
                                       |)
                                     |) in
                                   let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0

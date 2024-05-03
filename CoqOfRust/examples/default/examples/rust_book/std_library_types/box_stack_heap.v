@@ -30,12 +30,20 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
             M.read (| Value.String "x" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (| M.read (| self |), "box_stack_heap::Point", "x" |));
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "box_stack_heap::Point",
+                "x"
+              |));
             M.read (| Value.String "y" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (| M.read (| self |), "box_stack_heap::Point", "y" |)
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "box_stack_heap::Point",
+                  "y"
+                |)
               |))
           ]
         |)))

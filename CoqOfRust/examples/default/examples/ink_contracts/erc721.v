@@ -218,8 +218,12 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (| M.read (| self |), "erc721::AccountId", 0 |) |))
-          (M.read (| M.get_struct_tuple_field (| M.read (| other |), "erc721::AccountId", 0 |) |))))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc721::AccountId", 0 |)
+          |))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc721::AccountId", 0 |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -592,7 +596,9 @@ Module Impl_erc721_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (| M.read (| self |), "erc721::Env", "caller" |) |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc721::Env", "caller" |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -688,7 +694,7 @@ Module Impl_erc721_Erc721.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "erc721::Erc721",
                   "owned_tokens_count"
@@ -728,7 +734,7 @@ Module Impl_erc721_Erc721.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "erc721::Erc721",
                     "token_approvals"
@@ -767,7 +773,7 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
               M.read (| self |),
               "erc721::Erc721",
               "operator_approvals"
@@ -798,7 +804,14 @@ Module Impl_erc721_Erc721.
             "get",
             []
           |),
-          [ M.get_struct_record_field (| M.read (| self |), "erc721::Erc721", "token_owner" |); id ]
+          [
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "erc721::Erc721",
+              "token_owner"
+            |);
+            id
+          ]
         |)))
     | _, _ => M.impossible
     end.
@@ -901,7 +914,7 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc721::Erc721",
                                   "token_approvals"
@@ -971,7 +984,14 @@ Module Impl_erc721_Erc721.
             "contains",
             []
           |),
-          [ M.get_struct_record_field (| M.read (| self |), "erc721::Erc721", "token_owner" |); id ]
+          [
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "erc721::Erc721",
+              "token_owner"
+            |);
+            id
+          ]
         |)))
     | _, _ => M.impossible
     end.
@@ -1016,7 +1036,11 @@ Module Impl_erc721_Erc721.
             []
           |),
           [
-            M.get_struct_record_field (| M.read (| self |), "erc721::Erc721", "token_approvals" |);
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "erc721::Erc721",
+              "token_approvals"
+            |);
             id
           ]
         |)))
@@ -1177,7 +1201,7 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc721::Erc721",
                                   "operator_approvals"
@@ -1205,7 +1229,7 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc721::Erc721",
                                   "operator_approvals"
@@ -1271,7 +1295,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -1307,7 +1331,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -1530,7 +1554,7 @@ Module Impl_erc721_Erc721.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field (|
+                                  M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "erc721::Erc721",
                                     "token_approvals"
@@ -1565,7 +1589,7 @@ Module Impl_erc721_Erc721.
                                 []
                               |),
                               [
-                                M.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "erc721::Erc721",
                                   "token_approvals"
@@ -1656,7 +1680,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -1692,7 +1716,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -1748,9 +1772,17 @@ Module Impl_erc721_Erc721.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_record_field (| γ, "erc721::Erc721", "token_owner" |) in
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "erc721::Erc721",
+                          "token_owner"
+                        |) in
                       let γ1_1 :=
-                        M.get_struct_record_field (| γ, "erc721::Erc721", "owned_tokens_count" |) in
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "erc721::Erc721",
+                          "owned_tokens_count"
+                        |) in
                       let token_owner := M.alloc (| γ1_0 |) in
                       let owned_tokens_count := M.alloc (| γ1_1 |) in
                       let _ :=
@@ -1875,7 +1907,7 @@ Module Impl_erc721_Erc721.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -1911,7 +1943,7 @@ Module Impl_erc721_Erc721.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2085,7 +2117,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -2121,7 +2153,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -2189,7 +2221,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -2225,7 +2257,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -2307,7 +2339,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -2343,7 +2375,7 @@ Module Impl_erc721_Erc721.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0

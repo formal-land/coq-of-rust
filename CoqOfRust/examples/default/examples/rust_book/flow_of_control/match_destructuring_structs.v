@@ -47,11 +47,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_record_field (| γ, "match_destructuring_structs::Foo", "x" |) in
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "match_destructuring_structs::Foo",
+                    "x"
+                  |) in
                 let γ0_1 :=
-                  M.get_struct_record_field (| γ, "match_destructuring_structs::Foo", "y" |) in
-                let γ1_0 := M.get_tuple_field (| γ0_0, 0 |) in
-                let γ1_1 := M.get_tuple_field (| γ0_0, 1 |) in
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "match_destructuring_structs::Foo",
+                    "y"
+                  |) in
+                let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ1_0 |),
@@ -114,9 +122,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_record_field (| γ, "match_destructuring_structs::Foo", "y" |) in
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "match_destructuring_structs::Foo",
+                    "y"
+                  |) in
                 let γ0_1 :=
-                  M.get_struct_record_field (| γ, "match_destructuring_structs::Foo", "x" |) in
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "match_destructuring_structs::Foo",
+                    "x"
+                  |) in
                 let _ :=
                   M.is_constant_or_break_match (|
                     M.read (| γ0_0 |),
@@ -169,7 +185,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_record_field (| γ, "match_destructuring_structs::Foo", "y" |) in
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "match_destructuring_structs::Foo",
+                    "y"
+                  |) in
                 let y := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

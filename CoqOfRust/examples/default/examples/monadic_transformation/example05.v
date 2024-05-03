@@ -22,7 +22,7 @@ Module Impl_example05_Foo.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.add (|
-          M.read (| M.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
+          M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
           Value.Integer Integer.U32 1
         |)))
     | _, _ => M.impossible

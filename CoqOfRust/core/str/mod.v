@@ -715,7 +715,7 @@ Module str.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -1973,8 +1973,8 @@ Module str.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let i := M.copy (| γ0_0 |) in
                               M.read (| i |)))
                         ]
@@ -2049,8 +2049,8 @@ Module str.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let i := M.copy (| γ0_0 |) in
                               M.read (| i |)))
                         ]
@@ -2181,15 +2181,16 @@ Module str.
             "core::str::iter::RSplit"
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "split", [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
-                  |))
-                  "core::str::iter::Split"
+                  |),
+                  "core::str::iter::Split",
                   0
+                |)
               |)
             ]))
       | _, _ => M.impossible
@@ -2213,15 +2214,16 @@ Module str.
             [
               M.struct_record_update
                 (M.read (|
-                  M.get_struct_tuple_field
-                    (M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "split", [ P ] |),
                         [ M.read (| self |); M.read (| pat |) ]
                       |)
-                    |))
-                    "core::str::iter::Split"
+                    |),
+                    "core::str::iter::Split",
                     0
+                  |)
                 |))
                 [ ("allow_trailing_empty", Value.Bool false) ]
             ]))
@@ -2249,15 +2251,16 @@ Module str.
             "core::str::iter::RSplitTerminator"
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "split_terminator", [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
-                  |))
-                  "core::str::iter::SplitTerminator"
+                  |),
+                  "core::str::iter::SplitTerminator",
                   0
+                |)
               |)
             ]))
       | _, _ => M.impossible
@@ -2286,15 +2289,16 @@ Module str.
                 [
                   ("iter",
                     M.read (|
-                      M.get_struct_tuple_field
-                        (M.alloc (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "str", "split", [ P ] |),
                             [ M.read (| self |); M.read (| pat |) ]
                           |)
-                        |))
-                        "core::str::iter::Split"
+                        |),
+                        "core::str::iter::Split",
                         0
+                      |)
                     |));
                   ("count", M.read (| n |))
                 ]
@@ -2323,15 +2327,16 @@ Module str.
             "core::str::iter::RSplitN"
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "splitn", [ P ] |),
                       [ M.read (| self |); M.read (| n |); M.read (| pat |) ]
                     |)
-                  |))
-                  "core::str::iter::SplitN"
+                  |),
+                  "core::str::iter::SplitN",
                   0
+                |)
               |)
             ]))
       | _, _ => M.impossible
@@ -2399,7 +2404,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -2438,7 +2443,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -2450,8 +2455,8 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let start := M.copy (| γ0_0 |) in
                         let end_ := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -2569,7 +2574,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -2608,7 +2613,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -2620,8 +2625,8 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let start := M.copy (| γ0_0 |) in
                         let end_ := M.copy (| γ0_1 |) in
                         M.alloc (|
@@ -2728,15 +2733,16 @@ Module str.
             "core::str::iter::RMatches"
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "matches", [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
-                  |))
-                  "core::str::iter::Matches"
+                  |),
+                  "core::str::iter::Matches",
                   0
+                |)
               |)
             ]))
       | _, _ => M.impossible
@@ -2797,15 +2803,16 @@ Module str.
             "core::str::iter::RMatchIndices"
             [
               M.read (|
-                M.get_struct_tuple_field
-                  (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
-                  |))
-                  "core::str::iter::MatchIndices"
+                  |),
+                  "core::str::iter::MatchIndices",
                   0
+                |)
               |)
             ]))
       | _, _ => M.impossible
@@ -3046,13 +3053,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let a := M.copy (| γ1_0 |) in
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| i, M.read (| a |) |) in
@@ -3081,13 +3088,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| j, M.read (| b |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -3173,13 +3180,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let a := M.copy (| γ1_0 |) in
                       let _ := M.write (| i, M.read (| a |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -3314,13 +3321,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let b := M.copy (| γ1_1 |) in
                       let _ := M.write (| j, M.read (| b |) |) in
                       M.alloc (| Value.Tuple [] |)));

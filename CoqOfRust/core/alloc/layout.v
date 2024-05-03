@@ -94,18 +94,20 @@ Module alloc.
                 M.read (| Value.String "size" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::alloc::layout::Layout"
-                    "size");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::alloc::layout::Layout",
+                    "size"
+                  |));
                 M.read (| Value.String "align" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::alloc::layout::Layout"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::alloc::layout::Layout",
                       "align"
+                    |)
                   |))
               ]
             |)))
@@ -144,13 +146,18 @@ Module alloc.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "core::alloc::layout::Layout" "size"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::alloc::layout::Layout",
+                    "size"
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::alloc::layout::Layout"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::alloc::layout::Layout",
                     "size"
+                  |)
                 |)),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -162,14 +169,16 @@ Module alloc.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::alloc::layout::Layout"
-                      "align";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::alloc::layout::Layout"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::alloc::layout::Layout",
                       "align"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::alloc::layout::Layout",
+                      "align"
+                    |)
                   ]
                 |)))
             |)))
@@ -251,10 +260,11 @@ Module alloc.
                       [ __H ]
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::alloc::layout::Layout"
-                        "size";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::alloc::layout::Layout",
+                        "size"
+                      |);
                       M.read (| state |)
                     ]
                   |)
@@ -269,10 +279,11 @@ Module alloc.
                     [ __H ]
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::alloc::layout::Layout"
-                      "align";
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::alloc::layout::Layout",
+                      "align"
+                    |);
                     M.read (| state |)
                   ]
                 |)
@@ -533,7 +544,11 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::alloc::layout::Layout" "size"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::alloc::layout::Layout",
+                "size"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -558,10 +573,11 @@ Module alloc.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::alloc::layout::Layout"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::alloc::layout::Layout",
                     "align"
+                  |)
                 |)
               ]
             |)))
@@ -594,8 +610,8 @@ Module alloc.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let size := M.copy (| γ0_0 |) in
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -646,8 +662,8 @@ Module alloc.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let size := M.copy (| γ0_0 |) in
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -699,8 +715,8 @@ Module alloc.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let size := M.copy (| γ0_0 |) in
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -1055,7 +1071,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1098,7 +1114,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1135,10 +1151,11 @@ Module alloc.
                                 [
                                   M.read (| alloc_size |);
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::alloc::layout::Layout"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::alloc::layout::Layout",
                                       "align"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1149,7 +1166,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1192,7 +1209,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1245,13 +1262,18 @@ Module alloc.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::alloc::layout::Layout"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::alloc::layout::Layout",
                               "align"
+                            |)
                           |);
                           M.read (|
-                            M.get_struct_record_field next "core::alloc::layout::Layout" "align"
+                            M.SubPointer.get_struct_record_field (|
+                              next,
+                              "core::alloc::layout::Layout",
+                              "align"
+                            |)
                           |)
                         ]
                       |)
@@ -1327,7 +1349,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1370,7 +1392,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1430,7 +1452,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1473,7 +1495,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1516,7 +1538,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1559,7 +1581,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1647,7 +1669,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1686,7 +1708,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1706,10 +1728,11 @@ Module alloc.
                       [
                         M.read (| size |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::alloc::layout::Layout"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::alloc::layout::Layout",
                             "align"
+                          |)
                         |)
                       ]
                     |)
@@ -1795,7 +1818,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1834,7 +1857,7 @@ Module alloc.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1854,10 +1877,11 @@ Module alloc.
                       [
                         M.read (| new_size |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::alloc::layout::Layout"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::alloc::layout::Layout",
                             "align"
+                          |)
                         |)
                       ]
                     |)

@@ -399,7 +399,11 @@ Module ptr.
                   M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ptr::non_null::NonNull",
+                        "pointer"
+                      |)
                     |)
                   ]
                 |)
@@ -441,7 +445,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
@@ -527,7 +535,11 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.rust_cast
               (M.read (|
-                M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "core::ptr::non_null::NonNull",
+                  "pointer"
+                |)
               |))))
         | _, _ => M.impossible
         end.
@@ -665,7 +677,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.read (| count |)
                     ]
@@ -707,7 +723,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.read (| count |)
                     ]
@@ -750,7 +770,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.read (| count |)
                     ]
@@ -792,7 +816,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.read (| count |)
                     ]
@@ -898,7 +926,11 @@ Module ptr.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::non_null::NonNull",
+                          "pointer"
+                        |)
                       |);
                       M.read (| count |)
                     ]
@@ -931,10 +963,18 @@ Module ptr.
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "offset_from", [] |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.read (|
-                  M.get_struct_record_field origin "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    origin,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |)
               ]
             |)))
@@ -966,10 +1006,18 @@ Module ptr.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.read (|
-                  M.get_struct_record_field origin "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    origin,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |)
               ]
             |)))
@@ -1000,10 +1048,18 @@ Module ptr.
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "sub_ptr", [] |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.read (|
-                  M.get_struct_record_field subtracted "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    subtracted,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |)
               ]
             |)))
@@ -1031,7 +1087,14 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ptr::read", [ T ] |),
-              [ M.read (| M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1058,7 +1121,14 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ptr::read_volatile", [ T ] |),
-              [ M.read (| M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1085,7 +1155,14 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ptr::read_unaligned", [ T ] |),
-              [ M.read (| M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1116,7 +1193,11 @@ Module ptr.
               M.get_function (| "core::intrinsics::copy", [ T ] |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1157,7 +1238,11 @@ Module ptr.
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1197,7 +1282,13 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::intrinsics::copy", [ T ] |),
               [
-                M.read (| M.get_struct_record_field src "core::ptr::non_null::NonNull" "pointer" |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    src,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
@@ -1236,7 +1327,13 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
               [
-                M.read (| M.get_struct_record_field src "core::ptr::non_null::NonNull" "pointer" |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    src,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
@@ -1599,7 +1696,11 @@ Module ptr.
                   M.get_function (| "core::ptr::align_offset", [ T ] |),
                   [
                     M.read (|
-                      M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ptr::non_null::NonNull",
+                        "pointer"
+                      |)
                     |);
                     M.read (| align |)
                   ]
@@ -1629,7 +1730,14 @@ Module ptr.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_aligned", [] |),
-              [ M.read (| M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer" |)
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1659,7 +1767,11 @@ Module ptr.
               |),
               [
                 M.read (|
-                  M.get_struct_record_field self "core::ptr::non_null::NonNull" "pointer"
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::ptr::non_null::NonNull",
+                    "pointer"
+                  |)
                 |);
                 M.read (| align |)
               ]

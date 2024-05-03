@@ -231,7 +231,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       (M.alloc (|
                         BinOp.Pure.lt
                           (M.read (|
-                            M.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "foreign_function_interface::Complex",
                               "im"
@@ -278,7 +278,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field (|
+                                        M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "foreign_function_interface::Complex",
                                           "re"
@@ -295,7 +295,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         M.alloc (|
                                           UnOp.Panic.neg (|
                                             M.read (|
-                                              M.get_struct_record_field (|
+                                              M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "foreign_function_interface::Complex",
                                                 "im"
@@ -352,7 +352,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field (|
+                                        M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "foreign_function_interface::Complex",
                                           "re"
@@ -366,7 +366,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field (|
+                                        M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "foreign_function_interface::Complex",
                                           "im"

@@ -174,7 +174,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -186,11 +186,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let o := M.alloc (| γ0_0 |) in
                     let b :=
                       M.alloc (|
@@ -248,11 +244,11 @@ Module borrow.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
                     let γ2_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ0_0,
                         "alloc::borrow::Cow::Owned",
                         0
@@ -260,7 +256,7 @@ Module borrow.
                     let dest := M.alloc (| γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ0_1,
                         "alloc::borrow::Cow::Owned",
                         0
@@ -286,8 +282,8 @@ Module borrow.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let t := M.copy (| γ0_0 |) in
                     let s := M.copy (| γ0_1 |) in
                     M.write (|
@@ -346,7 +342,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -355,11 +351,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -425,7 +417,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -474,7 +466,7 @@ Module borrow.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "alloc::borrow::Cow::Owned",
                                         0
@@ -490,11 +482,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let owned := M.alloc (| γ0_0 |) in
                     M.alloc (| M.read (| owned |) |)))
               ]
@@ -528,7 +516,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -543,11 +531,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let owned := M.copy (| γ0_0 |) in
                     owned))
               ]
@@ -588,7 +572,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -598,11 +582,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let owned := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -821,7 +801,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -842,11 +822,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -894,7 +870,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "alloc::borrow::Cow::Borrowed",
                         0
@@ -915,11 +891,7 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "alloc::borrow::Cow::Owned",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
@@ -1224,7 +1196,7 @@ Module borrow.
                                     ltac:(M.monadic
                                       (let γ := M.read (| self |) in
                                       let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "alloc::borrow::Cow::Borrowed",
                                           0
@@ -1410,7 +1382,7 @@ Module borrow.
                                     ltac:(M.monadic
                                       (let γ := M.read (| self |) in
                                       let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "alloc::borrow::Cow::Borrowed",
                                           0

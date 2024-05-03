@@ -38,18 +38,20 @@ Module vec.
                 M.read (| Value.String "drain" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::splice::Splice"
-                    "drain");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::splice::Splice",
+                    "drain"
+                  |));
                 M.read (| Value.String "replace_with" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::vec::splice::Splice"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::splice::Splice",
                       "replace_with"
+                    |)
                   |))
               ]
             |)))
@@ -91,7 +93,13 @@ Module vec.
                 "next",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::splice::Splice" "drain" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::splice::Splice",
+                  "drain"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -115,7 +123,13 @@ Module vec.
                 "size_hint",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::splice::Splice" "drain" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::splice::Splice",
+                  "drain"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -157,7 +171,13 @@ Module vec.
                 "next_back",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::splice::Splice" "drain" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::splice::Splice",
+                  "drain"
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -264,10 +284,11 @@ Module vec.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::vec::splice::Splice"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::splice::Splice",
                                 "drain"
+                              |)
                             ]
                           |);
                           M.get_function (| "core::mem::drop", [ Ty.associated ] |)
@@ -276,13 +297,15 @@ Module vec.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::vec::splice::Splice"
-                          "drain")
-                        "alloc::vec::drain::Drain"
-                        "iter",
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::splice::Splice",
+                          "drain"
+                        |),
+                        "alloc::vec::drain::Drain",
+                        "iter"
+                      |),
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [ Ty.associated ],
@@ -303,13 +326,15 @@ Module vec.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::splice::Splice"
-                                          "drain")
-                                        "alloc::vec::drain::Drain"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::splice::Splice",
+                                          "drain"
+                                        |),
+                                        "alloc::vec::drain::Drain",
                                         "tail_len"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0)
                                 |)) in
@@ -342,13 +367,15 @@ Module vec.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::vec::splice::Splice"
-                                                  "drain")
-                                                "alloc::vec::drain::Drain"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::vec::splice::Splice",
+                                                  "drain"
+                                                |),
+                                                "alloc::vec::drain::Drain",
                                                 "vec"
+                                              |)
                                             ]
                                           |);
                                           M.call_closure (|
@@ -360,10 +387,11 @@ Module vec.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::vec::splice::Splice"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::vec::splice::Splice",
                                                 "replace_with"
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -395,14 +423,16 @@ Module vec.
                                         [ I ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::splice::Splice"
-                                          "drain";
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::vec::splice::Splice"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::splice::Splice",
+                                          "drain"
+                                        |);
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::splice::Splice",
                                           "replace_with"
+                                        |)
                                       ]
                                     |))
                                 |)) in
@@ -425,18 +455,19 @@ Module vec.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::splice::Splice"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::splice::Splice",
                             "replace_with"
+                          |)
                         ]
                       |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let lower_bound := M.copy (| γ0_0 |) in
                           let _upper_bound := M.copy (| γ0_1 |) in
                           let _ :=
@@ -468,10 +499,11 @@ Module vec.
                                             []
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "alloc::vec::splice::Splice"
-                                              "drain";
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::vec::splice::Splice",
+                                              "drain"
+                                            |);
                                             M.read (| lower_bound |)
                                           ]
                                         |)
@@ -494,14 +526,16 @@ Module vec.
                                                         [ I ]
                                                       |),
                                                       [
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::vec::splice::Splice"
-                                                          "drain";
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::vec::splice::Splice"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::vec::splice::Splice",
+                                                          "drain"
+                                                        |);
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::vec::splice::Splice",
                                                           "replace_with"
+                                                        |)
                                                       ]
                                                     |))
                                                 |)) in
@@ -556,10 +590,11 @@ Module vec.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::splice::Splice"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::splice::Splice",
                                             "replace_with"
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -606,10 +641,11 @@ Module vec.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::splice::Splice"
-                                            "drain";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::splice::Splice",
+                                            "drain"
+                                          |);
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::iter::traits::exact_size::ExactSizeIterator",
@@ -640,10 +676,11 @@ Module vec.
                                           ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::vec::splice::Splice"
-                                            "drain";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::splice::Splice",
+                                            "drain"
+                                          |);
                                           collected
                                         ]
                                       |)
@@ -741,8 +778,10 @@ Module vec.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ0_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let left_val := M.copy (| γ0_0 |) in
                                                       let right_val := M.copy (| γ0_1 |) in
                                                       M.match_operator (|
@@ -873,23 +912,29 @@ Module vec.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::drain::Drain"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::drain::Drain",
                             "vec"
+                          |)
                         ]
                       |)
                     |) in
                   let range_start :=
                     M.copy (|
-                      M.get_struct_record_field (M.read (| vec |)) "alloc::vec::Vec" "len"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| vec |),
+                        "alloc::vec::Vec",
+                        "len"
+                      |)
                     |) in
                   let range_end :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::vec::drain::Drain"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::drain::Drain",
                         "tail_start"
+                      |)
                     |) in
                   let range_slice :=
                     M.alloc (|
@@ -962,7 +1007,7 @@ Module vec.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -987,7 +1032,7 @@ Module vec.
                                                         |)
                                                       |) in
                                                     let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
@@ -1008,10 +1053,11 @@ Module vec.
                                                       |) in
                                                     let _ :=
                                                       let β :=
-                                                        M.get_struct_record_field
-                                                          (M.read (| vec |))
-                                                          "alloc::vec::Vec"
-                                                          "len" in
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| vec |),
+                                                          "alloc::vec::Vec",
+                                                          "len"
+                                                        |) in
                                                       M.write (|
                                                         β,
                                                         BinOp.Panic.add (|
@@ -1080,7 +1126,12 @@ Module vec.
                       "as_mut",
                       []
                     |),
-                    [ M.get_struct_record_field (M.read (| self |)) "alloc::vec::drain::Drain" "vec"
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::drain::Drain",
+                        "vec"
+                      |)
                     ]
                   |)
                 |) in
@@ -1088,16 +1139,18 @@ Module vec.
                 M.alloc (|
                   BinOp.Panic.add (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::vec::drain::Drain"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::drain::Drain",
                         "tail_start"
+                      |)
                     |),
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::vec::drain::Drain"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::drain::Drain",
                         "tail_len"
+                      |)
                     |)
                   |)
                 |) in
@@ -1110,7 +1163,11 @@ Module vec.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| vec |)) "alloc::vec::Vec" "buf";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| vec |),
+                        "alloc::vec::Vec",
+                        "buf"
+                      |);
                       M.read (| len |);
                       M.read (| additional |)
                     ]
@@ -1120,10 +1177,11 @@ Module vec.
                 M.alloc (|
                   BinOp.Panic.add (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::vec::drain::Drain"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::drain::Drain",
                         "tail_start"
+                      |)
                     |),
                     M.read (| additional |)
                   |)
@@ -1143,10 +1201,11 @@ Module vec.
                           [ M.read (| vec |) ]
                         |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::drain::Drain"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::drain::Drain",
                             "tail_start"
+                          |)
                         |)
                       ]
                     |)
@@ -1176,10 +1235,11 @@ Module vec.
                         M.read (| src |);
                         M.read (| dst |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::vec::drain::Drain"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::drain::Drain",
                             "tail_len"
+                          |)
                         |)
                       ]
                     |)
@@ -1187,10 +1247,11 @@ Module vec.
                 M.alloc (| Value.Tuple [] |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::vec::drain::Drain"
-                    "tail_start",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::vec::drain::Drain",
+                    "tail_start"
+                  |),
                   M.read (| new_tail_start |)
                 |) in
               M.alloc (| Value.Tuple [] |)

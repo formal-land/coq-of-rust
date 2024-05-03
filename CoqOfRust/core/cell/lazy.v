@@ -106,7 +106,11 @@ Module cell.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field this "core::cell::lazy::LazyCell" "state"
+                        M.SubPointer.get_struct_record_field (|
+                          this,
+                          "core::cell::lazy::LazyCell",
+                          "state"
+                        |)
                       |)
                     ]
                   |)
@@ -115,7 +119,7 @@ Module cell.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Init",
                           0
@@ -127,7 +131,7 @@ Module cell.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Uninit",
                           0
@@ -211,10 +215,11 @@ Module cell.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| this |))
-                        "core::cell::lazy::LazyCell"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| this |),
+                        "core::cell::lazy::LazyCell",
                         "state"
+                      |)
                     ]
                   |)
                 |) in
@@ -225,7 +230,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Init",
                           0
@@ -236,7 +241,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Uninit",
                           0
@@ -340,10 +345,11 @@ Module cell.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| this |))
-                        "core::cell::lazy::LazyCell"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| this |),
+                        "core::cell::lazy::LazyCell",
                         "state"
+                      |)
                     ]
                   |)
                 |) in
@@ -361,7 +367,7 @@ Module cell.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Uninit",
                           0
@@ -400,10 +406,11 @@ Module cell.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| this |))
-                                    "core::cell::lazy::LazyCell"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| this |),
+                                    "core::cell::lazy::LazyCell",
                                     "state"
+                                  |)
                                 ]
                               |);
                               Value.StructTuple
@@ -423,10 +430,11 @@ Module cell.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| this |))
-                                "core::cell::lazy::LazyCell"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| this |),
+                                "core::cell::lazy::LazyCell",
                                 "state"
+                              |)
                             ]
                           |)
                         |) in
@@ -437,7 +445,7 @@ Module cell.
                             ltac:(M.monadic
                               (let γ := M.read (| γ |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::cell::lazy::State::Init",
                                   0
@@ -486,10 +494,11 @@ Module cell.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::lazy::LazyCell"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::lazy::LazyCell",
                         "state"
+                      |)
                     ]
                   |)
                 |) in
@@ -500,7 +509,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::cell::lazy::State::Init",
                           0
@@ -651,7 +660,7 @@ Module cell.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0

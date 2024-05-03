@@ -36,10 +36,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::lossy::Utf8Chunk"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::lossy::Utf8Chunk",
                         "valid"
+                      |)
                     ]
                   |));
                 ("invalid",
@@ -52,10 +53,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::lossy::Utf8Chunk"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::lossy::Utf8Chunk",
                         "invalid"
+                      |)
                     ]
                   |))
               ]))
@@ -92,18 +94,20 @@ Module str.
                 M.read (| Value.String "valid" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::lossy::Utf8Chunk"
-                    "valid");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::lossy::Utf8Chunk",
+                    "valid"
+                  |));
                 M.read (| Value.String "invalid" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::lossy::Utf8Chunk"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::lossy::Utf8Chunk",
                       "invalid"
+                    |)
                   |))
               ]
             |)))
@@ -149,14 +153,16 @@ Module str.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::lossy::Utf8Chunk"
-                    "valid";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::str::lossy::Utf8Chunk"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::lossy::Utf8Chunk",
                     "valid"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::str::lossy::Utf8Chunk",
+                    "valid"
+                  |)
                 ]
               |),
               ltac:(M.monadic
@@ -169,14 +175,16 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::lossy::Utf8Chunk"
-                      "invalid";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::str::lossy::Utf8Chunk"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::lossy::Utf8Chunk",
                       "invalid"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::str::lossy::Utf8Chunk",
+                      "invalid"
+                    |)
                   ]
                 |)))
             |)))
@@ -250,7 +258,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::str::lossy::Utf8Chunk" "valid"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::lossy::Utf8Chunk",
+                "valid"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -268,7 +280,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field (M.read (| self |)) "core::str::lossy::Utf8Chunk" "invalid"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::lossy::Utf8Chunk",
+                "invalid"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -359,7 +375,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -395,7 +411,7 @@ Module str.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -425,10 +441,11 @@ Module str.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_tuple_field
-                                      (M.read (| self |))
-                                      "core::str::lossy::Debug"
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.read (| self |),
+                                      "core::str::lossy::Debug",
                                       0
+                                    |)
                                   |)
                                 ]
                               |)
@@ -464,7 +481,7 @@ Module str.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -542,19 +559,21 @@ Module str.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let γ0_0 :=
-                                                                          M.get_struct_tuple_field_or_break_match (|
+                                                                          M.SubPointer.get_struct_tuple_field (|
                                                                             γ,
                                                                             "core::option::Option::Some",
                                                                             0
                                                                           |) in
                                                                         let γ1_0 :=
-                                                                          M.get_tuple_field
-                                                                            γ0_0
-                                                                            0 in
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ0_0,
+                                                                            0
+                                                                          |) in
                                                                         let γ1_1 :=
-                                                                          M.get_tuple_field
-                                                                            γ0_0
-                                                                            1 in
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ0_0,
+                                                                            1
+                                                                          |) in
                                                                         let i :=
                                                                           M.copy (| γ1_0 |) in
                                                                         let c :=
@@ -677,7 +696,7 @@ Module str.
                                                                                         ltac:(M.monadic
                                                                                           (let
                                                                                                 γ0_0 :=
-                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                               γ,
                                                                                               "core::ops::control_flow::ControlFlow::Break",
                                                                                               0
@@ -731,7 +750,7 @@ Module str.
                                                                                         ltac:(M.monadic
                                                                                           (let
                                                                                                 γ0_0 :=
-                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                               γ,
                                                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                                                               0
@@ -807,7 +826,7 @@ Module str.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::option::Option::Some",
                                                                                                               0
@@ -865,7 +884,7 @@ Module str.
                                                                                                                   ltac:(M.monadic
                                                                                                                     (let
                                                                                                                           γ0_0 :=
-                                                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                                                         γ,
                                                                                                                         "core::ops::control_flow::ControlFlow::Break",
                                                                                                                         0
@@ -920,7 +939,7 @@ Module str.
                                                                                                                   ltac:(M.monadic
                                                                                                                     (let
                                                                                                                           γ0_0 :=
-                                                                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                                                                         γ,
                                                                                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                                                                                         0
@@ -1036,7 +1055,7 @@ Module str.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Break",
                                                             0
@@ -1078,7 +1097,7 @@ Module str.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Continue",
                                                             0
@@ -1151,7 +1170,7 @@ Module str.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ0_0 :=
-                                                                      M.get_struct_tuple_field_or_break_match (|
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
                                                                         "core::option::Option::Some",
                                                                         0
@@ -1283,7 +1302,7 @@ Module str.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -1333,7 +1352,7 @@ Module str.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -1411,10 +1430,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::lossy::Utf8Chunks"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::lossy::Utf8Chunks",
                         "source"
+                      |)
                     ]
                   |))
               ]))
@@ -1462,10 +1482,11 @@ Module str.
               "core::str::lossy::Debug"
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::lossy::Utf8Chunks"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::lossy::Utf8Chunks",
                     "source"
+                  |)
                 |)
               ]))
         | _, _ => M.impossible
@@ -1600,10 +1621,11 @@ Module str.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::lossy::Utf8Chunks"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::lossy::Utf8Chunks",
                                           "source"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1643,10 +1665,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::lossy::Utf8Chunks"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::lossy::Utf8Chunks",
                                                 "source"
+                                              |)
                                             |)
                                           ]
                                         |))
@@ -1666,10 +1689,11 @@ Module str.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::lossy::Utf8Chunks"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::lossy::Utf8Chunks",
                                             "source"
+                                          |)
                                         |);
                                         M.read (| i |)
                                       ]
@@ -1744,10 +1768,11 @@ Module str.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::lossy::Utf8Chunks"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::lossy::Utf8Chunks",
                                                                               "source"
+                                                                            |)
                                                                           |);
                                                                           M.read (| i |)
                                                                         ]
@@ -1807,10 +1832,11 @@ Module str.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::str::lossy::Utf8Chunks"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::str::lossy::Utf8Chunks",
                                                                     "source"
+                                                                  |)
                                                                 |);
                                                                 M.read (| i |)
                                                               ]
@@ -1820,8 +1846,16 @@ Module str.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
@@ -1830,13 +1864,29 @@ Module str.
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
@@ -1845,8 +1895,16 @@ Module str.
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1885,10 +1943,11 @@ Module str.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::lossy::Utf8Chunks"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::lossy::Utf8Chunks",
                                                                               "source"
+                                                                            |)
                                                                           |);
                                                                           M.read (| i |)
                                                                         ]
@@ -1948,10 +2007,11 @@ Module str.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  M.get_struct_record_field
-                                                                    (M.read (| self |))
-                                                                    "core::str::lossy::Utf8Chunks"
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::str::lossy::Utf8Chunks",
                                                                     "source"
+                                                                  |)
                                                                 |);
                                                                 M.read (| i |)
                                                               ]
@@ -1961,8 +2021,16 @@ Module str.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
@@ -1971,13 +2039,29 @@ Module str.
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
@@ -2021,10 +2105,11 @@ Module str.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::lossy::Utf8Chunks"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::lossy::Utf8Chunks",
                                                                               "source"
+                                                                            |)
                                                                           |);
                                                                           M.read (| i |)
                                                                         ]
@@ -2081,10 +2166,11 @@ Module str.
                                                                         |),
                                                                         [
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::lossy::Utf8Chunks"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::lossy::Utf8Chunks",
                                                                               "source"
+                                                                            |)
                                                                           |);
                                                                           M.read (| i |)
                                                                         ]
@@ -2160,10 +2246,11 @@ Module str.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::lossy::Utf8Chunks"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::lossy::Utf8Chunks",
                               "source"
+                            |)
                           |);
                           M.read (| i |)
                         ]
@@ -2172,16 +2259,17 @@ Module str.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let inspected := M.copy (| γ0_0 |) in
                           let remaining := M.copy (| γ0_1 |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::lossy::Utf8Chunks"
-                                "source",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::lossy::Utf8Chunks",
+                                "source"
+                              |),
                               M.read (| remaining |)
                             |) in
                           M.match_operator (|
@@ -2198,8 +2286,8 @@ Module str.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let valid := M.copy (| γ0_0 |) in
                                   let invalid := M.copy (| γ0_1 |) in
                                   M.alloc (|

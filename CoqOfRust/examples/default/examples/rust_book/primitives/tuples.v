@@ -20,8 +20,8 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let int_param := M.copy (| γ0_0 |) in
                 let bool_param := M.copy (| γ0_1 |) in
                 M.alloc (| Value.Tuple [ M.read (| bool_param |); M.read (| int_param |) ] |)))
@@ -59,16 +59,18 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
             M.read (| Value.String "Matrix" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |));
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |));
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |));
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |));
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |));
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |));
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 3 |) |))
+              (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 3 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -179,7 +181,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.get_tuple_field (| long_tuple, 0 |) ]
+                                [ M.SubPointer.get_tuple_field (| long_tuple, 0 |) ]
                               |)
                             ]
                         |))
@@ -219,7 +221,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u16" ]
                                 |),
-                                [ M.get_tuple_field (| long_tuple, 1 |) ]
+                                [ M.SubPointer.get_tuple_field (| long_tuple, 1 |) ]
                               |)
                             ]
                         |))
@@ -470,10 +472,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field (| γ, 0 |) in
-                let γ0_1 := M.get_tuple_field (| γ, 1 |) in
-                let γ0_2 := M.get_tuple_field (| γ, 2 |) in
-                let γ0_3 := M.get_tuple_field (| γ, 3 |) in
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                 let a := M.copy (| γ0_0 |) in
                 let b := M.copy (| γ0_1 |) in
                 let c := M.copy (| γ0_2 |) in

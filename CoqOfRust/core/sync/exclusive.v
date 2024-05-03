@@ -135,7 +135,13 @@ Module sync.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.get_struct_record_field self "core::sync::exclusive::Exclusive" "inner" |)))
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::sync::exclusive::Exclusive",
+                "inner"
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -153,10 +159,11 @@ Module sync.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.get_struct_record_field
-              (M.read (| self |))
-              "core::sync::exclusive::Exclusive"
-              "inner"))
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::sync::exclusive::Exclusive",
+              "inner"
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -184,8 +191,8 @@ Module sync.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.call_closure (|
+                M.SubPointer.get_struct_record_field (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
@@ -198,9 +205,10 @@ Module sync.
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))
-                  "core::sync::exclusive::Exclusive"
+                  |),
+                  "core::sync::exclusive::Exclusive",
                   "inner"
+                |)
               ]
             |)))
         | _, _ => M.impossible

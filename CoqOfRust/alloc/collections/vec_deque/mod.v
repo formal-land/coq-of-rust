@@ -238,8 +238,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let front := M.copy (| γ0_0 |) in
                       let back := M.copy (| γ0_1 |) in
                       let _back_dropper :=
@@ -334,10 +334,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::vec_deque::VecDeque"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::vec_deque::VecDeque",
                   "buf"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -463,12 +464,30 @@ Module collections.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |)
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        range,
+                        "core::ops::range::Range",
+                        "start"
+                      |)
+                    |)
                   ]
                 |);
                 BinOp.Panic.sub (|
-                  M.read (| M.get_struct_record_field range "core::ops::range::Range" "end" |),
-                  M.read (| M.get_struct_record_field range "core::ops::range::Range" "start" |)
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      range,
+                      "core::ops::range::Range",
+                      "end"
+                    |)
+                  |),
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      range,
+                      "core::ops::range::Range",
+                      "start"
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -492,10 +511,11 @@ Module collections.
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::vec_deque::VecDeque"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::vec_deque::VecDeque",
                   "len"
+                |)
               |))
               (M.call_closure (|
                 M.get_associated_function (|
@@ -570,10 +590,11 @@ Module collections.
               [
                 M.read (| self |);
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
                     "head"
+                  |)
                 |);
                 M.read (| idx |)
               ]
@@ -1730,9 +1751,9 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (|
                               M.read (| γ0_1 |),
@@ -1764,9 +1785,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (|
                               M.read (| γ0_0 |),
@@ -1824,9 +1845,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                           let _ :=
@@ -1881,9 +1902,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (|
                               M.read (| γ0_0 |),
@@ -1941,9 +1962,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                           let _ :=
@@ -1998,9 +2019,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (|
                               M.read (| γ0_0 |),
@@ -2134,9 +2155,9 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
-                          let γ0_2 := M.get_tuple_field γ 2 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                           let _ :=
@@ -2471,8 +2492,8 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let left := M.copy (| γ0_0 |) in
                               let right := M.copy (| γ0_1 |) in
                               let _ :=
@@ -2628,8 +2649,8 @@ Module collections.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let i := M.copy (| γ0_0 |) in
                                       let element := M.copy (| γ0_1 |) in
                                       M.read (|
@@ -2774,17 +2795,19 @@ Module collections.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    guard
-                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                  M.SubPointer.get_struct_record_field (|
+                                    guard,
+                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                     "deque"
+                                  |)
                                 |);
                                 M.read (| dst |);
                                 M.read (| iter |);
-                                M.get_struct_record_field
-                                  guard
-                                  "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                M.SubPointer.get_struct_record_field (|
+                                  guard,
+                                  "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                   "written"
+                                |)
                               ]
                             |)
                           |) in
@@ -2812,10 +2835,11 @@ Module collections.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      guard
-                                      "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                    M.SubPointer.get_struct_record_field (|
+                                      guard,
+                                      "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                       "deque"
+                                    |)
                                   |);
                                   M.read (| dst |);
                                   M.call_closure (|
@@ -2835,10 +2859,11 @@ Module collections.
                                       M.read (| head_room |)
                                     ]
                                   |);
-                                  M.get_struct_record_field
-                                    guard
-                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                  M.SubPointer.get_struct_record_field (|
+                                    guard,
+                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                     "written"
+                                  |)
                                 ]
                               |)
                             |) in
@@ -2853,27 +2878,30 @@ Module collections.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    guard
-                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                  M.SubPointer.get_struct_record_field (|
+                                    guard,
+                                    "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                     "deque"
+                                  |)
                                 |);
                                 Value.Integer Integer.Usize 0;
                                 M.read (| iter |);
-                                M.get_struct_record_field
-                                  guard
-                                  "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                                M.SubPointer.get_struct_record_field (|
+                                  guard,
+                                  "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                                   "written"
+                                |)
                               ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.get_struct_record_field
-                guard
-                "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+              M.SubPointer.get_struct_record_field (|
+                guard,
+                "alloc::collections::vec_deque::write_iter_wrapping::Guard",
                 "written"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3009,18 +3037,20 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.le
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::VecDeque"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::VecDeque",
                                     "head"
+                                  |)
                                 |))
                                 (BinOp.Panic.sub (|
                                   M.read (| old_capacity |),
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::VecDeque"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::VecDeque",
                                       "len"
+                                    |)
                                   |)
                                 |))
                             |)) in
@@ -3034,10 +3064,11 @@ Module collections.
                             BinOp.Panic.sub (|
                               M.read (| old_capacity |),
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "head"
+                                |)
                               |)
                             |)
                           |) in
@@ -3045,10 +3076,11 @@ Module collections.
                           M.alloc (|
                             BinOp.Panic.sub (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |),
                               M.read (| head_len |)
                             |)
@@ -3121,10 +3153,11 @@ Module collections.
                                         [
                                           M.read (| self |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "alloc::collections::vec_deque::VecDeque"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::vec_deque::VecDeque",
                                               "head"
+                                            |)
                                           |);
                                           M.read (| new_head |);
                                           M.read (| head_len |)
@@ -3134,10 +3167,11 @@ Module collections.
                                   M.alloc (| Value.Tuple [] |) in
                                 let _ :=
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::VecDeque"
-                                      "head",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::VecDeque",
+                                      "head"
+                                    |),
                                     M.read (| new_head |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)))
@@ -3167,10 +3201,11 @@ Module collections.
                                           (LogicalOp.or (|
                                             BinOp.Pure.lt
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "head"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -3351,16 +3386,18 @@ Module collections.
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                initialized
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                initialized,
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                initialized
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                initialized,
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             |)))
                                       |)) in
                                   let _ :=
@@ -3409,10 +3446,11 @@ Module collections.
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                initialized
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                initialized,
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             |))
                                             (M.read (| capacity |)))
                                       |)) in
@@ -3447,17 +3485,29 @@ Module collections.
                   [
                     ("head",
                       M.read (|
-                        M.get_struct_record_field initialized "core::ops::range::Range" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          initialized,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
                       |));
                     ("len",
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field initialized "core::ops::range::Range" "end"
+                            M.SubPointer.get_struct_record_field (|
+                              initialized,
+                              "core::ops::range::Range",
+                              "end"
+                            |)
                           |);
                           M.read (|
-                            M.get_struct_record_field initialized "core::ops::range::Range" "start"
+                            M.SubPointer.get_struct_record_field (|
+                              initialized,
+                              "core::ops::range::Range",
+                              "start"
+                            |)
                           |)
                         ]
                       |));
@@ -3512,10 +3562,11 @@ Module collections.
                             BinOp.Pure.lt
                               (M.read (| index |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3598,10 +3649,11 @@ Module collections.
                             BinOp.Pure.lt
                               (M.read (| index |))
                               (M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3841,10 +3893,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "buf"
+                            |)
                           ]
                         |)
                       |)))
@@ -3892,10 +3945,11 @@ Module collections.
                         M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |);
                           M.read (| additional |)
                         ]
@@ -3935,15 +3989,17 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::VecDeque"
-                                "buf";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::VecDeque",
+                                "buf"
+                              |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |);
                               M.read (| additional |)
                             ]
@@ -4008,10 +4064,11 @@ Module collections.
                         M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |);
                           M.read (| additional |)
                         ]
@@ -4051,15 +4108,17 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::VecDeque"
-                                "buf";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::VecDeque",
+                                "buf"
+                              |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |);
                               M.read (| additional |)
                             ]
@@ -4144,10 +4203,11 @@ Module collections.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::VecDeque"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::VecDeque",
                                           "len"
+                                        |)
                                       |);
                                       M.read (| additional |)
                                     ]
@@ -4164,7 +4224,7 @@ Module collections.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4203,7 +4263,7 @@ Module collections.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4259,15 +4319,17 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::collections::vec_deque::VecDeque"
-                                            "buf";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::vec_deque::VecDeque",
+                                            "buf"
+                                          |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "alloc::collections::vec_deque::VecDeque"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::vec_deque::VecDeque",
                                               "len"
+                                            |)
                                           |);
                                           M.read (| additional |)
                                         ]
@@ -4279,7 +4341,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -4319,7 +4381,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -4411,10 +4473,11 @@ Module collections.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::VecDeque"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::VecDeque",
                                           "len"
+                                        |)
                                       |);
                                       M.read (| additional |)
                                     ]
@@ -4431,7 +4494,7 @@ Module collections.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4470,7 +4533,7 @@ Module collections.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4526,15 +4589,17 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::collections::vec_deque::VecDeque"
-                                            "buf";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::vec_deque::VecDeque",
+                                            "buf"
+                                          |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "alloc::collections::vec_deque::VecDeque"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::vec_deque::VecDeque",
                                               "len"
+                                            |)
                                           |);
                                           M.read (| additional |)
                                         ]
@@ -4546,7 +4611,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -4586,7 +4651,7 @@ Module collections.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -4748,10 +4813,11 @@ Module collections.
                         [
                           M.read (| min_capacity |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |)
                         ]
                       |)
@@ -4831,16 +4897,18 @@ Module collections.
                           M.alloc (|
                             BinOp.Panic.add (|
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "head"
+                                |)
                               |),
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "len"
+                                |)
                               |)
                             |)
                           |)
@@ -4858,10 +4926,11 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.Pure.eq
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "len"
+                                      |)
                                     |))
                                     (Value.Integer Integer.Usize 0)
                                 |)) in
@@ -4869,10 +4938,11 @@ Module collections.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
-                                  "head",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
+                                  "head"
+                                |),
                                 Value.Integer Integer.Usize 0
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -4889,10 +4959,11 @@ Module collections.
                                           LogicalOp.and (|
                                             BinOp.Pure.ge
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "head"
+                                                |)
                                               |))
                                               (M.read (| target_cap |)),
                                             ltac:(M.monadic (M.read (| tail_outside |)))
@@ -4917,17 +4988,19 @@ Module collections.
                                             [
                                               M.read (| self |);
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "head"
+                                                |)
                                               |);
                                               Value.Integer Integer.Usize 0;
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "len"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -4935,10 +5008,11 @@ Module collections.
                                       M.alloc (| Value.Tuple [] |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::VecDeque"
-                                          "head",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::VecDeque",
+                                          "head"
+                                        |),
                                         Value.Integer Integer.Usize 0
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
@@ -4955,10 +5029,11 @@ Module collections.
                                                   LogicalOp.and (|
                                                     BinOp.Pure.lt
                                                       (M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::collections::vec_deque::VecDeque"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::collections::vec_deque::VecDeque",
                                                           "head"
+                                                        |)
                                                       |))
                                                       (M.read (| target_cap |)),
                                                     ltac:(M.monadic (M.read (| tail_outside |)))
@@ -4974,16 +5049,18 @@ Module collections.
                                                 BinOp.Panic.sub (|
                                                   BinOp.Panic.add (|
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "alloc::collections::vec_deque::VecDeque"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::vec_deque::VecDeque",
                                                         "head"
+                                                      |)
                                                     |),
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "alloc::collections::vec_deque::VecDeque"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::vec_deque::VecDeque",
                                                         "len"
+                                                      |)
                                                     |)
                                                   |),
                                                   M.read (| target_cap |)
@@ -5052,10 +5129,11 @@ Module collections.
                                                             [ M.read (| self |) ]
                                                           |),
                                                           M.read (|
-                                                            M.get_struct_record_field
-                                                              (M.read (| self |))
-                                                              "alloc::collections::vec_deque::VecDeque"
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "alloc::collections::vec_deque::VecDeque",
                                                               "head"
+                                                            |)
                                                           |)
                                                         |)
                                                       |) in
@@ -5081,10 +5159,11 @@ Module collections.
                                                             [
                                                               M.read (| self |);
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "alloc::collections::vec_deque::VecDeque"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "alloc::collections::vec_deque::VecDeque",
                                                                   "head"
+                                                                |)
                                                               |);
                                                               M.read (| new_head |);
                                                               M.read (| head_len |)
@@ -5094,10 +5173,11 @@ Module collections.
                                                       M.alloc (| Value.Tuple [] |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::collections::vec_deque::VecDeque"
-                                                          "head",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::collections::vec_deque::VecDeque",
+                                                          "head"
+                                                        |),
                                                         M.read (| new_head |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
@@ -5120,10 +5200,11 @@ Module collections.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "buf";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "buf"
+                          |);
                           M.read (| target_cap |)
                         ]
                       |)
@@ -5150,10 +5231,11 @@ Module collections.
                                               (LogicalOp.or (|
                                                 BinOp.Pure.lt
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "alloc::collections::vec_deque::VecDeque"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::vec_deque::VecDeque",
                                                       "head"
+                                                    |)
                                                   |))
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
@@ -5228,10 +5310,11 @@ Module collections.
                                             UnOp.Pure.not
                                               (BinOp.Pure.le
                                                 (M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "alloc::collections::vec_deque::VecDeque"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::collections::vec_deque::VecDeque",
                                                     "len"
+                                                  |)
                                                 |))
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
@@ -5347,10 +5430,11 @@ Module collections.
                                   BinOp.Pure.ge
                                     (M.read (| len |))
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "len"
+                                      |)
                                     |))
                                 |)) in
                             let _ :=
@@ -5375,8 +5459,8 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let front := M.copy (| γ0_0 |) in
                           let back := M.copy (| γ0_1 |) in
                           M.match_operator (|
@@ -5442,10 +5526,11 @@ Module collections.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
-                                        "len",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "len"
+                                      |),
                                       M.read (| len |)
                                     |) in
                                   let _ :=
@@ -5488,10 +5573,11 @@ Module collections.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
-                                        "len",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "len"
+                                      |),
                                       M.read (| len |)
                                     |) in
                                   let _back_dropper :=
@@ -5542,10 +5628,11 @@ Module collections.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::vec_deque::VecDeque"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::vec_deque::VecDeque",
                   "buf"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5582,8 +5669,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -5650,8 +5737,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -5720,10 +5807,11 @@ Module collections.
                       M.read (| self |);
                       Value.StructTuple "core::ops::range::RangeFull" [];
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "len"
+                        |)
                       |)
                     ]
                   |)
@@ -5731,8 +5819,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a_range := M.copy (| γ0_0 |) in
                       let b_range := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -5797,10 +5885,11 @@ Module collections.
                       M.read (| self |);
                       Value.StructTuple "core::ops::range::RangeFull" [];
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "len"
+                        |)
                       |)
                     ]
                   |)
@@ -5808,8 +5897,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a_range := M.copy (| γ0_0 |) in
                       let b_range := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -5859,10 +5948,11 @@ Module collections.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "alloc::collections::vec_deque::VecDeque"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::vec_deque::VecDeque",
                 "len"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5884,10 +5974,11 @@ Module collections.
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::vec_deque::VecDeque"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::vec_deque::VecDeque",
                   "len"
+                |)
               |))
               (Value.Integer Integer.Usize 0)))
         | _, _ => M.impossible
@@ -5952,13 +6043,13 @@ Module collections.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_record_field_or_break_match (|
+                        M.SubPointer.get_struct_record_field (|
                           γ,
                           "core::ops::range::Range",
                           "start"
                         |) in
                       let γ0_1 :=
-                        M.get_struct_record_field_or_break_match (|
+                        M.SubPointer.get_struct_record_field (|
                           γ,
                           "core::ops::range::Range",
                           "end"
@@ -6152,10 +6243,11 @@ Module collections.
                       M.read (| self |);
                       M.read (| range |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "len"
+                        |)
                       |)
                     ]
                   |)
@@ -6163,8 +6255,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a_range := M.copy (| γ0_0 |) in
                       let b_range := M.copy (| γ0_1 |) in
                       let a :=
@@ -6261,10 +6353,11 @@ Module collections.
                       M.read (| self |);
                       M.read (| range |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "len"
+                        |)
                       |)
                     ]
                   |)
@@ -6272,8 +6365,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a_range := M.copy (| γ0_0 |) in
                       let b_range := M.copy (| γ0_1 |) in
                       let a :=
@@ -6397,10 +6490,11 @@ Module collections.
                         [
                           ("end_",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::VecDeque"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::VecDeque",
                                 "len"
+                              |)
                             |))
                         ]
                     ]
@@ -6410,13 +6504,13 @@ Module collections.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_record_field_or_break_match (|
+                        M.SubPointer.get_struct_record_field (|
                           γ,
                           "core::ops::range::Range",
                           "start"
                         |) in
                       let γ0_1 :=
-                        M.get_struct_record_field_or_break_match (|
+                        M.SubPointer.get_struct_record_field (|
                           γ,
                           "core::ops::range::Range",
                           "end"
@@ -6475,10 +6569,11 @@ Module collections.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "head",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "head"
+                  |),
                   Value.Integer Integer.Usize 0
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6521,8 +6616,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let a := M.copy (| γ0_0 |) in
                       let b := M.copy (| γ0_1 |) in
                       M.alloc (|
@@ -6631,10 +6726,11 @@ Module collections.
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |);
                     Value.Integer Integer.Usize 1
                   ]
@@ -6671,10 +6767,11 @@ Module collections.
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |);
                     Value.Integer Integer.Usize 1
                   ]
@@ -6732,17 +6829,19 @@ Module collections.
                     ltac:(M.monadic
                       (let old_head :=
                         M.copy (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
                             "head"
+                          |)
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "head",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "head"
+                          |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
@@ -6754,10 +6853,11 @@ Module collections.
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "len" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "len"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -6830,10 +6930,11 @@ Module collections.
                     ltac:(M.monadic
                       (let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "len" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "len"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -6863,10 +6964,11 @@ Module collections.
                                   [
                                     M.read (| self |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "len"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -6947,10 +7049,11 @@ Module collections.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "head",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "head"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
@@ -6960,10 +7063,11 @@ Module collections.
                     [
                       M.read (| self |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "head"
+                        |)
                       |);
                       Value.Integer Integer.Usize 1
                     ]
@@ -6971,10 +7075,11 @@ Module collections.
                 |) in
               let _ :=
                 let β :=
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "len" in
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |) in
                 M.write (|
                   β,
                   BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -6990,10 +7095,11 @@ Module collections.
                     [
                       M.read (| self |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "head"
+                        |)
                       |);
                       M.read (| value |)
                     ]
@@ -7084,10 +7190,11 @@ Module collections.
                         [
                           M.read (| self |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |)
                         ]
                       |);
@@ -7097,10 +7204,11 @@ Module collections.
                 |) in
               let _ :=
                 let β :=
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "len" in
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |) in
                 M.write (|
                   β,
                   BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -7128,10 +7236,11 @@ Module collections.
             (let self := M.alloc (| self |) in
             BinOp.Pure.le
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "alloc::collections::vec_deque::VecDeque"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::vec_deque::VecDeque",
                   "head"
+                |)
               |))
               (BinOp.Panic.sub (|
                 M.call_closure (|
@@ -7143,10 +7252,11 @@ Module collections.
                   [ M.read (| self |) ]
                 |),
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
                     "len"
+                  |)
                 |)
               |))))
         | _, _ => M.impossible
@@ -7179,10 +7289,11 @@ Module collections.
                 (M.read (|
                   let length :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |) in
                   let _ :=
                     M.match_operator (|
@@ -7294,10 +7405,11 @@ Module collections.
                 (M.read (|
                   let length :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |) in
                   let _ :=
                     M.match_operator (|
@@ -7527,10 +7639,11 @@ Module collections.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |),
                     M.read (| index |)
                   |)
@@ -7609,10 +7722,11 @@ Module collections.
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "len" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "len"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -7622,17 +7736,19 @@ Module collections.
                     ltac:(M.monadic
                       (let old_head :=
                         M.copy (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
                             "head"
+                          |)
                         |) in
                       let _ :=
                         M.write (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "head",
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "head"
+                          |),
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
@@ -7642,10 +7758,11 @@ Module collections.
                             [
                               M.read (| self |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "head"
+                                |)
                               |);
                               Value.Integer Integer.Usize 1
                             ]
@@ -7663,10 +7780,11 @@ Module collections.
                               M.read (| self |);
                               M.read (| old_head |);
                               M.read (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "head"
+                                |)
                               |);
                               M.read (| index |)
                             ]
@@ -7698,10 +7816,11 @@ Module collections.
                         |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
-                            "len" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "len"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -7765,10 +7884,11 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.Pure.le
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "len"
+                                      |)
                                     |))
                                     (M.read (| index |))
                                 |)) in
@@ -7815,10 +7935,11 @@ Module collections.
                       BinOp.Panic.sub (|
                         BinOp.Panic.sub (|
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |),
                           M.read (| index |)
                         |),
@@ -7871,10 +7992,11 @@ Module collections.
                               |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
-                                  "len" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
+                                  "len"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -7884,17 +8006,19 @@ Module collections.
                           ltac:(M.monadic
                             (let old_head :=
                               M.copy (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
                                   "head"
+                                |)
                               |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
-                                  "head",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
+                                  "head"
+                                |),
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -7920,10 +8044,11 @@ Module collections.
                                     M.read (| self |);
                                     M.read (| old_head |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "head"
+                                      |)
                                     |);
                                     M.read (| index |)
                                   ]
@@ -7931,10 +8056,11 @@ Module collections.
                               |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
-                                  "len" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
+                                  "len"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
@@ -8010,10 +8136,11 @@ Module collections.
             M.read (|
               let len :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
                     "len"
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
@@ -8098,8 +8225,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let first_half := M.copy (| γ0_0 |) in
                         let second_half := M.copy (| γ0_1 |) in
                         let first_len :=
@@ -8285,15 +8412,20 @@ Module collections.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "len",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |),
                   M.read (| at_ |)
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field other "alloc::collections::vec_deque::VecDeque" "len",
+                  M.SubPointer.get_struct_record_field (|
+                    other,
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |),
                   M.read (| other_len |)
                 |) in
               other
@@ -8355,10 +8487,11 @@ Module collections.
                                 M.read (|
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
-                                        "len",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "len"
+                                      |),
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
@@ -8376,16 +8509,18 @@ Module collections.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "len"
+                                                |)
                                               |);
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| other |))
-                                                  "alloc::collections::vec_deque::VecDeque"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| other |),
+                                                  "alloc::collections::vec_deque::VecDeque",
                                                   "len"
+                                                |)
                                               |)
                                             ]
                                           |);
@@ -8395,18 +8530,20 @@ Module collections.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "alloc::collections::vec_deque::VecDeque"
-                                        "len",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "len"
+                                      |),
                                       Value.Integer Integer.Usize 0
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "alloc::collections::vec_deque::VecDeque"
-                                        "head",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "head"
+                                      |),
                                       Value.Integer Integer.Usize 0
                                     |) in
                                   M.return_ (| Value.Tuple [] |)
@@ -8427,10 +8564,11 @@ Module collections.
                         [
                           M.read (| self |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |)
                         ]
                       |)
@@ -8450,8 +8588,8 @@ Module collections.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let left := M.copy (| γ0_0 |) in
                             let right := M.copy (| γ0_1 |) in
                             let _ :=
@@ -8477,10 +8615,11 @@ Module collections.
                                       [
                                         M.read (| self |);
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::collections::vec_deque::VecDeque"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::vec_deque::VecDeque",
                                             "len"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -8512,10 +8651,11 @@ Module collections.
                                         M.read (| self |);
                                         BinOp.Panic.add (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "alloc::collections::vec_deque::VecDeque"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::vec_deque::VecDeque",
                                               "len"
+                                            |)
                                           |),
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -8537,36 +8677,40 @@ Module collections.
                     |) in
                   let _ :=
                     let β :=
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
-                        "len" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
+                        "len"
+                      |) in
                     M.write (|
                       β,
                       BinOp.Panic.add (|
                         M.read (| β |),
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "alloc::collections::vec_deque::VecDeque"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "alloc::collections::vec_deque::VecDeque",
                             "len"
+                          |)
                         |)
                       |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "alloc::collections::vec_deque::VecDeque"
-                        "len",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "alloc::collections::vec_deque::VecDeque",
+                        "len"
+                      |),
                       Value.Integer Integer.Usize 0
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "alloc::collections::vec_deque::VecDeque"
-                        "head",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "alloc::collections::vec_deque::VecDeque",
+                        "head"
+                      |),
                       Value.Integer Integer.Usize 0
                     |) in
                   M.alloc (| Value.Tuple [] |)
@@ -8691,10 +8835,11 @@ Module collections.
             M.read (|
               let len :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
                     "len"
+                  |)
                 |) in
               let idx := M.alloc (| Value.Integer Integer.Usize 0 |) in
               let cur := M.alloc (| Value.Integer Integer.Usize 0 |) in
@@ -9046,10 +9191,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
-                        "buf";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
+                        "buf"
+                      |);
                       M.read (| old_cap |)
                     ]
                   |)
@@ -9154,10 +9300,11 @@ Module collections.
             M.read (|
               let len :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
                     "len"
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -9384,10 +9531,11 @@ Module collections.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.write (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::VecDeque"
-                                  "head",
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::VecDeque",
+                                  "head"
+                                |),
                                 Value.Integer Integer.Usize 0
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -9445,18 +9593,20 @@ Module collections.
                                               [ M.read (| self |) ]
                                             |);
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "alloc::collections::vec_deque::VecDeque"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::vec_deque::VecDeque",
                                                 "head"
+                                              |)
                                             |)
                                           ]
                                         |);
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "alloc::collections::vec_deque::VecDeque"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::vec_deque::VecDeque",
                                             "len"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -9474,13 +9624,13 @@ Module collections.
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let γ1_0 :=
-                            M.get_struct_record_field_or_break_match (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "alloc::collections::vec_deque::VecDeque",
                               "head"
                             |) in
                           let γ1_1 :=
-                            M.get_struct_record_field_or_break_match (|
+                            M.SubPointer.get_struct_record_field (|
                               γ,
                               "alloc::collections::vec_deque::VecDeque",
                               "len"
@@ -9582,10 +9732,11 @@ Module collections.
                                       M.alloc (| Value.Tuple [] |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "alloc::collections::vec_deque::VecDeque"
-                                          "head",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::VecDeque",
+                                          "head"
+                                        |),
                                         Value.Integer Integer.Usize 0
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
@@ -9653,10 +9804,11 @@ Module collections.
                                               M.alloc (| Value.Tuple [] |) in
                                             let _ :=
                                               M.write (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "alloc::collections::vec_deque::VecDeque"
-                                                  "head",
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::vec_deque::VecDeque",
+                                                  "head"
+                                                |),
                                                 M.read (| tail |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
@@ -9773,10 +9925,11 @@ Module collections.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::collections::vec_deque::VecDeque"
-                                                          "head",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::collections::vec_deque::VecDeque",
+                                                          "head"
+                                                        |),
                                                         M.read (| free |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
@@ -9816,10 +9969,11 @@ Module collections.
                                                                     [
                                                                       M.read (| self |);
                                                                       M.read (|
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "alloc::collections::vec_deque::VecDeque"
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "alloc::collections::vec_deque::VecDeque",
                                                                           "head"
+                                                                        |)
                                                                       |);
                                                                       M.read (| tail_len |);
                                                                       M.read (| head_len |)
@@ -9852,10 +10006,11 @@ Module collections.
                                                                   Value.Integer Integer.Usize 0);
                                                                 ("end_",
                                                                   M.read (|
-                                                                    M.get_struct_record_field
-                                                                      (M.read (| self |))
-                                                                      "alloc::collections::vec_deque::VecDeque"
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "alloc::collections::vec_deque::VecDeque",
                                                                       "len"
+                                                                    |)
                                                                   |))
                                                               ]
                                                           ]
@@ -9877,10 +10032,11 @@ Module collections.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| self |))
-                                                          "alloc::collections::vec_deque::VecDeque"
-                                                          "head",
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "alloc::collections::vec_deque::VecDeque",
+                                                          "head"
+                                                        |),
                                                         Value.Integer Integer.Usize 0
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)))
@@ -9903,18 +10059,20 @@ Module collections.
                                   [
                                     M.read (| ptr |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "head"
+                                      |)
                                     |)
                                   ]
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::VecDeque"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::VecDeque",
                                     "len"
+                                  |)
                                 |)
                               ]
                             |)
@@ -9989,10 +10147,11 @@ Module collections.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |),
                     M.read (| n |)
                   |)
@@ -10096,10 +10255,11 @@ Module collections.
                 M.alloc (|
                   BinOp.Panic.sub (|
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::VecDeque"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "len"
+                      |)
                     |),
                     M.read (| n |)
                   |)
@@ -10233,10 +10393,11 @@ Module collections.
                       [
                         M.read (| self |);
                         M.read (|
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::VecDeque"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
                             "head"
+                          |)
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10247,10 +10408,11 @@ Module collections.
                           [
                             M.read (| self |);
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::VecDeque"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::VecDeque",
                                 "len"
+                              |)
                             |)
                           ]
                         |);
@@ -10261,10 +10423,11 @@ Module collections.
                 M.alloc (| Value.Tuple [] |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "head",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "head"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
@@ -10362,10 +10525,11 @@ Module collections.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "alloc::collections::vec_deque::VecDeque"
-                    "head",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "head"
+                  |),
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
@@ -10375,10 +10539,11 @@ Module collections.
                     [
                       M.read (| self |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "head"
+                        |)
                       |);
                       M.read (| k |)
                     ]
@@ -10403,18 +10568,20 @@ Module collections.
                         [
                           M.read (| self |);
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::VecDeque"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
                               "len"
+                            |)
                           |)
                         ]
                       |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "head"
+                        |)
                       |);
                       M.read (| k |)
                     ]
@@ -10523,8 +10690,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let front := M.copy (| γ0_0 |) in
                       let back := M.copy (| γ0_1 |) in
                       let cmp_back :=
@@ -10586,7 +10753,7 @@ Module collections.
                             ltac:(M.monadic
                               (let γ := cmp_back in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -10614,7 +10781,7 @@ Module collections.
                                     ltac:(M.monadic
                                       (let γ := cmp_back in
                                       let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::option::Option::Some",
                                           0
@@ -10848,8 +11015,8 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let front := M.copy (| γ0_0 |) in
                       let back := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -10913,7 +11080,7 @@ Module collections.
                                   |)
                                 |) in
                               let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -11297,10 +11464,11 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.Pure.ne
                                     (M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "alloc::collections::vec_deque::VecDeque"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
                                         "len"
+                                      |)
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
@@ -11335,8 +11503,8 @@ Module collections.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
@@ -11355,8 +11523,8 @@ Module collections.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let oa := M.copy (| γ0_0 |) in
                                   let ob := M.copy (| γ0_1 |) in
                                   M.match_operator (|
@@ -11499,8 +11667,16 @@ Module collections.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
                                                           let oa_front := M.copy (| γ0_0 |) in
                                                           let oa_mid := M.copy (| γ0_1 |) in
                                                           M.match_operator (|
@@ -11519,9 +11695,15 @@ Module collections.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_tuple_field γ 0 in
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      0
+                                                                    |) in
                                                                   let γ0_1 :=
-                                                                    M.get_tuple_field γ 1 in
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      1
+                                                                    |) in
                                                                   let sb_mid := M.copy (| γ0_0 |) in
                                                                   let sb_back :=
                                                                     M.copy (| γ0_1 |) in
@@ -11586,13 +11768,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -11758,13 +11942,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -11930,13 +12116,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -12170,8 +12358,16 @@ Module collections.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
                                                           let sa_front := M.copy (| γ0_0 |) in
                                                           let sa_mid := M.copy (| γ0_1 |) in
                                                           M.match_operator (|
@@ -12190,9 +12386,15 @@ Module collections.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_tuple_field γ 0 in
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      0
+                                                                    |) in
                                                                   let γ0_1 :=
-                                                                    M.get_tuple_field γ 1 in
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      1
+                                                                    |) in
                                                                   let ob_mid := M.copy (| γ0_0 |) in
                                                                   let ob_back :=
                                                                     M.copy (| γ0_1 |) in
@@ -12257,13 +12459,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -12429,13 +12633,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -12601,13 +12807,15 @@ Module collections.
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let γ0_0 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          0 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          0
+                                                                                        |) in
                                                                                       let γ0_1 :=
-                                                                                        M.get_tuple_field
-                                                                                          γ
-                                                                                          1 in
+                                                                                        M.SubPointer.get_tuple_field (|
+                                                                                          γ,
+                                                                                          1
+                                                                                        |) in
                                                                                       let
                                                                                             left_val :=
                                                                                         M.copy (|
@@ -12976,10 +13184,11 @@ Module collections.
                     [
                       M.read (| state |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::VecDeque"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::VecDeque",
                           "len"
+                        |)
                       |)
                     ]
                   |)
@@ -13684,10 +13893,10 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
-                      let γ0_2 := M.get_tuple_field γ 2 in
-                      let γ0_3 := M.get_tuple_field γ 3 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                       let ptr := M.copy (| γ0_0 |) in
                       let len := M.copy (| γ0_1 |) in
                       let cap := M.copy (| γ0_2 |) in
@@ -13785,8 +13994,8 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.call_closure (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -13801,9 +14010,10 @@ Module collections.
                             []
                           |),
                           [ other ]
-                        |))
-                        "alloc::collections::vec_deque::VecDeque"
+                        |),
+                        "alloc::collections::vec_deque::VecDeque",
                         "buf"
+                      |)
                     ]
                   |)
                 |) in
@@ -13901,8 +14111,8 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.ne
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.call_closure (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -13917,9 +14127,10 @@ Module collections.
                                         []
                                       |),
                                       [ other ]
-                                    |))
-                                    "alloc::collections::vec_deque::VecDeque"
+                                    |),
+                                    "alloc::collections::vec_deque::VecDeque",
                                     "head"
+                                  |)
                                 |))
                                 (Value.Integer Integer.Usize 0)
                             |)) in
@@ -13941,8 +14152,8 @@ Module collections.
                                     [
                                       M.read (| buf |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.call_closure (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -13958,9 +14169,10 @@ Module collections.
                                               []
                                             |),
                                             [ other ]
-                                          |))
-                                          "alloc::collections::vec_deque::VecDeque"
+                                          |),
+                                          "alloc::collections::vec_deque::VecDeque",
                                           "head"
+                                        |)
                                       |)
                                     ]
                                   |));
@@ -14115,12 +14327,20 @@ Module collections.
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field deq "alloc::collections::vec_deque::VecDeque" "head",
+                  M.SubPointer.get_struct_record_field (|
+                    deq,
+                    "alloc::collections::vec_deque::VecDeque",
+                    "head"
+                  |),
                   Value.Integer Integer.Usize 0
                 |) in
               let _ :=
                 M.write (|
-                  M.get_struct_record_field deq "alloc::collections::vec_deque::VecDeque" "len",
+                  M.SubPointer.get_struct_record_field (|
+                    deq,
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |),
                   M.read (| M.get_constant (| "alloc::collections::vec_deque::N" |) |)
                 |) in
               deq

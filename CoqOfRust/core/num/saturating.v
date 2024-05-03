@@ -38,8 +38,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::saturating::Saturating" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::saturating::Saturating",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -112,8 +120,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::saturating::Saturating" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::saturating::Saturating",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -143,8 +159,16 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::num::saturating::Saturating" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::num::saturating::Saturating",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -176,10 +200,11 @@ Module num.
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::num::saturating::Saturating"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::num::saturating::Saturating",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -253,7 +278,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| state |)
               ]
             |)))
@@ -288,7 +317,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -323,7 +356,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -358,7 +395,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -393,7 +434,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -428,7 +473,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -463,7 +512,11 @@ Module num.
             M.call_closure (|
               M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::num::saturating::Saturating" 0;
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::num::saturating::Saturating",
+                  0
+                |);
                 M.read (| f |)
               ]
             |)))
@@ -505,10 +558,18 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -642,10 +703,18 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -779,10 +848,18 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -916,10 +993,18 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -1059,10 +1144,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -1192,7 +1285,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -1229,9 +1328,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -1360,9 +1469,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -1491,9 +1610,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -1625,10 +1754,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -1760,10 +1897,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -1895,10 +2040,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -2030,10 +2183,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -2171,10 +2332,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -2302,7 +2471,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -2339,9 +2514,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -2468,9 +2653,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -2597,9 +2792,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -2729,10 +2934,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -2864,10 +3077,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -2999,10 +3220,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -3134,10 +3363,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -3275,10 +3512,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -3406,7 +3651,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -3443,9 +3694,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -3572,9 +3833,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -3701,9 +3972,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -3833,10 +4114,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -3968,10 +4257,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4103,10 +4400,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4238,10 +4543,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4379,10 +4692,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4510,7 +4831,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -4547,9 +4874,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -4676,9 +5013,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -4805,9 +5152,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -4937,10 +5294,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5072,10 +5437,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5207,10 +5580,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5342,10 +5723,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5483,10 +5872,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5614,7 +6011,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -5651,9 +6054,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -5780,9 +6193,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -5909,9 +6332,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -6041,10 +6474,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6176,10 +6617,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6311,10 +6760,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6446,10 +6903,18 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6587,10 +7052,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6718,7 +7191,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -6755,9 +7234,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -6884,9 +7373,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -7013,9 +7512,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -7145,10 +7654,18 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7282,10 +7799,18 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7419,10 +7944,18 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7556,10 +8089,18 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7699,10 +8240,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7832,7 +8381,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -7869,9 +8424,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -8000,9 +8565,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -8131,9 +8706,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -8265,10 +8850,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -8400,10 +8993,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -8535,10 +9136,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -8670,10 +9279,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -8811,10 +9428,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -8942,7 +9567,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -8979,9 +9610,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -9108,9 +9749,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -9237,9 +9888,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -9369,10 +10030,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -9504,10 +10173,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -9639,10 +10316,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -9774,10 +10459,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -9915,10 +10608,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -10046,7 +10747,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -10083,9 +10790,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -10212,9 +10929,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -10341,9 +11068,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -10473,10 +11210,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -10608,10 +11353,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -10743,10 +11496,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -10878,10 +11639,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -11019,10 +11788,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -11150,7 +11927,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -11187,9 +11970,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -11316,9 +12109,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -11445,9 +12248,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -11577,10 +12390,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -11712,10 +12533,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -11847,10 +12676,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -11982,10 +12819,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -12123,10 +12968,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -12254,7 +13107,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -12291,9 +13150,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -12420,9 +13289,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -12549,9 +13428,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -12681,10 +13570,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "saturating_add", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -12816,10 +13713,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "saturating_sub", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -12951,10 +13856,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "saturating_mul", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -13086,10 +13999,18 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "saturating_div", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -13227,10 +14148,18 @@ Module num.
                   |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (|
-                      M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -13358,7 +14287,13 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 UnOp.Pure.not
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
               ]))
         | _, _ => M.impossible
         end.
@@ -13395,9 +14330,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_xor
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -13524,9 +14469,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_or
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -13653,9 +14608,19 @@ Module num.
               "core::num::saturating::Saturating"
               [
                 BinOp.Pure.bit_and
-                  (M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |))
                   (M.read (|
-                    M.get_struct_tuple_field other "core::num::saturating::Saturating" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
+                  |))
+                  (M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      other,
+                      "core::num::saturating::Saturating",
+                      0
+                    |)
                   |))
               ]))
         | _, _ => M.impossible
@@ -13808,7 +14773,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -13827,7 +14800,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -13846,7 +14827,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -13872,7 +14861,11 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -13901,7 +14894,11 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -13928,7 +14925,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -13952,7 +14956,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -13977,7 +14988,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14000,7 +15019,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14023,7 +15050,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14047,7 +15081,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14074,7 +15115,11 @@ Module num.
                   M.get_associated_function (| Ty.path "usize", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -14096,7 +15141,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14116,7 +15169,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14174,7 +15235,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14193,7 +15262,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14212,7 +15289,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14238,7 +15323,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -14267,7 +15356,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -14294,7 +15387,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14318,7 +15418,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14343,7 +15450,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14366,7 +15481,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14389,7 +15512,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14413,7 +15543,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u8", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14440,7 +15577,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -14462,7 +15603,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14482,7 +15631,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14540,7 +15697,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14559,7 +15724,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14578,7 +15751,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14604,7 +15785,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -14633,7 +15818,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -14660,7 +15849,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14684,7 +15880,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14709,7 +15912,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14732,7 +15943,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -14755,7 +15974,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14779,7 +16005,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u16", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -14806,7 +16039,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u16", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -14828,7 +16065,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14848,7 +16093,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14906,7 +16159,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14925,7 +16186,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14944,7 +16213,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -14970,7 +16247,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -14999,7 +16280,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -15026,7 +16311,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15050,7 +16342,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15075,7 +16374,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15098,7 +16405,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15121,7 +16436,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15145,7 +16467,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u32", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15172,7 +16501,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u32", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -15194,7 +16527,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15214,7 +16555,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15272,7 +16621,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15291,7 +16648,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15310,7 +16675,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15336,7 +16709,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -15365,7 +16742,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -15392,7 +16773,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15416,7 +16804,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15441,7 +16836,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15464,7 +16867,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15487,7 +16898,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15511,7 +16929,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15538,7 +16963,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u64", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -15560,7 +16989,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15580,7 +17017,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15638,7 +17083,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15657,7 +17110,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15676,7 +17137,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15702,7 +17171,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -15731,7 +17204,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -15758,7 +17235,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15782,7 +17266,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15807,7 +17298,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15830,7 +17329,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -15853,7 +17360,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15877,7 +17391,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u128", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -15904,7 +17425,11 @@ Module num.
                   M.get_associated_function (| Ty.path "u128", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -15926,7 +17451,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -15946,7 +17479,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "is_power_of_two", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16004,7 +17545,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16023,7 +17572,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16042,7 +17599,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16068,7 +17633,11 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16097,7 +17666,11 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16124,7 +17697,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16148,7 +17728,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16173,7 +17760,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -16196,7 +17791,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -16219,7 +17822,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16243,7 +17853,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16270,7 +17887,11 @@ Module num.
                   M.get_associated_function (| Ty.path "isize", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -16292,7 +17913,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16315,7 +17944,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16339,7 +17975,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16360,7 +18003,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16379,7 +18030,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16436,7 +18095,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16455,7 +18122,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16474,7 +18149,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16500,7 +18183,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16529,7 +18216,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16556,7 +18247,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16580,7 +18278,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16605,7 +18310,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -16628,7 +18341,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -16651,7 +18372,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16675,7 +18403,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16702,7 +18437,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i8", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -16724,7 +18463,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16747,7 +18494,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16771,7 +18525,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -16792,7 +18553,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16811,7 +18580,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16868,7 +18645,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16887,7 +18672,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16906,7 +18699,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -16932,7 +18733,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16961,7 +18766,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -16988,7 +18797,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17012,7 +18828,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17037,7 +18860,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17060,7 +18891,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17083,7 +18922,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17107,7 +18953,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17134,7 +18987,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i16", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -17156,7 +19013,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17179,7 +19044,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17203,7 +19075,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17224,7 +19103,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17243,7 +19130,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17300,7 +19195,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17319,7 +19222,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17338,7 +19249,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17364,7 +19283,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -17393,7 +19316,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -17420,7 +19347,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17444,7 +19378,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17469,7 +19410,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17492,7 +19441,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17515,7 +19472,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17539,7 +19503,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17566,7 +19537,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i32", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -17588,7 +19563,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17611,7 +19594,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17635,7 +19625,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17656,7 +19653,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17675,7 +19680,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17732,7 +19745,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17751,7 +19772,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17770,7 +19799,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -17796,7 +19833,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -17825,7 +19866,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -17852,7 +19897,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17876,7 +19928,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17901,7 +19960,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17924,7 +19991,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -17947,7 +20022,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17971,7 +20053,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -17998,7 +20087,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i64", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -18020,7 +20113,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18043,7 +20144,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18067,7 +20175,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18088,7 +20203,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18107,7 +20230,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18164,7 +20295,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "count_ones", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18183,7 +20322,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "count_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18202,7 +20349,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "trailing_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18228,7 +20383,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "rotate_left", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -18257,7 +20416,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "rotate_right", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| n |)
                   ]
@@ -18284,7 +20447,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18308,7 +20478,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "reverse_bits", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18333,7 +20510,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "from_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -18356,7 +20541,15 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "from_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field x "core::num::saturating::Saturating" 0 |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        x,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
+                  ]
                 |)
               ]))
         | _, _ => M.impossible
@@ -18379,7 +20572,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "to_be", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18403,7 +20603,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "to_le", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18430,7 +20637,11 @@ Module num.
                   M.get_associated_function (| Ty.path "i128", "saturating_pow", [] |),
                   [
                     M.read (|
-                      M.get_struct_tuple_field self "core::num::saturating::Saturating" 0
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |);
                     M.read (| exp |)
                   ]
@@ -18452,7 +20663,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "leading_zeros", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18475,7 +20694,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "saturating_abs", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18499,7 +20725,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "signum", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18520,7 +20753,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "is_positive", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18539,7 +20780,15 @@ Module num.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
-              [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |) ]
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "core::num::saturating::Saturating",
+                    0
+                  |)
+                |)
+              ]
             |)))
         | _, _ => M.impossible
         end.
@@ -18571,7 +20820,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18611,7 +20867,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i8", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18651,7 +20914,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i16", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18691,7 +20961,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18731,7 +21008,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i64", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))
@@ -18771,7 +21055,14 @@ Module num.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "i128", "saturating_neg", [] |),
-                  [ M.read (| M.get_struct_tuple_field self "core::num::saturating::Saturating" 0 |)
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |)
                   ]
                 |)
               ]))

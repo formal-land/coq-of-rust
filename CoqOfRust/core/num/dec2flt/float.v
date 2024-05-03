@@ -192,7 +192,7 @@ Module num.
             ltac:(M.monadic
               (let exponent := M.alloc (| exponent |) in
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
                   M.alloc (|
                     BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer Integer.Usize 15)
@@ -548,7 +548,7 @@ Module num.
             ltac:(M.monadic
               (let exponent := M.alloc (| exponent |) in
               M.read (|
-                M.get_array_field (|
+                M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
                   M.alloc (|
                     BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer Integer.Usize 31)

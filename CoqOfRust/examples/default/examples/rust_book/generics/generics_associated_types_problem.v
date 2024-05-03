@@ -37,7 +37,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             |),
             [
               M.alloc (|
-                M.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_associated_types_problem::Container",
                   0
@@ -57,7 +57,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
               |),
               [
                 M.alloc (|
-                  M.get_struct_tuple_field (|
+                  M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "generics_associated_types_problem::Container",
                     1
@@ -81,7 +81,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_tuple_field (|
+          M.SubPointer.get_struct_tuple_field (|
             M.read (| self |),
             "generics_associated_types_problem::Container",
             0
@@ -101,7 +101,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_tuple_field (|
+          M.SubPointer.get_struct_tuple_field (|
             M.read (| self |),
             "generics_associated_types_problem::Container",
             1

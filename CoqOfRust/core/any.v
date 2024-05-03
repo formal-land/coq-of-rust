@@ -784,7 +784,11 @@ Module any.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field (M.read (| self |)) "core::any::TypeId" "t"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::any::TypeId",
+                    "t"
+                  |)
                 |))
             ]
           |)))
@@ -856,8 +860,16 @@ Module any.
               []
             |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::any::TypeId" "t";
-              M.get_struct_record_field (M.read (| other |)) "core::any::TypeId" "t"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::any::TypeId",
+                "t"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "core::any::TypeId",
+                "t"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -884,8 +896,16 @@ Module any.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
             [
-              M.get_struct_record_field (M.read (| self |)) "core::any::TypeId" "t";
-              M.get_struct_record_field (M.read (| other |)) "core::any::TypeId" "t"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::any::TypeId",
+                "t"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "core::any::TypeId",
+                "t"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -914,8 +934,16 @@ Module any.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           BinOp.Pure.eq
-            (M.read (| M.get_struct_record_field (M.read (| self |)) "core::any::TypeId" "t" |))
-            (M.read (| M.get_struct_record_field (M.read (| other |)) "core::any::TypeId" "t" |))))
+            (M.read (|
+              M.SubPointer.get_struct_record_field (| M.read (| self |), "core::any::TypeId", "t" |)
+            |))
+            (M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "core::any::TypeId",
+                "t"
+              |)
+            |))))
       | _, _ => M.impossible
       end.
     
@@ -988,7 +1016,11 @@ Module any.
                     M.alloc (|
                       M.rust_cast
                         (M.read (|
-                          M.get_struct_record_field (M.read (| self |)) "core::any::TypeId" "t"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::any::TypeId",
+                            "t"
+                          |)
                         |))
                     |);
                     M.read (| state |)

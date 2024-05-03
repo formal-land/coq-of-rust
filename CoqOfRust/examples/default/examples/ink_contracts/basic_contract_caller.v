@@ -120,14 +120,14 @@ Module Impl_basic_contract_caller_OtherContract.
         M.read (|
           let _ :=
             M.write (|
-              M.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "basic_contract_caller::OtherContract",
                 "value"
               |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "basic_contract_caller::OtherContract",
                     "value"
@@ -152,7 +152,7 @@ Module Impl_basic_contract_caller_OtherContract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (|
+          M.SubPointer.get_struct_record_field (|
             M.read (| self |),
             "basic_contract_caller::OtherContract",
             "value"
@@ -233,7 +233,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                   []
                 |),
                 [
-                  M.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "basic_contract_caller::BasicContractCaller",
                     "other_contract"
@@ -249,7 +249,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                 []
               |),
               [
-                M.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "basic_contract_caller::BasicContractCaller",
                   "other_contract"

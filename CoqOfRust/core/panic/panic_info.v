@@ -42,39 +42,44 @@ Module panic.
                 M.read (| Value.String "payload" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
-                    "payload");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
+                    "payload"
+                  |));
                 M.read (| Value.String "message" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
-                    "message");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
+                    "message"
+                  |));
                 M.read (| Value.String "location" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
-                    "location");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
+                    "location"
+                  |));
                 M.read (| Value.String "can_unwind" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
-                    "can_unwind");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
+                    "can_unwind"
+                  |));
                 M.read (| Value.String "force_no_backtrace" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::panic::panic_info::PanicInfo"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::panic_info::PanicInfo",
                       "force_no_backtrace"
+                    |)
                   |))
               ]
             |)))
@@ -147,10 +152,11 @@ Module panic.
             M.read (|
               let _ :=
                 M.write (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
-                    "payload",
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
+                    "payload"
+                  |),
                   (* Unsize *) M.pointer_coercion (M.read (| info |))
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -175,10 +181,11 @@ Module panic.
               (* Unsize *)
               (M.pointer_coercion
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
                     "payload"
+                  |)
                 |)))))
         | _, _ => M.impossible
         end.
@@ -196,10 +203,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::panic::panic_info::PanicInfo"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::panic_info::PanicInfo",
                 "message"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -222,10 +230,11 @@ Module panic.
               "core::option::Option::Some"
               [
                 M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::panic::panic_info::PanicInfo"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicInfo",
                     "location"
+                  |)
                 |)
               ]))
         | _, _ => M.impossible
@@ -244,10 +253,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::panic::panic_info::PanicInfo"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::panic_info::PanicInfo",
                 "can_unwind"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -265,10 +275,11 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::panic::panic_info::PanicInfo"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::panic::panic_info::PanicInfo",
                 "force_no_backtrace"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -336,7 +347,7 @@ Module panic.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -372,7 +383,7 @@ Module panic.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -405,10 +416,11 @@ Module panic.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::panic::panic_info::PanicInfo"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::panic::panic_info::PanicInfo",
                                     "location"
+                                  |)
                                 |);
                                 M.read (| formatter |)
                               ]
@@ -420,7 +432,7 @@ Module panic.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -456,7 +468,7 @@ Module panic.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -472,12 +484,13 @@ Module panic.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::panic::panic_info::PanicInfo"
-                                "message" in
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::panic::panic_info::PanicInfo",
+                                "message"
+                              |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -513,7 +526,7 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -549,7 +562,7 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -588,7 +601,7 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -624,7 +637,7 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -651,16 +664,17 @@ Module panic.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::panic::panic_info::PanicInfo"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::panic::panic_info::PanicInfo",
                                                 "payload"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -699,7 +713,7 @@ Module panic.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -738,7 +752,7 @@ Module panic.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -779,7 +793,7 @@ Module panic.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -818,7 +832,7 @@ Module panic.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0

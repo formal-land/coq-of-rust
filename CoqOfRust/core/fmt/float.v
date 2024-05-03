@@ -389,12 +389,13 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.get_struct_record_field
-                        (M.read (| fmt |))
-                        "core::fmt::Formatter"
-                        "precision" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| fmt |),
+                        "core::fmt::Formatter",
+                        "precision"
+                      |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -723,12 +724,13 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.get_struct_record_field
-                        (M.read (| fmt |))
-                        "core::fmt::Formatter"
-                        "precision" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| fmt |),
+                        "core::fmt::Formatter",
+                        "precision"
+                      |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -834,12 +836,13 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.get_struct_record_field
-                        (M.read (| fmt |))
-                        "core::fmt::Formatter"
-                        "precision" in
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| fmt |),
+                        "core::fmt::Formatter",
+                        "precision"
+                      |) in
                     let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0

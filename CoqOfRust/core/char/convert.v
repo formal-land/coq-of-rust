@@ -29,11 +29,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let c := M.copy (| γ0_0 |) in
                     M.alloc (|
                       Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
@@ -41,11 +37,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
@@ -401,10 +393,11 @@ Module char.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::char::convert::ParseCharError"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::char::convert::ParseCharError",
                         "kind"
+                      |)
                     ]
                   |))
               ]))
@@ -442,10 +435,11 @@ Module char.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::char::convert::ParseCharError"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::char::convert::ParseCharError",
                       "kind"
+                    |)
                   |))
               ]
             |)))
@@ -490,14 +484,16 @@ Module char.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::char::convert::ParseCharError"
-                  "kind";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "core::char::convert::ParseCharError"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::char::convert::ParseCharError",
                   "kind"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::char::convert::ParseCharError",
+                  "kind"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -749,10 +745,11 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::char::convert::ParseCharError"
-                  "kind",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::char::convert::ParseCharError",
+                  "kind"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -876,8 +873,8 @@ Module char.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -894,10 +891,10 @@ Module char.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
                           "core::option::Option::Some",
                           0
@@ -1118,10 +1115,11 @@ Module char.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::char::convert::CharTryFromError"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::char::convert::CharTryFromError",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -1166,14 +1164,16 @@ Module char.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::char::convert::CharTryFromError"
-                  0;
-                M.get_struct_tuple_field
-                  (M.read (| other |))
-                  "core::char::convert::CharTryFromError"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::convert::CharTryFromError",
                   0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::char::convert::CharTryFromError",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible

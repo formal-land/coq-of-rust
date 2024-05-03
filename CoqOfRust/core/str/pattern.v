@@ -89,13 +89,13 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           0
                         |) in
                       let γ0_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           1
@@ -152,13 +152,13 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           0
                         |) in
                       let γ0_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           1
@@ -223,13 +223,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           0
                         |) in
                       let γ0_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           1
@@ -257,8 +257,8 @@ Module str.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let left_val := M.copy (| γ0_0 |) in
                                           let right_val := M.copy (| γ0_1 |) in
                                           M.match_operator (|
@@ -412,13 +412,13 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           0
                         |) in
                       let γ0_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           1
@@ -458,8 +458,8 @@ Module str.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let left_val := M.copy (| γ0_0 |) in
                                           let right_val := M.copy (| γ0_1 |) in
                                           M.match_operator (|
@@ -725,17 +725,17 @@ Module str.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::str::pattern::SearchStep::Match",
                                   0
                                 |) in
                               let γ2_1 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::str::pattern::SearchStep::Match",
                                   1
@@ -744,13 +744,13 @@ Module str.
                               let __self_1 := M.alloc (| γ2_1 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::str::pattern::SearchStep::Match",
                                   0
                                 |) in
                               let γ2_1 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::str::pattern::SearchStep::Match",
                                   1
@@ -770,17 +770,17 @@ Module str.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let γ0_0 := M.read (| γ0_0 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::str::pattern::SearchStep::Reject",
                                   0
                                 |) in
                               let γ2_1 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_0,
                                   "core::str::pattern::SearchStep::Reject",
                                   1
@@ -789,13 +789,13 @@ Module str.
                               let __self_1 := M.alloc (| γ2_1 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::str::pattern::SearchStep::Reject",
                                   0
                                 |) in
                               let γ2_1 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ0_1,
                                   "core::str::pattern::SearchStep::Reject",
                                   1
@@ -849,13 +849,13 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           0
                         |) in
                       let γ1_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Match",
                           1
@@ -881,13 +881,13 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Reject",
                           0
                         |) in
                       let γ1_1 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::SearchStep::Reject",
                           1
@@ -966,13 +966,13 @@ Module str.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Match",
                                     0
                                   |) in
                                 let γ0_1 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Match",
                                     1
@@ -1043,13 +1043,13 @@ Module str.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Reject",
                                     0
                                   |) in
                                 let γ0_1 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Reject",
                                     1
@@ -1124,13 +1124,13 @@ Module str.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Match",
                                     0
                                   |) in
                                 let γ0_1 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Match",
                                     1
@@ -1201,13 +1201,13 @@ Module str.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Reject",
                                     0
                                   |) in
                                 let γ0_1 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::str::pattern::SearchStep::Reject",
                                     1
@@ -1295,50 +1295,55 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "haystack"
+                      |)
                     ]
                   |));
                 ("finger",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "finger"
+                      |)
                     ]
                   |));
                 ("finger_back",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "finger_back"
+                      |)
                     ]
                   |));
                 ("needle",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "char", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "needle"
+                      |)
                     ]
                   |));
                 ("utf8_size",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "utf8_size"
+                      |)
                     ]
                   |));
                 ("utf8_encoded",
@@ -1351,10 +1356,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::CharSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharSearcher",
                         "utf8_encoded"
+                      |)
                     ]
                   |))
               ]))
@@ -1403,41 +1409,47 @@ Module str.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
-                              "haystack");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
+                              "haystack"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
-                              "finger");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
+                              "finger"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
-                              "finger_back");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
+                              "finger_back"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
-                              "needle");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
+                              "needle"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
-                              "utf8_size");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
+                              "utf8_size"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
                             (M.alloc (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::pattern::CharSearcher"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::pattern::CharSearcher",
                                 "utf8_encoded"
+                              |)
                             |))
                         ]
                     |))
@@ -1483,10 +1495,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::str::pattern::CharSearcher"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::pattern::CharSearcher",
                 "haystack"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1527,10 +1540,11 @@ Module str.
             M.read (|
               let old_finger :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::CharSearcher"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharSearcher",
                     "finger"
+                  |)
                 |) in
               let slice :=
                 M.alloc (|
@@ -1542,10 +1556,11 @@ Module str.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::str::pattern::CharSearcher"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
                           "haystack"
+                        |)
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
@@ -1553,10 +1568,11 @@ Module str.
                           ("start", M.read (| old_finger |));
                           ("end_",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::pattern::CharSearcher"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::pattern::CharSearcher",
                                 "finger_back"
+                              |)
                             |))
                         ]
                     ]
@@ -1579,7 +1595,13 @@ Module str.
                       "len",
                       []
                     |),
-                    [ M.get_struct_record_field iter "core::str::iter::Chars" "iter" ]
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        iter,
+                        "core::str::iter::Chars",
+                        "iter"
+                      |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -1601,7 +1623,7 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -1609,10 +1631,11 @@ Module str.
                       let ch := M.copy (| γ0_0 |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::pattern::CharSearcher"
-                            "finger" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::pattern::CharSearcher",
+                            "finger"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.add (|
@@ -1627,7 +1650,13 @@ Module str.
                                   "len",
                                   []
                                 |),
-                                [ M.get_struct_record_field iter "core::str::iter::Chars" "iter" ]
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    iter,
+                                    "core::str::iter::Chars",
+                                    "iter"
+                                  |)
+                                ]
                               |)
                             |)
                           |)
@@ -1643,10 +1672,11 @@ Module str.
                                     BinOp.Pure.eq
                                       (M.read (| ch |))
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::CharSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::CharSearcher",
                                           "needle"
+                                        |)
                                       |))
                                   |)) in
                               let _ :=
@@ -1660,10 +1690,11 @@ Module str.
                                   [
                                     M.read (| old_finger |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::pattern::CharSearcher"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::pattern::CharSearcher",
                                         "finger"
+                                      |)
                                     |)
                                   ]
                               |)));
@@ -1675,10 +1706,11 @@ Module str.
                                   [
                                     M.read (| old_finger |);
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::pattern::CharSearcher"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::pattern::CharSearcher",
                                         "finger"
+                                      |)
                                     |)
                                   ]
                               |)))
@@ -1785,10 +1817,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::CharSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::CharSearcher",
                                                 "haystack"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -1797,17 +1830,19 @@ Module str.
                                           [
                                             ("start",
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::CharSearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::CharSearcher",
                                                   "finger"
+                                                |)
                                               |));
                                             ("end_",
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::CharSearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::CharSearcher",
                                                   "finger_back"
+                                                |)
                                               |))
                                           ]
                                       ]
@@ -1819,7 +1854,7 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1852,7 +1887,7 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -1873,16 +1908,18 @@ Module str.
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
-                                  (M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::str::pattern::CharSearcher"
-                                    "utf8_encoded");
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::str::pattern::CharSearcher",
+                                    "utf8_encoded"
+                                  |));
                                 BinOp.Panic.sub (|
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::pattern::CharSearcher"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::pattern::CharSearcher",
                                       "utf8_size"
+                                    |)
                                   |),
                                   Value.Integer Integer.Usize 1
                                 |)
@@ -1902,7 +1939,7 @@ Module str.
                                     |)
                                   |) in
                                 let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -1910,10 +1947,11 @@ Module str.
                                 let index := M.copy (| γ0_0 |) in
                                 let _ :=
                                   let β :=
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::pattern::CharSearcher"
-                                      "finger" in
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::pattern::CharSearcher",
+                                      "finger"
+                                    |) in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
@@ -1934,16 +1972,18 @@ Module str.
                                             (M.alloc (|
                                               BinOp.Pure.ge
                                                 (M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::str::pattern::CharSearcher"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::str::pattern::CharSearcher",
                                                     "finger"
+                                                  |)
                                                 |))
                                                 (M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::str::pattern::CharSearcher"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::str::pattern::CharSearcher",
                                                     "utf8_size"
+                                                  |)
                                                 |))
                                             |)) in
                                         let _ :=
@@ -1955,16 +1995,18 @@ Module str.
                                           M.alloc (|
                                             BinOp.Panic.sub (|
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::CharSearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::CharSearcher",
                                                   "finger"
+                                                |)
                                               |),
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::CharSearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::CharSearcher",
                                                   "utf8_size"
+                                                |)
                                               |)
                                             |)
                                           |) in
@@ -1994,10 +2036,11 @@ Module str.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::str::pattern::CharSearcher"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::str::pattern::CharSearcher",
                                                                 "haystack"
+                                                              |)
                                                             |)
                                                           ]
                                                         |);
@@ -2007,17 +2050,18 @@ Module str.
                                                             ("start", M.read (| found_char |));
                                                             ("end_",
                                                               M.read (|
-                                                                M.get_struct_record_field
-                                                                  (M.read (| self |))
-                                                                  "core::str::pattern::CharSearcher"
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::str::pattern::CharSearcher",
                                                                   "finger"
+                                                                |)
                                                               |))
                                                           ]
                                                       ]
                                                     |)
                                                   |) in
                                                 let γ0_0 :=
-                                                  M.get_struct_tuple_field_or_break_match (|
+                                                  M.SubPointer.get_struct_tuple_field (|
                                                     γ,
                                                     "core::option::Option::Some",
                                                     0
@@ -2072,10 +2116,11 @@ Module str.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::CharSearcher"
-                                                                          "utf8_encoded";
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::CharSearcher",
+                                                                          "utf8_encoded"
+                                                                        |);
                                                                         Value.StructRecord
                                                                           "core::ops::range::Range"
                                                                           [
@@ -2085,12 +2130,11 @@ Module str.
                                                                                 0);
                                                                             ("end_",
                                                                               M.read (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (|
-                                                                                    self
-                                                                                  |))
-                                                                                  "core::str::pattern::CharSearcher"
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "core::str::pattern::CharSearcher",
                                                                                   "utf8_size"
+                                                                                |)
                                                                               |))
                                                                           ]
                                                                       ]
@@ -2115,10 +2159,11 @@ Module str.
                                                                       [
                                                                         M.read (| found_char |);
                                                                         M.read (|
-                                                                          M.get_struct_record_field
-                                                                            (M.read (| self |))
-                                                                            "core::str::pattern::CharSearcher"
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "core::str::pattern::CharSearcher",
                                                                             "finger"
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                   ]
@@ -2144,15 +2189,17 @@ Module str.
                                     M.read (|
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::pattern::CharSearcher"
-                                            "finger",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::pattern::CharSearcher",
+                                            "finger"
+                                          |),
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::pattern::CharSearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::pattern::CharSearcher",
                                               "finger_back"
+                                            |)
                                           |)
                                         |) in
                                       M.return_ (|
@@ -2215,10 +2262,11 @@ Module str.
             M.read (|
               let old_finger :=
                 M.copy (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::CharSearcher"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharSearcher",
                     "finger_back"
+                  |)
                 |) in
               let slice :=
                 M.alloc (|
@@ -2230,20 +2278,22 @@ Module str.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::str::pattern::CharSearcher"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
                           "haystack"
+                        |)
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
                         [
                           ("start",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::pattern::CharSearcher"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::pattern::CharSearcher",
                                 "finger"
+                              |)
                             |));
                           ("end_", M.read (| old_finger |))
                         ]
@@ -2267,7 +2317,13 @@ Module str.
                       "len",
                       []
                     |),
-                    [ M.get_struct_record_field iter "core::str::iter::Chars" "iter" ]
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        iter,
+                        "core::str::iter::Chars",
+                        "iter"
+                      |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -2289,7 +2345,7 @@ Module str.
                           |)
                         |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -2297,10 +2353,11 @@ Module str.
                       let ch := M.copy (| γ0_0 |) in
                       let _ :=
                         let β :=
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "core::str::pattern::CharSearcher"
-                            "finger_back" in
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::pattern::CharSearcher",
+                            "finger_back"
+                          |) in
                         M.write (|
                           β,
                           BinOp.Panic.sub (|
@@ -2315,7 +2372,13 @@ Module str.
                                   "len",
                                   []
                                 |),
-                                [ M.get_struct_record_field iter "core::str::iter::Chars" "iter" ]
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    iter,
+                                    "core::str::iter::Chars",
+                                    "iter"
+                                  |)
+                                ]
                               |)
                             |)
                           |)
@@ -2331,10 +2394,11 @@ Module str.
                                     BinOp.Pure.eq
                                       (M.read (| ch |))
                                       (M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::CharSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::CharSearcher",
                                           "needle"
+                                        |)
                                       |))
                                   |)) in
                               let _ :=
@@ -2347,10 +2411,11 @@ Module str.
                                   "core::str::pattern::SearchStep::Match"
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::pattern::CharSearcher"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::pattern::CharSearcher",
                                         "finger_back"
+                                      |)
                                     |);
                                     M.read (| old_finger |)
                                   ]
@@ -2362,10 +2427,11 @@ Module str.
                                   "core::str::pattern::SearchStep::Reject"
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::pattern::CharSearcher"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::pattern::CharSearcher",
                                         "finger_back"
+                                      |)
                                     |);
                                     M.read (| old_finger |)
                                   ]
@@ -2445,10 +2511,11 @@ Module str.
                         M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharSearcher"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharSearcher",
                               "haystack"
+                            |)
                           |)
                         ]
                       |)
@@ -2494,17 +2561,19 @@ Module str.
                                               [
                                                 ("start",
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::CharSearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::CharSearcher",
                                                       "finger"
+                                                    |)
                                                   |));
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::CharSearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::CharSearcher",
                                                       "finger_back"
+                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -2516,7 +2585,7 @@ Module str.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -2552,7 +2621,7 @@ Module str.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
@@ -2573,16 +2642,18 @@ Module str.
                                   [
                                     (* Unsize *)
                                     M.pointer_coercion
-                                      (M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::str::pattern::CharSearcher"
-                                        "utf8_encoded");
+                                      (M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::str::pattern::CharSearcher",
+                                        "utf8_encoded"
+                                      |));
                                     BinOp.Panic.sub (|
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::CharSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::CharSearcher",
                                           "utf8_size"
+                                        |)
                                       |),
                                       Value.Integer Integer.Usize 1
                                     |)
@@ -2602,7 +2673,7 @@ Module str.
                                         |)
                                       |) in
                                     let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -2612,10 +2683,11 @@ Module str.
                                       M.alloc (|
                                         BinOp.Panic.add (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::pattern::CharSearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::pattern::CharSearcher",
                                               "finger"
+                                            |)
                                           |),
                                           M.read (| index |)
                                         |)
@@ -2624,10 +2696,11 @@ Module str.
                                       M.alloc (|
                                         BinOp.Panic.sub (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::pattern::CharSearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::pattern::CharSearcher",
                                               "utf8_size"
+                                            |)
                                           |),
                                           Value.Integer Integer.Usize 1
                                         |)
@@ -2688,10 +2761,11 @@ Module str.
                                                                     BinOp.Panic.add (|
                                                                       M.read (| found_char |),
                                                                       M.read (|
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::CharSearcher"
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::CharSearcher",
                                                                           "utf8_size"
+                                                                        |)
                                                                       |)
                                                                     |))
                                                                 ]
@@ -2699,7 +2773,7 @@ Module str.
                                                           |)
                                                         |) in
                                                       let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -2755,10 +2829,11 @@ Module str.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.get_struct_record_field
-                                                                                (M.read (| self |))
-                                                                                "core::str::pattern::CharSearcher"
-                                                                                "utf8_encoded";
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (| self |),
+                                                                                "core::str::pattern::CharSearcher",
+                                                                                "utf8_encoded"
+                                                                              |);
                                                                               Value.StructRecord
                                                                                 "core::ops::range::Range"
                                                                                 [
@@ -2768,12 +2843,13 @@ Module str.
                                                                                       0);
                                                                                   ("end_",
                                                                                     M.read (|
-                                                                                      M.get_struct_record_field
-                                                                                        (M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.read (|
                                                                                           self
-                                                                                        |))
-                                                                                        "core::str::pattern::CharSearcher"
+                                                                                        |),
+                                                                                        "core::str::pattern::CharSearcher",
                                                                                         "utf8_size"
+                                                                                      |)
                                                                                     |))
                                                                                 ]
                                                                             ]
@@ -2792,10 +2868,11 @@ Module str.
                                                                   M.read (|
                                                                     let _ :=
                                                                       M.write (|
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::CharSearcher"
-                                                                          "finger_back",
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::CharSearcher",
+                                                                          "finger_back"
+                                                                        |),
                                                                         M.read (| found_char |)
                                                                       |) in
                                                                     M.return_ (|
@@ -2805,29 +2882,30 @@ Module str.
                                                                           Value.Tuple
                                                                             [
                                                                               M.read (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (|
-                                                                                    self
-                                                                                  |))
-                                                                                  "core::str::pattern::CharSearcher"
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "core::str::pattern::CharSearcher",
                                                                                   "finger_back"
+                                                                                |)
                                                                               |);
                                                                               BinOp.Panic.add (|
                                                                                 M.read (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::CharSearcher"
+                                                                                    |),
+                                                                                    "core::str::pattern::CharSearcher",
                                                                                     "finger_back"
+                                                                                  |)
                                                                                 |),
                                                                                 M.read (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::CharSearcher"
+                                                                                    |),
+                                                                                    "core::str::pattern::CharSearcher",
                                                                                     "utf8_size"
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             ]
@@ -2850,10 +2928,11 @@ Module str.
                                       |) in
                                     let _ :=
                                       M.write (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::CharSearcher"
-                                          "finger_back",
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::CharSearcher",
+                                          "finger_back"
+                                        |),
                                         M.read (| index |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
@@ -2864,15 +2943,17 @@ Module str.
                                         M.read (|
                                           let _ :=
                                             M.write (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::CharSearcher"
-                                                "finger_back",
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::CharSearcher",
+                                                "finger_back"
+                                              |),
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::CharSearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::CharSearcher",
                                                   "finger"
+                                                |)
                                               |)
                                             |) in
                                           M.return_ (|
@@ -3487,10 +3568,11 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", C, [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::MultiCharEqSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::MultiCharEqSearcher",
                         "char_eq"
+                      |)
                     ]
                   |));
                 ("haystack",
@@ -3503,10 +3585,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::MultiCharEqSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::MultiCharEqSearcher",
                         "haystack"
+                      |)
                     ]
                   |));
                 ("char_indices",
@@ -3519,10 +3602,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::MultiCharEqSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::MultiCharEqSearcher",
                         "char_indices"
+                      |)
                     ]
                   |))
               ]))
@@ -3562,25 +3646,28 @@ Module str.
                 M.read (| Value.String "char_eq" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::MultiCharEqSearcher"
-                    "char_eq");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::MultiCharEqSearcher",
+                    "char_eq"
+                  |));
                 M.read (| Value.String "haystack" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::MultiCharEqSearcher"
-                    "haystack");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::MultiCharEqSearcher",
+                    "haystack"
+                  |));
                 M.read (| Value.String "char_indices" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::MultiCharEqSearcher"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::MultiCharEqSearcher",
                       "char_indices"
+                    |)
                   |))
               ]
             |)))
@@ -3622,7 +3709,11 @@ Module str.
                 ("haystack", M.read (| haystack |));
                 ("char_eq",
                   M.read (|
-                    M.get_struct_tuple_field self "core::str::pattern::MultiCharEqPattern" 0
+                    M.SubPointer.get_struct_tuple_field (|
+                      self,
+                      "core::str::pattern::MultiCharEqPattern",
+                      0
+                    |)
                   |));
                 ("char_indices",
                   M.call_closure (|
@@ -3662,10 +3753,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::str::pattern::MultiCharEqSearcher"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::pattern::MultiCharEqSearcher",
                 "haystack"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3699,10 +3791,11 @@ Module str.
                 (M.read (|
                   let s :=
                     M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::MultiCharEqSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::MultiCharEqSearcher",
                         "char_indices"
+                      |)
                     |) in
                   let pre_len :=
                     M.alloc (|
@@ -3715,13 +3808,15 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| s |))
-                              "core::str::iter::CharIndices"
-                              "iter")
-                            "core::str::iter::Chars"
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| s |),
+                              "core::str::iter::CharIndices",
+                              "iter"
+                            |),
+                            "core::str::iter::Chars",
                             "iter"
+                          |)
                         ]
                       |)
                     |) in
@@ -3745,13 +3840,13 @@ Module str.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ1_0 := M.get_tuple_field γ0_0 0 in
-                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                            let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                            let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                             let i := M.copy (| γ1_0 |) in
                             let c := M.copy (| γ1_1 |) in
                             let len :=
@@ -3765,13 +3860,15 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.get_struct_record_field
-                                        (M.read (| s |))
-                                        "core::str::iter::CharIndices"
-                                        "iter")
-                                      "core::str::iter::Chars"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| s |),
+                                        "core::str::iter::CharIndices",
+                                        "iter"
+                                      |),
+                                      "core::str::iter::Chars",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -3796,10 +3893,11 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::MultiCharEqSearcher"
-                                                "char_eq";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::MultiCharEqSearcher",
+                                                "char_eq"
+                                              |);
                                               M.read (| c |)
                                             ]
                                           |)
@@ -3900,10 +3998,11 @@ Module str.
                 (M.read (|
                   let s :=
                     M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::MultiCharEqSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::MultiCharEqSearcher",
                         "char_indices"
+                      |)
                     |) in
                   let pre_len :=
                     M.alloc (|
@@ -3916,13 +4015,15 @@ Module str.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.get_struct_record_field
-                              (M.read (| s |))
-                              "core::str::iter::CharIndices"
-                              "iter")
-                            "core::str::iter::Chars"
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| s |),
+                              "core::str::iter::CharIndices",
+                              "iter"
+                            |),
+                            "core::str::iter::Chars",
                             "iter"
+                          |)
                         ]
                       |)
                     |) in
@@ -3946,13 +4047,13 @@ Module str.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ1_0 := M.get_tuple_field γ0_0 0 in
-                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                            let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                            let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                             let i := M.copy (| γ1_0 |) in
                             let c := M.copy (| γ1_1 |) in
                             let len :=
@@ -3966,13 +4067,15 @@ Module str.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.get_struct_record_field
-                                        (M.read (| s |))
-                                        "core::str::iter::CharIndices"
-                                        "iter")
-                                      "core::str::iter::Chars"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| s |),
+                                        "core::str::iter::CharIndices",
+                                        "iter"
+                                      |),
+                                      "core::str::iter::Chars",
                                       "iter"
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -3997,10 +4100,11 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::MultiCharEqSearcher"
-                                                "char_eq";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::MultiCharEqSearcher",
+                                                "char_eq"
+                                              |);
                                               M.read (| c |)
                                             ]
                                           |)
@@ -4109,10 +4213,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharArraySearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharArraySearcher",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -4149,10 +4254,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharArraySearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharArraySearcher",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -4197,10 +4303,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharArrayRefSearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharArrayRefSearcher",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -4237,10 +4344,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharArrayRefSearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharArrayRefSearcher",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -4488,10 +4596,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4518,10 +4627,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4548,10 +4658,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4578,10 +4689,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4625,10 +4737,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4655,10 +4768,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4685,10 +4799,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArraySearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArraySearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4952,10 +5067,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4982,10 +5098,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5012,10 +5129,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5042,10 +5160,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5089,10 +5208,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5119,10 +5239,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5149,10 +5270,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharArrayRefSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharArrayRefSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5212,10 +5334,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharSliceSearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharSliceSearcher",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -5252,10 +5375,11 @@ Module str.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharSliceSearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharSliceSearcher",
                       0
+                    |)
                   |))
               ]
             |)))
@@ -5294,10 +5418,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5324,10 +5449,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5354,10 +5480,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5384,10 +5511,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5431,10 +5559,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5461,10 +5590,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5491,10 +5621,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharSliceSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharSliceSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5764,10 +5895,11 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_tuple_field
-                      (M.read (| self |))
-                      "core::str::pattern::CharPredicateSearcher"
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::pattern::CharPredicateSearcher",
                       0
+                    |)
                   ]
                 |)
               ]))
@@ -5836,25 +5968,29 @@ Module str.
                         M.read (| Value.String "haystack" |);
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.get_struct_tuple_field
-                              (M.read (| self |))
-                              "core::str::pattern::CharPredicateSearcher"
-                              0)
-                            "core::str::pattern::MultiCharEqSearcher"
-                            "haystack")
+                          (M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "core::str::pattern::CharPredicateSearcher",
+                              0
+                            |),
+                            "core::str::pattern::MultiCharEqSearcher",
+                            "haystack"
+                          |))
                       ]
                     |);
                     M.read (| Value.String "char_indices" |);
                     (* Unsize *)
                     M.pointer_coercion
-                      (M.get_struct_record_field
-                        (M.get_struct_tuple_field
-                          (M.read (| self |))
-                          "core::str::pattern::CharPredicateSearcher"
-                          0)
-                        "core::str::pattern::MultiCharEqSearcher"
-                        "char_indices")
+                      (M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharPredicateSearcher",
+                          0
+                        |),
+                        "core::str::pattern::MultiCharEqSearcher",
+                        "char_indices"
+                      |))
                   ]
                 |)
               ]
@@ -5895,10 +6031,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5924,10 +6061,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5953,10 +6091,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5982,10 +6121,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6030,10 +6170,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6059,10 +6200,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6088,10 +6230,11 @@ Module str.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "core::str::pattern::CharPredicateSearcher"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::str::pattern::CharPredicateSearcher",
                   0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6970,7 +7113,7 @@ Module str.
                                                   |),
                                                   [ M.read (| haystack |) ]
                                                 |);
-                                                M.get_array_field (|
+                                                M.SubPointer.get_array_field (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "str",
@@ -7031,7 +7174,7 @@ Module str.
                                                 |)
                                               |) in
                                             let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -7366,10 +7509,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::StrSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::StrSearcher",
                         "haystack"
+                      |)
                     ]
                   |));
                 ("needle",
@@ -7382,10 +7526,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::StrSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::StrSearcher",
                         "needle"
+                      |)
                     ]
                   |));
                 ("searcher",
@@ -7398,10 +7543,11 @@ Module str.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::StrSearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::StrSearcher",
                         "searcher"
+                      |)
                     ]
                   |))
               ]))
@@ -7438,25 +7584,28 @@ Module str.
                 M.read (| Value.String "haystack" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::StrSearcher"
-                    "haystack");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::StrSearcher",
+                    "haystack"
+                  |));
                 M.read (| Value.String "needle" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::StrSearcher"
-                    "needle");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::StrSearcher",
+                    "needle"
+                  |));
                 M.read (| Value.String "searcher" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::StrSearcher"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::StrSearcher",
                       "searcher"
+                    |)
                   |))
               ]
             |)))
@@ -7508,7 +7657,7 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::StrSearcherImpl::Empty",
                           0
@@ -7534,7 +7683,7 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::StrSearcherImpl::TwoWay",
                           0
@@ -7588,7 +7737,7 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::StrSearcherImpl::Empty",
                           0
@@ -7612,7 +7761,7 @@ Module str.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let γ1_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::str::pattern::StrSearcherImpl::TwoWay",
                           0
@@ -7676,50 +7825,55 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::EmptyNeedle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::EmptyNeedle",
                         "position"
+                      |)
                     ]
                   |));
                 ("end_",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::EmptyNeedle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::EmptyNeedle",
                         "end"
+                      |)
                     ]
                   |));
                 ("is_match_fw",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::EmptyNeedle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::EmptyNeedle",
                         "is_match_fw"
+                      |)
                     ]
                   |));
                 ("is_match_bw",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::EmptyNeedle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::EmptyNeedle",
                         "is_match_bw"
+                      |)
                     ]
                   |));
                 ("is_finished",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::EmptyNeedle"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::EmptyNeedle",
                         "is_finished"
+                      |)
                     ]
                   |))
               ]))
@@ -7756,39 +7910,44 @@ Module str.
                 M.read (| Value.String "position" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::EmptyNeedle"
-                    "position");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::EmptyNeedle",
+                    "position"
+                  |));
                 M.read (| Value.String "end" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::EmptyNeedle"
-                    "end");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::EmptyNeedle",
+                    "end"
+                  |));
                 M.read (| Value.String "is_match_fw" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::EmptyNeedle"
-                    "is_match_fw");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::EmptyNeedle",
+                    "is_match_fw"
+                  |));
                 M.read (| Value.String "is_match_bw" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::pattern::EmptyNeedle"
-                    "is_match_bw");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::EmptyNeedle",
+                    "is_match_bw"
+                  |));
                 M.read (| Value.String "is_finished" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::EmptyNeedle"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::EmptyNeedle",
                       "is_finished"
+                    |)
                   |))
               ]
             |)))
@@ -7938,10 +8097,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::str::pattern::StrSearcher"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::pattern::StrSearcher",
                 "haystack"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8007,15 +8167,16 @@ Module str.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::StrSearcher"
-                      "searcher",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::StrSearcher",
+                      "searcher"
+                    |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::Empty",
                               0
@@ -8029,10 +8190,11 @@ Module str.
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
-                                        (M.get_struct_record_field
-                                          (M.read (| searcher |))
-                                          "core::str::pattern::EmptyNeedle"
-                                          "is_finished") in
+                                        (M.SubPointer.get_struct_record_field (|
+                                          M.read (| searcher |),
+                                          "core::str::pattern::EmptyNeedle",
+                                          "is_finished"
+                                        |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
@@ -8054,31 +8216,35 @@ Module str.
                             |) in
                           let is_match :=
                             M.copy (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
                                 "is_match_fw"
+                              |)
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
-                                "is_match_fw",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
+                                "is_match_fw"
+                              |),
                               UnOp.Pure.not
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::EmptyNeedle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::EmptyNeedle",
                                     "is_match_fw"
+                                  |)
                                 |))
                             |) in
                           let pos :=
                             M.copy (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
                                 "position"
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (|
@@ -8109,10 +8275,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
@@ -8143,10 +8310,11 @@ Module str.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::EmptyNeedle"
-                                        "is_finished",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::EmptyNeedle",
+                                        "is_finished"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -8155,7 +8323,7 @@ Module str.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -8163,10 +8331,11 @@ Module str.
                                   let ch := M.copy (| γ0_0 |) in
                                   let _ :=
                                     let β :=
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::EmptyNeedle"
-                                        "position" in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::EmptyNeedle",
+                                        "position"
+                                      |) in
                                     M.write (|
                                       β,
                                       BinOp.Panic.add (|
@@ -8187,10 +8356,11 @@ Module str.
                                       [
                                         M.read (| pos |);
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| searcher |))
-                                            "core::str::pattern::EmptyNeedle"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| searcher |),
+                                            "core::str::pattern::EmptyNeedle",
                                             "position"
+                                          |)
                                         |)
                                       ]
                                   |)))
@@ -8199,7 +8369,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::TwoWay",
                               0
@@ -8216,10 +8386,11 @@ Module str.
                                         (M.alloc (|
                                           BinOp.Pure.eq
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| searcher |))
-                                                "core::str::pattern::TwoWaySearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| searcher |),
+                                                "core::str::pattern::TwoWaySearcher",
                                                 "position"
+                                              |)
                                             |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
@@ -8229,10 +8400,11 @@ Module str.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::str::pattern::StrSearcher"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::str::pattern::StrSearcher",
                                                     "haystack"
+                                                  |)
                                                 |)
                                               ]
                                             |))
@@ -8260,10 +8432,11 @@ Module str.
                             M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::TwoWaySearcher"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::TwoWaySearcher",
                                     "memory"
+                                  |)
                                 |))
                                 (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |) in
@@ -8281,10 +8454,11 @@ Module str.
                                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::StrSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::StrSearcher",
                                           "haystack"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -8292,10 +8466,11 @@ Module str.
                                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::StrSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::StrSearcher",
                                           "needle"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -8307,13 +8482,13 @@ Module str.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::str::pattern::SearchStep::Reject",
                                       0
                                     |) in
                                   let γ0_1 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::str::pattern::SearchStep::Reject",
                                       1
@@ -8340,10 +8515,11 @@ Module str.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::str::pattern::StrSearcher"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::str::pattern::StrSearcher",
                                                                 "haystack"
+                                                              |)
                                                             |);
                                                             M.read (| b |)
                                                           ]
@@ -8384,19 +8560,21 @@ Module str.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::TwoWaySearcher"
-                                        "position",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::TwoWaySearcher",
+                                        "position"
+                                      |),
                                       M.call_closure (|
                                         M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                                         [
                                           M.read (| b |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| searcher |))
-                                              "core::str::pattern::TwoWaySearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| searcher |),
+                                              "core::str::pattern::TwoWaySearcher",
                                               "position"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -8459,10 +8637,11 @@ Module str.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::StrSearcher"
-                      "searcher",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::StrSearcher",
+                      "searcher"
+                    |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -8488,13 +8667,13 @@ Module str.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::str::pattern::SearchStep::Match",
                                                 0
                                               |) in
                                             let γ0_1 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::str::pattern::SearchStep::Match",
                                                 1
@@ -8538,7 +8717,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::TwoWay",
                               0
@@ -8548,10 +8727,11 @@ Module str.
                             M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::TwoWaySearcher"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::TwoWaySearcher",
                                     "memory"
+                                  |)
                                 |))
                                 (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |) in
@@ -8583,10 +8763,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -8598,10 +8779,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "needle"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -8628,10 +8810,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -8643,10 +8826,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "needle"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -8734,15 +8918,16 @@ Module str.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::StrSearcher"
-                      "searcher",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::StrSearcher",
+                      "searcher"
+                    |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::Empty",
                               0
@@ -8756,10 +8941,11 @@ Module str.
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
-                                        (M.get_struct_record_field
-                                          (M.read (| searcher |))
-                                          "core::str::pattern::EmptyNeedle"
-                                          "is_finished") in
+                                        (M.SubPointer.get_struct_record_field (|
+                                          M.read (| searcher |),
+                                          "core::str::pattern::EmptyNeedle",
+                                          "is_finished"
+                                        |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
@@ -8781,31 +8967,35 @@ Module str.
                             |) in
                           let is_match :=
                             M.copy (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
                                 "is_match_bw"
+                              |)
                             |) in
                           let _ :=
                             M.write (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
-                                "is_match_bw",
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
+                                "is_match_bw"
+                              |),
                               UnOp.Pure.not
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::EmptyNeedle"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::EmptyNeedle",
                                     "is_match_bw"
+                                  |)
                                 |))
                             |) in
                           let end_ :=
                             M.copy (|
-                              M.get_struct_record_field
-                                (M.read (| searcher |))
-                                "core::str::pattern::EmptyNeedle"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| searcher |),
+                                "core::str::pattern::EmptyNeedle",
                                 "end"
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (|
@@ -8836,10 +9026,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
@@ -8870,10 +9061,11 @@ Module str.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::EmptyNeedle"
-                                        "is_finished",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::EmptyNeedle",
+                                        "is_finished"
+                                      |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
@@ -8882,7 +9074,7 @@ Module str.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -8890,10 +9082,11 @@ Module str.
                                   let ch := M.copy (| γ0_0 |) in
                                   let _ :=
                                     let β :=
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::EmptyNeedle"
-                                        "end" in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::EmptyNeedle",
+                                        "end"
+                                      |) in
                                     M.write (|
                                       β,
                                       BinOp.Panic.sub (|
@@ -8913,10 +9106,11 @@ Module str.
                                       "core::str::pattern::SearchStep::Reject"
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| searcher |))
-                                            "core::str::pattern::EmptyNeedle"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| searcher |),
+                                            "core::str::pattern::EmptyNeedle",
                                             "end"
+                                          |)
                                         |);
                                         M.read (| end_ |)
                                       ]
@@ -8926,7 +9120,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::TwoWay",
                               0
@@ -8943,10 +9137,11 @@ Module str.
                                         (M.alloc (|
                                           BinOp.Pure.eq
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| searcher |))
-                                                "core::str::pattern::TwoWaySearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| searcher |),
+                                                "core::str::pattern::TwoWaySearcher",
                                                 "end"
+                                              |)
                                             |))
                                             (Value.Integer Integer.Usize 0)
                                         |)) in
@@ -8973,10 +9168,11 @@ Module str.
                             M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::TwoWaySearcher"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::TwoWaySearcher",
                                     "memory"
+                                  |)
                                 |))
                                 (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |) in
@@ -8994,10 +9190,11 @@ Module str.
                                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::StrSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::StrSearcher",
                                           "haystack"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -9005,10 +9202,11 @@ Module str.
                                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::StrSearcher"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::StrSearcher",
                                           "needle"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -9020,13 +9218,13 @@ Module str.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::str::pattern::SearchStep::Reject",
                                       0
                                     |) in
                                   let γ0_1 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::str::pattern::SearchStep::Reject",
                                       1
@@ -9053,10 +9251,11 @@ Module str.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| self |))
-                                                                "core::str::pattern::StrSearcher"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::str::pattern::StrSearcher",
                                                                 "haystack"
+                                                              |)
                                                             |);
                                                             M.read (| a |)
                                                           ]
@@ -9097,19 +9296,21 @@ Module str.
                                     |) in
                                   let _ :=
                                     M.write (|
-                                      M.get_struct_record_field
-                                        (M.read (| searcher |))
-                                        "core::str::pattern::TwoWaySearcher"
-                                        "end",
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| searcher |),
+                                        "core::str::pattern::TwoWaySearcher",
+                                        "end"
+                                      |),
                                       M.call_closure (|
                                         M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                                         [
                                           M.read (| a |);
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| searcher |))
-                                              "core::str::pattern::TwoWaySearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| searcher |),
+                                              "core::str::pattern::TwoWaySearcher",
                                               "end"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -9171,10 +9372,11 @@ Module str.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::StrSearcher"
-                      "searcher",
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::StrSearcher",
+                      "searcher"
+                    |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -9200,13 +9402,13 @@ Module str.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::str::pattern::SearchStep::Match",
                                                 0
                                               |) in
                                             let γ0_1 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::str::pattern::SearchStep::Match",
                                                 1
@@ -9250,7 +9452,7 @@ Module str.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::str::pattern::StrSearcherImpl::TwoWay",
                               0
@@ -9260,10 +9462,11 @@ Module str.
                             M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| searcher |))
-                                    "core::str::pattern::TwoWaySearcher"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| searcher |),
+                                    "core::str::pattern::TwoWaySearcher",
                                     "memory"
+                                  |)
                                 |))
                                 (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |) in
@@ -9295,10 +9498,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -9310,10 +9514,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "needle"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -9340,10 +9545,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "haystack"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -9355,10 +9561,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::StrSearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::StrSearcher",
                                                 "needle"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -9420,80 +9627,88 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "crit_pos"
+                      |)
                     ]
                   |));
                 ("crit_pos_back",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "crit_pos_back"
+                      |)
                     ]
                   |));
                 ("period",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "period"
+                      |)
                     ]
                   |));
                 ("byteset",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "byteset"
+                      |)
                     ]
                   |));
                 ("position",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "position"
+                      |)
                     ]
                   |));
                 ("end_",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "end"
+                      |)
                     ]
                   |));
                 ("memory",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "memory"
+                      |)
                     ]
                   |));
                 ("memory_back",
                   M.call_closure (|
                     M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "memory_back"
+                      |)
                     ]
                   |))
               ]))
@@ -9544,53 +9759,61 @@ Module str.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "crit_pos");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "crit_pos"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "crit_pos_back");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "crit_pos_back"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "period");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "period"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "byteset");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "byteset"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "position");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "position"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "end");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "end"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "core::str::pattern::TwoWaySearcher"
-                              "memory");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::pattern::TwoWaySearcher",
+                              "memory"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
                             (M.alloc (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::str::pattern::TwoWaySearcher"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::str::pattern::TwoWaySearcher",
                                 "memory_back"
+                              |)
                             |))
                         ]
                     |))
@@ -9715,8 +9938,8 @@ Module str.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ0_0 := M.get_tuple_field γ 0 in
-                      let γ0_1 := M.get_tuple_field γ 1 in
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let crit_pos_false := M.copy (| γ0_0 |) in
                       let period_false := M.copy (| γ0_1 |) in
                       M.match_operator (|
@@ -9733,8 +9956,8 @@ Module str.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 := M.get_tuple_field γ 0 in
-                              let γ0_1 := M.get_tuple_field γ 1 in
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let crit_pos_true := M.copy (| γ0_0 |) in
                               let period_true := M.copy (| γ0_1 |) in
                               M.match_operator (|
@@ -9771,8 +9994,8 @@ Module str.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ0_0 := M.get_tuple_field γ 0 in
-                                      let γ0_1 := M.get_tuple_field γ 1 in
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let crit_pos := M.copy (| γ0_0 |) in
                                       let period := M.copy (| γ0_1 |) in
                                       M.match_operator (|
@@ -10115,10 +10338,11 @@ Module str.
               (BinOp.Pure.bit_and
                 (BinOp.Panic.shr (|
                   M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::pattern::TwoWaySearcher"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::pattern::TwoWaySearcher",
                       "byteset"
+                    |)
                   |),
                   M.rust_cast (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer Integer.U8 63))
                 |))
@@ -10214,10 +10438,11 @@ Module str.
                 (M.read (|
                   let old_pos :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "position"
+                      |)
                     |) in
                   let needle_last :=
                     M.alloc (|
@@ -10252,10 +10477,11 @@ Module str.
                                         M.read (| haystack |);
                                         BinOp.Panic.add (|
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::pattern::TwoWaySearcher"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::pattern::TwoWaySearcher",
                                               "position"
+                                            |)
                                           |),
                                           M.read (| needle_last |)
                                         |)
@@ -10266,7 +10492,7 @@ Module str.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -10281,10 +10507,11 @@ Module str.
                                             M.read (|
                                               let _ :=
                                                 M.write (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::str::pattern::TwoWaySearcher"
-                                                    "position",
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::str::pattern::TwoWaySearcher",
+                                                    "position"
+                                                  |),
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -10306,10 +10533,11 @@ Module str.
                                                   [
                                                     M.read (| old_pos |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| self |))
-                                                        "core::str::pattern::TwoWaySearcher"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::str::pattern::TwoWaySearcher",
                                                         "position"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -10344,10 +10572,11 @@ Module str.
                                                 (BinOp.Pure.ne
                                                   (M.read (| old_pos |))
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::TwoWaySearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::TwoWaySearcher",
                                                       "position"
+                                                    |)
                                                   |))))
                                             |)
                                           |)) in
@@ -10371,10 +10600,11 @@ Module str.
                                                 [
                                                   M.read (| old_pos |);
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::TwoWaySearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::TwoWaySearcher",
                                                       "position"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -10414,10 +10644,11 @@ Module str.
                                           M.read (|
                                             let _ :=
                                               let β :=
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
-                                                  "position" in
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
+                                                  "position"
+                                                |) in
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.add (|
@@ -10450,10 +10681,11 @@ Module str.
                                                         |) in
                                                       let _ :=
                                                         M.write (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::str::pattern::TwoWaySearcher"
-                                                            "memory",
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::str::pattern::TwoWaySearcher",
+                                                            "memory"
+                                                          |),
                                                           Value.Integer Integer.Usize 0
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
@@ -10481,10 +10713,11 @@ Module str.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::TwoWaySearcher"
-                                          "crit_pos"));
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::TwoWaySearcher",
+                                          "crit_pos"
+                                        |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
@@ -10495,16 +10728,18 @@ Module str.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos"
+                                                |)
                                               |);
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
                                                   "memory"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -10577,7 +10812,7 @@ Module str.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -10593,23 +10828,22 @@ Module str.
                                                                   (M.alloc (|
                                                                     BinOp.Pure.ne
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
                                                                       |))
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
                                                                             BinOp.Panic.add (|
                                                                               M.read (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (|
-                                                                                    self
-                                                                                  |))
-                                                                                  "core::str::pattern::TwoWaySearcher"
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
+                                                                                |)
                                                                               |),
                                                                               M.read (| i |)
                                                                             |)
@@ -10627,10 +10861,11 @@ Module str.
                                                                   M.read (|
                                                                     let _ :=
                                                                       let β :=
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::TwoWaySearcher"
-                                                                          "position" in
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::TwoWaySearcher",
+                                                                          "position"
+                                                                        |) in
                                                                       M.write (|
                                                                         β,
                                                                         BinOp.Panic.add (|
@@ -10639,12 +10874,11 @@ Module str.
                                                                             BinOp.Panic.sub (|
                                                                               M.read (| i |),
                                                                               M.read (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (|
-                                                                                    self
-                                                                                  |))
-                                                                                  "core::str::pattern::TwoWaySearcher"
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
                                                                                   "crit_pos"
+                                                                                |)
                                                                               |)
                                                                             |),
                                                                             Value.Integer
@@ -10676,12 +10910,13 @@ Module str.
                                                                                 |) in
                                                                               let _ :=
                                                                                 M.write (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
-                                                                                    "memory",
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
+                                                                                    "memory"
+                                                                                  |),
                                                                                   Value.Integer
                                                                                     Integer.Usize
                                                                                     0
@@ -10727,10 +10962,11 @@ Module str.
                                         M.alloc (| Value.Integer Integer.Usize 0 |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::TwoWaySearcher"
-                                          "memory"))
+                                        (M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::TwoWaySearcher",
+                                          "memory"
+                                        |)))
                                   ]
                                 |)
                               |) in
@@ -10770,10 +11006,11 @@ Module str.
                                                 ("start", M.read (| start |));
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::TwoWaySearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::TwoWaySearcher",
                                                       "crit_pos"
+                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -10818,7 +11055,7 @@ Module str.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -10834,23 +11071,22 @@ Module str.
                                                                   (M.alloc (|
                                                                     BinOp.Pure.ne
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
                                                                       |))
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
                                                                             BinOp.Panic.add (|
                                                                               M.read (|
-                                                                                M.get_struct_record_field
-                                                                                  (M.read (|
-                                                                                    self
-                                                                                  |))
-                                                                                  "core::str::pattern::TwoWaySearcher"
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
+                                                                                |)
                                                                               |),
                                                                               M.read (| i |)
                                                                             |)
@@ -10868,19 +11104,21 @@ Module str.
                                                                   M.read (|
                                                                     let _ :=
                                                                       let β :=
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::TwoWaySearcher"
-                                                                          "position" in
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::TwoWaySearcher",
+                                                                          "position"
+                                                                        |) in
                                                                       M.write (|
                                                                         β,
                                                                         BinOp.Panic.add (|
                                                                           M.read (| β |),
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::pattern::TwoWaySearcher"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::pattern::TwoWaySearcher",
                                                                               "period"
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |) in
@@ -10907,12 +11145,13 @@ Module str.
                                                                                 |) in
                                                                               let _ :=
                                                                                 M.write (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
-                                                                                    "memory",
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
+                                                                                    "memory"
+                                                                                  |),
                                                                                   BinOp.Panic.sub (|
                                                                                     M.call_closure (|
                                                                                       M.get_associated_function (|
@@ -10933,12 +11172,13 @@ Module str.
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
-                                                                                      M.get_struct_record_field
-                                                                                        (M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.read (|
                                                                                           self
-                                                                                        |))
-                                                                                        "core::str::pattern::TwoWaySearcher"
+                                                                                        |),
+                                                                                        "core::str::pattern::TwoWaySearcher",
                                                                                         "period"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |) in
@@ -10969,17 +11209,19 @@ Module str.
                                 |)) in
                             let match_pos :=
                               M.copy (|
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::pattern::TwoWaySearcher"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::pattern::TwoWaySearcher",
                                   "position"
+                                |)
                               |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::pattern::TwoWaySearcher"
-                                  "position" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::pattern::TwoWaySearcher",
+                                  "position"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.add (|
@@ -11012,10 +11254,11 @@ Module str.
                                         |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::pattern::TwoWaySearcher"
-                                            "memory",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::pattern::TwoWaySearcher",
+                                            "memory"
+                                          |),
                                           Value.Integer Integer.Usize 0
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -11145,10 +11388,11 @@ Module str.
                 (M.read (|
                   let old_end :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::str::pattern::TwoWaySearcher"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::str::pattern::TwoWaySearcher",
                         "end"
+                      |)
                     |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -11175,10 +11419,11 @@ Module str.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::str::pattern::TwoWaySearcher"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::str::pattern::TwoWaySearcher",
                                                 "end"
+                                              |)
                                             |);
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -11197,7 +11442,7 @@ Module str.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
@@ -11212,10 +11457,11 @@ Module str.
                                             M.read (|
                                               let _ :=
                                                 M.write (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "core::str::pattern::TwoWaySearcher"
-                                                    "end",
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::str::pattern::TwoWaySearcher",
+                                                    "end"
+                                                  |),
                                                   Value.Integer Integer.Usize 0
                                                 |) in
                                               M.return_ (|
@@ -11263,10 +11509,11 @@ Module str.
                                                 (BinOp.Pure.ne
                                                   (M.read (| old_end |))
                                                   (M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::TwoWaySearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::TwoWaySearcher",
                                                       "end"
+                                                    |)
                                                   |))))
                                             |)
                                           |)) in
@@ -11289,10 +11536,11 @@ Module str.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    M.get_struct_record_field
-                                                      (M.read (| self |))
-                                                      "core::str::pattern::TwoWaySearcher"
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::str::pattern::TwoWaySearcher",
                                                       "end"
+                                                    |)
                                                   |);
                                                   M.read (| old_end |)
                                                 ]
@@ -11333,10 +11581,11 @@ Module str.
                                           M.read (|
                                             let _ :=
                                               let β :=
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
-                                                  "end" in
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
+                                                  "end"
+                                                |) in
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.sub (|
@@ -11369,10 +11618,11 @@ Module str.
                                                         |) in
                                                       let _ :=
                                                         M.write (|
-                                                          M.get_struct_record_field
-                                                            (M.read (| self |))
-                                                            "core::str::pattern::TwoWaySearcher"
-                                                            "memory_back",
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::str::pattern::TwoWaySearcher",
+                                                            "memory_back"
+                                                          |),
                                                           M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
@@ -11409,10 +11659,11 @@ Module str.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::TwoWaySearcher"
-                                          "crit_pos_back"));
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::TwoWaySearcher",
+                                          "crit_pos_back"
+                                        |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
@@ -11423,16 +11674,18 @@ Module str.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos_back"
+                                                |)
                                               |);
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
                                                   "memory_back"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -11518,7 +11771,7 @@ Module str.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -11534,24 +11787,25 @@ Module str.
                                                                   (M.alloc (|
                                                                     BinOp.Pure.ne
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
                                                                       |))
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
                                                                             BinOp.Panic.add (|
                                                                               BinOp.Panic.sub (|
                                                                                 M.read (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
+                                                                                  |)
                                                                                 |),
                                                                                 M.call_closure (|
                                                                                   M.get_associated_function (|
@@ -11586,20 +11840,22 @@ Module str.
                                                                   M.read (|
                                                                     let _ :=
                                                                       let β :=
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::TwoWaySearcher"
-                                                                          "end" in
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::TwoWaySearcher",
+                                                                          "end"
+                                                                        |) in
                                                                       M.write (|
                                                                         β,
                                                                         BinOp.Panic.sub (|
                                                                           M.read (| β |),
                                                                           BinOp.Panic.sub (|
                                                                             M.read (|
-                                                                              M.get_struct_record_field
-                                                                                (M.read (| self |))
-                                                                                "core::str::pattern::TwoWaySearcher"
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (| self |),
+                                                                                "core::str::pattern::TwoWaySearcher",
                                                                                 "crit_pos_back"
+                                                                              |)
                                                                             |),
                                                                             M.read (| i |)
                                                                           |)
@@ -11628,12 +11884,13 @@ Module str.
                                                                                 |) in
                                                                               let _ :=
                                                                                 M.write (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
-                                                                                    "memory_back",
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
+                                                                                    "memory_back"
+                                                                                  |),
                                                                                   M.call_closure (|
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
@@ -11703,10 +11960,11 @@ Module str.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::str::pattern::TwoWaySearcher"
-                                          "memory_back"))
+                                        (M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::str::pattern::TwoWaySearcher",
+                                          "memory_back"
+                                        |)))
                                   ]
                                 |)
                               |) in
@@ -11730,10 +11988,11 @@ Module str.
                                           [
                                             ("start",
                                               M.read (|
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::str::pattern::TwoWaySearcher"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::str::pattern::TwoWaySearcher",
                                                   "crit_pos_back"
+                                                |)
                                               |));
                                             ("end_", M.read (| needle_end |))
                                           ]
@@ -11773,7 +12032,7 @@ Module str.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::option::Option::Some",
                                                           0
@@ -11789,24 +12048,25 @@ Module str.
                                                                   (M.alloc (|
                                                                     BinOp.Pure.ne
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
                                                                       |))
                                                                       (M.read (|
-                                                                        M.get_array_field (|
+                                                                        M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
                                                                             BinOp.Panic.add (|
                                                                               BinOp.Panic.sub (|
                                                                                 M.read (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
+                                                                                  |)
                                                                                 |),
                                                                                 M.call_closure (|
                                                                                   M.get_associated_function (|
@@ -11841,19 +12101,21 @@ Module str.
                                                                   M.read (|
                                                                     let _ :=
                                                                       let β :=
-                                                                        M.get_struct_record_field
-                                                                          (M.read (| self |))
-                                                                          "core::str::pattern::TwoWaySearcher"
-                                                                          "end" in
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::str::pattern::TwoWaySearcher",
+                                                                          "end"
+                                                                        |) in
                                                                       M.write (|
                                                                         β,
                                                                         BinOp.Panic.sub (|
                                                                           M.read (| β |),
                                                                           M.read (|
-                                                                            M.get_struct_record_field
-                                                                              (M.read (| self |))
-                                                                              "core::str::pattern::TwoWaySearcher"
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::str::pattern::TwoWaySearcher",
                                                                               "period"
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |) in
@@ -11880,19 +12142,21 @@ Module str.
                                                                                 |) in
                                                                               let _ :=
                                                                                 M.write (|
-                                                                                  M.get_struct_record_field
-                                                                                    (M.read (|
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.read (|
                                                                                       self
-                                                                                    |))
-                                                                                    "core::str::pattern::TwoWaySearcher"
-                                                                                    "memory_back",
+                                                                                    |),
+                                                                                    "core::str::pattern::TwoWaySearcher",
+                                                                                    "memory_back"
+                                                                                  |),
                                                                                   M.read (|
-                                                                                    M.get_struct_record_field
-                                                                                      (M.read (|
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.read (|
                                                                                         self
-                                                                                      |))
-                                                                                      "core::str::pattern::TwoWaySearcher"
+                                                                                      |),
+                                                                                      "core::str::pattern::TwoWaySearcher",
                                                                                       "period"
+                                                                                    |)
                                                                                   |)
                                                                                 |) in
                                                                               M.alloc (|
@@ -11924,10 +12188,11 @@ Module str.
                               M.alloc (|
                                 BinOp.Panic.sub (|
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::str::pattern::TwoWaySearcher"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::pattern::TwoWaySearcher",
                                       "end"
+                                    |)
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -11941,10 +12206,11 @@ Module str.
                               |) in
                             let _ :=
                               let β :=
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::str::pattern::TwoWaySearcher"
-                                  "end" in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::pattern::TwoWaySearcher",
+                                  "end"
+                                |) in
                               M.write (|
                                 β,
                                 BinOp.Panic.sub (|
@@ -11977,10 +12243,11 @@ Module str.
                                         |) in
                                       let _ :=
                                         M.write (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::str::pattern::TwoWaySearcher"
-                                            "memory_back",
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::pattern::TwoWaySearcher",
+                                            "memory_back"
+                                          |),
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -12099,7 +12366,7 @@ Module str.
                                 |)
                               |) in
                             let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::option::Option::Some",
                                 0
@@ -12108,7 +12375,7 @@ Module str.
                             let a := M.copy (| γ0_0 |) in
                             let b :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
                                     BinOp.Panic.add (| M.read (| left |), M.read (| offset |) |)
@@ -12354,7 +12621,7 @@ Module str.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let a :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
                                     BinOp.Panic.sub (|
@@ -12372,7 +12639,7 @@ Module str.
                               |) in
                             let b :=
                               M.copy (|
-                                M.get_array_field (|
+                                M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
                                     BinOp.Panic.sub (|
@@ -12970,7 +13237,7 @@ Module str.
                   |) in
                 let first_probe :=
                   M.copy (|
-                    M.get_array_field (|
+                    M.SubPointer.get_array_field (|
                       M.read (| needle |),
                       M.alloc (| Value.Integer Integer.Usize 0 |)
                     |)
@@ -13080,7 +13347,7 @@ Module str.
                                                     let idx := M.copy (| γ |) in
                                                     BinOp.Pure.ne
                                                       (M.read (|
-                                                        M.get_array_field (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.read (| needle |),
                                                           idx
                                                         |)
@@ -13097,7 +13364,7 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -13256,7 +13523,10 @@ Module str.
                       |),
                       [
                         M.read (|
-                          M.get_array_field (| M.read (| needle |), second_probe_offset |)
+                          M.SubPointer.get_array_field (|
+                            M.read (| needle |),
+                            second_probe_offset
+                          |)
                         |)
                       ]
                     |)
@@ -13873,7 +14143,7 @@ Module str.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::option::Option::Some",
                                                             0
@@ -13881,7 +14151,10 @@ Module str.
                                                         let j := M.copy (| γ0_0 |) in
                                                         let _ :=
                                                           M.write (|
-                                                            M.get_array_field (| masks, j |),
+                                                            M.SubPointer.get_array_field (|
+                                                              masks,
+                                                              j
+                                                            |),
                                                             M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::ops::function::Fn",
@@ -13980,7 +14253,7 @@ Module str.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::option::Option::Some",
                                                             0
@@ -13988,7 +14261,10 @@ Module str.
                                                         let j := M.copy (| γ0_0 |) in
                                                         let mask :=
                                                           M.copy (|
-                                                            M.get_array_field (| masks, j |)
+                                                            M.SubPointer.get_array_field (|
+                                                              masks,
+                                                              j
+                                                            |)
                                                           |) in
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
@@ -14437,8 +14713,8 @@ Module str.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let left_val := M.copy (| γ0_0 |) in
                                     let right_val := M.copy (| γ0_1 |) in
                                     M.match_operator (|
@@ -14613,13 +14889,21 @@ Module str.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
-                                                            M.get_struct_tuple_field_or_break_match (|
+                                                            M.SubPointer.get_struct_tuple_field (|
                                                               γ,
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                                          let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                                          let γ1_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ0_0,
+                                                              0
+                                                            |) in
+                                                          let γ1_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ0_0,
+                                                              1
+                                                            |) in
                                                           let γ1_0 := M.read (| γ1_0 |) in
                                                           let b1 := M.copy (| γ1_0 |) in
                                                           let γ1_1 := M.read (| γ1_1 |) in
@@ -14693,8 +14977,8 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 := M.get_tuple_field γ 0 in
-                        let γ0_1 := M.get_tuple_field γ 1 in
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let px := M.copy (| γ0_0 |) in
                         let py := M.copy (| γ0_1 |) in
                         M.match_operator (|
@@ -14748,8 +15032,8 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ0_0 := M.get_tuple_field γ 0 in
-                                let γ0_1 := M.get_tuple_field γ 1 in
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let pxend := M.copy (| γ0_0 |) in
                                 let pyend := M.copy (| γ0_1 |) in
                                 let _ :=

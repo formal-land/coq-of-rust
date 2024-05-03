@@ -53,7 +53,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                                     [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                   |),
                                   [
-                                    M.get_struct_record_field (|
+                                    M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "drop::Droppable",
                                       "name"

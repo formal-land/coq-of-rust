@@ -114,8 +114,8 @@ Module future.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.call_closure (|
+                M.SubPointer.get_struct_record_field (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
@@ -128,9 +128,10 @@ Module future.
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))
-                  "core::future::poll_fn::PollFn"
-                  "f";
+                  |),
+                  "core::future::poll_fn::PollFn",
+                  "f"
+                |);
                 Value.Tuple [ M.read (| cx |) ]
               ]
             |)))

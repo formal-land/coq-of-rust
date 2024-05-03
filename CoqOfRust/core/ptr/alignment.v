@@ -77,8 +77,16 @@ Module ptr.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| self |)) "core::ptr::alignment::Alignment" 0;
-                M.get_struct_tuple_field (M.read (| other |)) "core::ptr::alignment::Alignment" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::ptr::alignment::Alignment",
+                  0
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "core::ptr::alignment::Alignment",
+                  0
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -147,7 +155,7 @@ Module ptr.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::ptr::alignment::Alignment",
                         0
@@ -374,7 +382,9 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
-              (M.read (| M.get_struct_tuple_field self "core::ptr::alignment::Alignment" 0 |))))
+              (M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::ptr::alignment::Alignment", 0 |)
+              |))))
         | _, _ => M.impossible
         end.
       

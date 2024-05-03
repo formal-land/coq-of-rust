@@ -94,16 +94,18 @@ Module str.
             LogicalOp.and (|
               BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::error::Utf8Error"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::error::Utf8Error",
                     "valid_up_to"
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "core::str::error::Utf8Error"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "core::str::error::Utf8Error",
                     "valid_up_to"
+                  |)
                 |)),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -115,14 +117,16 @@ Module str.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::error::Utf8Error"
-                      "error_len";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "core::str::error::Utf8Error"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::error::Utf8Error",
                       "error_len"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "core::str::error::Utf8Error",
+                      "error_len"
+                    |)
                   ]
                 |)))
             |)))
@@ -192,18 +196,20 @@ Module str.
                 M.read (| Value.String "valid_up_to" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::str::error::Utf8Error"
-                    "valid_up_to");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::error::Utf8Error",
+                    "valid_up_to"
+                  |));
                 M.read (| Value.String "error_len" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::str::error::Utf8Error"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::error::Utf8Error",
                       "error_len"
+                    |)
                   |))
               ]
             |)))
@@ -232,10 +238,11 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "core::str::error::Utf8Error"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::str::error::Utf8Error",
                 "valid_up_to"
+              |)
             |)))
         | _, _ => M.impossible
         end.
@@ -258,15 +265,16 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "core::str::error::Utf8Error"
-                  "error_len",
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::error::Utf8Error",
+                  "error_len"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -318,12 +326,13 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::str::error::Utf8Error"
-                          "error_len" in
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::error::Utf8Error",
+                          "error_len"
+                        |) in
                       let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
@@ -374,10 +383,11 @@ Module str.
                                             [ Ty.path "usize" ]
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::error::Utf8Error"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::error::Utf8Error",
                                               "valid_up_to"
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -427,10 +437,11 @@ Module str.
                                             [ Ty.path "usize" ]
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::str::error::Utf8Error"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::str::error::Utf8Error",
                                               "valid_up_to"
+                                            |)
                                           ]
                                         |)
                                       ]

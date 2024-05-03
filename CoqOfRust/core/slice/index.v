@@ -1071,7 +1071,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            M.get_array_field (| M.read (| slice |), self |)))
+            M.SubPointer.get_array_field (| M.read (| slice |), self |)))
         | _, _ => M.impossible
         end.
       
@@ -1088,7 +1088,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
-            M.get_array_field (| M.read (| slice |), self |)))
+            M.SubPointer.get_array_field (| M.read (| slice |), self |)))
         | _, _ => M.impossible
         end.
       
@@ -1773,15 +1773,27 @@ Module slice.
                             LogicalOp.or (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)),
                               ltac:(M.monadic
                                 (BinOp.Pure.gt
                                   (M.read (|
-                                    M.get_struct_record_field self "core::ops::range::Range" "end"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::ops::range::Range",
+                                      "end"
+                                    |)
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -1848,15 +1860,27 @@ Module slice.
                             LogicalOp.or (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)),
                               ltac:(M.monadic
                                 (BinOp.Pure.gt
                                   (M.read (|
-                                    M.get_struct_record_field self "core::ops::range::Range" "end"
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::ops::range::Range",
+                                      "end"
+                                    |)
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -1939,24 +1963,27 @@ Module slice.
                                         (LogicalOp.and (|
                                           BinOp.Pure.ge
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             |)),
                                           ltac:(M.monadic
                                             (BinOp.Pure.le
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "core::ops::range::Range"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::ops::range::Range",
                                                   "end"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -2019,8 +2046,20 @@ Module slice.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
                     [
-                      M.read (| M.get_struct_record_field self "core::ops::range::Range" "end" |);
-                      M.read (| M.get_struct_record_field self "core::ops::range::Range" "start" |)
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -2040,7 +2079,11 @@ Module slice.
                           [ M.read (| slice |) ]
                         |);
                         M.read (|
-                          M.get_struct_record_field self "core::ops::range::Range" "start"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::ops::range::Range",
+                            "start"
+                          |)
                         |)
                       ]
                     |);
@@ -2094,24 +2137,27 @@ Module slice.
                                         (LogicalOp.and (|
                                           BinOp.Pure.ge
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::ops::range::Range",
                                                 "end"
+                                              |)
                                             |))
                                             (M.read (|
-                                              M.get_struct_record_field
-                                                self
-                                                "core::ops::range::Range"
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::ops::range::Range",
                                                 "start"
+                                              |)
                                             |)),
                                           ltac:(M.monadic
                                             (BinOp.Pure.le
                                               (M.read (|
-                                                M.get_struct_record_field
-                                                  self
-                                                  "core::ops::range::Range"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::ops::range::Range",
                                                   "end"
+                                                |)
                                               |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -2174,8 +2220,20 @@ Module slice.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
                     [
-                      M.read (| M.get_struct_record_field self "core::ops::range::Range" "end" |);
-                      M.read (| M.get_struct_record_field self "core::ops::range::Range" "start" |)
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -2195,7 +2253,11 @@ Module slice.
                           [ M.read (| slice |) ]
                         |);
                         M.read (|
-                          M.get_struct_record_field self "core::ops::range::Range" "start"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::ops::range::Range",
+                            "start"
+                          |)
                         |)
                       ]
                     |);
@@ -2237,10 +2299,18 @@ Module slice.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |))
                             |)) in
                         let _ :=
@@ -2251,10 +2321,18 @@ Module slice.
                               M.get_function (| "core::slice::index::slice_index_order_fail", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -2272,10 +2350,11 @@ Module slice.
                                     (M.alloc (|
                                       BinOp.Pure.gt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "core::ops::range::Range"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::ops::range::Range",
                                             "end"
+                                          |)
                                         |))
                                         (M.call_closure (|
                                           M.get_associated_function (|
@@ -2300,10 +2379,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "core::ops::range::Range"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::ops::range::Range",
                                             "end"
+                                          |)
                                         |);
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2368,10 +2448,18 @@ Module slice.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |))
                                 (M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |))
                             |)) in
                         let _ :=
@@ -2382,10 +2470,18 @@ Module slice.
                               M.get_function (| "core::slice::index::slice_index_order_fail", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "start"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
                                 |);
                                 M.read (|
-                                  M.get_struct_record_field self "core::ops::range::Range" "end"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
                                 |)
                               ]
                             |)
@@ -2403,10 +2499,11 @@ Module slice.
                                     (M.alloc (|
                                       BinOp.Pure.gt
                                         (M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "core::ops::range::Range"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::ops::range::Range",
                                             "end"
+                                          |)
                                         |))
                                         (M.call_closure (|
                                           M.get_associated_function (|
@@ -2431,10 +2528,11 @@ Module slice.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            self
-                                            "core::ops::range::Range"
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::ops::range::Range",
                                             "end"
+                                          |)
                                         |);
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2520,7 +2618,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2554,7 +2658,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2589,7 +2699,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2624,7 +2740,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2658,7 +2780,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2692,7 +2820,13 @@ Module slice.
                   [
                     ("start", Value.Integer Integer.Usize 0);
                     ("end_",
-                      M.read (| M.get_struct_record_field self "core::ops::range::RangeTo" "end" |))
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeTo",
+                          "end"
+                        |)
+                      |))
                   ];
                 M.read (| slice |)
               ]
@@ -2751,7 +2885,11 @@ Module slice.
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field self "core::ops::range::RangeFrom" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeFrom",
+                          "start"
+                        |)
                       |));
                     ("end_",
                       M.call_closure (|
@@ -2791,7 +2929,11 @@ Module slice.
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field self "core::ops::range::RangeFrom" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeFrom",
+                          "start"
+                        |)
                       |));
                     ("end_",
                       M.call_closure (|
@@ -2832,7 +2974,11 @@ Module slice.
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field self "core::ops::range::RangeFrom" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeFrom",
+                          "start"
+                        |)
                       |));
                     ("end_",
                       M.call_closure (|
@@ -2877,7 +3023,11 @@ Module slice.
                   [
                     ("start",
                       M.read (|
-                        M.get_struct_record_field self "core::ops::range::RangeFrom" "start"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeFrom",
+                          "start"
+                        |)
                       |));
                     ("end_",
                       M.call_closure (|
@@ -2923,10 +3073,11 @@ Module slice.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::ops::range::RangeFrom"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::RangeFrom",
                                     "start"
+                                  |)
                                 |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
@@ -2948,10 +3099,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::ops::range::RangeFrom"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::RangeFrom",
                                     "start"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3012,10 +3164,11 @@ Module slice.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::ops::range::RangeFrom"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::RangeFrom",
                                     "start"
+                                  |)
                                 |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
@@ -3037,10 +3190,11 @@ Module slice.
                               |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    self
-                                    "core::ops::range::RangeFrom"
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::RangeFrom",
                                     "start"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3649,7 +3803,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3689,7 +3847,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3730,7 +3892,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3771,7 +3937,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3811,7 +3981,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3851,7 +4025,11 @@ Module slice.
                   [
                     Value.Integer Integer.Usize 0;
                     M.read (|
-                      M.get_struct_record_field self "core::ops::range::RangeToInclusive" "end"
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::RangeToInclusive",
+                        "end"
+                      |)
                     |)
                   ]
                 |);
@@ -3922,7 +4100,13 @@ Module slice.
           let bounds := M.alloc (| bounds |) in
           M.read (|
             let len :=
-              M.copy (| M.get_struct_record_field bounds "core::ops::range::RangeTo" "end" |) in
+              M.copy (|
+                M.SubPointer.get_struct_record_field (|
+                  bounds,
+                  "core::ops::range::RangeTo",
+                  "end"
+                |)
+              |) in
             let start :=
               M.alloc (|
                 M.call_closure (|
@@ -3944,7 +4128,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::range::Bound::Included",
                             0
@@ -3955,7 +4139,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::range::Bound::Excluded",
                             0
@@ -4024,7 +4208,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::range::Bound::Included",
                             0
@@ -4071,7 +4255,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::range::Bound::Excluded",
                             0
@@ -4164,8 +4348,8 @@ Module slice.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
                   M.read (|
@@ -4177,7 +4361,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Included",
                                     0
@@ -4187,7 +4371,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Excluded",
                                     0
@@ -4211,7 +4395,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Included",
                                     0
@@ -4226,7 +4410,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Excluded",
                                     0
@@ -4283,8 +4467,8 @@ Module slice.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
                   M.catch_return (|
@@ -4298,7 +4482,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::range::Bound::Included",
                                         0
@@ -4308,7 +4492,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::range::Bound::Excluded",
                                         0
@@ -4342,7 +4526,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -4379,7 +4563,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -4401,7 +4585,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::range::Bound::Included",
                                         0
@@ -4435,7 +4619,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -4472,7 +4656,7 @@ Module slice.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -4484,7 +4668,7 @@ Module slice.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::range::Bound::Excluded",
                                         0
@@ -4550,8 +4734,8 @@ Module slice.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
                   M.read (|
@@ -4563,7 +4747,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Included",
                                     0
@@ -4573,7 +4757,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Excluded",
                                     0
@@ -4633,7 +4817,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Included",
                                     0
@@ -4684,7 +4868,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::range::Bound::Excluded",
                                     0
@@ -4776,7 +4960,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4813,7 +4997,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4889,7 +5073,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4926,7 +5110,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0

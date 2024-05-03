@@ -652,7 +652,12 @@ Module cell.
                             "get",
                             []
                           |),
-                          [ M.get_struct_record_field (M.read (| self |)) "core::cell::Cell" "value"
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::cell::Cell",
+                              "value"
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -662,10 +667,11 @@ Module cell.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "core::cell::Cell"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "core::cell::Cell",
                               "value"
+                            |)
                           ]
                         |)
                       ]
@@ -704,7 +710,13 @@ Module cell.
                   "get",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "core::cell::Cell" "value" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::cell::Cell",
+                    "value"
+                  |)
+                ]
               |);
               M.read (| val |)
             ]
@@ -733,7 +745,11 @@ Module cell.
               "into_inner",
               []
             |),
-            [ M.read (| M.get_struct_record_field self "core::cell::Cell" "value" |) ]
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (| self, "core::cell::Cell", "value" |)
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -761,7 +777,13 @@ Module cell.
                 "get",
                 []
               |),
-              [ M.get_struct_record_field (M.read (| self |)) "core::cell::Cell" "value" ]
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::cell::Cell",
+                  "value"
+                |)
+              ]
             |)
           |)))
       | _, _ => M.impossible
@@ -848,7 +870,13 @@ Module cell.
               "get",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::Cell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::Cell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -874,7 +902,13 @@ Module cell.
               "get_mut",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::Cell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::Cell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1383,7 +1417,11 @@ Module cell.
               "into_inner",
               []
             |),
-            [ M.read (| M.get_struct_record_field self "core::cell::RefCell" "value" |) ]
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (| self, "core::cell::RefCell", "value" |)
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1599,21 +1637,13 @@ Module cell.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let b := M.copy (| γ0_0 |) in
                     b));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -1670,14 +1700,20 @@ Module cell.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::cell::BorrowRef", "new", [] |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefCell" "borrow" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::cell::RefCell",
+                      "borrow"
+                    |)
+                  ]
                 |)
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1699,10 +1735,11 @@ Module cell.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::cell::RefCell"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::cell::RefCell",
                                   "value"
+                                |)
                               ]
                             |)
                           ]
@@ -1764,21 +1801,13 @@ Module cell.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let b := M.copy (| γ0_0 |) in
                     b));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -1831,14 +1860,20 @@ Module cell.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::cell::BorrowRefMut", "new", [] |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefCell" "borrow" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::cell::RefCell",
+                      "borrow"
+                    |)
+                  ]
                 |)
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -1860,10 +1895,11 @@ Module cell.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::cell::RefCell"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::cell::RefCell",
                                   "value"
+                                |)
                               ]
                             |)
                           ]
@@ -1916,7 +1952,13 @@ Module cell.
               "get",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefCell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::RefCell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1942,7 +1984,13 @@ Module cell.
               "get_mut",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefCell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::RefCell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1972,7 +2020,13 @@ Module cell.
                     "get_mut",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefCell" "borrow" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::cell::RefCell",
+                      "borrow"
+                    |)
+                  ]
                 |),
                 M.read (| M.get_constant (| "core::cell::UNUSED" |) |)
               |) in
@@ -2039,10 +2093,11 @@ Module cell.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::cell::RefCell"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::cell::RefCell",
                                       "borrow"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2060,10 +2115,11 @@ Module cell.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "core::cell::RefCell"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::cell::RefCell",
                                 "value"
+                              |)
                             ]
                           |)
                         ]
@@ -2959,7 +3015,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::cell::BorrowRef" "borrow"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRef",
+                        "borrow"
+                      |)
                     |)
                   ]
                 |)
@@ -3021,7 +3081,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::cell::BorrowRef" "borrow"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRef",
+                        "borrow"
+                      |)
                     |);
                     BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
                   ]
@@ -3072,7 +3136,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::cell::BorrowRef" "borrow"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRef",
+                        "borrow"
+                      |)
                     |)
                   ]
                 |)
@@ -3164,7 +3232,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::cell::BorrowRef" "borrow"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRef",
+                        "borrow"
+                      |)
                     |);
                     BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
                   ]
@@ -3176,7 +3248,11 @@ Module cell.
                 [
                   ("borrow",
                     M.read (|
-                      M.get_struct_record_field (M.read (| self |)) "core::cell::BorrowRef" "borrow"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRef",
+                        "borrow"
+                      |)
                     |))
                 ]
             |)
@@ -3227,7 +3303,13 @@ Module cell.
               "as_ref",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::Ref" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::Ref",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -3261,7 +3343,11 @@ Module cell.
             [
               ("value",
                 M.read (|
-                  M.get_struct_record_field (M.read (| orig |)) "core::cell::Ref" "value"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| orig |),
+                    "core::cell::Ref",
+                    "value"
+                  |)
                 |));
               ("borrow",
                 M.call_closure (|
@@ -3272,7 +3358,13 @@ Module cell.
                     "clone",
                     []
                   |),
-                  [ M.get_struct_record_field (M.read (| orig |)) "core::cell::Ref" "borrow" ]
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| orig |),
+                      "core::cell::Ref",
+                      "borrow"
+                    |)
+                  ]
                 |))
             ]))
       | _, _ => M.impossible
@@ -3337,7 +3429,10 @@ Module cell.
                     |)
                   ]
                 |));
-              ("borrow", M.read (| M.get_struct_record_field orig "core::cell::Ref" "borrow" |))
+              ("borrow",
+                M.read (|
+                  M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
+                |))
             ]))
       | _, _ => M.impossible
       end.
@@ -3395,7 +3490,7 @@ Module cell.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -3421,7 +3516,11 @@ Module cell.
                                 |));
                               ("borrow",
                                 M.read (|
-                                  M.get_struct_record_field orig "core::cell::Ref" "borrow"
+                                  M.SubPointer.get_struct_record_field (|
+                                    orig,
+                                    "core::cell::Ref",
+                                    "borrow"
+                                  |)
                                 |))
                             ]
                         ]
@@ -3493,8 +3592,8 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     let borrow :=
@@ -3507,7 +3606,13 @@ Module cell.
                             "clone",
                             []
                           |),
-                          [ M.get_struct_record_field orig "core::cell::Ref" "borrow" ]
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              orig,
+                              "core::cell::Ref",
+                              "borrow"
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -3545,7 +3650,11 @@ Module cell.
                                 |));
                               ("borrow",
                                 M.read (|
-                                  M.get_struct_record_field orig "core::cell::Ref" "borrow"
+                                  M.SubPointer.get_struct_record_field (|
+                                    orig,
+                                    "core::cell::Ref",
+                                    "borrow"
+                                  |)
                                 |))
                             ]
                         ]
@@ -3582,7 +3691,11 @@ Module cell.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRef" ] |),
-                  [ M.read (| M.get_struct_record_field orig "core::cell::Ref" "borrow" |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -3592,7 +3705,7 @@ Module cell.
                   "as_ref",
                   []
                 |),
-                [ M.get_struct_record_field orig "core::cell::Ref" "value" ]
+                [ M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "value" |) ]
               |)
             |)
           |)))
@@ -3724,7 +3837,13 @@ Module cell.
                 [
                   ("value", M.read (| value |));
                   ("borrow",
-                    M.read (| M.get_struct_record_field orig "core::cell::RefMut" "borrow" |));
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        orig,
+                        "core::cell::RefMut",
+                        "borrow"
+                      |)
+                    |));
                   ("marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]
             |)
@@ -3791,7 +3910,7 @@ Module cell.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -3817,7 +3936,11 @@ Module cell.
                                 |));
                               ("borrow",
                                 M.read (|
-                                  M.get_struct_record_field orig "core::cell::RefMut" "borrow"
+                                  M.SubPointer.get_struct_record_field (|
+                                    orig,
+                                    "core::cell::RefMut",
+                                    "borrow"
+                                  |)
                                 |));
                               ("marker", Value.StructTuple "core::marker::PhantomData" [])
                             ]
@@ -3866,7 +3989,8 @@ Module cell.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::cell::BorrowRefMut", "clone", [] |),
-                  [ M.get_struct_record_field orig "core::cell::RefMut" "borrow" ]
+                  [ M.SubPointer.get_struct_record_field (| orig, "core::cell::RefMut", "borrow" |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -3900,8 +4024,8 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (|
@@ -3940,7 +4064,11 @@ Module cell.
                                 |));
                               ("borrow",
                                 M.read (|
-                                  M.get_struct_record_field orig "core::cell::RefMut" "borrow"
+                                  M.SubPointer.get_struct_record_field (|
+                                    orig,
+                                    "core::cell::RefMut",
+                                    "borrow"
+                                  |)
                                 |));
                               ("marker", Value.StructTuple "core::marker::PhantomData" [])
                             ]
@@ -3979,7 +4107,15 @@ Module cell.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRefMut" ] |),
-                  [ M.read (| M.get_struct_record_field orig "core::cell::RefMut" "borrow" |) ]
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        orig,
+                        "core::cell::RefMut",
+                        "borrow"
+                      |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -3989,7 +4125,7 @@ Module cell.
                   "as_mut",
                   []
                 |),
-                [ M.get_struct_record_field orig "core::cell::RefMut" "value" ]
+                [ M.SubPointer.get_struct_record_field (| orig, "core::cell::RefMut", "value" |) ]
               |)
             |)
           |)))
@@ -4038,10 +4174,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::BorrowRefMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRefMut",
                         "borrow"
+                      |)
                     |)
                   ]
                 |)
@@ -4103,10 +4240,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::BorrowRefMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRefMut",
                         "borrow"
+                      |)
                     |);
                     BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
                   ]
@@ -4230,10 +4368,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::BorrowRefMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRefMut",
                         "borrow"
+                      |)
                     |)
                   ]
                 |)
@@ -4325,10 +4464,11 @@ Module cell.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::BorrowRefMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRefMut",
                         "borrow"
+                      |)
                     |);
                     BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
                   ]
@@ -4340,10 +4480,11 @@ Module cell.
                 [
                   ("borrow",
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::cell::BorrowRefMut"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::cell::BorrowRefMut",
                         "borrow"
+                      |)
                     |))
                 ]
             |)
@@ -4391,7 +4532,13 @@ Module cell.
               "as_ref",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefMut" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::RefMut",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -4427,7 +4574,13 @@ Module cell.
               "as_mut",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::RefMut" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::RefMut",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -4546,7 +4699,9 @@ Module cell.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_struct_record_field self "core::cell::UnsafeCell" "value" |)))
+          M.read (|
+            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -4604,7 +4759,11 @@ Module cell.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.get_struct_record_field (M.read (| self |)) "core::cell::UnsafeCell" "value"))
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "core::cell::UnsafeCell",
+            "value"
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -4793,7 +4952,15 @@ Module cell.
               "into_inner",
               []
             |),
-            [ M.read (| M.get_struct_record_field self "core::cell::SyncUnsafeCell" "value" |) ]
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "core::cell::SyncUnsafeCell",
+                  "value"
+                |)
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -4818,7 +4985,13 @@ Module cell.
               "get",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::SyncUnsafeCell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::SyncUnsafeCell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -4842,7 +5015,13 @@ Module cell.
               "get_mut",
               []
             |),
-            [ M.get_struct_record_field (M.read (| self |)) "core::cell::SyncUnsafeCell" "value" ]
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::cell::SyncUnsafeCell",
+                "value"
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.

@@ -99,10 +99,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::iter::Iter"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::iter::Iter",
                                     "i1"
+                                  |)
                                 ]
                               |)
                             |))
@@ -118,10 +119,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
                                 "i2"
+                              |)
                             ]
                           |)
                         |))
@@ -169,10 +171,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i1"
+                        |)
                       ]
                     |));
                   ("i2",
@@ -185,10 +188,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i2"
+                        |)
                       ]
                     |))
                 ]))
@@ -245,10 +249,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i1"
+                        |)
                       ]
                     |)
                   |),
@@ -256,7 +261,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -275,14 +280,16 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::iter::Iter"
-                                  "i1";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::iter::Iter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
                                   "i2"
+                                |)
                               ]
                             |)
                           |) in
@@ -296,10 +303,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
                                 "i1"
+                              |)
                             ]
                           |)
                         |)))
@@ -342,10 +350,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::iter::Iter"
-                              "i1";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i1"
+                            |);
                             M.read (| n |)
                           ]
                         |)
@@ -356,7 +365,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Ok",
                                 0
@@ -373,7 +382,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Err",
                                 0
@@ -387,14 +396,16 @@ Module collections.
                                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
-                                      "i1";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
+                                      "i1"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
                                       "i2"
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -408,10 +419,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::iter::Iter"
-                                    "i1";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::iter::Iter",
+                                    "i1"
+                                  |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::num::nonzero::NonZeroUsize",
@@ -497,10 +509,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::vec_deque::iter::Iter"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::vec_deque::iter::Iter",
                             "i1"
+                          |)
                         |);
                         M.read (| accum |);
                         f
@@ -518,10 +531,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i2"
+                        |)
                       |);
                       M.read (| accum |);
                       f
@@ -575,10 +589,11 @@ Module collections.
                                     [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
-                                      "i1";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
+                                      "i1"
+                                    |);
                                     M.read (| init |);
                                     f
                                   ]
@@ -590,7 +605,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -617,7 +632,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -637,10 +652,11 @@ Module collections.
                           [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::iter::Iter"
-                            "i2";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |);
                           M.read (| acc |);
                           f
                         ]
@@ -708,10 +724,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i1"
+                        |)
                       ]
                     |)
                   |) in
@@ -737,10 +754,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::iter::Iter"
-                                "i1";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
+                                "i1"
+                              |);
                               M.read (| idx |)
                             ]
                           |)
@@ -757,10 +775,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::iter::Iter"
-                                "i2";
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
+                                "i2"
+                              |);
                               BinOp.Panic.sub (| M.read (| idx |), M.read (| i1_len |) |)
                             ]
                           |)
@@ -828,10 +847,11 @@ Module collections.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i2"
+                        |)
                       ]
                     |)
                   |),
@@ -839,7 +859,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -858,14 +878,16 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::iter::Iter"
-                                  "i1";
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "alloc::collections::vec_deque::iter::Iter"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
                                   "i2"
+                                |)
                               ]
                             |)
                           |) in
@@ -879,10 +901,11 @@ Module collections.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "alloc::collections::vec_deque::iter::Iter"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
                                 "i2"
+                              |)
                             ]
                           |)
                         |)))
@@ -924,10 +947,11 @@ Module collections.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "alloc::collections::vec_deque::iter::Iter"
-                              "i2";
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i2"
+                            |);
                             M.read (| n |)
                           ]
                         |)
@@ -936,7 +960,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Ok",
                                 0
@@ -953,7 +977,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::result::Result::Err",
                                 0
@@ -967,14 +991,16 @@ Module collections.
                                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
-                                      "i1";
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
+                                      "i1"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
                                       "i2"
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -988,10 +1014,11 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "alloc::collections::vec_deque::iter::Iter"
-                                    "i2";
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::iter::Iter",
+                                    "i2"
+                                  |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::num::nonzero::NonZeroUsize",
@@ -1040,10 +1067,11 @@ Module collections.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "alloc::collections::vec_deque::iter::Iter"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::vec_deque::iter::Iter",
                             "i2"
+                          |)
                         |);
                         M.read (| accum |);
                         f
@@ -1061,10 +1089,11 @@ Module collections.
                     |),
                     [
                       M.read (|
-                        M.get_struct_record_field
-                          self
-                          "alloc::collections::vec_deque::iter::Iter"
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::collections::vec_deque::iter::Iter",
                           "i1"
+                        |)
                       |);
                       M.read (| accum |);
                       f
@@ -1118,10 +1147,11 @@ Module collections.
                                     [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "alloc::collections::vec_deque::iter::Iter"
-                                      "i2";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::iter::Iter",
+                                      "i2"
+                                    |);
                                     M.read (| init |);
                                     f
                                   ]
@@ -1133,7 +1163,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1160,7 +1190,7 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1180,10 +1210,11 @@ Module collections.
                           [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "alloc::collections::vec_deque::iter::Iter"
-                            "i1";
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |);
                           M.read (| acc |);
                           f
                         ]
@@ -1234,10 +1265,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::vec_deque::iter::Iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::vec_deque::iter::Iter",
                       "i1"
+                    |)
                   ]
                 |),
                 M.call_closure (|
@@ -1249,10 +1281,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::vec_deque::iter::Iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::vec_deque::iter::Iter",
                       "i2"
+                    |)
                   ]
                 |)
               |)))
@@ -1280,10 +1313,11 @@ Module collections.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "alloc::collections::vec_deque::iter::Iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::vec_deque::iter::Iter",
                       "i1"
+                    |)
                   ]
                 |),
                 ltac:(M.monadic
@@ -1296,10 +1330,11 @@ Module collections.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "alloc::collections::vec_deque::iter::Iter"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::iter::Iter",
                         "i2"
+                      |)
                     ]
                   |)))
               |)))

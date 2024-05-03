@@ -103,10 +103,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlatMap"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlatMap",
                           "inner"
+                        |)
                       ]
                     |))
                 ]))
@@ -165,10 +166,11 @@ Module iter.
                       M.read (| Value.String "inner" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlatMap"
-                          "inner")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlatMap",
+                          "inner"
+                        |))
                     ]
                   |)
                 ]
@@ -214,10 +216,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -245,10 +248,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -283,10 +287,11 @@ Module iter.
                   [ Acc; Fold; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
+                    "inner"
+                  |);
                   M.read (| init |);
                   M.read (| fold |)
                 ]
@@ -322,7 +327,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::FlatMap" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::FlatMap",
+                      "inner"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| fold |)
@@ -354,10 +363,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
+                    "inner"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -387,7 +397,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::FlatMap" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::FlatMap",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -417,7 +431,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::FlatMap" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::FlatMap",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -469,10 +487,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -507,10 +526,11 @@ Module iter.
                   [ Acc; Fold; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
+                    "inner"
+                  |);
                   M.read (| init |);
                   M.read (| fold |)
                 ]
@@ -546,7 +566,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::FlatMap" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::FlatMap",
+                      "inner"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| fold |)
@@ -578,10 +602,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::FlatMap"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::FlatMap",
+                    "inner"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -703,13 +728,15 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::flatten::FlatMap"
-                      "inner")
-                    "core::iter::adapters::flatten::FlattenCompat"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::flatten::FlatMap",
+                      "inner"
+                    |),
+                    "core::iter::adapters::flatten::FlattenCompat",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1079,10 +1106,11 @@ Module iter.
                       M.read (| Value.String "inner" |);
                       (* Unsize *)
                       M.pointer_coercion
-                        (M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::Flatten"
-                          "inner")
+                        (M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::Flatten",
+                          "inner"
+                        |))
                     ]
                   |)
                 ]
@@ -1127,10 +1155,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::Flatten"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::Flatten",
                           "inner"
+                        |)
                       ]
                     |))
                 ]))
@@ -1173,10 +1202,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1202,10 +1232,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1238,10 +1269,11 @@ Module iter.
                   [ Acc; Fold; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
+                    "inner"
+                  |);
                   M.read (| init |);
                   M.read (| fold |)
                 ]
@@ -1275,7 +1307,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::Flatten" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::Flatten",
+                      "inner"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| fold |)
@@ -1305,10 +1341,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
+                    "inner"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -1336,7 +1373,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::Flatten" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::Flatten",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -1364,7 +1405,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::Flatten" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::Flatten",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -1414,10 +1459,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
                     "inner"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1450,10 +1496,11 @@ Module iter.
                   [ Acc; Fold; R ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
+                    "inner"
+                  |);
                   M.read (| init |);
                   M.read (| fold |)
                 ]
@@ -1487,7 +1534,11 @@ Module iter.
                 |),
                 [
                   M.read (|
-                    M.get_struct_record_field self "core::iter::adapters::flatten::Flatten" "inner"
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::iter::adapters::flatten::Flatten",
+                      "inner"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| fold |)
@@ -1517,10 +1568,11 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "core::iter::adapters::flatten::Flatten"
-                    "inner";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::flatten::Flatten",
+                    "inner"
+                  |);
                   M.read (| n |)
                 ]
               |)))
@@ -1640,13 +1692,15 @@ Module iter.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::flatten::Flatten"
-                      "inner")
-                    "core::iter::adapters::flatten::FlattenCompat"
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::flatten::Flatten",
+                      "inner"
+                    |),
+                    "core::iter::adapters::flatten::FlattenCompat",
                     "iter"
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1740,10 +1794,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
                           "iter"
+                        |)
                       ]
                     |));
                   ("frontiter",
@@ -1756,10 +1811,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
                           "frontiter"
+                        |)
                       ]
                     |));
                   ("backiter",
@@ -1772,10 +1828,11 @@ Module iter.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
                           "backiter"
+                        |)
                       ]
                     |))
                 ]))
@@ -1815,25 +1872,28 @@ Module iter.
                   M.read (| Value.String "iter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::flatten::FlattenCompat"
-                      "iter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::flatten::FlattenCompat",
+                      "iter"
+                    |));
                   M.read (| Value.String "frontiter" |);
                   (* Unsize *)
                   M.pointer_coercion
-                    (M.get_struct_record_field
-                      (M.read (| self |))
-                      "core::iter::adapters::flatten::FlattenCompat"
-                      "frontiter");
+                    (M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::flatten::FlattenCompat",
+                      "frontiter"
+                    |));
                   M.read (| Value.String "backiter" |);
                   (* Unsize *)
                   M.pointer_coercion
                     (M.alloc (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "core::iter::adapters::flatten::FlattenCompat"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::flatten::FlattenCompat",
                         "backiter"
+                      |)
                     |))
                 ]
               |)))
@@ -1928,12 +1988,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::flatten::FlattenCompat"
-                              "frontiter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "frontiter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -1970,10 +2031,11 @@ Module iter.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "core::iter::adapters::flatten::FlattenCompat"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::flatten::FlattenCompat",
                             "iter"
+                          |)
                         |);
                         M.read (| acc |);
                         M.call_closure (|
@@ -1990,12 +2052,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::flatten::FlattenCompat"
-                              "backiter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "backiter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -2077,14 +2140,15 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "frontiter"
+                                  |)
                                 |) in
                               let γ := M.read (| γ |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -2126,7 +2190,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2153,7 +2217,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2170,10 +2234,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "frontiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "frontiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     let _ :=
@@ -2200,10 +2265,11 @@ Module iter.
                                       [ Acc; Ty.associated; R ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::flatten::FlattenCompat"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::flatten::FlattenCompat",
+                                        "iter"
+                                      |);
                                       M.read (| acc |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2212,10 +2278,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::flatten::FlattenCompat"
-                                            "frontiter";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::flatten::FlattenCompat",
+                                            "frontiter"
+                                          |);
                                           fold
                                         ]
                                       |)
@@ -2228,7 +2295,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -2255,7 +2322,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2268,10 +2335,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "frontiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "frontiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     let _ :=
@@ -2282,14 +2350,15 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "backiter"
+                                  |)
                                 |) in
                               let γ := M.read (| γ |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -2331,7 +2400,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2358,7 +2427,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2375,10 +2444,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "backiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "backiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     M.alloc (|
@@ -2442,12 +2512,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::flatten::FlattenCompat"
-                              "backiter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "backiter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -2484,10 +2555,11 @@ Module iter.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            self
-                            "core::iter::adapters::flatten::FlattenCompat"
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::flatten::FlattenCompat",
                             "iter"
+                          |)
                         |);
                         M.read (| acc |);
                         M.call_closure (|
@@ -2504,12 +2576,13 @@ Module iter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.get_struct_record_field
-                              self
-                              "core::iter::adapters::flatten::FlattenCompat"
-                              "frontiter" in
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "frontiter"
+                            |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -2591,14 +2664,15 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "backiter"
+                                  |)
                                 |) in
                               let γ := M.read (| γ |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -2640,7 +2714,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2667,7 +2741,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2684,10 +2758,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "backiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "backiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     let _ :=
@@ -2714,10 +2789,11 @@ Module iter.
                                       [ Acc; Ty.associated; R ]
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "core::iter::adapters::flatten::FlattenCompat"
-                                        "iter";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::flatten::FlattenCompat",
+                                        "iter"
+                                      |);
                                       M.read (| acc |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2726,10 +2802,11 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "core::iter::adapters::flatten::FlattenCompat"
-                                            "backiter";
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::flatten::FlattenCompat",
+                                            "backiter"
+                                          |);
                                           fold
                                         ]
                                       |)
@@ -2742,7 +2819,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -2769,7 +2846,7 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2782,10 +2859,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "backiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "backiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     let _ :=
@@ -2796,14 +2874,15 @@ Module iter.
                             ltac:(M.monadic
                               (let γ :=
                                 M.alloc (|
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "frontiter"
+                                  |)
                                 |) in
                               let γ := M.read (| γ |) in
                               let γ1_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::option::Option::Some",
                                   0
@@ -2845,7 +2924,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -2872,7 +2951,7 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -2889,10 +2968,11 @@ Module iter.
                       |) in
                     let _ :=
                       M.write (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "core::iter::adapters::flatten::FlattenCompat"
-                          "frontiter",
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::flatten::FlattenCompat",
+                          "frontiter"
+                        |),
                         Value.StructTuple "core::option::Option::None" []
                       |) in
                     M.alloc (|
@@ -2973,10 +3053,11 @@ Module iter.
                                             ]
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::flatten::FlattenCompat"
-                                              "frontiter";
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::flatten::FlattenCompat",
+                                              "frontiter"
+                                            |);
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               U,
@@ -2989,7 +3070,7 @@ Module iter.
                                       |) in
                                     let elt := M.copy (| γ |) in
                                     let γ1_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -3013,10 +3094,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "iter"
+                                  |)
                                 ]
                               |)
                             |),
@@ -3041,10 +3123,11 @@ Module iter.
                                               ]
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::flatten::FlattenCompat"
-                                                "backiter";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::flatten::FlattenCompat",
+                                                "backiter"
+                                              |);
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 U,
@@ -3061,17 +3144,18 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
                                     |) in
                                   let inner := M.copy (| γ0_0 |) in
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::flatten::FlattenCompat"
-                                      "frontiter",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::flatten::FlattenCompat",
+                                      "frontiter"
+                                    |),
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [
@@ -3158,10 +3242,11 @@ Module iter.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "core::iter::adapters::flatten::FlattenCompat"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::adapters::flatten::FlattenCompat",
                                   "frontiter"
+                                |)
                               ]
                             |);
                             Value.Tuple
@@ -3184,8 +3269,8 @@ Module iter.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ0_0 := M.get_tuple_field γ 0 in
-                            let γ0_1 := M.get_tuple_field γ 1 in
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let flo := M.copy (| γ0_0 |) in
                             let fhi := M.copy (| γ0_1 |) in
                             M.match_operator (|
@@ -3223,10 +3308,11 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "core::iter::adapters::flatten::FlattenCompat"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::flatten::FlattenCompat",
                                           "backiter"
+                                        |)
                                       ]
                                     |);
                                     Value.Tuple
@@ -3249,8 +3335,8 @@ Module iter.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ0_0 := M.get_tuple_field γ 0 in
-                                    let γ0_1 := M.get_tuple_field γ 1 in
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let blo := M.copy (| γ0_0 |) in
                                     let bhi := M.copy (| γ0_1 |) in
                                     let lo :=
@@ -3284,7 +3370,7 @@ Module iter.
                                                   |)
                                                 |) in
                                               let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::option::Option::Some",
                                                   0
@@ -3307,18 +3393,27 @@ Module iter.
                                                             []
                                                           |),
                                                           [
-                                                            M.get_struct_record_field
-                                                              (M.read (| self |))
-                                                              "core::iter::adapters::flatten::FlattenCompat"
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::iter::adapters::flatten::FlattenCompat",
                                                               "iter"
+                                                            |)
                                                           ]
                                                         |)
                                                       |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                                            let γ0_1 := M.get_tuple_field γ 1 in
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
                                                             let lower := M.copy (| γ0_0 |) in
                                                             let upper := M.copy (| γ0_1 |) in
                                                             let lower :=
@@ -3437,7 +3532,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Break",
                                                                                                               0
@@ -3459,7 +3554,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                                                                               0
@@ -3503,7 +3598,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Break",
                                                                                                               0
@@ -3525,7 +3620,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                                                                               0
@@ -3549,7 +3644,7 @@ Module iter.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                                                 0
@@ -3570,7 +3665,7 @@ Module iter.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                                                 0
@@ -3643,7 +3738,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Break",
                                                                                                               0
@@ -3665,7 +3760,7 @@ Module iter.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ0_0 :=
-                                                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                                                               γ,
                                                                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                                                                               0
@@ -3689,7 +3784,7 @@ Module iter.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                                                 0
@@ -3710,7 +3805,7 @@ Module iter.
                                                                                           ltac:(M.monadic
                                                                                             (let
                                                                                                   γ0_0 :=
-                                                                                              M.get_struct_tuple_field_or_break_match (|
+                                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                                 γ,
                                                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                                                 0
@@ -3733,7 +3828,7 @@ Module iter.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                                   0
@@ -3750,7 +3845,7 @@ Module iter.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let γ0_0 :=
-                                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                                M.SubPointer.get_struct_tuple_field (|
                                                                                   γ,
                                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                                   0
@@ -3794,10 +3889,11 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| self |))
-                                                  "core::iter::adapters::flatten::FlattenCompat"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::iter::adapters::flatten::FlattenCompat",
                                                   "iter"
+                                                |)
                                               ]
                                             |);
                                             M.read (| fhi |);
@@ -3807,18 +3903,20 @@ Module iter.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 := M.get_tuple_field γ 0 in
-                                            let γ0_1 := M.get_tuple_field γ 1 in
-                                            let γ0_2 := M.get_tuple_field γ 2 in
-                                            let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                            let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                            let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                                            let γ1_0 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                            let γ1_1 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
                                                 Value.Integer Integer.Usize 0
                                               |) in
                                             let γ2_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ1_1,
                                                 "core::option::Option::Some",
                                                 0
@@ -3829,14 +3927,14 @@ Module iter.
                                                 Value.Integer Integer.Usize 0
                                               |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_1,
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
                                             let a := M.copy (| γ1_0 |) in
                                             let γ1_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ0_2,
                                                 "core::option::Option::Some",
                                                 0
@@ -4014,7 +4112,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -4201,10 +4299,11 @@ Module iter.
                                             ]
                                           |),
                                           [
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "core::iter::adapters::flatten::FlattenCompat"
-                                              "backiter";
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::flatten::FlattenCompat",
+                                              "backiter"
+                                            |);
                                             M.closure
                                               (fun γ =>
                                                 ltac:(M.monadic
@@ -4235,7 +4334,7 @@ Module iter.
                                       |) in
                                     let elt := M.copy (| γ |) in
                                     let γ1_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -4259,10 +4358,11 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "core::iter::adapters::flatten::FlattenCompat"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::flatten::FlattenCompat",
                                     "iter"
+                                  |)
                                 ]
                               |)
                             |),
@@ -4287,10 +4387,11 @@ Module iter.
                                               ]
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "core::iter::adapters::flatten::FlattenCompat"
-                                                "frontiter";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::iter::adapters::flatten::FlattenCompat",
+                                                "frontiter"
+                                              |);
                                               M.closure
                                                 (fun γ =>
                                                   ltac:(M.monadic
@@ -4325,17 +4426,18 @@ Module iter.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
                                     |) in
                                   let inner := M.copy (| γ0_0 |) in
                                   M.write (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "core::iter::adapters::flatten::FlattenCompat"
-                                      "backiter",
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::flatten::FlattenCompat",
+                                      "backiter"
+                                    |),
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [
@@ -4498,7 +4600,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -4765,7 +4867,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
@@ -4796,7 +4898,7 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0

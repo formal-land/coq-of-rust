@@ -89,7 +89,11 @@ Module Impl_contract_terminate_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (| M.read (| self |), "contract_terminate::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "contract_terminate::Env",
+            "caller"
+          |)
         |)))
     | _, _ => M.impossible
     end.
