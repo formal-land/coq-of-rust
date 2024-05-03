@@ -1,5 +1,10 @@
 (* traits/traits.rs *)
 
+(* TODO:
+1. Check (if it's necessary) how to implement `TraitHasRun` for `Animal` and `Sheep`
+2. Check if the `main` function has defined correctly
+*)
+
 (* struct Sheep {
   naked: bool,
   name: &'static str,
