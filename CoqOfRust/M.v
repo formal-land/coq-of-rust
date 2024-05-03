@@ -125,6 +125,36 @@ Module Pointer.
       (injection : Big_A -> A -> option Big_A)
       (to_value : A -> Value).
     Arguments Make {_ _ _ _}.
+
+    (* Definition get_sub {Value Address Big_A A Sub_A : Set}
+        (mutable : t Value)
+        (index : Index.t)
+        (sub_projection : A -> option Sub_A)
+        (sub_injection : A -> Sub_A -> option A)
+        (sub_to_value : Sub_A -> Value) :
+        t Value :=
+      let 'Make address path big_to_value projection injection to_value := mutable in
+      Make
+        address
+        (path ++ [index])
+        big_to_value
+        (fun big_a =>
+          match projection big_a with
+          | Some a => sub_projection a
+          | None => None
+          end
+        )
+        (fun big_a new_sub_a =>
+          match projection big_a with
+          | Some a =>
+            match sub_injection a new_sub_a with
+            | Some new_a => injection big_a new_a
+            | None => None
+            end
+          | None => None
+          end
+        )
+        sub_to_value. *)
   End Mutable.
 
   Inductive t (Value : Set) : Set :=
@@ -437,6 +467,12 @@ Parameter IsProvidedMethod :
   Prop.
 
 Module Option.
+  Definition map {A B : Set} (x : option A) (f : A -> B) : option B :=
+    match x with
+    | Some x => Some (f x)
+    | None => None
+    end.
+
   Definition bind {A B : Set} (x : option A) (f : A -> option B) : option B :=
     match x with
     | Some x => f x
