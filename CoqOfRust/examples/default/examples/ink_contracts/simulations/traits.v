@@ -7,7 +7,7 @@
 Module Sheep.
   Record t : Set := {
     naked: bool,
-    name: Pointer.t.Immediate string,
+    name: string,
   }.
 
   Global Instance IsToValue : ToValue t := {
@@ -140,7 +140,7 @@ fn main() {
 
 Definition main : 
   MS? State.t unit := 
-  (* Is this notation still in use? *)
+  (* NOTE: Is this notation still in use? *)
   (* let dolly := traits.Animal::["new"] "Dolly" in
   let _ := dolly::["talk"] in
   let _ := dolly::["shear"] in
