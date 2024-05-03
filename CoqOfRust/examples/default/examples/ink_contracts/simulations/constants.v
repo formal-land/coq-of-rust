@@ -1,11 +1,11 @@
-(* custom_type/constants.v *)
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
-Require Import CoqOfRust.core.simulations.option.
-Require Import CoqOfRust.core.simulations.integer.
-Require Import CoqOfRust.core.simulations.bool.
+Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require Import CoqOfRust.simulations.M.
+
+Import simulations.M.Notations.
+(* custom_type/constants.v *)
 
 (*
 static LANGUAGE: &str = "Rust";
@@ -22,15 +22,15 @@ fn is_big(n: i32) -> bool {
 }
 *)
 
+(* TODO: figure out how to compare i32 *)
 Definition is_big 
-  (n: Nat) : bool := n >? THRESHOLD.
+  (n: i32.t) : bool := n >? THRESHOLD.
 
 (*
 fn main() {
     let n = 16;
 } *)
 
-Definition main : Unit :=
+Definition main : MS? unit :=
   let n := i32.Make 16 in
-  (* pure Value.DeclaredButUndefined *)
-  ().
+  returnS? tt.
