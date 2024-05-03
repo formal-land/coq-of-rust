@@ -1,11 +1,5 @@
 (* traits/traits.rs *)
 
-(* TODO:
-1. Distinguish between functions that read the variables and functions that also writes to it
-2. Identify the way to translate them
-
-*)
-
 (* struct Sheep {
   naked: bool,
   name: &'static str,
