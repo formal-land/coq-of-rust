@@ -52,7 +52,7 @@ fn name(&self) -> &'static str {
 }
 *)
 Definition name (self: traits.Sheep.t) : string := 
-  self.Sheep.name.
+  self.(Sheep.name).
 
 (* 
 fn noise(&self) -> &'static str {
@@ -63,7 +63,7 @@ fn noise(&self) -> &'static str {
     }
 } *)
 Definition noise (self: traits.Sheep.t) : string := 
-  if is_naked(self) then "baaaaah?" else "baaaaah!".
+  if (is_naked self) then "baaaaah?" else "baaaaah!".
 
 (* fn talk(&self) {
     // For example, we can add some quiet contemplation.
@@ -79,7 +79,7 @@ impl Sheep {
 }
 *)
 Definition is_naked (self: traits.Sheep.t) : bool :=
-  self.Sheep.naked.
+  self.(Sheep.naked).
 
 (* ** Simulation of a function that modifies a variable ** *)
 
