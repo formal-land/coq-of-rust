@@ -1,4 +1,11 @@
 (* traits/traits.rs *)
+Require Import CoqOfRust.CoqOfRust.
+Require CoqOfRust.core.simulations.default.
+Require CoqOfRust.core.simulations.option.
+Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
+Require Import CoqOfRust.simulations.M.
+
+Import simulations.M.Notations.
 
 (* TODO:
 1. Check (if it's necessary) how to implement `TraitHasRun` for `Animal` and `Sheep`
@@ -35,8 +42,8 @@ fn new(name: &'static str) -> Sheep {
 } *)
 (* NOTE: Is this the correct way to construct record in Coq? *)
 Definition new (name: string) : traits.Sheep.t := 
-  traits.Animal {| naked := false;
-    name := name;
+  {| Sheep.naked := false;
+    Sheep.name := name;
   |}.
 
 (*   
@@ -45,7 +52,7 @@ fn name(&self) -> &'static str {
 }
 *)
 Definition name (self: traits.Sheep.t) : string := 
-  self.name.
+  self.Sheep.name.
 
 (* 
 fn noise(&self) -> &'static str {
@@ -58,7 +65,6 @@ fn noise(&self) -> &'static str {
 Definition noise (self: traits.Sheep.t) : string := 
   if is_naked(self) then "baaaaah?" else "baaaaah!".
 
-(* NOTE: unimplemented since it involves println *)
 (* fn talk(&self) {
     // For example, we can add some quiet contemplation.
     println!("{} pauses briefly... {}", self.name, self.noise());
@@ -73,9 +79,9 @@ impl Sheep {
 }
 *)
 Definition is_naked (self: traits.Sheep.t) : bool :=
-  self.naked.
+  self.Sheep.naked.
 
-(* Simulation of a function that modifies a variable *)
+(* ** Simulation of a function that modifies a variable ** *)
 
 Module State.
   Definition t : Set := traits.Sheep.t.
@@ -96,7 +102,7 @@ impl Sheep {
 }
 *)
 Definition shear (self: traits.Sheep.t) : MS? unit := 
-  letS? '(storage) := readS? in
+  letS? storage := readS? in
   if is_naked(self) then tt else 
   letS? _ = writeS? (
     storage <| traits.Animal.naked := true |>,
@@ -145,13 +151,8 @@ fn main() {
 
 Definition main : 
   MS? State.t unit := 
-  let dolly := new("Dolly") in
-  let _ = talk(dolly) in
-  let _ = shear(dolly) in
-  let _ = talk(dolly) in
-  (* NOTE: Is the following notation still in use? *)
-  (* let dolly := traits.Animal::["new"] "Dolly" in
-  let _ := dolly::["talk"] in
-  let _ := dolly::["shear"] in
-  let _ := dolly::["talk"] in *)
+  let dolly := new "Dolly" in
+  let _ = talk dolly in
+  let _ = shear dolly in
+  let _ = talk dolly in
   returnS? tt.
