@@ -40,7 +40,6 @@ fn new(name: &'static str) -> Sheep {
       naked: false,
   }
 } *)
-(* NOTE: Is this the correct way to construct record in Coq? *)
 Definition new (name: string) : traits.Sheep.t := 
   {| Sheep.naked := false;
     Sheep.name := name;
@@ -156,3 +155,4 @@ Definition main :
   let _ = shear dolly in
   let _ = talk dolly in
   returnS? tt.
+  
