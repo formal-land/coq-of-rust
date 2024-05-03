@@ -175,11 +175,6 @@ COQC ./examples/default/token-2022/instruction.v
 COQC ./examples/default/token-2022/lib.v
 COQC ./examples/default/token-2022/native_mint.v
 COQC ./examples/default/token-2022/offchain.v
-File "./examples/default/token-2022/offchain.v", line 311, characters 58-63:
-Error: The reference yield was not found in the current environment.
-
-make[2]: *** [CoqMakefile:830: examples/default/token-2022/offchain.vo] Error 1
-make[2]: *** [examples/default/token-2022/offchain.vo] Deleting file 'examples/default/token-2022/offchain.glob'
 COQC ./examples/default/token-2022/onchain.v
 COQC ./examples/default/token-2022/pod.v
 File "./examples/default/token-2022/pod.v", line 423, characters 2-557:
