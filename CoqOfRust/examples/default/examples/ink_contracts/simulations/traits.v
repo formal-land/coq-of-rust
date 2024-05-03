@@ -140,7 +140,11 @@ fn main() {
 
 Definition main : 
   MS? State.t unit := 
-  (* NOTE: Is this notation still in use? *)
+  let dolly := new("Dolly") in
+  let _ = talk(dolly) in
+  let _ = shear(dolly) in
+  let _ = talk(dolly) in
+  (* NOTE: Is the following notation still in use? *)
   (* let dolly := traits.Animal::["new"] "Dolly" in
   let _ := dolly::["talk"] in
   let _ := dolly::["shear"] in
