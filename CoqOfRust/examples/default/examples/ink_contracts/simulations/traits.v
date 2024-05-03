@@ -13,7 +13,7 @@
 Module Sheep.
   Record t : Set := {
     naked: bool,
-    name: Pointer.t string,
+    name: Pointer.t.Immediate string,
   }.
 
   Global Instance IsToValue : ToValue t := {
@@ -26,24 +26,26 @@ Module Sheep.
   }.
 
       (* 
-    fn new(name: &'static str) -> Sheep {
-      Sheep {
-          name: name,
-          naked: false,
-      }
-    } *)
-    (* TODO: Is this the correct way to construct record in Coq? *)
+      fn new(name: &'static str) -> Sheep {
+        Sheep {
+            name: name,
+            naked: false,
+        }
+      } *)
+    (* NOTE: Is this the correct way to construct record in Coq? *)
     Definition new (name: Pointer.t string) : MS? traits.Sheep.t := 
-    returnS? {| name := name;
-      naked := false
+      returnS? {| naked := false;
+        name := Pointer.t.Immediate (Value.t.String name);
       |}.
 
     (*   
-    fn name(&self) -> &'static str {
-      self.name
-    }
+      fn name(&self) -> &'static str {
+        self.name
+      }
     *)
-    Definition name (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t ) := returnS? (Pointer.t.Immediate (Value.t.String self.name)).
+    (* NOTE: How to extract record entries from a record that is wrapped in Pointer.t type? *)
+    Definition name (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t ) := 
+      returnS? (Pointer.t.Immediate (Value.t.String self.name)).
     (* 
     fn noise(&self) -> &'static str {
         if self.is_naked() {
@@ -52,7 +54,8 @@ Module Sheep.
             "baaaaah!"
         }
     } *)
-    Definition noise (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t str) := returnS? (if is_naked(self) then "baaaaah?" else "baaaaah!").
+    Definition noise (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t str) := 
+      returnS? (Pointer.t.Immediate (Value.t.String (if is_naked(self) then "baaaaah?" else "baaaaah!"))).
 
     (* NOTE: unimplemented since it involves println *)
     (* fn talk(&self) {
@@ -79,7 +82,9 @@ Module Sheep.
     TODO: apply RecordUpdate to simulate the update of the variable?
     *)
     Definition shear (self: traits.Sheep.t) : MS? State unit := 
-      if is_naked(self) then tt else tt.
+      returnS? (if is_naked(self) then tt else tt).
+
+    (* TODO: Make a `IsOfTrait` or something to indicate that Sheep is of Animal trait *)
 End Sheep.
 
 (*
@@ -110,10 +115,10 @@ trait Animal {
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new (name: str) : traits.Sheep.t; 
-    name (self: traits.Sheep.t) : str;
-    noise (self: traits.Sheep.t) : str;
-    talk : unit;
+    new (name: Pointer.t str) : MS? traits.Sheep.t; 
+    name (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t str);
+    noise (self: Pointer.t traits.Sheep.t) : MS? (Pointer.t str);
+    talk (self: Pointer.t traits.Sheep.t) : MS? unit;
   }.
 
   (* TODO: Add the IsTrait method here? *)
