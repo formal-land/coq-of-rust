@@ -23,7 +23,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let tmp := M.alloc (| repeat (Value.Integer Integer.U8 0) 8 |) in
+                let tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -46,7 +46,7 @@ Module num.
                             M.read (| self |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer Integer.Usize 8) ]
+                              [ ("end_", Value.Integer 8) ]
                           ]
                         |)
                       ]
@@ -90,9 +90,7 @@ Module num.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructRecord
-                        "core::ops::range::RangeTo"
-                        [ ("end_", Value.Integer Integer.Usize 8) ]
+                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 8) ]
                     ]
                   |);
                   (* Unsize *)
@@ -120,6 +118,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               BinOp.Panic.sub (|
+                Integer.Isize,
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
@@ -202,9 +201,7 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt
-                                              (M.read (| c |))
-                                              (Value.Integer Integer.U8 10)
+                                            BinOp.Pure.lt (M.read (| c |)) (Value.Integer 10)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -285,22 +282,22 @@ Module num.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
-                    [ M.read (| v |); Value.Integer Integer.U64 5063812098665367110 ]
+                    [ M.read (| v |); Value.Integer 5063812098665367110 ]
                   |)
                 |) in
               let b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
-                    [ M.read (| v |); Value.Integer Integer.U64 3472328296227680304 ]
+                    [ M.read (| v |); Value.Integer 3472328296227680304 ]
                   |)
                 |) in
               M.alloc (|
                 BinOp.Pure.eq
                   (BinOp.Pure.bit_and
                     (BinOp.Pure.bit_or (M.read (| a |)) (M.read (| b |)))
-                    (Value.Integer Integer.U64 9259542123273814144))
-                  (Value.Integer Integer.U64 0)
+                    (Value.Integer 9259542123273814144))
+                  (Value.Integer 0)
               |)
             |)))
         | _, _ => M.impossible
@@ -577,7 +574,7 @@ Module num.
               (let e := M.alloc (| e |) in
               Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
-                [ ("f", Value.Integer Integer.U64 0); ("e", M.read (| e |)) ]))
+                [ ("f", Value.Integer 0); ("e", M.read (| e |)) ]))
           | _, _ => M.impossible
           end.
         

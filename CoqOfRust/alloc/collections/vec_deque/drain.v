@@ -71,7 +71,12 @@ Module collections.
                 let tail_len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
-                      BinOp.Panic.sub (| M.read (| orig_len |), M.read (| drain_start |) |),
+                      Integer.Usize,
+                      BinOp.Panic.sub (|
+                        Integer.Usize,
+                        M.read (| orig_len |),
+                        M.read (| drain_start |)
+                      |),
                       M.read (| drain_len |)
                     |)
                   |) in
@@ -179,6 +184,7 @@ Module collections.
                           |));
                         ("end_",
                           BinOp.Panic.add (|
+                            Integer.Usize,
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -533,7 +539,7 @@ Module collections.
                                     "remaining"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -581,6 +587,7 @@ Module collections.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -610,6 +617,7 @@ Module collections.
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| β |),
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -646,7 +654,7 @@ Module collections.
                                       "alloc::collections::vec_deque::drain::Drain",
                                       "remaining"
                                     |),
-                                    Value.Integer Integer.Usize 0
+                                    Value.Integer 0
                                   |) in
                                 let _ :=
                                   M.alloc (|
@@ -721,7 +729,7 @@ Module collections.
                                           "remaining"
                                         |)
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -788,7 +796,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     let _ :=
                       let β :=
@@ -799,7 +807,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -928,7 +936,7 @@ Module collections.
                                           "remaining"
                                         |)
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -956,7 +964,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     let wrapped_idx :=
                       M.alloc (|
@@ -988,6 +996,7 @@ Module collections.
                               ]
                             |);
                             BinOp.Panic.add (|
+                              Integer.Usize,
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),

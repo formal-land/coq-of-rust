@@ -355,7 +355,7 @@ Module hash.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-                  [ M.read (| self |); Value.Integer Integer.U8 255 ]
+                  [ M.read (| self |); Value.Integer 255 ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

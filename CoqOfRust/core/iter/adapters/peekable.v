@@ -644,7 +644,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
-                        M.alloc (| Value.Integer Integer.Usize 0 |)));
+                        M.alloc (| Value.Integer 0 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -661,7 +661,8 @@ Module iter.
                           |) in
                         M.alloc (|
                           BinOp.Panic.add (|
-                            Value.Integer Integer.Usize 1,
+                            Integer.Usize,
+                            Value.Integer 1,
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
@@ -772,10 +773,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let γ :=
-                          M.alloc (|
-                            BinOp.Pure.eq (M.read (| n |)) (Value.Integer Integer.Usize 0)
-                          |) in
+                        let γ := M.alloc (| BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0) |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         v));
@@ -808,7 +806,7 @@ Module iter.
                                 "core::iter::adapters::peekable::Peekable",
                                 "iter"
                               |);
-                              BinOp.Panic.sub (| M.read (| n |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.sub (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
                             ]
                           |)
                         |)));
@@ -996,10 +994,10 @@ Module iter.
                                       M.return_ (|
                                         Value.Tuple
                                           [
-                                            Value.Integer Integer.Usize 0;
+                                            Value.Integer 0;
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ Value.Integer Integer.Usize 0 ]
+                                              [ Value.Integer 0 ]
                                           ]
                                       |)
                                     |)
@@ -1019,8 +1017,8 @@ Module iter.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                M.alloc (| Value.Integer Integer.Usize 1 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                                M.alloc (| Value.Integer 1 |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in

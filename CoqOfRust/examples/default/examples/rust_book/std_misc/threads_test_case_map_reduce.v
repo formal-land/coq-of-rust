@@ -384,7 +384,6 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                       c
                                                                                                     |);
                                                                                                     Value.Integer
-                                                                                                      Integer.U32
                                                                                                       10
                                                                                                   ]
                                                                                                 |);

@@ -58,7 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U8 20 ]
+                    [ Value.Integer 20 ]
                   |))
               ]
           |) in

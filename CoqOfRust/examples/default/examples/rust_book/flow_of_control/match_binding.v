@@ -7,10 +7,7 @@ fn age() -> u32 {
 }
 *)
 Definition age (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => ltac:(M.monadic (Value.Integer Integer.U32 15))
-  | _, _ => M.impossible
-  end.
+  match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 15)) | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -60,8 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
-                  M.is_constant_or_break_match (| M.read (| γ |), Value.Integer Integer.U32 0 |) in
+                (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|

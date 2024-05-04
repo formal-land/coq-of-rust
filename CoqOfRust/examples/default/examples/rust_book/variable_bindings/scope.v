@@ -27,9 +27,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let long_lived_binding := M.alloc (| Value.Integer Integer.I32 1 |) in
+        let long_lived_binding := M.alloc (| Value.Integer 1 |) in
         let _ :=
-          let short_lived_binding := M.alloc (| Value.Integer Integer.I32 2 |) in
+          let short_lived_binding := M.alloc (| Value.Integer 2 |) in
           let _ :=
             let _ :=
               M.alloc (|

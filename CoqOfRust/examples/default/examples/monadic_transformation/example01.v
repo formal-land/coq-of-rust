@@ -43,21 +43,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let _ :=
           M.alloc (|
-            M.call_closure (|
-              M.get_function (| "example01::id", [] |),
-              [ Value.Integer Integer.U64 0 ]
-            |)
+            M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "example01::id", [] |),
-              [
-                M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
-                  [ Value.Integer Integer.U64 0 ]
-                |)
-              ]
+              [ M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |) ]
             |)
           |) in
         let _ :=
@@ -70,7 +62,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_function (| "example01::id", [] |),
-                      [ Value.Integer Integer.U64 0 ]
+                      [ Value.Integer 0 ]
                     |)
                   ]
                 |)
@@ -90,7 +82,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_function (| "example01::id", [] |),
-                          [ Value.Integer Integer.U64 0 ]
+                          [ Value.Integer 0 ]
                         |)
                       ]
                     |)
@@ -104,15 +96,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "example01::tri", [] |),
               [
-                M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
-                  [ Value.Integer Integer.U64 1 ]
-                |);
-                M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
-                  [ Value.Integer Integer.U64 2 ]
-                |);
-                Value.Integer Integer.U64 3
+                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 1 ] |);
+                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 2 ] |);
+                Value.Integer 3
               ]
             |)
           |) in

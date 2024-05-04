@@ -2,26 +2,21 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module char.
-  Definition value_TAG_CONT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 128 |))).
+  Definition value_TAG_CONT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
   
-  Definition value_TAG_TWO_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 192 |))).
+  Definition value_TAG_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
   
   Definition value_TAG_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 224 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer 224 |))).
   
-  Definition value_TAG_FOUR_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 240 |))).
+  Definition value_TAG_FOUR_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 240 |))).
   
-  Definition value_MAX_ONE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 128 |))).
+  Definition value_MAX_ONE_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
   
-  Definition value_MAX_TWO_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 2048 |))).
+  Definition value_MAX_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2048 |))).
   
   Definition value_MAX_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 65536 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer 65536 |))).
   
   Definition value_MAX : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::MAX" |))).
@@ -1582,7 +1577,7 @@ Module char.
                         "core::char::EscapeDebugInner::Char",
                         0
                       |) in
-                    M.alloc (| Value.Integer Integer.Usize 1 |)))
+                    M.alloc (| Value.Integer 1 |)))
               ]
             |)
           |)))
@@ -2516,7 +2511,7 @@ Module char.
                             (M.read (|
                               M.SubPointer.get_array_field (|
                                 chars,
-                                M.alloc (| Value.Integer Integer.Usize 2 |)
+                                M.alloc (| Value.Integer 2 |)
                               |)
                             |))
                             (Value.UnicodeChar 0)
@@ -2534,7 +2529,7 @@ Module char.
                                     (M.read (|
                                       M.SubPointer.get_array_field (|
                                         chars,
-                                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                                        M.alloc (| Value.Integer 1 |)
                                       |)
                                     |))
                                     (Value.UnicodeChar 0)
@@ -2548,7 +2543,7 @@ Module char.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| Value.Integer 0 |)
                                     |)
                                   |)
                                 ]
@@ -2562,13 +2557,13 @@ Module char.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| Value.Integer 0 |)
                                     |)
                                   |);
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer Integer.Usize 1 |)
+                                      M.alloc (| Value.Integer 1 |)
                                     |)
                                   |)
                                 ]
@@ -2582,22 +2577,13 @@ Module char.
                         "core::char::CaseMappingIter::Three"
                         [
                           M.read (|
-                            M.SubPointer.get_array_field (|
-                              chars,
-                              M.alloc (| Value.Integer Integer.Usize 0 |)
-                            |)
+                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 0 |) |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (|
-                              chars,
-                              M.alloc (| Value.Integer Integer.Usize 1 |)
-                            |)
+                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 1 |) |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (|
-                              chars,
-                              M.alloc (| Value.Integer Integer.Usize 2 |)
-                            |)
+                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 2 |) |)
                           |)
                         ]
                     |)))
@@ -2751,11 +2737,11 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| Value.Integer Integer.Usize 3 |)));
+                        M.alloc (| Value.Integer 3 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| Value.Integer Integer.Usize 2 |)));
+                        M.alloc (| Value.Integer 2 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2765,11 +2751,11 @@ Module char.
                             "core::char::CaseMappingIter::One",
                             0
                           |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
+                        M.alloc (| Value.Integer 1 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in

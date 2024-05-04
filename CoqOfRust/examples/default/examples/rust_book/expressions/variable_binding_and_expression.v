@@ -17,10 +17,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 5 |) in
+        let x := M.alloc (| Value.Integer 5 |) in
         let _ := x in
-        let _ := M.alloc (| BinOp.Panic.add (| M.read (| x |), Value.Integer Integer.I32 1 |) |) in
-        let _ := M.alloc (| Value.Integer Integer.I32 15 |) in
+        let _ := M.alloc (| BinOp.Panic.add (| Integer.I32, M.read (| x |), Value.Integer 1 |) |) in
+        let _ := M.alloc (| Value.Integer 15 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

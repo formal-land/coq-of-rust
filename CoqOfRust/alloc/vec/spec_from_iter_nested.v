@@ -130,8 +130,7 @@ Module vec.
                                                   "saturating_add",
                                                   []
                                                 |),
-                                                [ M.read (| lower |); Value.Integer Integer.Usize 1
-                                                ]
+                                                [ M.read (| lower |); Value.Integer 1 ]
                                               |)
                                             ]
                                           |)
@@ -179,7 +178,7 @@ Module vec.
                                                 "set_len",
                                                 []
                                               |),
-                                              [ vector; Value.Integer Integer.Usize 1 ]
+                                              [ vector; Value.Integer 1 ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |) in

@@ -44,9 +44,7 @@ Module iter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.eq (M.read (| count |)) (Value.Integer Integer.Usize 0)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.eq (M.read (| count |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -237,7 +235,7 @@ Module iter.
                                     "count"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -248,7 +246,7 @@ Module iter.
                               "core::iter::sources::repeat_n::RepeatN",
                               "count"
                             |),
-                            Value.Integer Integer.Usize 0
+                            Value.Integer 0
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -375,7 +373,7 @@ Module iter.
                                           "count"
                                         |)
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -403,7 +401,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -426,7 +424,7 @@ Module iter.
                                                 "count"
                                               |)
                                             |))
-                                            (Value.Integer Integer.Usize 0)
+                                            (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -612,7 +610,13 @@ Module iter.
                                   "new_unchecked",
                                   []
                                 |),
-                                [ BinOp.Panic.sub (| M.read (| skip |), M.read (| len |) |) ]
+                                [
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| skip |),
+                                    M.read (| len |)
+                                  |)
+                                ]
                               |)
                             ]
                         |)));
@@ -625,7 +629,7 @@ Module iter.
                               "core::iter::sources::repeat_n::RepeatN",
                               "count"
                             |),
-                            BinOp.Panic.sub (| M.read (| len |), M.read (| skip |) |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| skip |) |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]

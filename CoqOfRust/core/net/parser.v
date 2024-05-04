@@ -11,8 +11,7 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u8" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 0 |))).
+      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -244,8 +243,7 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u16" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U16 0 |))).
+      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -477,8 +475,7 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u32" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 0 |))).
+      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -1264,7 +1261,7 @@ Module net.
                                                 (M.alloc (|
                                                   BinOp.Pure.gt
                                                     (M.read (| index |))
-                                                    (Value.Integer Integer.Usize 0)
+                                                    (Value.Integer 0)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1455,7 +1452,7 @@ Module net.
                                         "core::net::parser::ReadNumberHelper::ZERO"
                                       |)
                                     |) in
-                                  let digit_count := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                                  let digit_count := M.alloc (| Value.Integer 0 |) in
                                   let has_leading_zero :=
                                     M.alloc (|
                                       M.call_closure (|
@@ -1832,8 +1829,9 @@ Module net.
                                                   M.write (|
                                                     β,
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| β |),
-                                                      Value.Integer Integer.Usize 1
+                                                      Value.Integer 1
                                                     |)
                                                   |) in
                                                 M.match_operator (|
@@ -1915,7 +1913,7 @@ Module net.
                                               (M.alloc (|
                                                 BinOp.Pure.eq
                                                   (M.read (| digit_count |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1945,7 +1943,7 @@ Module net.
                                                           ltac:(M.monadic
                                                             (BinOp.Pure.gt
                                                               (M.read (| digit_count |))
-                                                              (Value.Integer Integer.Usize 1)))
+                                                              (Value.Integer 1)))
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -2031,8 +2029,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let groups :=
-                                    M.alloc (| repeat (Value.Integer Integer.U8 0) 4 |) in
+                                  let groups := M.alloc (| repeat (Value.Integer 0) 4 |) in
                                   let _ :=
                                     M.use
                                       (M.match_operator (|
@@ -2214,13 +2211,11 @@ Module net.
                                                                                                     p
                                                                                                   |);
                                                                                                   Value.Integer
-                                                                                                    Integer.U32
                                                                                                     10;
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
                                                                                                     [
                                                                                                       Value.Integer
-                                                                                                        Integer.Usize
                                                                                                         3
                                                                                                     ];
                                                                                                   Value.Bool
@@ -2435,8 +2430,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let head :=
-                                    M.alloc (| repeat (Value.Integer Integer.U16 0) 8 |) in
+                                  let head := M.alloc (| repeat (Value.Integer 0) 8 |) in
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2466,7 +2460,7 @@ Module net.
                                                         (M.alloc (|
                                                           BinOp.Pure.eq
                                                             (M.read (| head_size |))
-                                                            (Value.Integer Integer.Usize 8)
+                                                            (Value.Integer 8)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -2685,15 +2679,16 @@ Module net.
                                                     val))
                                               ]
                                             |) in
-                                          let tail :=
-                                            M.alloc (| repeat (Value.Integer Integer.U16 0) 7 |) in
+                                          let tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
                                           let limit :=
                                             M.alloc (|
                                               BinOp.Panic.sub (|
-                                                Value.Integer Integer.Usize 8,
+                                                Integer.Usize,
+                                                Value.Integer 8,
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| head_size |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               |)
                                             |) in
@@ -2770,11 +2765,11 @@ Module net.
                                                                 [
                                                                   ("start",
                                                                     BinOp.Panic.sub (|
-                                                                      Value.Integer Integer.Usize 8,
+                                                                      Integer.Usize,
+                                                                      Value.Integer 8,
                                                                       M.read (| tail_size |)
                                                                     |));
-                                                                  ("end_",
-                                                                    Value.Integer Integer.Usize 8)
+                                                                  ("end_", Value.Integer 8)
                                                                 ]
                                                             ]
                                                           |);
@@ -3053,7 +3048,7 @@ Module net.
                                       |),
                                       [
                                         M.read (| p |);
-                                        Value.Integer Integer.U32 10;
+                                        Value.Integer 10;
                                         Value.StructTuple "core::option::Option::None" [];
                                         Value.Bool true
                                       ]
@@ -3190,7 +3185,7 @@ Module net.
                                       |),
                                       [
                                         M.read (| p |);
-                                        Value.Integer Integer.U32 10;
+                                        Value.Integer 10;
                                         Value.StructTuple "core::option::Option::None" [];
                                         Value.Bool true
                                       ]
@@ -3648,7 +3643,7 @@ Module net.
                                             |),
                                             [ M.read (| p |) ]
                                           |);
-                                          Value.Integer Integer.U32 0
+                                          Value.Integer 0
                                         ]
                                       |)
                                     |) in
@@ -3816,7 +3811,7 @@ Module net.
                                           [
                                             M.read (| ip |);
                                             M.read (| port |);
-                                            Value.Integer Integer.U32 0;
+                                            Value.Integer 0;
                                             M.read (| scope_id |)
                                           ]
                                         |)
@@ -4079,7 +4074,7 @@ Module net.
                                 |),
                                 [ M.read (| b |) ]
                               |))
-                              (Value.Integer Integer.Usize 15)
+                              (Value.Integer 15)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|

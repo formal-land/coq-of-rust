@@ -82,6 +82,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.mul (|
+          Integer.Usize,
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.read (| self |),

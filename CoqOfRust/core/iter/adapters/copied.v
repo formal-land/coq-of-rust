@@ -1151,9 +1151,7 @@ Module iter.
                                                                         "core::ops::range::Range"
                                                                         [
                                                                           ("start",
-                                                                            Value.Integer
-                                                                              Integer.Usize
-                                                                              0);
+                                                                            Value.Integer 0);
                                                                           ("end_", M.read (| len |))
                                                                         ]
                                                                     ]
@@ -1323,7 +1321,7 @@ Module iter.
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
                                                         [
-                                                          ("start", Value.Integer Integer.Usize 0);
+                                                          ("start", Value.Integer 0);
                                                           ("end_", M.read (| len |))
                                                         ]
                                                     ]

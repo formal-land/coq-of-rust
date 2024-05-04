@@ -744,6 +744,7 @@ Module str.
               let len :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -923,6 +924,7 @@ Module str.
               let len :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -1748,7 +1750,7 @@ Module str.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1788,7 +1790,7 @@ Module str.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1858,7 +1860,7 @@ Module str.
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::str::slice_error_fail", [] |),
-                            [ M.read (| slice |); Value.Integer Integer.Usize 0; M.read (| end_ |) ]
+                            [ M.read (| slice |); Value.Integer 0; M.read (| end_ |) ]
                           |)
                         |)
                       |)))
@@ -1929,7 +1931,7 @@ Module str.
                             M.get_function (| "core::str::slice_error_fail", [] |),
                             [
                               M.read (| slice |);
-                              Value.Integer Integer.Usize 0;
+                              Value.Integer 0;
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -2822,7 +2824,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2865,7 +2867,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2909,7 +2911,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2953,7 +2955,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2996,7 +2998,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3039,7 +3041,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,

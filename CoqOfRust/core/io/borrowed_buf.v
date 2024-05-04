@@ -196,7 +196,7 @@ Module io.
                           |)
                         ]
                       |));
-                    ("filled", Value.Integer Integer.Usize 0);
+                    ("filled", Value.Integer 0);
                     ("init", M.read (| len |))
                   ]
               |)
@@ -228,10 +228,7 @@ Module io.
             (let buf := M.alloc (| buf |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedBuf"
-              [
-                ("buf", M.read (| buf |));
-                ("filled", Value.Integer Integer.Usize 0);
-                ("init", Value.Integer Integer.Usize 0)
+              [ ("buf", M.read (| buf |)); ("filled", Value.Integer 0); ("init", Value.Integer 0)
               ]))
         | _, _ => M.impossible
         end.
@@ -374,7 +371,7 @@ Module io.
                     Value.StructRecord
                       "core::ops::range::Range"
                       [
-                        ("start", Value.Integer Integer.Usize 0);
+                        ("start", Value.Integer 0);
                         ("end_",
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -433,7 +430,7 @@ Module io.
                     Value.StructRecord
                       "core::ops::range::Range"
                       [
-                        ("start", Value.Integer Integer.Usize 0);
+                        ("start", Value.Integer 0);
                         ("end_",
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -516,7 +513,7 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |),
-                  Value.Integer Integer.Usize 0
+                  Value.Integer 0
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -697,6 +694,7 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.Usize,
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::io::borrowed_buf::BorrowedBuf",
@@ -743,6 +741,7 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.Usize,
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
@@ -1084,7 +1083,10 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |) in
-                M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| n |) |) |) in
+                M.write (|
+                  β,
+                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| n |) |)
+                |) in
               let _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1191,7 +1193,7 @@ Module io.
                           |),
                           [ M.read (| uninit |) ]
                         |);
-                        Value.Integer Integer.U8 0;
+                        Value.Integer 0;
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1290,6 +1292,7 @@ Module io.
                         |)
                       |);
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (|
@@ -1475,6 +1478,7 @@ Module io.
                 M.write (|
                   β,
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (| β |),
                     M.call_closure (|
                       M.get_associated_function (|

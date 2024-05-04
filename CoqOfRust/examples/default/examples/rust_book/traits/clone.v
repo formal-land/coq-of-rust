@@ -291,7 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer Integer.I32 1 ]
+                  [ Value.Integer 1 ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -301,7 +301,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer Integer.I32 2 ]
+                  [ Value.Integer 2 ]
                 |)
               ]
           |) in

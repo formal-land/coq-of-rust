@@ -600,11 +600,7 @@ Module cell.
                                       "core::intrinsics::is_nonoverlapping",
                                       [ Ty.apply (Ty.path "core::cell::Cell") [ T ] ]
                                     |),
-                                    [
-                                      M.read (| self |);
-                                      M.read (| other |);
-                                      Value.Integer Integer.Usize 1
-                                    ]
+                                    [ M.read (| self |); M.read (| other |); Value.Integer 1 ]
                                   |))
                               |)) in
                           let _ :=
@@ -1321,8 +1317,7 @@ Module cell.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
-  Definition value_UNUSED : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Isize 0 |))).
+  Definition value_UNUSED : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {
@@ -2938,7 +2933,7 @@ Module cell.
                       |),
                       [ M.read (| borrow |) ]
                     |);
-                    Value.Integer Integer.Isize 1
+                    Value.Integer 1
                   ]
                 |)
               |) in
@@ -3087,7 +3082,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -3238,7 +3233,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -4246,7 +4241,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -4301,11 +4296,7 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.Isize 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     let _ :=
                       M.alloc (|
                         M.call_closure (|
@@ -4317,8 +4308,9 @@ Module cell.
                           [
                             M.read (| borrow |);
                             BinOp.Panic.sub (|
+                              Integer.Isize,
                               M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
-                              Value.Integer Integer.Isize 1
+                              Value.Integer 1
                             |)
                           ]
                         |)
@@ -4470,7 +4462,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
                   ]
                 |)
               |) in

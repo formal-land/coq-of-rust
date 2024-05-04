@@ -328,7 +328,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
-              [ ("x", Value.Integer Integer.I64 20); ("y", Value.Integer Integer.I64 80) ]
+              [ ("x", Value.Integer 20); ("y", Value.Integer 80) ]
           |) in
         let load := M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
         let unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in

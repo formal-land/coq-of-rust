@@ -36,10 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "match_destructuring_structs::Foo"
-              [
-                ("x", Value.Tuple [ Value.Integer Integer.U32 1; Value.Integer Integer.U32 2 ]);
-                ("y", Value.Integer Integer.U32 3)
-              ]
+              [ ("x", Value.Tuple [ Value.Integer 1; Value.Integer 2 ]); ("y", Value.Integer 3) ]
           |) in
         M.match_operator (|
           foo,
@@ -60,11 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                 let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ1_0 |),
-                    Value.Integer Integer.U32 1
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                 let b := M.copy (| γ1_1 |) in
                 let y := M.copy (| γ0_1 |) in
                 let _ :=
@@ -133,11 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "match_destructuring_structs::Foo",
                     "x"
                   |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.U32 2
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 2 |) in
                 let i := M.copy (| γ0_1 |) in
                 let _ :=
                   M.alloc (|

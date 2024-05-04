@@ -703,7 +703,7 @@ Module boxed.
                                             |),
                                             [ layout ]
                                           |))
-                                          (Value.Integer Integer.Usize 0)
+                                          (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -736,7 +736,7 @@ Module boxed.
                                                                 LogicalOp.and (|
                                                                   BinOp.Pure.eq
                                                                     (M.read (| value_offset |))
-                                                                    (Value.Integer Integer.Usize 0),
+                                                                    (Value.Integer 0),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
                                                                       M.get_constant (|

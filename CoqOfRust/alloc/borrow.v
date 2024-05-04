@@ -1212,6 +1212,7 @@ Module borrow.
                                             |),
                                             [
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
@@ -1398,6 +1399,7 @@ Module borrow.
                                             |),
                                             [
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",

@@ -941,10 +941,7 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.le (M.read (| b |)) (Value.Integer Integer.U8 127)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.le (M.read (| b |)) (Value.Integer 127) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1017,10 +1014,7 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt (M.read (| d |)) (Value.Integer Integer.U8 10)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| d |)) (Value.Integer 10) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1085,9 +1079,7 @@ Module ascii.
                                     M.use
                                       (M.alloc (|
                                         UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.read (| d |))
-                                            (Value.Integer Integer.U8 10))
+                                          (BinOp.Pure.lt (M.read (| d |)) (Value.Integer 10))
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1462,7 +1454,7 @@ Module ascii.
                                                 "core::ascii::ascii_char::AsciiChar::Null"
                                                 []
                                             ];
-                                          Value.Integer Integer.U8 1
+                                          Value.Integer 1
                                         ]
                                     |)));
                                 fun γ =>
@@ -1485,7 +1477,7 @@ Module ascii.
                                               [
                                                 BinOp.Panic.shr (|
                                                   M.read (| byte |),
-                                                  Value.Integer Integer.I32 4
+                                                  Value.Integer 4
                                                 |)
                                               ]
                                             |)
@@ -1510,7 +1502,7 @@ Module ascii.
                                               [
                                                 BinOp.Pure.bit_and
                                                   (M.read (| byte |))
-                                                  (Value.Integer Integer.U8 15)
+                                                  (Value.Integer 15)
                                               ]
                                             |)
                                           |)
@@ -1530,7 +1522,7 @@ Module ascii.
                                               M.read (| hi |);
                                               M.read (| lo |)
                                             ];
-                                          Value.Integer Integer.U8 4
+                                          Value.Integer 4
                                         ]
                                     |)))
                               ]

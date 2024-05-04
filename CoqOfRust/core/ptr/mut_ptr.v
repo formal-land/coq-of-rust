@@ -1083,7 +1083,7 @@ Module ptr.
                                 "core::intrinsics::unchecked_sub",
                                 [ Ty.path "isize" ]
                               |),
-                              [ Value.Integer Integer.Isize 0; M.rust_cast (M.read (| count |)) ]
+                              [ Value.Integer 0; M.rust_cast (M.read (| count |)) ]
                             |)
                           ]
                         |)
@@ -1998,7 +1998,7 @@ Module ptr.
                 |),
                 [ M.read (| self |) ]
               |))
-              (Value.Integer Integer.Usize 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -2135,7 +2135,9 @@ Module ptr.
                     |);
                     M.call_closure (|
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
-                      [ M.read (| tail |); BinOp.Panic.sub (| M.read (| len |), M.read (| mid |) |)
+                      [
+                        M.read (| tail |);
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| mid |) |)
                       ]
                     |)
                   ]

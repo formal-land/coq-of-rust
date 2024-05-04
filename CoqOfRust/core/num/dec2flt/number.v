@@ -10,22 +10,22 @@ Module num.
             (M.alloc (|
               Value.Array
                 [
-                  Value.Integer Integer.U64 1;
-                  Value.Integer Integer.U64 10;
-                  Value.Integer Integer.U64 100;
-                  Value.Integer Integer.U64 1000;
-                  Value.Integer Integer.U64 10000;
-                  Value.Integer Integer.U64 100000;
-                  Value.Integer Integer.U64 1000000;
-                  Value.Integer Integer.U64 10000000;
-                  Value.Integer Integer.U64 100000000;
-                  Value.Integer Integer.U64 1000000000;
-                  Value.Integer Integer.U64 10000000000;
-                  Value.Integer Integer.U64 100000000000;
-                  Value.Integer Integer.U64 1000000000000;
-                  Value.Integer Integer.U64 10000000000000;
-                  Value.Integer Integer.U64 100000000000000;
-                  Value.Integer Integer.U64 1000000000000000
+                  Value.Integer 1;
+                  Value.Integer 10;
+                  Value.Integer 100;
+                  Value.Integer 1000;
+                  Value.Integer 10000;
+                  Value.Integer 100000;
+                  Value.Integer 1000000;
+                  Value.Integer 10000000;
+                  Value.Integer 100000000;
+                  Value.Integer 1000000000;
+                  Value.Integer 10000000000;
+                  Value.Integer 100000000000;
+                  Value.Integer 1000000000000;
+                  Value.Integer 10000000000000;
+                  Value.Integer 100000000000000;
+                  Value.Integer 1000000000000000
                 ]
             |))).
       
@@ -597,7 +597,7 @@ Module num.
                                                             "exponent"
                                                           |)
                                                         |))
-                                                        (Value.Integer Integer.I64 0)
+                                                        (Value.Integer 0)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -626,6 +626,7 @@ Module num.
                                                         [
                                                           M.rust_cast
                                                             (UnOp.Panic.neg (|
+                                                              Integer.I64,
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.read (| self |),
@@ -681,6 +682,7 @@ Module num.
                                         (let shift :=
                                           M.alloc (|
                                             BinOp.Panic.sub (|
+                                              Integer.I64,
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),

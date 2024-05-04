@@ -165,7 +165,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructRecord
                       "scoping_rules_borrowing_the_ref_pattern::Point"
-                      [ ("x", Value.Integer Integer.I32 0); ("y", Value.Integer Integer.I32 0) ]
+                      [ ("x", Value.Integer 0); ("y", Value.Integer 0) ]
                   |) in
                 let _copy_of_x :=
                   M.copy (|
@@ -211,8 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "y"
                             |) in
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
-                          let _ :=
-                            M.write (| M.read (| mut_ref_to_y |), Value.Integer Integer.I32 1 |) in
+                          let _ := M.write (| M.read (| mut_ref_to_y |), Value.Integer 1 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
@@ -358,9 +357,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "new",
                             []
                           |),
-                          [ Value.Integer Integer.U32 5 ]
+                          [ Value.Integer 5 ]
                         |);
-                        Value.Integer Integer.U32 3
+                        Value.Integer 3
                       ]
                   |) in
                 let _ :=
@@ -372,7 +371,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
-                          let _ := M.write (| M.read (| last |), Value.Integer Integer.U32 2 |) in
+                          let _ := M.write (| M.read (| last |), Value.Integer 2 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in

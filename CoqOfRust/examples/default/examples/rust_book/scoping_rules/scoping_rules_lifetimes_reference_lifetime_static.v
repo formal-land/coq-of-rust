@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 18 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 18 |) |))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -100,7 +100,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
-          let lifetime_num := M.alloc (| Value.Integer Integer.I32 9 |) in
+          let lifetime_num := M.alloc (| Value.Integer 9 |) in
           let coerced_static :=
             M.alloc (|
               M.call_closure (|

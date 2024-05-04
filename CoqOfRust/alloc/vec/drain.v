@@ -447,6 +447,7 @@ Module vec.
                                       BinOp.Pure.ne
                                         (M.read (| tail |))
                                         (BinOp.Panic.add (|
+                                          Integer.Usize,
                                           M.read (| start |),
                                           M.read (| unyielded_len |)
                                         |))
@@ -538,7 +539,12 @@ Module vec.
                     [
                       M.read (| source_vec |);
                       BinOp.Panic.add (|
-                        BinOp.Panic.add (| M.read (| start |), M.read (| unyielded_len |) |),
+                        Integer.Usize,
+                        BinOp.Panic.add (|
+                          Integer.Usize,
+                          M.read (| start |),
+                          M.read (| unyielded_len |)
+                        |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.call_closure (|
@@ -973,7 +979,9 @@ Module vec.
                                           [
                                             M.read (| vec |);
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| old_len |),
                                                 M.read (| drop_len |)
                                               |),
@@ -999,6 +1007,7 @@ Module vec.
                                           [
                                             M.read (| vec |);
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_len |),
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
@@ -1032,9 +1041,7 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| drop_len |))
-                                    (Value.Integer Integer.Usize 0)
+                                  BinOp.Pure.eq (M.read (| drop_len |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

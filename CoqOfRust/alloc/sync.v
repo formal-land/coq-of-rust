@@ -188,7 +188,7 @@ Module sync.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |));
                         ("weak",
                           M.call_closure (|
@@ -197,7 +197,7 @@ Module sync.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |));
                         ("data", M.read (| data |))
                       ]
@@ -377,7 +377,7 @@ Module sync.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 0 ]
+                                    [ Value.Integer 0 ]
                                   |));
                                 ("weak",
                                   M.call_closure (|
@@ -386,7 +386,7 @@ Module sync.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 1 ]
+                                    [ Value.Integer 1 ]
                                   |));
                                 ("data",
                                   M.call_closure (|
@@ -500,7 +500,7 @@ Module sync.
                           "alloc::sync::ArcInner",
                           "strong"
                         |);
-                        Value.Integer Integer.Usize 1;
+                        Value.Integer 1;
                         Value.StructTuple "core::sync::atomic::Ordering::Release" []
                       ]
                     |)
@@ -517,8 +517,7 @@ Module sync.
                           let _ :=
                             M.match_operator (|
                               M.alloc (|
-                                Value.Tuple
-                                  [ prev_value; M.alloc (| Value.Integer Integer.Usize 0 |) ]
+                                Value.Tuple [ prev_value; M.alloc (| Value.Integer 0 |) ]
                               |),
                               [
                                 fun γ =>
@@ -1097,7 +1096,7 @@ Module sync.
                                           "new",
                                           []
                                         |),
-                                        [ Value.Integer Integer.Usize 1 ]
+                                        [ Value.Integer 1 ]
                                       |));
                                     ("weak",
                                       M.call_closure (|
@@ -1106,7 +1105,7 @@ Module sync.
                                           "new",
                                           []
                                         |),
-                                        [ Value.Integer Integer.Usize 1 ]
+                                        [ Value.Integer 1 ]
                                       |));
                                     ("data", M.read (| data |))
                                   ]
@@ -2191,7 +2190,7 @@ Module sync.
                           "new",
                           []
                         |),
-                        [ Value.Integer Integer.Usize 1 ]
+                        [ Value.Integer 1 ]
                       |)
                     ]
                   |)
@@ -2215,7 +2214,7 @@ Module sync.
                           "new",
                           []
                         |),
-                        [ Value.Integer Integer.Usize 1 ]
+                        [ Value.Integer 1 ]
                       |)
                     ]
                   |)
@@ -2366,7 +2365,7 @@ Module sync.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |));
                         ("weak",
                           M.call_closure (|
@@ -2375,7 +2374,7 @@ Module sync.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |));
                         ("data", M.read (| data |))
                       ];
@@ -2895,7 +2894,7 @@ Module sync.
                                           "new",
                                           []
                                         |),
-                                        [ Value.Integer Integer.Usize 1 ]
+                                        [ Value.Integer 1 ]
                                       |));
                                     ("weak",
                                       M.call_closure (|
@@ -2904,7 +2903,7 @@ Module sync.
                                           "new",
                                           []
                                         |),
-                                        [ Value.Integer Integer.Usize 1 ]
+                                        [ Value.Integer 1 ]
                                       |));
                                     ("data", M.read (| data |))
                                   ];
@@ -3543,8 +3542,8 @@ Module sync.
                                             "alloc::sync::ArcInner",
                                             "strong"
                                           |);
-                                          Value.Integer Integer.Usize 1;
-                                          Value.Integer Integer.Usize 0;
+                                          Value.Integer 1;
+                                          Value.Integer 0;
                                           Value.StructTuple
                                             "core::sync::atomic::Ordering::Relaxed"
                                             [];
@@ -3745,11 +3744,11 @@ Module sync.
                                         "alloc::sync::ArcInner",
                                         "strong"
                                       |);
-                                      Value.Integer Integer.Usize 1;
+                                      Value.Integer 1;
                                       Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                     ]
                                   |))
-                                  (Value.Integer Integer.Usize 1)
+                                  (Value.Integer 1)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4228,8 +4227,9 @@ Module sync.
                                   |);
                                   M.read (| cur |);
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| cur |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |);
                                   Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                   Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
@@ -4452,11 +4452,11 @@ Module sync.
                             (M.read (| M.get_constant (| "core::num::MAX" |) |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer Integer.Usize 0 |)));
+                    M.alloc (| Value.Integer 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      BinOp.Panic.sub (| M.read (| cnt |), Value.Integer Integer.Usize 1 |)
+                      BinOp.Panic.sub (| Integer.Usize, M.read (| cnt |), Value.Integer 1 |)
                     |)))
               ]
             |)
@@ -5144,8 +5144,8 @@ Module sync.
                                         "alloc::sync::ArcInner",
                                         "strong"
                                       |);
-                                      Value.Integer Integer.Usize 1;
-                                      Value.Integer Integer.Usize 0;
+                                      Value.Integer 1;
+                                      Value.Integer 0;
                                       Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                       Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                     ]
@@ -5274,7 +5274,7 @@ Module sync.
                                             []
                                         ]
                                       |))
-                                      (Value.Integer Integer.Usize 1)
+                                      (Value.Integer 1)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5388,7 +5388,7 @@ Module sync.
                                         |),
                                         [ M.read (| this |) ]
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -5443,7 +5443,7 @@ Module sync.
                                         "alloc::sync::ArcInner",
                                         "strong"
                                       |);
-                                      Value.Integer Integer.Usize 1;
+                                      Value.Integer 1;
                                       Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                     ]
                                   |)
@@ -5713,7 +5713,7 @@ Module sync.
                                       "alloc::sync::ArcInner",
                                       "weak"
                                     |);
-                                    Value.Integer Integer.Usize 1;
+                                    Value.Integer 1;
                                     M.read (| M.get_constant (| "core::num::MAX" |) |);
                                     Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                     Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
@@ -5749,7 +5749,7 @@ Module sync.
                               Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
                             ]
                           |))
-                          (Value.Integer Integer.Usize 1)
+                          (Value.Integer 1)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -5772,7 +5772,7 @@ Module sync.
                               "alloc::sync::ArcInner",
                               "weak"
                             |);
-                            Value.Integer Integer.Usize 1;
+                            Value.Integer 1;
                             Value.StructTuple "core::sync::atomic::Ordering::Release" []
                           ]
                         |)
@@ -6540,7 +6540,7 @@ Module sync.
                       |));
                     ("elems", M.read (| elems |));
                     ("layout", M.read (| layout |));
-                    ("n_elems", Value.Integer Integer.Usize 0)
+                    ("n_elems", Value.Integer 0)
                   ]
               |) in
             let _ :=
@@ -6638,8 +6638,9 @@ Module sync.
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| β |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -7499,7 +7500,7 @@ Module sync.
                       "alloc::sync::ArcInner",
                       "strong"
                     |);
-                    Value.Integer Integer.Usize 1;
+                    Value.Integer 1;
                     Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                   ]
                 |)
@@ -7712,11 +7713,11 @@ Module sync.
                                         "alloc::sync::ArcInner",
                                         "strong"
                                       |);
-                                      Value.Integer Integer.Usize 1;
+                                      Value.Integer 1;
                                       Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                     ]
                                   |))
-                                  (Value.Integer Integer.Usize 1)
+                                  (Value.Integer 1)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8604,7 +8605,7 @@ Module sync.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
               ]
             |)
           |)))
@@ -8713,21 +8714,23 @@ Module sync.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| strong |))
-                                    (Value.Integer Integer.Usize 0)
+                                  BinOp.Pure.eq (M.read (| strong |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer Integer.Usize 0 |)));
+                            M.alloc (| Value.Integer 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Panic.sub (| M.read (| weak |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.sub (|
+                                Integer.Usize,
+                                M.read (| weak |),
+                                Value.Integer 1
+                              |)
                             |)))
                       ]
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
               ]
             |)
           |)))
@@ -9033,7 +9036,7 @@ Module sync.
                             "weak"
                           |)
                         |);
-                        Value.Integer Integer.Usize 1;
+                        Value.Integer 1;
                         Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                       ]
                     |)
@@ -9226,11 +9229,11 @@ Module sync.
                                         "weak"
                                       |)
                                     |);
-                                    Value.Integer Integer.Usize 1;
+                                    Value.Integer 1;
                                     Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                   ]
                                 |))
-                                (Value.Integer Integer.Usize 1)
+                                (Value.Integer 1)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10472,12 +10475,7 @@ Module sync.
                             "from_raw_parts_in",
                             []
                           |),
-                          [
-                            M.read (| vec_ptr |);
-                            Value.Integer Integer.Usize 0;
-                            M.read (| cap |);
-                            alloc
-                          ]
+                          [ M.read (| vec_ptr |); Value.Integer 0; M.read (| cap |); alloc ]
                         |)
                       |),
                       [
@@ -11285,6 +11283,7 @@ Module sync.
             |) in
           M.alloc (|
             BinOp.Panic.add (|
+              Integer.Usize,
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
                 [ layout ]

@@ -52,7 +52,10 @@ Module vec.
                     "alloc::vec::set_len_on_drop::SetLenOnDrop",
                     "local_len"
                   |) in
-                M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| increment |) |) |) in
+                M.write (|
+                  β,
+                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| increment |) |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
         | _, _ => M.impossible

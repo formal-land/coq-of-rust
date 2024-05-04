@@ -83,7 +83,7 @@ Module main.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          M.alloc (| BinOp.Panic.mul (| M.read (| arg |), Value.Integer Integer.I32 2 |) |)
+          M.alloc (| BinOp.Panic.mul (| Integer.I32, M.read (| arg |), Value.Integer 2 |) |)
         |)))
     | _, _ => M.impossible
     end.

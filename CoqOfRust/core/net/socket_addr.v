@@ -1665,11 +1665,7 @@ Module net.
                                 "new",
                                 []
                               |),
-                              [
-                                M.read (| a |);
-                                M.read (| port |);
-                                Value.Integer Integer.U32 0;
-                                Value.Integer Integer.U32 0
+                              [ M.read (| a |); M.read (| port |); Value.Integer 0; Value.Integer 0
                               ]
                             |)
                           ]
@@ -3052,7 +3048,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U32 0
+                                  Value.Integer 0
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
@@ -3272,7 +3268,7 @@ Module net.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U32 0
+                                            Value.Integer 0
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|

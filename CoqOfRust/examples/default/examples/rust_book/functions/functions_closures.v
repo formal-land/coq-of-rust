@@ -35,7 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let outer_var := M.alloc (| Value.Integer Integer.I32 42 |) in
+        let outer_var := M.alloc (| Value.Integer 42 |) in
         let closure_annotated :=
           M.alloc (|
             M.closure
@@ -49,7 +49,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |) |)))
+                            BinOp.Panic.add (|
+                              Integer.I32,
+                              M.read (| i |),
+                              M.read (| outer_var |)
+                            |)))
                       ]
                     |)
                   | _ => M.impossible (||)
@@ -68,7 +72,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |) |)))
+                            BinOp.Panic.add (|
+                              Integer.I32,
+                              M.read (| i |),
+                              M.read (| outer_var |)
+                            |)))
                       ]
                     |)
                   | _ => M.impossible (||)
@@ -114,10 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "call",
                                         []
                                       |),
-                                      [
-                                        closure_annotated;
-                                        Value.Tuple [ Value.Integer Integer.I32 1 ]
-                                      ]
+                                      [ closure_annotated; Value.Tuple [ Value.Integer 1 ] ]
                                     |)
                                   |)
                                 ]
@@ -170,10 +175,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "call",
                                         []
                                       |),
-                                      [
-                                        closure_inferred;
-                                        Value.Tuple [ Value.Integer Integer.I32 1 ]
-                                      ]
+                                      [ closure_inferred; Value.Tuple [ Value.Integer 1 ] ]
                                     |)
                                   |)
                                 ]
@@ -195,7 +197,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | [ α0 ] =>
                     M.match_operator (|
                       M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Integer Integer.I32 1)) ]
+                      [ fun γ => ltac:(M.monadic (Value.Integer 1)) ]
                     |)
                   | _ => M.impossible (||)
                   end))

@@ -32,6 +32,7 @@ Module Impl_generics_new_type_idiom_Years.
           "generics_new_type_idiom::Days"
           [
             BinOp.Panic.mul (|
+              Integer.I64,
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
@@ -39,7 +40,7 @@ Module Impl_generics_new_type_idiom_Years.
                   0
                 |)
               |),
-              Value.Integer Integer.I64 365
+              Value.Integer 365
             |)
           ]))
     | _, _ => M.impossible
@@ -65,6 +66,7 @@ Module Impl_generics_new_type_idiom_Days.
           "generics_new_type_idiom::Years"
           [
             BinOp.Panic.div (|
+              Integer.I64,
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
@@ -72,7 +74,7 @@ Module Impl_generics_new_type_idiom_Days.
                   0
                 |)
               |),
-              Value.Integer Integer.I64 365
+              Value.Integer 365
             |)
           ]))
     | _, _ => M.impossible
@@ -99,7 +101,7 @@ Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
             0
           |)
         |))
-        (Value.Integer Integer.I64 18)))
+        (Value.Integer 18)))
   | _, _ => M.impossible
   end.
 
@@ -118,9 +120,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let age :=
-          M.alloc (|
-            Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer Integer.I64 5 ]
-          |) in
+          M.alloc (| Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer 5 ] |) in
         let age_days :=
           M.alloc (|
             M.call_closure (|

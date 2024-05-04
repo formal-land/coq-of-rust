@@ -202,6 +202,7 @@ Module collections.
                                               [
                                                 left_parent_kv;
                                                 BinOp.Panic.sub (|
+                                                  Integer.Usize,
                                                   M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
@@ -298,6 +299,7 @@ Module collections.
                                               [
                                                 right_parent_kv;
                                                 BinOp.Panic.sub (|
+                                                  Integer.Usize,
                                                   M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
@@ -332,9 +334,7 @@ Module collections.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.gt
-                                                (M.read (| len |))
-                                                (Value.Integer Integer.Usize 0)
+                                              BinOp.Pure.gt (M.read (| len |)) (Value.Integer 0)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -559,7 +559,7 @@ Module collections.
                                         |),
                                         [ M.read (| self |) ]
                                       |))
-                                      (Value.Integer Integer.Usize 0),
+                                      (Value.Integer 0),
                                     ltac:(M.monadic
                                       (BinOp.Pure.eq
                                         (M.call_closure (|
@@ -579,7 +579,7 @@ Module collections.
                                           |),
                                           [ M.read (| self |) ]
                                         |))
-                                        (Value.Integer Integer.Usize 0)))
+                                        (Value.Integer 0)))
                                   |)
                                 |)) in
                             let _ :=
@@ -704,7 +704,7 @@ Module collections.
                                   |),
                                   [ M.read (| self |) ]
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -868,7 +868,7 @@ Module collections.
                                   |),
                                   [ M.read (| self |) ]
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1122,12 +1122,13 @@ Module collections.
                                                             [ last_kv ]
                                                           |))
                                                           (BinOp.Panic.mul (|
+                                                            Integer.Usize,
                                                             M.read (|
                                                               M.get_constant (|
                                                                 "alloc::collections::btree::map::MIN_LEN"
                                                               |)
                                                             |),
-                                                            Value.Integer Integer.Usize 2
+                                                            Value.Integer 2
                                                           |)))
                                                     |)) in
                                                 let _ :=
@@ -1207,6 +1208,7 @@ Module collections.
                                             [
                                               last_kv;
                                               BinOp.Panic.sub (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.get_constant (|
                                                     "alloc::collections::btree::map::MIN_LEN"
@@ -1998,10 +2000,11 @@ Module collections.
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
                                   |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |);
                                 M.read (| left_len |)
                               ]
@@ -2016,9 +2019,7 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| count |))
-                                          (Value.Integer Integer.Usize 0)
+                                        BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2232,10 +2233,11 @@ Module collections.
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
                                   |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |);
                                 M.read (| right_len |)
                               ]
@@ -2250,9 +2252,7 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| count |))
-                                          (Value.Integer Integer.Usize 0)
+                                        BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|

@@ -145,6 +145,7 @@ Module collections.
                                     M.write (|
                                       length_b,
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| total_num |),
                                         M.read (| length_a |)
                                       |)
@@ -327,6 +328,7 @@ Module collections.
                                     M.write (|
                                       length_a,
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| total_num |),
                                         M.read (| length_b |)
                                       |)
@@ -963,10 +965,7 @@ Module collections.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [
-                                ("start", Value.Integer Integer.Usize 0);
-                                ("end_", M.read (| height |))
-                              ]
+                              [ ("start", Value.Integer 0); ("end_", M.read (| height |)) ]
                           ]
                         |)
                       |),

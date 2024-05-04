@@ -975,15 +975,14 @@ Module char.
                             (M.call_closure (|
                               M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
                               [
-                                BinOp.Pure.bit_xor
-                                  (M.read (| i |))
-                                  (Value.Integer Integer.U32 55296);
-                                Value.Integer Integer.U32 2048
+                                BinOp.Pure.bit_xor (M.read (| i |)) (Value.Integer 55296);
+                                Value.Integer 2048
                               ]
                             |))
                             (BinOp.Panic.sub (|
-                              Value.Integer Integer.U32 1114112,
-                              Value.Integer Integer.U32 2048
+                              Integer.U32,
+                              Value.Integer 1114112,
+                              Value.Integer 2048
                             |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1285,9 +1284,7 @@ Module char.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.Pure.gt (M.read (| radix |)) (Value.Integer Integer.U32 36)
-                          |)) in
+                          (M.alloc (| BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 36) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -1338,7 +1335,7 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| num |)) (Value.Integer Integer.U8 10)
+                                  BinOp.Pure.lt (M.read (| num |)) (Value.Integer 10)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1348,6 +1345,7 @@ Module char.
                                 [
                                   M.rust_cast
                                     (BinOp.Panic.add (|
+                                      Integer.U8,
                                       M.read (| UnsupportedLiteral |),
                                       M.read (| num |)
                                     |))
@@ -1361,11 +1359,13 @@ Module char.
                                 [
                                   M.rust_cast
                                     (BinOp.Panic.sub (|
+                                      Integer.U8,
                                       BinOp.Panic.add (|
+                                        Integer.U8,
                                         M.read (| UnsupportedLiteral |),
                                         M.read (| num |)
                                       |),
-                                      Value.Integer Integer.U8 10
+                                      Value.Integer 10
                                     |))
                                 ]
                             |)))

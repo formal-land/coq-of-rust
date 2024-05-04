@@ -53,7 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ Value.Integer Integer.I32 30 ]
+              [ Value.Integer 30 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

@@ -159,7 +159,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "Peter" |) ]
             |)
           |) in
-        let age := M.alloc (| Value.Integer Integer.U8 27 |) in
+        let age := M.alloc (| Value.Integer 27 |) in
         let peter :=
           M.alloc (|
             Value.StructRecord
@@ -363,7 +363,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "structures::Pair"
-                      [ Value.Integer Integer.I32 1; M.read (| UnsupportedLiteral |) ]
+                      [ Value.Integer 1; M.read (| UnsupportedLiteral |) ]
                   |) in
                 let _ :=
                   let _ :=

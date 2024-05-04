@@ -165,10 +165,10 @@ Module raw_vec.
                             M.get_function (| "core::mem::size_of", [ T ] |),
                             []
                           |))
-                          (Value.Integer Integer.Usize 1)
+                          (Value.Integer 1)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer Integer.Usize 8 |)));
+                  M.alloc (| Value.Integer 8 |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -184,12 +184,12 @@ Module raw_vec.
                                     M.get_function (| "core::mem::size_of", [ T ] |),
                                     []
                                   |))
-                                  (Value.Integer Integer.Usize 1024)
+                                  (Value.Integer 1024)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer Integer.Usize 4 |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 1 |)))
+                          M.alloc (| Value.Integer 4 |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
                     ]
                   |)))
             ]
@@ -223,7 +223,7 @@ Module raw_vec.
                   |),
                   []
                 |));
-              ("cap", Value.Integer Integer.Usize 0);
+              ("cap", Value.Integer 0);
               ("alloc", M.read (| alloc |))
             ]))
       | _, _ => M.impossible
@@ -541,9 +541,7 @@ Module raw_vec.
                               M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.eq
-                                (M.read (| capacity |))
-                                (Value.Integer Integer.Usize 0)))
+                              (BinOp.Pure.eq (M.read (| capacity |)) (Value.Integer 0)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -941,7 +939,7 @@ Module raw_vec.
                                     "cap"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)))
+                                (Value.Integer 0)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1139,7 +1137,7 @@ Module raw_vec.
                         "grow_amortized",
                         []
                       |),
-                      [ M.read (| self |); M.read (| len |); Value.Integer Integer.Usize 1 ]
+                      [ M.read (| self |); M.read (| len |); Value.Integer 1 ]
                     |)
                   ]
                 |)
@@ -1710,7 +1708,7 @@ Module raw_vec.
                                           UnOp.Pure.not
                                             (BinOp.Pure.gt
                                               (M.read (| additional |))
-                                              (Value.Integer Integer.Usize 0))
+                                              (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1873,6 +1871,7 @@ Module raw_vec.
                       M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                       [
                         BinOp.Panic.mul (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -1880,7 +1879,7 @@ Module raw_vec.
                               "cap"
                             |)
                           |),
-                          Value.Integer Integer.Usize 2
+                          Value.Integer 2
                         |);
                         M.read (| required_cap |)
                       ]
@@ -2462,9 +2461,7 @@ Module raw_vec.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| cap |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                BinOp.Pure.eq (M.read (| cap |)) (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -2517,7 +2514,7 @@ Module raw_vec.
                                                 "alloc::raw_vec::RawVec",
                                                 "cap"
                                               |),
-                                              Value.Integer Integer.Usize 0
+                                              Value.Integer 0
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
                                       fun γ =>
@@ -3435,7 +3432,7 @@ Module raw_vec.
                         LogicalOp.and (|
                           BinOp.Pure.lt
                             (M.read (| M.get_constant (| "core::num::BITS" |) |))
-                            (Value.Integer Integer.U32 64),
+                            (Value.Integer 64),
                           ltac:(M.monadic
                             (BinOp.Pure.gt
                               (M.read (| alloc_size |))

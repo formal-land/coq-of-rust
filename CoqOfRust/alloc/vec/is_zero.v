@@ -40,7 +40,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I8 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -94,7 +94,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I16 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -148,7 +148,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I32 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -202,7 +202,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I64 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -256,7 +256,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I128 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -310,7 +310,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.Isize 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -364,7 +364,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U8 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -418,7 +418,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U16 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -472,7 +472,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U32 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -526,7 +526,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U64 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -580,7 +580,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U128 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -634,7 +634,7 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.Usize 0)))
+                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -801,7 +801,7 @@ Module vec.
                                       M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                                       [ M.read (| x |) ]
                                     |))
-                                    (Value.Integer Integer.U32 0)))
+                                    (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -860,7 +860,7 @@ Module vec.
                                       M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
                                       [ M.read (| x |) ]
                                     |))
-                                    (Value.Integer Integer.U64 0)))
+                                    (Value.Integer 0)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -964,7 +964,7 @@ Module vec.
             LogicalOp.and (|
               BinOp.Pure.le
                 (M.read (| M.get_constant (| "alloc::vec::is_zero::N" |) |))
-                (Value.Integer Integer.Usize 16),
+                (Value.Integer 16),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -2957,7 +2957,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3007,7 +3007,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3065,7 +3065,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
         | _, _ => M.impossible
         end.

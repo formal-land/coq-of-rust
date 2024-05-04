@@ -43,7 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let temperature :=
           M.alloc (|
-            Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer Integer.I32 35 ]
+            Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer 35 ]
           |) in
         M.match_operator (|
           temperature,
@@ -57,8 +57,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let t := M.copy (| γ0_0 |) in
-                let γ :=
-                  M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 30) |) in
+                let γ := M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer 30) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|
@@ -164,8 +163,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let t := M.copy (| γ0_0 |) in
-                let γ :=
-                  M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 86) |) in
+                let γ := M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer 86) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|

@@ -4,8 +4,11 @@ Require CoqOfRust.core.simulations.default.
 Import simulations.M.Notations.
 
 Module Option.
-  Global Instance IsToValue (A : Set) (_ : ToValue A) : ToValue (option A) := {
+  Global Instance IsToTy (A : Set) (_ : ToTy A) : ToTy (option A) := {
     Φ := Ty.apply (Ty.path "core::option::Option") [Φ A];
+  }.
+
+  Global Instance IsToValue (A : Set) (_ : ToValue A) : ToValue (option A) := {
     φ x :=
       match x with
       | None => Value.StructTuple "core::option::Option::None" []

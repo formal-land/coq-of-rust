@@ -3251,10 +3251,8 @@ Module iter.
                             |);
                             Value.Tuple
                               [
-                                Value.Integer Integer.Usize 0;
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [ Value.Integer Integer.Usize 0 ]
+                                Value.Integer 0;
+                                Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                               ];
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -3317,10 +3315,10 @@ Module iter.
                                     |);
                                     Value.Tuple
                                       [
-                                        Value.Integer Integer.Usize 0;
+                                        Value.Integer 0;
                                         Value.StructTuple
                                           "core::option::Option::Some"
-                                          [ Value.Integer Integer.Usize 0 ]
+                                          [ Value.Integer 0 ]
                                       ];
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
@@ -3913,7 +3911,7 @@ Module iter.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
-                                                Value.Integer Integer.Usize 0
+                                                Value.Integer 0
                                               |) in
                                             let γ2_0 :=
                                               M.SubPointer.get_struct_tuple_field (|
@@ -3924,7 +3922,7 @@ Module iter.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ2_0 |),
-                                                Value.Integer Integer.Usize 0
+                                                Value.Integer 0
                                               |) in
                                             let γ1_0 :=
                                               M.SubPointer.get_struct_tuple_field (|
@@ -4186,7 +4184,7 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Integer Integer.Usize 0;
+                  Value.Integer 0;
                   M.get_associated_function (| Self, "count.count", [] |)
                 ]
               |)))

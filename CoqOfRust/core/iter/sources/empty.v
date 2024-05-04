@@ -108,8 +108,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.Tuple
                 [
-                  Value.Integer Integer.Usize 0;
-                  Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.Usize 0 ]
+                  Value.Integer 0;
+                  Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                 ]))
           | _, _ => M.impossible
           end.
@@ -171,7 +171,7 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Integer Integer.Usize 0))
+              Value.Integer 0))
           | _, _ => M.impossible
           end.
         

@@ -1481,7 +1481,7 @@ Module ffi.
                                                     []
                                                   |),
                                                   [
-                                                    Value.Integer Integer.U8 0;
+                                                    Value.Integer 0;
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
@@ -1568,7 +1568,7 @@ Module ffi.
                       "reserve_exact",
                       []
                     |),
-                    [ v; Value.Integer Integer.Usize 1 ]
+                    [ v; Value.Integer 1 ]
                   |)
                 |) in
               let _ :=
@@ -1581,7 +1581,7 @@ Module ffi.
                       "push",
                       []
                     |),
-                    [ v; Value.Integer Integer.U8 0 ]
+                    [ v; Value.Integer 0 ]
                   |)
                 |) in
               M.alloc (|
@@ -1635,11 +1635,12 @@ Module ffi.
               let len :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [] |),
                       [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                     |),
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   |)
                 |) in
               let slice :=
@@ -1867,7 +1868,7 @@ Module ffi.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
-                                      [ Value.Integer Integer.U8 0 ]
+                                      [ Value.Integer 0 ]
                                   |)
                                 ]
                             |),
@@ -2023,6 +2024,7 @@ Module ffi.
                   [
                     ("end_",
                       BinOp.Panic.sub (|
+                        Integer.Usize,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -2039,7 +2041,7 @@ Module ffi.
                             |)
                           ]
                         |),
-                        Value.Integer Integer.Usize 1
+                        Value.Integer 1
                       |))
                   ]
               ]
@@ -2248,6 +2250,7 @@ Module ffi.
                                         UnOp.Pure.not
                                           (BinOp.Pure.eq
                                             (BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
@@ -2263,7 +2266,7 @@ Module ffi.
                                                       []
                                                     |),
                                                     [
-                                                      Value.Integer Integer.U8 0;
+                                                      Value.Integer 0;
                                                       M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
@@ -2283,7 +2286,7 @@ Module ffi.
                                                   |)
                                                 ]
                                               |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
@@ -2400,7 +2403,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
                     [
-                      Value.Integer Integer.U8 0;
+                      Value.Integer 0;
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
@@ -2432,8 +2435,9 @@ Module ffi.
                         M.alloc (|
                           BinOp.Pure.eq
                             (BinOp.Panic.add (|
+                              Integer.Usize,
                               M.read (| nul_pos |),
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             |))
                             (M.call_closure (|
                               M.get_associated_function (|
@@ -2544,10 +2548,10 @@ Module ffi.
                           "inner"
                         |)
                       |);
-                      Value.Integer Integer.Usize 0
+                      Value.Integer 0
                     ]
                   |),
-                  Value.Integer Integer.U8 0
+                  Value.Integer 0
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3701,7 +3705,7 @@ Module ffi.
                       "from",
                       []
                     |),
-                    [ Value.Array [ Value.Integer Integer.U8 0 ] ]
+                    [ Value.Array [ Value.Integer 0 ] ]
                   |)
                 |) in
               M.alloc (|

@@ -154,6 +154,7 @@ Module Impl_derive_Inches.
                       "derive::Centimeters"
                       [
                         BinOp.Panic.mul (|
+                          Integer.Usize,
                           M.rust_cast (M.read (| inches |)),
                           M.read (| UnsupportedLiteral |)
                         |)
@@ -208,10 +209,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _one_second :=
-          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ] |) in
-        let foot :=
-          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ] |) in
+        let _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
+        let foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
         let _ :=
           let _ :=
             M.alloc (|

@@ -23,7 +23,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer Integer.U64 5 |) ] |),
+            M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer 5 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic

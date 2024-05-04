@@ -25,15 +25,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a := M.alloc (| Value.Integer Integer.U64 4 |) in
-        let b := M.alloc (| Value.Integer Integer.U64 4 |) in
-        let c := M.alloc (| Value.Integer Integer.U64 4 |) in
+        let a := M.alloc (| Value.Integer 4 |) in
+        let b := M.alloc (| Value.Integer 4 |) in
+        let c := M.alloc (| Value.Integer 4 |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ a; M.alloc (| Value.Integer Integer.U64 12 |) ] |),
+            M.alloc (| Value.Tuple [ a; M.alloc (| Value.Integer 12 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic

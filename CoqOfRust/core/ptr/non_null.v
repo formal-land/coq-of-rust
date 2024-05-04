@@ -882,7 +882,7 @@ Module ptr.
                                 "core::intrinsics::unchecked_sub",
                                 [ Ty.path "isize" ]
                               |),
-                              [ Value.Integer Integer.Isize 0; M.rust_cast (M.read (| count |)) ]
+                              [ Value.Integer 0; M.rust_cast (M.read (| count |)) ]
                             |)
                           ]
                         |)

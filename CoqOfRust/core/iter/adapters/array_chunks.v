@@ -159,7 +159,7 @@ Module iter.
                                     (M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)
                                     |))
-                                    (Value.Integer Integer.Usize 0))
+                                    (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -309,6 +309,7 @@ Module iter.
                     let rem :=
                       M.alloc (|
                         BinOp.Panic.rem (|
+                          Integer.Usize,
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::exact_size::ExactSizeIterator",
@@ -543,6 +544,7 @@ Module iter.
                           Value.Tuple
                             [
                               BinOp.Panic.div (|
+                                Integer.Usize,
                                 M.read (| lower |),
                                 M.read (|
                                   M.get_constant (| "core::iter::adapters::array_chunks::N" |)
@@ -571,6 +573,7 @@ Module iter.
                                                 ltac:(M.monadic
                                                   (let n := M.copy (| γ |) in
                                                   BinOp.Panic.div (|
+                                                    Integer.Usize,
                                                     M.read (| n |),
                                                     M.read (|
                                                       M.get_constant (|
@@ -604,6 +607,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Panic.div (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
@@ -1287,6 +1291,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Panic.div (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
@@ -1482,7 +1487,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                let i := M.alloc (| Value.Integer 0 |) in
                 let _ :=
                   M.loop (|
                     ltac:(M.monadic
@@ -1495,7 +1500,11 @@ Module iter.
                                 M.use
                                   (M.alloc (|
                                     BinOp.Pure.ge
-                                      (BinOp.Panic.sub (| M.read (| inner_len |), M.read (| i |) |))
+                                      (BinOp.Panic.sub (|
+                                        Integer.Usize,
+                                        M.read (| inner_len |),
+                                        M.read (| i |)
+                                      |))
                                       (M.read (|
                                         M.get_constant (| "core::iter::adapters::array_chunks::N" |)
                                       |))
@@ -1531,6 +1540,7 @@ Module iter.
                                                         let idx :=
                                                           M.alloc (|
                                                             BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               M.read (| i |),
                                                               M.read (| local |)
                                                             |)
@@ -1582,6 +1592,7 @@ Module iter.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
                                     M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)

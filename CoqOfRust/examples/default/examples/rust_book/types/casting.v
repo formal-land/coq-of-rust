@@ -177,7 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u16" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.U16 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
                               |)
                             ]
                         |))
@@ -217,7 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.U8 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
                               |)
                             ]
                         |))
@@ -257,7 +257,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.alloc (| M.rust_cast (Value.Integer Integer.I8 (-1)) |) ]
+                                [ M.alloc (| M.rust_cast (Value.Integer (-1)) |) ]
                               |)
                             ]
                         |))
@@ -300,8 +300,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.rem (|
-                                      Value.Integer Integer.I32 1000,
-                                      Value.Integer Integer.I32 256
+                                      Integer.I32,
+                                      Value.Integer 1000,
+                                      Value.Integer 256
                                     |)
                                   |)
                                 ]
@@ -344,7 +345,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i16" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.I16 128 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 128 |)) ]
                               |)
                             ]
                         |))
@@ -384,7 +385,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.I8 128 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 128 |)) ]
                               |)
                             ]
                         |))
@@ -424,7 +425,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.U8 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
                               |)
                             ]
                         |))
@@ -464,7 +465,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer Integer.I8 232 |)) ]
+                                [ M.use (M.alloc (| Value.Integer 232 |)) ]
                               |)
                             ]
                         |))

@@ -54,6 +54,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::result::Result::Ok"
                             [
                               BinOp.Panic.mul (|
+                                Integer.I32,
                                 M.read (| first_number |),
                                 M.read (| second_number |)
                               |)

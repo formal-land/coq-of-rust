@@ -183,8 +183,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.add (|
-                                      Value.Integer Integer.U32 1,
-                                      Value.Integer Integer.U32 1
+                                      Integer.U32,
+                                      Value.Integer 1,
+                                      Value.Integer 1
                                     |)
                                   |)
                                 ]
@@ -237,17 +238,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  let x := M.alloc (| Value.Integer Integer.U32 1 |) in
+                                  let x := M.alloc (| Value.Integer 1 |) in
                                   M.alloc (|
                                     BinOp.Panic.sub (|
+                                      Integer.U32,
                                       BinOp.Panic.add (|
-                                        BinOp.Panic.mul (| M.read (| x |), M.read (| x |) |),
+                                        Integer.U32,
                                         BinOp.Panic.mul (|
-                                          Value.Integer Integer.U32 2,
+                                          Integer.U32,
+                                          M.read (| x |),
+                                          M.read (| x |)
+                                        |),
+                                        BinOp.Panic.mul (|
+                                          Integer.U32,
+                                          Value.Integer 2,
                                           M.read (| x |)
                                         |)
                                       |),
-                                      Value.Integer Integer.U32 1
+                                      Value.Integer 1
                                     |)
                                   |)
                                 ]

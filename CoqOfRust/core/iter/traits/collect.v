@@ -254,7 +254,7 @@ Module iter.
                                               (M.alloc (|
                                                 BinOp.Pure.gt
                                                   (M.read (| lower_bound |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|

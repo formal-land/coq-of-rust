@@ -40,7 +40,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -58,7 +58,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -108,7 +112,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -126,7 +130,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -178,7 +186,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -257,7 +265,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -334,7 +342,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -352,7 +360,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -402,7 +414,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -420,7 +432,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -472,7 +488,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -551,7 +567,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -628,7 +644,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -646,7 +662,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -696,7 +716,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -714,7 +734,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -766,7 +790,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -845,7 +869,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -922,7 +946,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -940,7 +964,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -990,7 +1018,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1008,7 +1036,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1060,7 +1092,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1139,7 +1171,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1216,7 +1248,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1234,7 +1266,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1284,7 +1320,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1302,7 +1338,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1354,7 +1394,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1433,7 +1473,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1510,7 +1550,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1528,7 +1568,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Isize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1578,7 +1622,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1596,7 +1640,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Isize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1648,7 +1696,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1727,7 +1775,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1804,7 +1852,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1822,7 +1870,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1872,7 +1924,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1890,7 +1942,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -1942,7 +1998,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2021,7 +2077,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2098,7 +2154,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2116,7 +2172,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2166,7 +2226,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2184,7 +2244,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2236,7 +2300,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2315,7 +2379,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2392,7 +2456,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2410,7 +2474,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2460,7 +2528,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2478,7 +2546,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2530,7 +2602,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2609,7 +2681,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2686,7 +2758,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2704,7 +2776,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2754,7 +2830,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2772,7 +2848,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -2824,7 +2904,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2903,7 +2983,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2980,7 +3060,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2998,7 +3078,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -3048,7 +3132,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3066,7 +3150,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -3118,7 +3206,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3197,7 +3285,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3274,7 +3362,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3292,7 +3380,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -3342,7 +3434,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3360,7 +3452,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -3412,7 +3508,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3491,7 +3587,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 1;
+                  Value.Integer 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3577,7 +3673,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3669,7 +3765,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3764,7 +3860,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3869,7 +3965,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3971,7 +4067,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4063,7 +4159,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4158,7 +4254,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4263,7 +4359,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4365,7 +4461,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4457,7 +4553,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4552,7 +4648,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4657,7 +4753,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4759,7 +4855,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4851,7 +4947,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4946,7 +5042,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5051,7 +5147,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5153,9 +5249,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5247,9 +5341,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5347,9 +5439,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5457,9 +5547,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5561,9 +5649,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5655,9 +5741,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5755,9 +5839,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5865,9 +5947,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5969,7 +6049,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6061,7 +6141,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6156,7 +6236,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6261,7 +6341,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6363,7 +6443,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6455,7 +6535,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6550,7 +6630,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6655,7 +6735,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6757,7 +6837,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6849,7 +6929,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6944,7 +7024,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7049,7 +7129,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7151,7 +7231,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7243,7 +7323,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7338,7 +7418,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7443,7 +7523,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7545,9 +7625,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7639,9 +7717,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7739,9 +7815,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7849,9 +7923,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7953,9 +8025,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8047,9 +8117,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8147,9 +8215,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 0 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8257,9 +8323,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 1 ];
+                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8370,7 +8434,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -8438,7 +8506,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -8664,7 +8736,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
@@ -8732,7 +8808,11 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]

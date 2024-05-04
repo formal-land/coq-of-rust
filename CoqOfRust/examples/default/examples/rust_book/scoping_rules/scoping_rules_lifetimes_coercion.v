@@ -57,9 +57,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let first := M.alloc (| Value.Integer Integer.I32 2 |) in
+        let first := M.alloc (| Value.Integer 2 |) in
         let _ :=
-          let second := M.alloc (| Value.Integer Integer.I32 3 |) in
+          let second := M.alloc (| Value.Integer 3 |) in
           let _ :=
             let _ :=
               M.alloc (|

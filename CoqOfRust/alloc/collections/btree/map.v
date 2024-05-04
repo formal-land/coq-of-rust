@@ -1382,7 +1382,7 @@ Module collections.
                       |),
                       []
                     |));
-                  ("length", Value.Integer Integer.Usize 0)
+                  ("length", Value.Integer 0)
                 ]))
           | _, _ => M.impossible
           end.
@@ -1541,7 +1541,7 @@ Module collections.
                       |),
                       []
                     |));
-                  ("length", Value.Integer Integer.Usize 0);
+                  ("length", Value.Integer 0);
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
           | _, _ => M.impossible
@@ -1657,7 +1657,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1703,7 +1703,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1790,7 +1790,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1836,7 +1836,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1985,7 +1985,7 @@ Module collections.
                       |),
                       []
                     |));
-                  ("length", Value.Integer Integer.Usize 0);
+                  ("length", Value.Integer 0);
                   ("alloc",
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -2774,7 +2774,7 @@ Module collections.
                 "alloc::collections::btree::map::BTreeMap"
                 [
                   ("root", Value.StructTuple "core::option::Option::None" []);
-                  ("length", Value.Integer Integer.Usize 0);
+                  ("length", Value.Integer 0);
                   ("alloc",
                     M.call_closure (|
                       M.get_associated_function (|
@@ -2869,7 +2869,7 @@ Module collections.
                                     "alloc::collections::btree::map::BTreeMap",
                                     "length"
                                   |);
-                                  Value.Integer Integer.Usize 0
+                                  Value.Integer 0
                                 ]
                               |));
                             ("alloc",
@@ -2918,7 +2918,7 @@ Module collections.
                 "alloc::collections::btree::map::BTreeMap"
                 [
                   ("root", Value.StructTuple "core::option::Option::None" []);
-                  ("length", Value.Integer Integer.Usize 0);
+                  ("length", Value.Integer 0);
                   ("alloc",
                     M.call_closure (|
                       M.get_associated_function (|
@@ -7631,7 +7631,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let length := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                let length := M.alloc (| Value.Integer 0 |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -7825,7 +7825,7 @@ Module collections.
                                   |),
                                   []
                                 |));
-                              ("length", Value.Integer Integer.Usize 0)
+                              ("length", Value.Integer 0)
                             ]
                         |)))
                   ]
@@ -7950,7 +7950,7 @@ Module collections.
                                   |),
                                   []
                                 |));
-                              ("length", Value.Integer Integer.Usize 0);
+                              ("length", Value.Integer 0);
                               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                             ]
                         |)))
@@ -8102,7 +8102,7 @@ Module collections.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (Value.Integer Integer.Usize 0)))
+                (Value.Integer 0)))
           | _, _ => M.impossible
           end.
         
@@ -9307,7 +9307,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9323,7 +9323,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9534,7 +9534,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9550,7 +9550,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9773,7 +9773,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9789,7 +9789,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9990,7 +9990,7 @@ Module collections.
                                     "length"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10006,7 +10006,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -10378,7 +10378,7 @@ Module collections.
                                   |),
                                   []
                                 |));
-                              ("length", Value.Integer Integer.Usize 0);
+                              ("length", Value.Integer 0);
                               ("alloc",
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -12503,8 +12503,9 @@ Module collections.
                                                             M.write (|
                                                               β,
                                                               BinOp.Panic.sub (|
+                                                                Integer.Usize,
                                                                 M.read (| β |),
-                                                                Value.Integer Integer.Usize 1
+                                                                Value.Integer 1
                                                               |)
                                                             |) in
                                                           M.match_operator (|
@@ -12871,7 +12872,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.Tuple
                 [
-                  Value.Integer Integer.Usize 0;
+                  Value.Integer 0;
                   Value.StructTuple
                     "core::option::Option::Some"
                     [
@@ -15441,7 +15442,7 @@ Module collections.
                                       (M.read (|
                                         M.get_constant (| "alloc::collections::btree::map::N" |)
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -21256,8 +21257,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |)
                                                 |) in
                                               M.return_ (| Value.Tuple [] |)
@@ -21722,7 +21724,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
                   |)))
@@ -21984,8 +21986,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |)
                                                 |) in
                                               M.return_ (| Value.Tuple [] |)
@@ -22450,7 +22453,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
                   |)))
@@ -23179,7 +23182,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                               |) in
                             let _ :=
                               M.match_operator (|
@@ -23619,7 +23622,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                               |) in
                             let _ :=
                               M.match_operator (|

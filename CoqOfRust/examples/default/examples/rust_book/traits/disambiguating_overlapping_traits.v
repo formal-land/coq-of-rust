@@ -124,7 +124,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [ M.read (| Value.String "rustacean" |) ]
                   |));
-                ("age", Value.Integer Integer.U8 28)
+                ("age", Value.Integer 28)
               ]
           |) in
         let username :=
@@ -236,7 +236,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer Integer.U8 28 |); age ] |),
+            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer 28 |); age ] |),
             [
               fun γ =>
                 ltac:(M.monadic

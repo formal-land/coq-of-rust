@@ -764,7 +764,7 @@ Module num.
                                   M.read (| s |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer Integer.Usize 1) ]
+                                    [ ("start", Value.Integer 1) ]
                                 ]
                               |)
                             |) in
@@ -981,7 +981,7 @@ Module num.
                                             "e"
                                           |)
                                         |))
-                                        (Value.Integer Integer.I32 0)))
+                                        (Value.Integer 0)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -1009,6 +1009,7 @@ Module num.
                                                 |)
                                               |);
                                               BinOp.Panic.add (|
+                                                Integer.U64,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     num,
@@ -1016,7 +1017,7 @@ Module num.
                                                     "mantissa"
                                                   |)
                                                 |),
-                                                Value.Integer Integer.U64 1
+                                                Value.Integer 1
                                               |)
                                             ]
                                           |)
@@ -1034,7 +1035,7 @@ Module num.
                                 "core::num::dec2flt::common::BiasedFp",
                                 "e"
                               |),
-                              Value.Integer Integer.I32 (-1)
+                              Value.Integer (-1)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1057,7 +1058,7 @@ Module num.
                                       "e"
                                     |)
                                   |))
-                                  (Value.Integer Integer.I32 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

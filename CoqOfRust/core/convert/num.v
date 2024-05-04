@@ -4568,10 +4568,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4628,10 +4625,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4688,10 +4682,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4748,10 +4739,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4808,10 +4796,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4868,10 +4853,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4928,10 +4910,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4988,10 +4967,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5048,10 +5024,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5108,10 +5081,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5168,10 +5138,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5228,10 +5195,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5288,10 +5252,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I64 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5348,10 +5309,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I64 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5408,10 +5366,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I128 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -6220,10 +6175,7 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.Isize 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -7049,10 +7001,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.Isize 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7113,10 +7062,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.Isize 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7578,10 +7524,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I8 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7642,10 +7585,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I16 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7706,10 +7646,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I32 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7770,10 +7707,7 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ge (M.read (| u |)) (Value.Integer Integer.I64 0)
-                            |)) in
+                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|

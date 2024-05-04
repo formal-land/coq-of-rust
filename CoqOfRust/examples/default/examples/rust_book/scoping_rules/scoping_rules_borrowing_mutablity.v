@@ -159,7 +159,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_mutablity::Book",
               "year"
             |),
-            Value.Integer Integer.U32 2014
+            Value.Integer 2014
           |) in
         let _ :=
           let _ :=
@@ -267,7 +267,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("author", M.read (| Value.String "Douglas Hofstadter" |));
                 ("title",
                   M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
-                ("year", Value.Integer Integer.U32 1979)
+                ("year", Value.Integer 1979)
               ]
           |) in
         let mutabook := M.copy (| immutabook |) in

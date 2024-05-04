@@ -476,9 +476,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      M.alloc (|
-                        BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
-                      |)));
+                      M.alloc (| BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let end_ :=
@@ -604,7 +602,7 @@ Module slice.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
+                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -671,7 +669,7 @@ Module slice.
                                       "post_inc_start",
                                       []
                                     |),
-                                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| self |); Value.Integer 1 ]
                                   |)
                                 |)
                               ]
@@ -1028,10 +1026,7 @@ Module slice.
                                                   ]
                                                 |)
                                               |) in
-                                            M.write (|
-                                              M.read (| len |),
-                                              Value.Integer Integer.Usize 0
-                                            |)));
+                                            M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let end_ :=
@@ -1103,7 +1098,7 @@ Module slice.
                                   "post_inc_start",
                                   []
                                 |),
-                                [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| self |); Value.Integer 1 ]
                               |)
                             |)
                           ]
@@ -1255,7 +1250,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -1377,9 +1372,7 @@ Module slice.
                                             |)
                                           |) in
                                         M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (| len |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -1442,7 +1435,7 @@ Module slice.
                       ]
                     |) in
                   let acc := M.copy (| init |) in
-                  let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let i := M.alloc (| Value.Integer 0 |) in
                   let len :=
                     M.copy (|
                       M.match_operator (|
@@ -1575,7 +1568,7 @@ Module slice.
                             i,
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
-                              [ M.read (| i |); Value.Integer Integer.Usize 1 ]
+                              [ M.read (| i |); Value.Integer 1 ]
                             |)
                           |) in
                         M.match_operator (|
@@ -2234,7 +2227,7 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let i := M.alloc (| Value.Integer 0 |) in
                   let _ :=
                     M.loop (|
                       ltac:(M.monadic
@@ -2321,8 +2314,9 @@ Module slice.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -2489,8 +2483,9 @@ Module slice.
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 M.match_operator (|
@@ -2792,7 +2787,7 @@ Module slice.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
+                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2859,7 +2854,7 @@ Module slice.
                                       "pre_dec_end",
                                       []
                                     |),
-                                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| self |); Value.Integer 1 ]
                                   |)
                                 |)
                               ]
@@ -3036,10 +3031,7 @@ Module slice.
                                                   ]
                                                 |)
                                               |) in
-                                            M.write (|
-                                              M.read (| len |),
-                                              Value.Integer Integer.Usize 0
-                                            |)));
+                                            M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let end_ :=
@@ -3113,7 +3105,7 @@ Module slice.
                                   "pre_dec_end",
                                   []
                                 |),
-                                [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| self |); Value.Integer 1 ]
                               |)
                             |)
                           ]
@@ -3265,7 +3257,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -3345,7 +3337,7 @@ Module slice.
                       "post_inc_start",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                    [ M.read (| self |); Value.Integer 1 ]
                   |)
                 |)
               ]
@@ -3870,9 +3862,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      M.alloc (|
-                        BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
-                      |)));
+                      M.alloc (| BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let end_ :=
@@ -3998,7 +3988,7 @@ Module slice.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
+                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -4065,7 +4055,7 @@ Module slice.
                                       "post_inc_start",
                                       []
                                     |),
-                                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| self |); Value.Integer 1 ]
                                   |)
                                 |)
                               ]
@@ -4422,10 +4412,7 @@ Module slice.
                                                   ]
                                                 |)
                                               |) in
-                                            M.write (|
-                                              M.read (| len |),
-                                              Value.Integer Integer.Usize 0
-                                            |)));
+                                            M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let end_ :=
@@ -4497,7 +4484,7 @@ Module slice.
                                   "post_inc_start",
                                   []
                                 |),
-                                [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| self |); Value.Integer 1 ]
                               |)
                             |)
                           ]
@@ -4649,7 +4636,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -4771,9 +4758,7 @@ Module slice.
                                             |)
                                           |) in
                                         M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (| len |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -4836,7 +4821,7 @@ Module slice.
                       ]
                     |) in
                   let acc := M.copy (| init |) in
-                  let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let i := M.alloc (| Value.Integer 0 |) in
                   let len :=
                     M.copy (|
                       M.match_operator (|
@@ -4969,7 +4954,7 @@ Module slice.
                             i,
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
-                              [ M.read (| i |); Value.Integer Integer.Usize 1 ]
+                              [ M.read (| i |); Value.Integer 1 ]
                             |)
                           |) in
                         M.match_operator (|
@@ -5629,7 +5614,7 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let i := M.alloc (| Value.Integer 0 |) in
                   let _ :=
                     M.loop (|
                       ltac:(M.monadic
@@ -5717,8 +5702,9 @@ Module slice.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -5885,8 +5871,9 @@ Module slice.
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 M.match_operator (|
@@ -6104,7 +6091,7 @@ Module slice.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer Integer.Usize 0)
+                                    BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -6171,7 +6158,7 @@ Module slice.
                                       "pre_dec_end",
                                       []
                                     |),
-                                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| self |); Value.Integer 1 ]
                                   |)
                                 |)
                               ]
@@ -6348,10 +6335,7 @@ Module slice.
                                                   ]
                                                 |)
                                               |) in
-                                            M.write (|
-                                              M.read (| len |),
-                                              Value.Integer Integer.Usize 0
-                                            |)));
+                                            M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let end_ :=
@@ -6425,7 +6409,7 @@ Module slice.
                                   "pre_dec_end",
                                   []
                                 |),
-                                [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| self |); Value.Integer 1 ]
                               |)
                             |)
                           ]
@@ -6577,7 +6561,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -6657,7 +6641,7 @@ Module slice.
                       "post_inc_start",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                    [ M.read (| self |); Value.Integer 1 ]
                   |)
                 |)
               ]

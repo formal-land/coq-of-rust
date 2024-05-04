@@ -2,7 +2,6 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
@@ -117,13 +116,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 }
                 // And for the rest...
                 match &ty.kind() {
-                    rustc_middle::ty::TyKind::Int(int_ty) => {
+                    rustc_middle::ty::TyKind::Int(_) => {
                         let uint_value = constant.try_to_scalar().unwrap().assert_int();
                         let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
                             LiteralInteger {
-                                name: capitalize(&format!("{int_ty:?}")),
                                 negative_sign: int_value < 0,
                                 // The `unsigned_abs` method is necessary to get the minimal int128's
                                 // absolute value.
@@ -131,12 +129,11 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                             },
                         ))));
                     }
-                    rustc_middle::ty::TyKind::Uint(uint_ty) => {
+                    rustc_middle::ty::TyKind::Uint(_) => {
                         let uint_value = constant.try_to_scalar().unwrap().assert_int();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
                             LiteralInteger {
-                                name: capitalize(&format!("{uint_ty:?}")),
                                 negative_sign: false,
                                 value: uint_value.assert_bits(uint_value.size()),
                             },

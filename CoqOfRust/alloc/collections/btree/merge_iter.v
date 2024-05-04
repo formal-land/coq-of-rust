@@ -780,7 +780,8 @@ Module collections.
                           Value.Tuple
                             [
                               BinOp.Panic.add (|
-                                Value.Integer Integer.Usize 1,
+                                Integer.Usize,
+                                Value.Integer 1,
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
@@ -850,7 +851,8 @@ Module collections.
                                 ]
                               |);
                               BinOp.Panic.add (|
-                                Value.Integer Integer.Usize 1,
+                                Integer.Usize,
+                                Value.Integer 1,
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
