@@ -116,24 +116,23 @@ Module Pointer.
   End Path.
 
   Module Mutable.
-    Inductive t (Value : Set) : Set :=
-    | Make {Address Big_A A : Set}
+    Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
+    | Make {Address Big_A : Set}
       (address : Address)
       (path : Path.t)
       (big_to_value : Big_A -> Value)
       (projection : Big_A -> option A)
-      (injection : Big_A -> A -> option Big_A)
-      (to_value : A -> Value).
-    Arguments Make {_ _ _ _}.
+      (injection : Big_A -> A -> option Big_A).
+    Arguments Make {_ _ _ _ _}.
 
-    (* Definition get_sub {Value Address Big_A A Sub_A : Set}
-        (mutable : t Value)
+    Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
+        (mutable : t Value to_value)
         (index : Index.t)
         (sub_projection : A -> option Sub_A)
         (sub_injection : A -> Sub_A -> option A)
         (sub_to_value : Sub_A -> Value) :
-        t Value :=
-      let 'Make address path big_to_value projection injection to_value := mutable in
+        t Value sub_to_value :=
+      let 'Make address path big_to_value projection injection := mutable in
       Make
         address
         (path ++ [index])
@@ -153,27 +152,25 @@ Module Pointer.
             end
           | None => None
           end
-        )
-        sub_to_value. *)
+        ).
   End Mutable.
 
   Inductive t (Value : Set) : Set :=
   | Immediate (value : Value)
-  | Mutable (mutable : Mutable.t Value).
+  | Mutable {A : Set} {to_value : A -> Value} (mutable : Mutable.t Value to_value).
   Arguments Immediate {_}.
-  Arguments Mutable {_}.
+  Arguments Mutable {_ _ _}.
 
   Definition mutable {Value Address A : Set}
       (address : Address)
       (to_value : A -> Value) :
       t Value :=
-    Mutable (Mutable.Make
+    Mutable (to_value := to_value) (Mutable.Make
       address
       []
       to_value
       (fun x => Some x)
-      (fun x _ => Some x)
-      to_value
+      (fun _ y => Some y)
     ).
 End Pointer.
 
@@ -360,9 +357,14 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead (mutable : Pointer.Mutable.t Value.t)
-  | StateWrite (mutable : Pointer.Mutable.t Value.t) (value : Value.t)
-  | GetSubPointer (mutable : Pointer.Mutable.t Value.t) (index : Pointer.Index.t)
+  | StateRead {A : Set} {to_value : A -> Value.t}
+    (mutable : Pointer.Mutable.t Value.t to_value)
+  | StateWrite {A : Set} {to_value : A -> Value.t}
+    (mutable : Pointer.Mutable.t Value.t to_value)
+    (value : Value.t)
+  | GetSubPointer {A : Set} {to_value : A -> Value.t}
+    (mutable : Pointer.Mutable.t Value.t to_value)
+    (index : Pointer.Index.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -579,6 +581,8 @@ Definition impossible : M :=
 Definition call_primitive (primitive : Primitive.t) : M :=
   LowM.CallPrimitive primitive (fun result =>
   LowM.Pure (inl result)).
+(* Make it transparent *)
+Arguments call_primitive /.
 
 Definition alloc (v : Value.t) : M :=
   call_primitive (Primitive.StateAlloc v).

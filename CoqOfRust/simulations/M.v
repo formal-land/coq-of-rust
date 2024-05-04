@@ -97,6 +97,29 @@ Module TupleIsToValue.
   }.
 End TupleIsToValue.
 
+Module SubPointer.
+  Module Runner.
+    Record t {A Sub_A : Set} {H_A : ToValue A} {H_Sub_A : ToValue Sub_A} : Set := {
+      index : Pointer.Index.t;
+      projection : A -> option Sub_A;
+      injection : A -> Sub_A -> option A;
+    }.
+    Arguments t _ _ {_ _}.
+  End Runner.
+
+  Definition get_sub
+      {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      (mutable : Pointer.Mutable.t (A := A) Value.t φ)
+      (runner : Runner.t A Sub_A) :
+      Pointer.Mutable.t (A := Sub_A) Value.t φ :=
+    Pointer.Mutable.get_sub
+      mutable
+      runner.(Runner.index)
+      runner.(Runner.projection)
+      runner.(Runner.injection)
+      φ.
+End SubPointer.
+
 (** ** Monads that are useful for the definition of simulations. *)
 
 Module Error.

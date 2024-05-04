@@ -1,6 +1,6 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.M.
-Require CoqOfRust.simulations.M.
+Require Import CoqOfRust.simulations.M.
 
 Import List.ListNotations.
 
@@ -93,20 +93,20 @@ Module Run.
       LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ result
     | state' }}
   | CallPrimitiveStateRead
-      {A : Set} address path big_to_value projection injection to_value
+      {A : Set} {to_value : A -> Value.t} address path big_to_value projection injection
       (value : State.get_Set address)
       (sub_value : A)
       (state : State)
       (k : Value.t -> M) :
     let mutable :=
-      @Pointer.Mutable.Make
-        Value.t Address (State.get_Set address) A
+      Pointer.Mutable.Make
+        (Value := Value.t) (A := A) (to_value := to_value) (Address := Address)
+        (Big_A := State.get_Set address)
         address
         path
         big_to_value
         projection
-        injection
-        to_value in
+        injection in
     State.read address state = Some value ->
     projection value = Some sub_value ->
     {{ env, env_to_value, state |
@@ -118,66 +118,34 @@ Module Run.
       result
     | state' }}
   | CallPrimitiveStateWrite
-      {A : Set} address path big_to_value projection injection to_value
-      (update : A) (update' : Value.t)
+      {A : Set} {to_value : A -> Value.t} address path big_to_value projection injection
+      (value : A) (value' : Value.t)
       (big_value new_big_value : State.get_Set address)
       (state state_inter : State)
       (k : Value.t -> M) :
     let mutable :=
-      @Pointer.Mutable.Make
-        Value.t Address (State.get_Set address) A
+      Pointer.Mutable.Make
+        (Value := Value.t) (A := A) (to_value := to_value) (Address := Address)
+        (Big_A := State.get_Set address)
         address
         path
         big_to_value
         projection
-        injection
-        to_value in
-    update' = to_value update ->
+        injection in
+    value' = to_value value ->
     State.read address state = Some big_value ->
-    injection big_value update = Some new_big_value ->
+    injection big_value value = Some new_big_value ->
     State.alloc_write address state new_big_value = Some state_inter ->
     {{ env, env_to_value, state_inter | k (Value.Tuple []) ⇓ result | state' }} ->
     {{ env, env_to_value, state |
-      LowM.CallPrimitive (Primitive.StateWrite mutable update') k ⇓
+      LowM.CallPrimitive (Primitive.StateWrite mutable value') k ⇓
       result
     | state' }}
-  | CallPrimitiveGetSubPointer {Big_A A Sub_A : Set}
-      address path big_to_value projection injection to_value
+  | CallPrimitiveGetSubPointer {A Sub_A : Set} {to_value : A -> Value.t}
+      (mutable : Pointer.Mutable.t Value.t to_value)
       index sub_projection sub_injection sub_to_value
       (state : State)
       (k : Value.t -> M) :
-    let mutable :=
-      @Pointer.Mutable.Make
-        Value.t Address Big_A A
-        address
-        path
-        big_to_value
-        projection
-        injection
-        to_value in
-    let sub_mutable :=
-      @Pointer.Mutable.Make
-        Value.t Address Big_A Sub_A
-        address
-        (path ++ [index])
-        big_to_value
-        (fun big_a =>
-          match projection big_a with
-          | Some a => sub_projection a
-          | None => None
-          end
-        )
-        (fun big_a new_sub_a =>
-          match projection big_a with
-          | Some a =>
-            match sub_injection a new_sub_a with
-            | Some new_a => injection big_a new_a
-            | None => None
-            end
-          | None => None
-          end
-        )
-        sub_to_value in
     (* Communtativity of the read *)
     (forall (a : A),
       Option.map (sub_projection a) sub_to_value =
@@ -189,7 +157,9 @@ Module Run.
       Value.write_value (to_value a) [index] (sub_to_value sub_a)
     ) ->
     {{ env, env_to_value, state |
-      k (Value.Pointer (Pointer.Mutable sub_mutable)) ⇓
+      k (Value.Pointer (Pointer.Mutable (Pointer.Mutable.get_sub
+        mutable index sub_projection sub_injection sub_to_value
+      ))) ⇓
       result
     | state' }} ->
     {{ env, env_to_value, state |
@@ -258,6 +228,59 @@ Module Run.
     {{ env, env_to_value, state | e ⇓ result | state }}.
 End Run.
 
+Module SubPointer.
+  Module Runner.
+    Module Valid.
+      Inductive t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A} :
+          SubPointer.Runner.t A Sub_A -> Prop :=
+      | Intro
+          (index : Pointer.Index.t)
+          (projection : A -> option Sub_A)
+          (injection : A -> Sub_A -> option A) :
+        (* read equivalence *)
+        (forall (a : A),
+          Option.map (projection a) φ =
+          Value.read_path (φ a) [index]
+        ) ->
+        (* write equivalence *)
+        (forall (a : A) (sub_a : Sub_A),
+          Option.map (injection a sub_a) φ =
+          Value.write_value (φ a) [index] (φ sub_a)
+        ) ->
+        t {|
+          SubPointer.Runner.index := index;
+          SubPointer.Runner.projection := projection;
+          SubPointer.Runner.injection := injection;
+        |}.
+    End Valid.
+  End Runner.
+
+  Import Run.
+
+  Lemma run
+      {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      {runner : SubPointer.Runner.t A Sub_A}
+      (H_runner : Runner.Valid.t runner)
+      (mutable : Pointer.Mutable.t (A := A) Value.t φ)
+      `{State.Trait} {Env : Set} (env : Env) (env_to_value : Env -> Value.t)
+      (result : Value.t + Exception.t) (state state' : State) (k : Value.t -> M)
+      (index : Pointer.Index.t) :
+    index = runner.(SubPointer.Runner.index) ->
+    {{ env, env_to_value, state |
+      k (Value.Pointer (Pointer.Mutable (SubPointer.get_sub mutable runner))) ⇓
+      result
+    | state' }} ->
+    {{ env, env_to_value, state |
+      LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓
+      result
+    | state' }}.
+  Proof.
+    intros.
+    destruct H_runner.
+    eapply Run.CallPrimitiveGetSubPointer; sfirstorder.
+  Qed.
+End SubPointer.
+
 (** Simplify the usual case of read of immediate value. *)
 Lemma read_of_immediate (v : Value.t) :
   M.read (Value.Pointer (Pointer.Immediate v)) =
@@ -268,29 +291,35 @@ Qed.
 
 Ltac run_symbolic_state_read :=
   match goal with
-  | |- Run.t _ _ _ (LowM.CallPrimitive (Primitive.StateRead ?address) _) _ =>
+  | |- Run.t _ _ _ _ (LowM.CallPrimitive (Primitive.StateRead (
+      Pointer.Mutable.Make ?address _ _ _ _
+    )) _) _ =>
     let H := fresh "H" in
-    epose proof (H := Run.CallPrimitiveStateRead _ _ _ address);
-    eapply H; [reflexivity|];
+    epose proof (H := Run.CallPrimitiveStateRead _ _ _ _ address);
+    eapply H; [reflexivity | reflexivity |];
     clear H
   end.
 
 Ltac run_symbolic_state_write :=
   match goal with
-  | |- Run.t ?env ?result ?state'
-      (LowM.CallPrimitive (Primitive.StateWrite ?address ?value) ?k)
+  | |- Run.t ?env ?env_to_value ?result ?state'
+      (LowM.CallPrimitive (Primitive.StateWrite (
+        Pointer.Mutable.Make ?address ?path ?big_to_value ?projection ?injection
+      ) ?value') ?k)
       ?state =>
     let H := fresh "H" in
     epose proof (H :=
       Run.CallPrimitiveStateWrite
-        env result state' address value state _ k);
-    apply H; [reflexivity|];
+        env env_to_value result state' address path big_to_value projection injection _
+        value' _ _ _ _ k
+    );
+    apply H; try reflexivity;
     clear H
   end.
 
 Ltac run_symbolic_one_step :=
   match goal with
-  | |- Run.t _ _ _ _ _ =>
+  | |- Run.t _ _ _ _ _ _ =>
     (* We do not use [Run.CallClosure] and let the user use existing lemma
        for this kind of case. *)
     apply Run.Pure ||

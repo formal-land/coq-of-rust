@@ -3,6 +3,9 @@ Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.proofs.lib.
 Require Import CoqOfRust.lib.simulations.lib.
+Require CoqOfRust.core.convert.mod.
+Require CoqOfRust.core.default.
+Require CoqOfRust.core.result.
 Require CoqOfRust.core.proofs.option.
 Require CoqOfRust.core.simulations.result.
 Require CoqOfRust.examples.default.examples.ink_contracts.proofs.lib.
@@ -28,7 +31,7 @@ Module Balance.
     { unfold IsTraitMethod.
       eexists; split.
       { cbn.
-        apply core.default.Impl_core_default_Default_for_u128.Implements.
+        apply core.default.default.Impl_core_default_Default_for_u128.Implements.
       }
       { reflexivity. }
     }
@@ -64,6 +67,26 @@ Module Erc20.
         u128.Make (sum_of_money storage);
     }.
   End Valid.
+
+  Module SubPointer.
+    Lemma get_total_supply_is_valid :
+      SubPointer.Runner.Valid.t simulations.erc20.Erc20.SubPointer.get_total_supply.
+    Proof.
+      hauto l: on.
+    Qed.
+
+    Lemma get_balances_is_valid :
+      SubPointer.Runner.Valid.t simulations.erc20.Erc20.SubPointer.get_balances.
+    Proof.
+      hauto l: on.
+    Qed.
+
+    Lemma get_allowances_is_valid :
+      SubPointer.Runner.Valid.t simulations.erc20.Erc20.SubPointer.get_allowances.
+    Proof.
+      hauto l: on.
+    Qed.
+  End SubPointer.
 End Erc20.
 
 Module AccountId.
@@ -117,35 +140,31 @@ Module Mapping.
   Qed.
 End Mapping.
 
+Module MState.
+  Module Valid.
+    Record t (x : erc20.MState.t) : Prop := {
+      storage : erc20.Erc20.Valid.t x.(erc20.MState.storage);
+    }.
+  End Valid.
+End MState.
+
 (** ** Definition of state and allocation. *)
 
 Module State.
-  Module Valid.
-    Record t (x : erc20.State.t) : Prop := {
-      storage : erc20.Erc20.Valid.t x.(erc20.State.storage);
-    }.
-  End Valid.
+  Record t : Set := {
+    storage : option erc20.Erc20.t;
+    events : list erc20.Event.t;
+  }.
 
-  Module Value.
-    Record t : Set := {
-      storage : option Value.t;
-      events : Value.t;
-    }.
-  End Value.
-
-  Definition of_simulation (x : erc20.State.t) : State.Value.t :=
-    let '{|
-      erc20.State.storage := storage;
-      erc20.State.events := events;
-    |} := x in
+  Definition of_mstate (x : erc20.MState.t) : t :=
     {|
-      State.Value.storage := Some (φ storage);
-      State.Value.events := Value.Array (List.map φ events);
+      storage := Some x.(erc20.MState.storage);
+      events := x.(erc20.MState.events);
     |}.
 
-  Lemma of_simulation_storage_eq state storage :
-    (State.of_simulation state) <| State.Value.storage := Some (φ storage) |> =
-    State.of_simulation (state <| erc20.State.storage := storage |>).
+  Lemma of_mstate_storage_eq (x : erc20.MState.t) (y : erc20.Erc20.t) :
+    (of_mstate x) <| storage := Some y |> =
+    of_mstate (x <| erc20.MState.storage := y |>).
   Proof.
     reflexivity.
   Qed.
@@ -158,18 +177,23 @@ Module Address.
 End Address.
 
 Module StateInstance.
-  Global Instance I : State.Trait State.Value.t Address.t := {
+  Global Instance I : State.Trait erc20.State.t Address.t := {
+    get_Set address :=
+      match address with
+      | Address.storage => erc20.Erc20.t
+      | Address.events => list erc20.Event.t
+      end;
     State.read address state :=
       match address with
-      | Address.storage => state.(State.Value.storage)
-      | Address.events => Some state.(State.Value.events)
+      | Address.storage => state.(erc20.State.storage)
+      | Address.events => Some state.(erc20.State.events)
       end;
     State.alloc_write address state value :=
       match address, value with
       | Address.storage, storage =>
-        Some (state <| State.Value.storage := Some storage |>)
+        Some (state <| erc20.State.storage := Some storage |>)
       | Address.events, events =>
-        Some (state <| State.Value.events := events |>)
+        Some (state <| erc20.State.events := events |>)
       end;
   }.
 
@@ -178,25 +202,25 @@ Module StateInstance.
   Qed.
 End StateInstance.
 
-Module Environment.
-  Definition of_simulation (env : erc20.Env.t) : Value.t :=
+(** Here the module [Env] is both the name for the environment that we use in all our simulations,
+    and the name of a module in the Rust code that we are verifying. *)
+Module Env.
+  Definition to_value (env : erc20.Env.t) : Value.t :=
     Value.Tuple [
       φ env;
-      Value.Pointer (Pointer.Mutable Address.events [])
+      Value.Pointer (Pointer.mutable Address.events φ)
     ].
-End Environment.
 
-(** ** Verification of the simulations. *)
+  (** ** Verification of the simulations. *)
 
-Module Env.
   (** The simulation [caller] is equal. *)
-  Lemma run_caller (env : erc20.Env.t) (state : erc20.State.t) :
+  Lemma run_caller (env : erc20.Env.t) (state : State.t) :
     let ref_env :=
       Value.Pointer (Pointer.Immediate (φ env)) in
-    {{ Environment.of_simulation env, State.of_simulation state |
+    {{ env, Env.to_value, state |
       erc20.Impl_erc20_Env.caller [] [ref_env] ⇓
       inl (φ (simulations.erc20.Env.caller env))
-    | State.of_simulation state }}.
+    | state }}.
   Proof.
     run_symbolic.
   Qed.
@@ -209,13 +233,13 @@ Module Env.
     (state : erc20.State.t) :
     let ref_env :=
       Value.Pointer (Pointer.Immediate (φ env)) in
-    {{ Environment.of_simulation env, State.of_simulation state |
+    {{ env, Env.to_value, state |
       erc20.Impl_erc20_Env.emit_event [] [ref_env; φ event] ⇓
       inl (Value.Tuple [])
-    | State.of_simulation (state <|
+    | state <|
         erc20.State.events :=
           simulations.erc20.Env.emit_event state.(erc20.State.events) event
-      |>)
+      |>
     }}.
   (* This function is axiomatized in the source. *)
   Admitted.
@@ -223,21 +247,21 @@ End Env.
 
 (** The simulation [init_env] is equal. *)
 Lemma run_init_env (env : erc20.Env.t) (state : erc20.State.t) :
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, state |
     erc20.Impl_erc20_Erc20.init_env [] [] ⇓
     inl (φ (simulations.erc20.init_env env))
-  | State.of_simulation state }}.
+  | state }}.
 Proof.
 (* This function is axiomatized in the source. *)
 Admitted.
 
 (** The simulation [env] is equal. *)
 Lemma run_env (env : erc20.Env.t) (state : erc20.State.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
+  {{ env, Env.to_value, state |
     erc20.Impl_erc20_Erc20.env [] [self] ⇓
     inl (φ (simulations.erc20.env env))
-  | State.of_simulation state }}.
+  | state }}.
 Proof.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
@@ -253,14 +277,16 @@ Opaque erc20.Impl_erc20_Erc20.env.
 (** The simulation [total_supply] is equal. *)
 Lemma run_total_supply
     (env : erc20.Env.t)
-    (state : erc20.State.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+    (state : erc20.MState.t) :
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.total_supply [] [self] ⇓
-    inl (φ (simulations.erc20.total_supply state.(erc20.State.storage)))
-  | State.of_simulation state }}.
+    inl (φ (simulations.erc20.total_supply state.(erc20.MState.storage)))
+  | State.of_mstate state }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20.total_supply.
+  run_symbolic.
+  apply (SubPointer.run Erc20.SubPointer.get_total_supply_is_valid); [reflexivity|].
   run_symbolic.
 Qed.
 Opaque erc20.Impl_erc20_Erc20.total_supply.
@@ -268,18 +294,18 @@ Opaque erc20.Impl_erc20_Erc20.total_supply.
 (** The simulation [balance_of_impl] is equal. *)
 Lemma run_balance_of_impl
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (owner : erc20.AccountId.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let ref_owner :=
     Value.Pointer (Pointer.Immediate (φ owner)) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.balance_of_impl [] [self; ref_owner] ⇓
     inl (φ (simulations.erc20.balance_of_impl
-      state.(erc20.State.storage)
+      state.(erc20.MState.storage)
       owner
     ))
-  | State.of_simulation state }}.
+  | State.of_mstate state }}.
 Proof.
   Opaque φ.
   unfold
@@ -287,11 +313,12 @@ Proof.
     simulations.erc20.balance_of_impl.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply core.option.Impl_Option_T.AssociatedFunction_unwrap_or_default.
+    apply core.option.option.Impl_core_option_Option_T.AssociatedFunction_unwrap_or_default.
   }
   eapply Run.CallPrimitiveGetAssociatedFunction. {
     apply lib.Impl_Mapping_t_K_V.AssociatedFunction_get.
   }
+  eapply (SubPointer.run Erc20.SubPointer.get_balances_is_valid); [reflexivity|].
   eapply Run.CallClosure. {
     run_symbolic.
   }
@@ -308,10 +335,10 @@ Opaque erc20.Impl_erc20_Erc20.balance_of_impl.
 
 (** The simulation [balance_of_impl] is valid. *)
 Lemma balance_of_impl_is_valid
-  (state : erc20.State.t)
+  (state : erc20.MState.t)
   (owner : erc20.AccountId.t)
-  (H_storage : Erc20.Valid_without_sum.t state.(erc20.State.storage)) :
-  Balance.Valid.t (simulations.erc20.balance_of_impl state.(erc20.State.storage) owner).
+  (H_storage : Erc20.Valid_without_sum.t state.(erc20.MState.storage)) :
+  Balance.Valid.t (simulations.erc20.balance_of_impl state.(erc20.MState.storage) owner).
 Proof.
   destruct state; intros.
   unfold simulations.erc20.balance_of_impl, Balance.Valid.t, Integer.Valid.t, u128.get.
@@ -326,13 +353,13 @@ Qed.
 (** The simulation [balance_of] is equal. *)
 Lemma run_balance_of
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (owner : erc20.AccountId.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.balance_of [] [self; φ owner] ⇓
-    inl (φ (simulations.erc20.balance_of state.(erc20.State.storage) owner))
-  | State.of_simulation state }}.
+    inl (φ (simulations.erc20.balance_of state.(erc20.MState.storage) owner))
+  | State.of_mstate state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20.balance_of,
@@ -351,20 +378,20 @@ Opaque erc20.Impl_erc20_Erc20.balance_of.
 (** The simulation [allowance_impl] is equal. *)
 Lemma run_allowance_impl
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let ref_owner := Value.Pointer (Pointer.Immediate (φ owner)) in
   let ref_spender := Value.Pointer (Pointer.Immediate (φ spender)) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.allowance_impl [] [self; ref_owner; ref_spender] ⇓
     inl (φ (simulations.erc20.allowance_impl
-      state.(erc20.State.storage)
+      state.(erc20.MState.storage)
       owner
       spender
     ))
-  | State.of_simulation state }}.
+  | State.of_mstate state }}.
 Proof.
   Opaque φ.
   unfold
@@ -372,11 +399,12 @@ Proof.
     simulations.erc20.allowance_impl.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply core.option.Impl_Option_T.AssociatedFunction_unwrap_or_default.
+    apply core.option.option.Impl_core_option_Option_T.AssociatedFunction_unwrap_or_default.
   }
   eapply Run.CallPrimitiveGetAssociatedFunction. {
     apply lib.Impl_Mapping_t_K_V.AssociatedFunction_get.
   }
+  apply (SubPointer.run Erc20.SubPointer.get_allowances_is_valid); [reflexivity|].
   run_symbolic.
   eapply Run.CallClosure. {
     run_symbolic.
@@ -394,12 +422,12 @@ Qed.
 Opaque erc20.Impl_erc20_Erc20.allowance_impl.
 
 Lemma allowance_impl_is_valid
-  (state : erc20.State.t)
+  (state : erc20.MState.t)
   (owner : erc20.AccountId.t)
   (spender : erc20.AccountId.t)
-  (H_storage : Erc20.Valid.t state.(erc20.State.storage)) :
+  (H_storage : Erc20.Valid.t state.(erc20.MState.storage)) :
   Balance.Valid.t (simulations.erc20.allowance_impl
-    state.(erc20.State.storage)
+    state.(erc20.MState.storage)
     owner
     spender
   ).
@@ -416,18 +444,18 @@ Qed.
 (** The simulation [allowance] is equal. *)
 Lemma run_allowance
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.allowance [] [self; φ owner; φ spender] ⇓
     inl (φ (simulations.erc20.allowance
-      state.(erc20.State.storage)
+      state.(erc20.MState.storage)
       owner
       spender
     ))
-  | State.of_simulation state }}.
+  | State.of_mstate state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20.allowance,
@@ -467,13 +495,13 @@ Qed.
 Module Output.
   Record t : Set := {
     result : Value.t + Exception.t;
-    state : State.Value.t;
+    state : erc20.MState.t;
   }.
 End Output.
 
 Definition lift_simulation {A : Set} `{ToValue A}
-    (simulation : MS? erc20.State.t string A)
-    (state : erc20.State.t) :
+    (simulation : MS? erc20.MState.t string A)
+    (state : erc20.MState.t) :
     Output.t :=
   let '(result, state) := simulation state in
   let result :=
@@ -483,29 +511,29 @@ Definition lift_simulation {A : Set} `{ToValue A}
     end in
   {|
     Output.result := result;
-    Output.state := State.of_simulation state;
+    Output.state := state;
   |}.
 
 (** The simulation [transfer_from_to] is equal. *)
 Lemma run_transfer_from_to
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_storage : Erc20.Valid.t state.(erc20.State.storage))
+    (H_storage : Erc20.Valid.t state.(erc20.MState.storage))
     (H_value : Balance.Valid.t value) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let ref_from := Value.Pointer (Pointer.Immediate (φ from)) in
   let ref_to := Value.Pointer (Pointer.Immediate (φ to)) in
   let simulation :=
     lift_simulation
       (simulations.erc20.transfer_from_to from to value)
       state in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.transfer_from_to [] [self; ref_from; ref_to; φ value] ⇓
     simulation.(Output.result)
-  | simulation.(Output.state) }}.
+  | State.of_mstate simulation.(Output.state) }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20.transfer_from_to,
@@ -522,7 +550,7 @@ Proof.
   destruct erc20.balance_of_impl as [balance_from] eqn:H_eq_balance_from.
   destruct value as [value].
   cbn.
-  destruct (_ <? _) eqn:H_lt; simpl.
+  destruct (_ <? _) eqn:H_lt; cbn.
   { run_symbolic. }
   { run_symbolic.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
@@ -537,23 +565,15 @@ Proof.
       apply H_storage.
     }
     run_symbolic.
+    apply (SubPointer.run Erc20.SubPointer.get_balances_is_valid); [reflexivity|].
     eapply Run.CallClosure. {
       run_symbolic.
+      rewrite <- proofs.lib.Mapping.run_insert.
+      f_equal; cbn.
+      { now instantiate (1 := from). }
+      { now instantiate (1 := u128.Make (balance_from - value)). }
     }
-    replace ((State.of_simulation state) <| State.Value.storage := _ |>)
-      with (State.of_simulation (state <|
-        erc20.State.storage := state.(erc20.State.storage) <|
-          erc20.Erc20.balances :=
-            simulations.lib.Mapping.insert
-              from
-              (u128.Make (balance_from - value))
-              state.(erc20.State.storage).(erc20.Erc20.balances)
-        |>
-      |>)).
-    2: {
-      unfold State.of_simulation; cbn.
-      now rewrite <- proofs.lib.Mapping.run_insert.
-    }
+    rewrite State.of_mstate_storage_eq.
     run_symbolic.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
       apply erc20.Impl_erc20_Erc20.AssociatedFunction_balance_of_impl.
@@ -565,16 +585,23 @@ Proof.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
       apply lib.Impl_Mapping_t_K_V.AssociatedFunction_insert.
     }
+    apply (SubPointer.run Erc20.SubPointer.get_balances_is_valid); [reflexivity|].
     unfold
       BinOp.Panic.add,
       BinOp.Panic.make_arithmetic,
       BinOp.Error.make_arithmetic.
+    cbn.
     destruct erc20.balance_of_impl as [balance_to] eqn:H_eq_balance_to in |- *.
     cbn.
     destruct Integer.normalize_with_error as [sum|]; run_symbolic.
     eapply Run.CallClosure. {
       run_symbolic.
+      set (map_from := simulations.lib.Mapping.insert from _ _).
+      rewrite <- proofs.lib.Mapping.run_insert; f_equal.
+      { now instantiate (1 := to). }
+      { now instantiate (1 := u128.Make _). }
     }
+    rewrite State.of_mstate_storage_eq.
     run_symbolic.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
       apply erc20.Impl_erc20_Env.AssociatedFunction_emit_event.
@@ -582,22 +609,6 @@ Proof.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
       apply erc20.Impl_erc20_Erc20.AssociatedFunction_env.
     }
-    match goal with
-    | |- context [ Value.StructRecord "erc20::Erc20" ?fields ] =>
-      evar (storage : erc20.Erc20.t);
-      assert (H : φ storage = Value.StructRecord "erc20::Erc20" fields)
-    end. {
-      unfold erc20.Erc20.IsToValue; cbn.
-      only [storage] : constructor.
-      unfold storage; cbn.
-      repeat f_equal.
-      rewrite <- proofs.lib.Mapping.run_insert.
-      repeat f_equal.
-      { now instantiate (1 := to). }
-      { now instantiate (1 := u128.Make _). }
-    }
-    rewrite <- H; unfold storage; clear H storage.
-    rewrite State.of_simulation_storage_eq.
     eapply Run.CallClosure. {
       apply run_env.
     }
@@ -624,19 +635,19 @@ Opaque erc20.Impl_erc20_Erc20.transfer_from_to.
 (** The simulation [transfer] is equal. *)
 Lemma run_transfer
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let simulation :=
     lift_simulation
       (simulations.erc20.transfer env to value) state in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.transfer [] [self; φ to; φ value] ⇓
     simulation.(Output.result)
-  | simulation.(Output.state) }}.
+  | State.of_mstate simulation.(Output.state) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20.transfer,
     simulations.erc20.transfer,
@@ -672,17 +683,17 @@ Opaque erc20.Impl_erc20_Erc20.transfer.
 (** The simulation [approve] is equal. *)
 Lemma run_approve
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (spender : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let simulation :=
     lift_simulation
       (simulations.erc20.approve env spender value) state in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.approve [] [self; φ spender; φ value] ⇓
     simulation.(Output.result)
-  | simulation.(Output.state) }}.
+  | State.of_mstate simulation.(Output.state) }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20.approve,
@@ -705,21 +716,13 @@ Proof.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
     apply lib.Impl_Mapping_t_K_V.AssociatedFunction_insert.
   }
+  apply (SubPointer.run Erc20.SubPointer.get_allowances_is_valid); [reflexivity|].
   eapply Run.CallClosure. {
     run_symbolic.
-  }
-  set (storage_value := Value.StructRecord "erc20::Erc20" _).
-  evar (storage : erc20.Erc20.t).
-  assert (H : φ storage = storage_value). {
-    unfold storage, storage_value; cbn.
-    instantiate (1 := erc20.Erc20.Build_t _ _ _); cbn.
-    repeat f_equal.
-    rewrite <- proofs.lib.Mapping.run_insert.
-    repeat f_equal; try reflexivity.
+    rewrite <- proofs.lib.Mapping.run_insert; f_equal; try reflexivity.
     now instantiate (1 := (_, _)).
   }
-  rewrite <- H; unfold storage; clear H storage storage_value.
-  rewrite State.of_simulation_storage_eq.
+  rewrite State.of_mstate_storage_eq.
   run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
     apply erc20.Impl_erc20_Env.AssociatedFunction_emit_event.
@@ -750,20 +753,20 @@ Opaque erc20.Impl_erc20_Erc20.approve.
 (** The simulation [transfer_from] is equal. *)
 Lemma run_transfer_from
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
-  let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+  let self := Value.Pointer (Pointer.mutable Address.storage φ) in
   let simulation :=
     lift_simulation
       (simulations.erc20.transfer_from env from to value) state in
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     erc20.Impl_erc20_Erc20.transfer_from [] [self; φ from; φ to; φ value] ⇓
     simulation.(Output.result)
-  | simulation.(Output.state) }}.
+  | State.of_mstate simulation.(Output.state) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20.transfer_from,
     simulations.erc20.transfer_from,
@@ -793,43 +796,75 @@ Proof.
   destruct erc20.allowance_impl as [allowance] eqn:H_allowance_eq; cbn.
   destruct value as [value].
   destruct (_ <? _) eqn:H_lt; cbn; run_symbolic.
-  (* repeat (
-    eapply Run.Call ||
-    run_symbolic ||
-    apply run_env ||
-    apply run_allowance_impl
-  ).
-  unfold use.
-  destruct (_ <? _) eqn:H_lt; simpl; run_symbolic.
-  eapply Run.Call. {
-    now apply run_transfer_from_to.
+  eapply Run.CallPrimitiveGetTraitMethod. {
+    eexists; split.
+    { apply
+        core.result.result.Impl_core_ops_try_trait_Try_for_core_result_Result_T_E.Implements.
+    }
+    { reflexivity. }
   }
-  unfold lift_simulation.
-  unfold M.StateError.bind.
-  destruct erc20.transfer_from_to as [[[]|] [?storage ?logs]]; run_symbolic.
-  { eapply Run.Call. {
+  eapply Run.CallPrimitiveGetAssociatedFunction. {
+    apply erc20.Impl_erc20_Erc20.AssociatedFunction_transfer_from_to.
+  }
+  eapply Run.CallClosure. {
+    pose proof (H := run_transfer_from_to env state from to (u128.Make value)).
+    apply H; sauto lq: on.
+  }
+  unfold lift_simulation, M.StateError.bind.
+  destruct erc20.transfer_from_to as [[[]| ?panic_message] [?storage ?logs]] eqn:?;
+    run_symbolic.
+  { eapply Run.CallClosure. {
       run_symbolic.
     }
     run_symbolic.
-    rewrite sub_eq_optimistic;
-      try apply allowance_impl_is_valid;
-      try assumption.
+    eapply Run.CallPrimitiveGetAssociatedFunction. {
+      apply lib.Impl_Mapping_t_K_V.AssociatedFunction_insert.
+    }
+    apply (SubPointer.run Erc20.SubPointer.get_allowances_is_valid); [reflexivity|].
+    rewrite sub_eq_optimistic; try assumption.
+    2: {
+      epose proof (H := allowance_impl_is_valid _ _ _).
+      rewrite H_allowance_eq in H.
+      apply H.
+      sauto lq: on rew: off.
+    }
     run_symbolic.
-    eapply Run.Call. {
+    eapply Run.CallClosure. {
+      run_symbolic.
+      rewrite <- proofs.lib.Mapping.run_insert.
+      f_equal; cbn.
+      { now instantiate (1 := (_, _)). }
+      { now instantiate (1 := u128.Make _). }
+    }
+    rewrite State.of_mstate_storage_eq.
+    run_symbolic.
+  }
+  { eapply Run.CallClosure. {
+      run_symbolic.
+    }
+    run_symbolic.
+    eapply Run.CallPrimitiveGetTraitMethod. {
+      eexists; split.
+      { apply
+          core.result.result.Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_result_Result_T_F.Implements.
+      }
+      { reflexivity. }
+    }
+    eapply Run.CallClosure. {
+      run_symbolic.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        eexists; split.
+        { apply core.convert.mod.convert.Impl_core_convert_From_T_for_T.Implements. }
+        { reflexivity. }
+      }
+      eapply Run.CallClosure. {
+        run_symbolic.
+      }
       run_symbolic.
     }
     run_symbolic.
   }
-  { eapply Run.Call. {
-      run_symbolic.
-    }
-    run_symbolic.
-    eapply Run.Call. {
-      run_symbolic.
-    }
-    run_symbolic.
-  } *)
-Admitted.
+Qed.
 Opaque erc20.Impl_erc20_Erc20.transfer_from.
 
 (** ** Serialization of messages and global reasoning. *)
@@ -843,7 +878,7 @@ Module ReadMessage.
   .
 
   Definition dispatch (message : t) : M :=
-    let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+    let self := Value.Pointer (Pointer.mutable Address.storage φ) in
     match message with
     | total_supply => erc20.Impl_erc20_Erc20.total_supply [] [self]
     | balance_of owner =>
@@ -854,28 +889,28 @@ Module ReadMessage.
 
   Definition simulation_dispatch
       (env : erc20.Env.t)
-      (state : erc20.State.t)
+      (state : erc20.MState.t)
       (message : t) :
       erc20.Balance.t :=
     match message with
     | total_supply =>
-      simulations.erc20.total_supply state.(erc20.State.storage)
+      simulations.erc20.total_supply state.(erc20.MState.storage)
     | balance_of owner =>
-      simulations.erc20.balance_of state.(erc20.State.storage) owner
+      simulations.erc20.balance_of state.(erc20.MState.storage) owner
     | allowance owner spender =>
-      simulations.erc20.allowance state.(erc20.State.storage) owner spender
+      simulations.erc20.allowance state.(erc20.MState.storage) owner spender
     end.
 
   (** The simulation [simulation_dispatch] is valid. *)
   Lemma run_dispatch
       (env : erc20.Env.t)
-      (state : erc20.State.t)
+      (state : erc20.MState.t)
       (message : t) :
     let simulation := simulation_dispatch env state message in
-    {{ Environment.of_simulation env, State.of_simulation state |
+    {{ env, Env.to_value, State.of_mstate state |
       dispatch message ⇓
       inl (φ simulation)
-    | State.of_simulation state }}.
+    | State.of_mstate state }}.
   Proof.
     destruct message; simpl.
     { apply run_total_supply. }
@@ -909,7 +944,7 @@ Module WriteMessage.
   End Valid.
 
   Definition dispatch (message : t) : M :=
-    let self := Value.Pointer (Pointer.Mutable Address.storage []) in
+    let self := Value.Pointer (Pointer.mutable Address.storage φ) in
     match message with
     | transfer to value =>
       erc20.Impl_erc20_Erc20.transfer [] [self; φ to; φ value]
@@ -922,7 +957,7 @@ Module WriteMessage.
   Definition simulation_dispatch
       (env : erc20.Env.t)
       (message : t) :
-      MS? erc20.State.t string (erc20.Result.t unit) :=
+      MS? erc20.MState.t string (erc20.Result.t unit) :=
     match message with
     | transfer to value =>
       simulations.erc20.transfer env to value
@@ -935,17 +970,17 @@ Module WriteMessage.
   (** The simulation [simulation_dispatch] is valid. *)
   Lemma run_dispatch
       (env : erc20.Env.t)
-      (state : erc20.State.t)
+      (state : erc20.MState.t)
       (message : t)
-      (H_state : State.Valid.t state)
+      (H_state : MState.Valid.t state)
       (H_message : Valid.t message) :
     let simulation :=
       lift_simulation
         (simulation_dispatch env message) state in
-    {{ Environment.of_simulation env, State.of_simulation state |
+    {{ env, Env.to_value, State.of_mstate state |
       dispatch message ⇓
       simulation.(Output.result)
-    | simulation.(Output.state) }}.
+    | State.of_mstate simulation.(Output.state) }}.
   Proof.
     destruct message; simpl.
     { apply run_transfer; scongruence. }
@@ -958,11 +993,11 @@ End WriteMessage.
 Lemma read_message_no_panic
     (env : erc20.Env.t)
     (message : ReadMessage.t)
-    (state : erc20.State.t) :
+    (state : erc20.MState.t) :
   exists result,
-  {{ Environment.of_simulation env, State.of_simulation state |
+  {{ env, Env.to_value, State.of_mstate state |
     ReadMessage.dispatch message ⇓ inl result
-  | State.of_simulation state }}.
+  | State.of_mstate state }}.
 Proof.
   destruct message; simpl.
   { eexists.
@@ -977,16 +1012,16 @@ Proof.
 Qed.
 
 Lemma transfer_from_to_is_valid
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
   let '(result, state) :=
     simulations.erc20.transfer_from_to from to value state in
   match result with
-  | inl _ => State.Valid.t state
+  | inl _ => MState.Valid.t state
   | _ => True
   end.
 Proof.
@@ -1043,15 +1078,15 @@ Admitted.
 
 Lemma transfer_is_valid
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
   let '(result, state) :=
     simulations.erc20.transfer env to value state in
   match result with
-  | inl _ => State.Valid.t state
+  | inl _ => MState.Valid.t state
   | _ => True
   end.
 Proof.
@@ -1060,14 +1095,14 @@ Qed.
 
 Lemma approve_is_valid
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (spender : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
   let '(result, state) :=
     simulations.erc20.approve env spender value state in
-  State.Valid.t state.
+  MState.Valid.t state.
 Proof.
   cbn.
   constructor; try apply H_storage.
@@ -1077,16 +1112,16 @@ Qed.
 
 Lemma transfer_from_is_valid
     (env : erc20.Env.t)
-    (state : erc20.State.t)
+    (state : erc20.MState.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t)
-    (H_state : State.Valid.t state)
+    (H_state : MState.Valid.t state)
     (H_value : Balance.Valid.t value) :
   let '(result, state) :=
     simulations.erc20.transfer_from env from to value state in
   match result with
-  | inl _ => State.Valid.t state
+  | inl _ => MState.Valid.t state
   | _ => True
   end.
 Proof.

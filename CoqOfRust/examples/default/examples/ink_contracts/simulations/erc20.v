@@ -142,6 +142,28 @@ Module Erc20.
         ("allowances", φ x.(allowances))
       ];
   }.
+
+  Module SubPointer.
+    Definition get_total_supply : SubPointer.Runner.t t Balance.t := {|
+      SubPointer.Runner.index := Pointer.Index.StructRecord "erc20::Erc20" "total_supply";
+      SubPointer.Runner.projection x := Some x.(total_supply);
+      SubPointer.Runner.injection x y := Some (x <| total_supply := y |>);
+    |}.
+
+    Definition get_balances :
+        SubPointer.Runner.t t (simulations.lib.Mapping.t AccountId.t Balance.t) := {|
+      SubPointer.Runner.index := Pointer.Index.StructRecord "erc20::Erc20" "balances";
+      SubPointer.Runner.projection x := Some x.(balances);
+      SubPointer.Runner.injection x y := Some (x <| balances := y |>);
+    |}.
+
+    Definition get_allowances : SubPointer.Runner.t t
+        (simulations.lib.Mapping.t (AccountId.t * AccountId.t) Balance.t) := {|
+      SubPointer.Runner.index := Pointer.Index.StructRecord "erc20::Erc20" "allowances";
+      SubPointer.Runner.projection x := Some x.(allowances);
+      SubPointer.Runner.injection x y := Some (x <| allowances := y |>);
+    |}.
+  End SubPointer.
 End Erc20.
 
 (** ** Simulations that only read the state. *)
@@ -187,32 +209,32 @@ Definition allowance
 
 (** ** Simulations modifying the state. *)
 
-Module State.
+Module MState.
   Record t : Set := {
     storage : erc20.Erc20.t;
     events : list erc20.Event.t;
   }.
-End State.
+End MState.
 
 Definition transfer_from_to
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t string (erc20.Result.t unit) :=
-  letS? '{| State.storage := storage; State.events := events |} := readS? in
+    MS? MState.t string (erc20.Result.t unit) :=
+  letS? '{| MState.storage := storage; MState.events := events |} := readS? in
   let from_balance := u128.get (balance_of_impl storage from) in
   if from_balance <? u128.get value then
     returnS? (inr erc20.Error.InsufficientBalance)
   else
     let new_from_balance := u128.Make (from_balance - u128.get value) in
     letS? _ := writeS? {|
-      State.storage := storage <| erc20.Erc20.balances :=
+      MState.storage := storage <| erc20.Erc20.balances :=
         simulations.lib.Mapping.insert from new_from_balance
           storage.(erc20.Erc20.balances)
       |>;
-      State.events := events;
+      MState.events := events;
     |} in
-    letS? '{| State.storage := storage; State.events := events |} := readS? in
+    letS? '{| MState.storage := storage; MState.events := events |} := readS? in
     let 'u128.Make to_balance := balance_of_impl storage to in
     letS? new_to_balance :=
       return?toS? (
@@ -224,11 +246,11 @@ Definition transfer_from_to
       erc20.Transfer.value := value
     |} in
     letS? _ := writeS? {|
-      State.storage := storage <| erc20.Erc20.balances :=
+      MState.storage := storage <| erc20.Erc20.balances :=
         simulations.lib.Mapping.insert to (u128.Make new_to_balance)
           storage.(erc20.Erc20.balances)
       |>;
-      State.events := event :: events;
+      MState.events := event :: events;
     |} in
     returnS? (inl tt).
 
@@ -236,27 +258,27 @@ Definition transfer
     (env : erc20.Env.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t string (erc20.Result.t unit) :=
+    MS? MState.t string (erc20.Result.t unit) :=
   transfer_from_to (Env.caller env) to value.
 
 Definition approve
     (env : erc20.Env.t)
     (spender : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t string (erc20.Result.t unit) :=
+    MS? MState.t string (erc20.Result.t unit) :=
   let owner := Env.caller env in
-  letS? '{| State.storage := storage; State.events := events |} := readS? in
+  letS? '{| MState.storage := storage; MState.events := events |} := readS? in
   let event := erc20.Event.Approval {|
     erc20.Approval.owner := (erc20.env env).(erc20.Env.caller);
     erc20.Approval.spender := spender;
     erc20.Approval.value := value
   |} in
   letS? _ := writeS? {|
-    State.storage :=  storage <| erc20.Erc20.allowances :=
+    MState.storage :=  storage <| erc20.Erc20.allowances :=
       simulations.lib.Mapping.insert (owner, spender) value
         storage.(erc20.Erc20.allowances)
     |>;
-    State.events := event :: events;
+    MState.events := event :: events;
   |} in
   returnS? (inl tt).
 
@@ -265,9 +287,9 @@ Definition transfer_from
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : erc20.Balance.t) :
-    MS? State.t string (erc20.Result.t unit) :=
+    MS? MState.t string (erc20.Result.t unit) :=
   let caller := Env.caller env in
-  letS? '{| State.storage := storage; State.events := events |} := readS? in
+  letS? '{| MState.storage := storage; MState.events := events |} := readS? in
   let 'u128.Make value := value in
   let 'u128.Make allowance := allowance_impl storage from caller in
   if allowance <? value then
@@ -278,13 +300,13 @@ Definition transfer_from
     | inr _ => returnS? result_from_to
     | inl _ =>
       let new_allowance := u128.Make (allowance - value) in
-      letS? '{| State.storage := storage; State.events := events |} := readS? in
+      letS? '{| MState.storage := storage; MState.events := events |} := readS? in
       letS? _ := writeS? {|
-        State.storage := storage <| erc20.Erc20.allowances :=
+        MState.storage := storage <| erc20.Erc20.allowances :=
           simulations.lib.Mapping.insert (from, caller) new_allowance
             storage.(erc20.Erc20.allowances)
         |>;
-        State.events := events;
+        MState.events := events;
       |} in
       returnS? (inl tt)
     end.
