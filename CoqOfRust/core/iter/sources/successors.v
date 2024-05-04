@@ -259,20 +259,15 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 1;
-                              Value.StructTuple "core::option::Option::None" []
-                            ]
+                            [ Value.Integer 1; Value.StructTuple "core::option::Option::None" [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
+                              Value.Integer 0;
+                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                             ]
                         |)))
                   ]

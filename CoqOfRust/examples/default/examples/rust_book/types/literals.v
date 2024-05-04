@@ -25,10 +25,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U8 1 |) in
-        let y := M.alloc (| Value.Integer Integer.U32 2 |) in
+        let x := M.alloc (| Value.Integer 1 |) in
+        let y := M.alloc (| Value.Integer 2 |) in
         let z := M.copy (| UnsupportedLiteral |) in
-        let i := M.alloc (| Value.Integer Integer.I32 1 |) in
+        let i := M.alloc (| Value.Integer 1 |) in
         let f := M.copy (| UnsupportedLiteral |) in
         let _ :=
           let _ :=

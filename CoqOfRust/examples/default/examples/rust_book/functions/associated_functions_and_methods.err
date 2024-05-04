@@ -1,0 +1,90 @@
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:43:9
+   |
+43 |         ((x1 - x2) * (y1 - y2)).abs()
+   |         ^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:43:10
+   |
+43 |         ((x1 - x2) * (y1 - y2)).abs()
+   |          ^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:43:22
+   |
+43 |         ((x1 - x2) * (y1 - y2)).abs()
+   |                      ^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:50:9
+   |
+50 |         2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:50:15
+   |
+50 |         2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:50:16
+   |
+50 |         2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+   |                ^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:50:34
+   |
+50 |         2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+   |                                  ^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:60:9
+   |
+60 |         self.p2.y += y;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:59:9
+   |
+59 |         self.p1.y += y;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:57:9
+   |
+57 |         self.p2.x += x;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/functions/associated_functions_and_methods.rs:56:9
+   |
+56 |         self.p1.x += x;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: 11 warnings emitted
+

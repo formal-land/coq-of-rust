@@ -263,7 +263,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [] |),
-              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer Integer.U32 0 ] ]
+              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer 0 ] ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

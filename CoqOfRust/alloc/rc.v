@@ -307,7 +307,7 @@ Module rc.
                                     "new",
                                     []
                                   |),
-                                  [ Value.Integer Integer.Usize 1 ]
+                                  [ Value.Integer 1 ]
                                 |));
                               ("weak",
                                 M.call_closure (|
@@ -316,7 +316,7 @@ Module rc.
                                     "new",
                                     []
                                   |),
-                                  [ Value.Integer Integer.Usize 1 ]
+                                  [ Value.Integer 1 ]
                                 |));
                               ("value", M.read (| value |))
                             ]
@@ -447,7 +447,7 @@ Module rc.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 0 ]
+                                    [ Value.Integer 0 ]
                                   |));
                                 ("weak",
                                   M.call_closure (|
@@ -456,7 +456,7 @@ Module rc.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 1 ]
+                                    [ Value.Integer 1 ]
                                   |));
                                 ("value",
                                   M.call_closure (|
@@ -585,8 +585,7 @@ Module rc.
                           let _ :=
                             M.match_operator (|
                               M.alloc (|
-                                Value.Tuple
-                                  [ prev_value; M.alloc (| Value.Integer Integer.Usize 0 |) ]
+                                Value.Tuple [ prev_value; M.alloc (| Value.Integer 0 |) ]
                               |),
                               [
                                 fun γ =>
@@ -685,7 +684,7 @@ Module rc.
                           "alloc::rc::RcBox",
                           "strong"
                         |);
-                        Value.Integer Integer.Usize 1
+                        Value.Integer 1
                       ]
                     |)
                   |) in
@@ -1054,7 +1053,7 @@ Module rc.
                                                       "new",
                                                       []
                                                     |),
-                                                    [ Value.Integer Integer.Usize 1 ]
+                                                    [ Value.Integer 1 ]
                                                   |));
                                                 ("weak",
                                                   M.call_closure (|
@@ -1065,7 +1064,7 @@ Module rc.
                                                       "new",
                                                       []
                                                     |),
-                                                    [ Value.Integer Integer.Usize 1 ]
+                                                    [ Value.Integer 1 ]
                                                   |));
                                                 ("value", M.read (| value |))
                                               ]
@@ -2095,7 +2094,7 @@ Module rc.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |)
                         ]
                       |)
@@ -2119,7 +2118,7 @@ Module rc.
                               "new",
                               []
                             |),
-                            [ Value.Integer Integer.Usize 1 ]
+                            [ Value.Integer 1 ]
                           |)
                         ]
                       |)
@@ -2623,7 +2622,7 @@ Module rc.
                                                 "new",
                                                 []
                                               |),
-                                              [ Value.Integer Integer.Usize 1 ]
+                                              [ Value.Integer 1 ]
                                             |));
                                           ("weak",
                                             M.call_closure (|
@@ -2634,7 +2633,7 @@ Module rc.
                                                 "new",
                                                 []
                                               |),
-                                              [ Value.Integer Integer.Usize 1 ]
+                                              [ Value.Integer 1 ]
                                             |));
                                           ("value", M.read (| value |))
                                         ];
@@ -3277,7 +3276,7 @@ Module rc.
                               |),
                               [ this ]
                             |))
-                            (Value.Integer Integer.Usize 1)
+                            (Value.Integer 1)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let val :=
@@ -3723,6 +3722,7 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           BinOp.Panic.sub (|
+            Integer.Usize,
             M.call_closure (|
               M.get_trait_method (|
                 "alloc::rc::RcInnerPtr",
@@ -3742,7 +3742,7 @@ Module rc.
                 |)
               ]
             |),
-            Value.Integer Integer.Usize 1
+            Value.Integer 1
           |)))
       | _, _ => M.impossible
       end.
@@ -3915,7 +3915,7 @@ Module rc.
                 |),
                 [ M.read (| this |) ]
               |))
-              (Value.Integer Integer.Usize 0),
+              (Value.Integer 0),
             ltac:(M.monadic
               (BinOp.Pure.eq
                 (M.call_closure (|
@@ -3926,7 +3926,7 @@ Module rc.
                   |),
                   [ M.read (| this |) ]
                 |))
-                (Value.Integer Integer.Usize 1)))
+                (Value.Integer 1)))
           |)))
       | _, _ => M.impossible
       end.
@@ -4160,7 +4160,7 @@ Module rc.
                                 |),
                                 [ M.read (| this |) ]
                               |))
-                              (Value.Integer Integer.Usize 1)
+                              (Value.Integer 1)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let rc :=
@@ -4266,7 +4266,7 @@ Module rc.
                                         |),
                                         [ M.read (| this |) ]
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4348,7 +4348,7 @@ Module rc.
                                         |),
                                         [ M.read (| this |) ]
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -5327,7 +5327,7 @@ Module rc.
                       |));
                     ("elems", M.read (| elems |));
                     ("layout", M.read (| layout |));
-                    ("n_elems", Value.Integer Integer.Usize 0)
+                    ("n_elems", Value.Integer 0)
                   ]
               |) in
             let _ :=
@@ -5425,8 +5425,9 @@ Module rc.
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| β |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -6566,7 +6567,7 @@ Module rc.
                                 |)
                               ]
                             |))
-                            (Value.Integer Integer.Usize 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
@@ -6635,7 +6636,7 @@ Module rc.
                                         |)
                                       ]
                                     |))
-                                    (Value.Integer Integer.Usize 0)
+                                    (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7970,12 +7971,7 @@ Module rc.
                             "from_raw_parts_in",
                             []
                           |),
-                          [
-                            M.read (| vec_ptr |);
-                            Value.Integer Integer.Usize 0;
-                            M.read (| cap |);
-                            alloc
-                          ]
+                          [ M.read (| vec_ptr |); Value.Integer 0; M.read (| cap |); alloc ]
                         |)
                       |),
                       [
@@ -9218,7 +9214,7 @@ Module rc.
                                   |),
                                   [ inner ]
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9334,7 +9330,7 @@ Module rc.
                         [ inner ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
               ]
             |)
           |)))
@@ -9407,12 +9403,13 @@ Module rc.
                                       |),
                                       [ inner ]
                                     |))
-                                    (Value.Integer Integer.Usize 0)
+                                    (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "alloc::rc::RcInnerPtr",
@@ -9423,13 +9420,13 @@ Module rc.
                                   |),
                                   [ inner ]
                                 |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                       ]
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
               ]
             |)
           |)))
@@ -9764,7 +9761,7 @@ Module rc.
                                   |),
                                   [ inner ]
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10064,7 +10061,7 @@ Module rc.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
-                    [ BinOp.Pure.ne (M.read (| strong |)) (Value.Integer Integer.Usize 0) ]
+                    [ BinOp.Pure.ne (M.read (| strong |)) (Value.Integer 0) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
@@ -10072,7 +10069,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
-                  [ M.read (| strong |); Value.Integer Integer.Usize 1 ]
+                  [ M.read (| strong |); Value.Integer 1 ]
                 |)
               |) in
             let _ :=
@@ -10102,7 +10099,7 @@ Module rc.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::intrinsics::unlikely", [] |),
-                            [ BinOp.Pure.eq (M.read (| strong |)) (Value.Integer Integer.Usize 0) ]
+                            [ BinOp.Pure.eq (M.read (| strong |)) (Value.Integer 0) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10140,11 +10137,12 @@ Module rc.
                       [ M.read (| self |) ]
                     |);
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.call_closure (|
                         M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "strong", [] |),
                         [ M.read (| self |) ]
                       |),
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     |)
                   ]
                 |)
@@ -10196,7 +10194,7 @@ Module rc.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
-                    [ BinOp.Pure.ne (M.read (| weak |)) (Value.Integer Integer.Usize 0) ]
+                    [ BinOp.Pure.ne (M.read (| weak |)) (Value.Integer 0) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
@@ -10204,7 +10202,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
-                  [ M.read (| weak |); Value.Integer Integer.Usize 1 ]
+                  [ M.read (| weak |); Value.Integer 1 ]
                 |)
               |) in
             let _ :=
@@ -10234,7 +10232,7 @@ Module rc.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::intrinsics::unlikely", [] |),
-                            [ BinOp.Pure.eq (M.read (| weak |)) (Value.Integer Integer.Usize 0) ]
+                            [ BinOp.Pure.eq (M.read (| weak |)) (Value.Integer 0) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10271,11 +10269,12 @@ Module rc.
                       [ M.read (| self |) ]
                     |);
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.call_closure (|
                         M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "weak", [] |),
                         [ M.read (| self |) ]
                       |),
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     |)
                   ]
                 |)
@@ -10530,6 +10529,7 @@ Module rc.
             |) in
           M.alloc (|
             BinOp.Panic.add (|
+              Integer.Usize,
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
                 [ layout ]
@@ -10692,7 +10692,7 @@ Module rc.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 0 ]
+                                    [ Value.Integer 0 ]
                                   |));
                                 ("weak",
                                   M.call_closure (|
@@ -10701,7 +10701,7 @@ Module rc.
                                       "new",
                                       []
                                     |),
-                                    [ Value.Integer Integer.Usize 1 ]
+                                    [ Value.Integer 1 ]
                                   |));
                                 ("value", M.read (| value |))
                               ]
@@ -10861,7 +10861,7 @@ Module rc.
                       "alloc::rc::RcBox",
                       "strong"
                     |);
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   ]
                 |)
               |) in
@@ -11114,7 +11114,7 @@ Module rc.
                                 |)
                               ]
                             |))
-                            (Value.Integer Integer.Usize 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=

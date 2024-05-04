@@ -2,7 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
-Require Import CoqOfRust.lib.simulations.lib.
 Require Import CoqOfRust.simulations.M.
 
 Import simulations.M.Notations.
@@ -10,21 +9,24 @@ Import simulations.M.Notations.
 (** ** Primitives *)
 
 Module Balance.
-  Definition t : Set := u128.t.
+  Definition t : Set := Z.
 End Balance.
 
 Module Impl_Default_for_Balance.
   Global Instance I : core.simulations.default.Default.Trait Balance.t := {
-    default := u128.Make 0;
+    default := 0;
   }.
 End Impl_Default_for_Balance.
 
 Module AccountId.
   Inductive t : Set :=
-  | Make (account_id : u128.t).
+  | Make (account_id : Z).
+
+  Global Instance IsToTy : ToTy t := {
+    Φ := Ty.path "erc20::AccountId";
+  }.
 
   Global Instance IsToValue : ToValue t := {
-    Φ := Ty.path "erc20::AccountId";
     φ '(Make x) := Value.StructTuple "erc20::AccountId" [φ x];
   }.
 End AccountId.
@@ -36,8 +38,11 @@ Module Transfer.
     value : Balance.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Transfer";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc20::Transfer" [
         ("from", φ x.(from));
@@ -54,8 +59,11 @@ Module Approval.
     value : Balance.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Approval";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc20::Approval" [
         ("owner", φ x.(owner));
@@ -70,8 +78,11 @@ Module Event.
   | Transfer : erc20.Transfer.t -> t
   | Approval : erc20.Approval.t -> t.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Event";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Transfer x => Value.StructTuple "erc20::Event::Transfer" [φ x]
@@ -85,8 +96,11 @@ Module Env.
     caller : AccountId.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Env";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc20::Env" [
         ("caller", φ x.(caller))
@@ -105,8 +119,11 @@ Module Error.
   | InsufficientBalance
   | InsufficientAllowance.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Error";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | InsufficientBalance => Value.StructTuple "erc20::Error::InsufficientBalance" []
@@ -133,8 +150,11 @@ Module Erc20.
       simulations.lib.Mapping.t (AccountId.t * AccountId.t) Balance.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::Erc20";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc20::Erc20" [
         ("total_supply", φ x.(total_supply));
@@ -177,7 +197,7 @@ Definition balance_of_impl
     erc20.Balance.t :=
   match simulations.lib.Mapping.get owner storage.(erc20.Erc20.balances) with
   | Some balance => balance
-  | None => u128.Make 0
+  | None => 0
   end.
 
 Definition balance_of
@@ -197,7 +217,7 @@ Definition allowance_impl
       storage.(erc20.Erc20.allowances)
   with
   | Some allowance => allowance
-  | None => u128.Make 0
+  | None => 0
   end.
 
 Definition allowance
@@ -222,11 +242,11 @@ Definition transfer_from_to
     (value : erc20.Balance.t) :
     MS? MState.t string (erc20.Result.t unit) :=
   letS? '{| MState.storage := storage; MState.events := events |} := readS? in
-  let from_balance := u128.get (balance_of_impl storage from) in
-  if from_balance <? u128.get value then
+  let from_balance := balance_of_impl storage from in
+  if from_balance <? value then
     returnS? (inr erc20.Error.InsufficientBalance)
   else
-    let new_from_balance := u128.Make (from_balance - u128.get value) in
+    let new_from_balance := from_balance - value in
     letS? _ := writeS? {|
       MState.storage := storage <| erc20.Erc20.balances :=
         simulations.lib.Mapping.insert from new_from_balance
@@ -235,11 +255,9 @@ Definition transfer_from_to
       MState.events := events;
     |} in
     letS? '{| MState.storage := storage; MState.events := events |} := readS? in
-    let 'u128.Make to_balance := balance_of_impl storage to in
+    let to_balance := balance_of_impl storage to in
     letS? new_to_balance :=
-      return?toS? (
-        Integer.normalize_with_error Integer.U128 (to_balance + u128.get value)
-      ) in
+      return?toS? (Integer.normalize_with_error Integer.U128 (to_balance + value)) in
     let event := erc20.Event.Transfer {|
       erc20.Transfer.from := Some from;
       erc20.Transfer.to := Some to;
@@ -247,8 +265,7 @@ Definition transfer_from_to
     |} in
     letS? _ := writeS? {|
       MState.storage := storage <| erc20.Erc20.balances :=
-        simulations.lib.Mapping.insert to (u128.Make new_to_balance)
-          storage.(erc20.Erc20.balances)
+        simulations.lib.Mapping.insert to new_to_balance storage.(erc20.Erc20.balances)
       |>;
       MState.events := event :: events;
     |} in
@@ -290,16 +307,15 @@ Definition transfer_from
     MS? MState.t string (erc20.Result.t unit) :=
   let caller := Env.caller env in
   letS? '{| MState.storage := storage; MState.events := events |} := readS? in
-  let 'u128.Make value := value in
-  let 'u128.Make allowance := allowance_impl storage from caller in
+  let allowance := allowance_impl storage from caller in
   if allowance <? value then
     returnS? (inr erc20.Error.InsufficientAllowance)
   else
-    letS? result_from_to := transfer_from_to from to (u128.Make value) in
+    letS? result_from_to := transfer_from_to from to value in
     match result_from_to with
     | inr _ => returnS? result_from_to
     | inl _ =>
-      let new_allowance := u128.Make (allowance - value) in
+      let new_allowance := allowance - value in
       letS? '{| MState.storage := storage; MState.events := events |} := readS? in
       letS? _ := writeS? {|
         MState.storage := storage <| erc20.Erc20.allowances :=

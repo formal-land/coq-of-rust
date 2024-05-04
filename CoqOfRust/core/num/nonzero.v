@@ -281,9 +281,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.U8 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -359,10 +357,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.U8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -709,9 +704,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -1139,7 +1136,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U8 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -1166,7 +1163,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U8 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -2004,9 +2001,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.U16 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2082,10 +2077,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.U16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -2432,9 +2424,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -2866,7 +2860,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U16 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -2893,7 +2887,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U16 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -3731,9 +3725,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.U32 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3809,10 +3801,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.U32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4167,9 +4156,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -4601,7 +4592,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U32 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -4628,7 +4619,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U32 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -5466,9 +5457,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.U64 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -5544,10 +5533,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.U64 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5894,9 +5880,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -6328,7 +6316,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U64 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -6355,7 +6343,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U64 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -7193,9 +7181,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.U128 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -7271,10 +7257,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.U128 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -7621,9 +7604,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -8055,7 +8040,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U128 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -8082,7 +8067,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U128 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -8924,9 +8909,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.Usize 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -9002,10 +8985,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.Usize 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -9353,9 +9333,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.U32,
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |),
               M.call_closure (|
                 M.get_associated_function (|
@@ -9787,7 +9769,7 @@ Module num.
                   |)
                 ]
               |))
-              (Value.Integer Integer.Usize 2)))
+              (Value.Integer 2)))
         | _, _ => M.impossible
         end.
       
@@ -9814,7 +9796,7 @@ Module num.
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.Usize 1 ]
+                    [ Value.Integer 1 ]
                   |)
                 ]
               |)
@@ -10656,9 +10638,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.I8 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -10734,10 +10714,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.I8 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -12581,9 +12558,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.I16 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -12659,10 +12634,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.I16 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -14506,9 +14478,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.I32 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -14584,10 +14554,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.I32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -16439,9 +16406,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.I64 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -16517,10 +16482,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.I64 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -18364,9 +18326,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.I128 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -18442,10 +18402,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.I128 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -20293,9 +20250,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.ne
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.Isize 0))
+                                        (BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -20371,10 +20326,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.ne (M.read (| n |)) (Value.Integer Integer.Isize 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.ne (M.read (| n |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -22005,7 +21957,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "u8" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22139,7 +22091,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "u16" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22273,7 +22225,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "u32" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22407,7 +22359,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "u64" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22541,7 +22493,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "u128" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22675,7 +22627,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22809,7 +22761,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "i8" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -22943,7 +22895,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "i16" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -23077,7 +23029,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "i32" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -23211,7 +23163,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "i64" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -23345,7 +23297,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "i128" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)
@@ -23479,7 +23431,7 @@ Module num.
                                       "core::num::from_str_radix",
                                       [ Ty.path "isize" ]
                                     |),
-                                    [ M.read (| src |); Value.Integer Integer.U32 10 ]
+                                    [ M.read (| src |); Value.Integer 10 ]
                                   |)
                                 ]
                               |)

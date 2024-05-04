@@ -81,9 +81,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let circle :=
           M.alloc (|
-            Value.StructRecord
-              "converting_to_string::Circle"
-              [ ("radius", Value.Integer Integer.I32 6) ]
+            Value.StructRecord "converting_to_string::Circle" [ ("radius", Value.Integer 6) ]
           |) in
         let _ :=
           M.alloc (|

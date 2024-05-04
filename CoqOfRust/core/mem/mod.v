@@ -298,8 +298,8 @@ Module mem.
                               |),
                               [ val ]
                             |);
-                            Value.Integer Integer.U8 1;
-                            Value.Integer Integer.Usize 1
+                            Value.Integer 1;
+                            Value.Integer 1
                           ]
                         |)
                       |) in
@@ -370,6 +370,7 @@ Module mem.
                             (M.alloc (|
                               BinOp.Pure.gt
                                 (BinOp.Panic.div (|
+                                  Integer.Usize,
                                   M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ T ] |),
                                     []
@@ -379,7 +380,7 @@ Module mem.
                                     []
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 4)
+                                (Value.Integer 4)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -389,7 +390,7 @@ Module mem.
                               M.return_ (|
                                 M.call_closure (|
                                   M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
-                                  [ M.read (| x |); M.read (| y |); Value.Integer Integer.Usize 1 ]
+                                  [ M.read (| x |); M.read (| y |); Value.Integer 1 ]
                                 |)
                               |)
                             |)

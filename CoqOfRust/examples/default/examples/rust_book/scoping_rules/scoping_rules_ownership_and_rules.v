@@ -105,7 +105,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U32 5 |) in
+        let x := M.alloc (| Value.Integer 5 |) in
         let y := M.copy (| x |) in
         let _ :=
           let _ :=
@@ -166,7 +166,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 5 ]
+              [ Value.Integer 5 ]
             |)
           |) in
         let _ :=

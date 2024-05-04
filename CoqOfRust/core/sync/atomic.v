@@ -543,7 +543,7 @@ Module sync.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U8 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -585,7 +585,7 @@ Module sync.
                   M.read (| order |)
                 ]
               |))
-              (Value.Integer Integer.U8 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -728,7 +728,7 @@ Module sync.
                               M.read (| order |)
                             ]
                           |))
-                          (Value.Integer Integer.U8 0)
+                          (Value.Integer 0)
                       |)))
                 ]
               |)
@@ -1110,7 +1110,7 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -1124,7 +1124,7 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
                               |)))
                         ]
                       |)))
@@ -1248,7 +1248,7 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1262,7 +1262,7 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer 0) ]
                           |)))
                     ]
                   |)
@@ -1309,7 +1309,7 @@ Module sync.
                   M.read (| order |)
                 ]
               |))
-              (Value.Integer Integer.U8 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -1412,7 +1412,7 @@ Module sync.
                   M.read (| order |)
                 ]
               |))
-              (Value.Integer Integer.U8 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -1453,7 +1453,7 @@ Module sync.
                   M.read (| order |)
                 ]
               |))
-              (Value.Integer Integer.U8 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -13777,7 +13777,7 @@ Module sync.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
-              [ Value.Integer Integer.Isize 0 ]
+              [ Value.Integer 0 ]
             |)
           |))).
     
@@ -13787,7 +13787,7 @@ Module sync.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
-              [ Value.Integer Integer.Usize 0 ]
+              [ Value.Integer 0 ]
             |)
           |))).
     

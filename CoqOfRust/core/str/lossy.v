@@ -499,8 +499,7 @@ Module str.
                                                     [ chunk ]
                                                   |)
                                                 |) in
-                                              let from :=
-                                                M.alloc (| Value.Integer Integer.Usize 0 |) in
+                                              let from := M.alloc (| Value.Integer 0 |) in
                                               let _ :=
                                                 M.use
                                                   (M.match_operator (|
@@ -612,7 +611,6 @@ Module str.
                                                                                           [ esc ]
                                                                                         |))
                                                                                         (Value.Integer
-                                                                                          Integer.Usize
                                                                                           1)
                                                                                     |)) in
                                                                                 let _ :=
@@ -969,6 +967,7 @@ Module str.
                                                                                   M.write (|
                                                                                     from,
                                                                                     BinOp.Panic.add (|
+                                                                                      Integer.Usize,
                                                                                       M.read (|
                                                                                         i
                                                                                       |),
@@ -1258,7 +1257,6 @@ Module str.
                                                                                                 |),
                                                                                                 [
                                                                                                   Value.Integer
-                                                                                                    Integer.Usize
                                                                                                     0;
                                                                                                   Value.UnicodeChar
                                                                                                     32;
@@ -1266,7 +1264,6 @@ Module str.
                                                                                                     "core::fmt::rt::Alignment::Unknown"
                                                                                                     [];
                                                                                                   Value.Integer
-                                                                                                    Integer.U32
                                                                                                     8;
                                                                                                   Value.StructTuple
                                                                                                     "core::fmt::rt::Count::Implied"
@@ -1275,7 +1272,6 @@ Module str.
                                                                                                     "core::fmt::rt::Count::Is"
                                                                                                     [
                                                                                                       Value.Integer
-                                                                                                        Integer.Usize
                                                                                                         2
                                                                                                     ]
                                                                                                 ]
@@ -1642,8 +1638,8 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
-                  let valid_up_to := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let i := M.alloc (| Value.Integer 0 |) in
+                  let valid_up_to := M.alloc (| Value.Integer 0 |) in
                   let _ :=
                     M.loop (|
                       ltac:(M.monadic
@@ -1704,8 +1700,9 @@ Module str.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 let _ :=
@@ -1719,7 +1716,7 @@ Module str.
                                               (M.alloc (|
                                                 BinOp.Pure.lt
                                                   (M.read (| byte |))
-                                                  (Value.Integer Integer.U8 128)
+                                                  (Value.Integer 128)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1747,7 +1744,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer Integer.Usize 2
+                                                      Value.Integer 2
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -1777,9 +1774,7 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer
-                                                                        Integer.U8
-                                                                        192))
+                                                                      (Value.Integer 192))
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
@@ -1806,8 +1801,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -1816,7 +1812,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer Integer.Usize 3
+                                                      Value.Integer 3
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -1859,7 +1855,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer Integer.U8 224
+                                                                Value.Integer 224
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -1890,7 +1886,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer Integer.U8 237
+                                                                Value.Integer 237
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -1920,8 +1916,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -1952,9 +1949,7 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer
-                                                                        Integer.U8
-                                                                        192))
+                                                                      (Value.Integer 192))
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
@@ -1981,8 +1976,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -1991,7 +1987,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer Integer.Usize 4
+                                                      Value.Integer 4
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -2034,7 +2030,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer Integer.U8 240
+                                                                Value.Integer 240
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -2065,7 +2061,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer Integer.U8 244
+                                                                Value.Integer 244
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -2082,8 +2078,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2114,9 +2111,7 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer
-                                                                        Integer.U8
-                                                                        192))
+                                                                      (Value.Integer 192))
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
@@ -2143,8 +2138,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2175,9 +2171,7 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer
-                                                                        Integer.U8
-                                                                        192))
+                                                                      (Value.Integer 192))
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
@@ -2204,8 +2198,9 @@ Module str.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));

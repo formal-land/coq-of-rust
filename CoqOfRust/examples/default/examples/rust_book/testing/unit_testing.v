@@ -12,7 +12,7 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+      BinOp.Panic.add (| Integer.I32, M.read (| a |), M.read (| b |) |)))
   | _, _ => M.impossible
   end.
 
@@ -27,7 +27,7 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.sub (| M.read (| a |), M.read (| b |) |)))
+      BinOp.Panic.sub (| Integer.I32, M.read (| a |), M.read (| b |) |)))
   | _, _ => M.impossible
   end.
 
@@ -50,10 +50,10 @@ Module tests.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "unit_testing::add", [] |),
-                        [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ]
+                        [ Value.Integer 1; Value.Integer 2 ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.I32 3 |)
+                    M.alloc (| Value.Integer 3 |)
                   ]
               |),
               [
@@ -132,10 +132,10 @@ Module tests.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "unit_testing::bad_add", [] |),
-                        [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ]
+                        [ Value.Integer 1; Value.Integer 2 ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.I32 3 |)
+                    M.alloc (| Value.Integer 3 |)
                   ]
               |),
               [

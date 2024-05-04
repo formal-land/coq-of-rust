@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 3 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3 |) |))).
 
 (*
 fn main() {
@@ -98,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer Integer.I32 0);
+                                ("start", Value.Integer 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -347,7 +347,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer Integer.I32 0);
+                                ("start", Value.Integer 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)

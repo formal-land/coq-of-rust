@@ -28,10 +28,7 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer Integer.U32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
@@ -41,8 +38,8 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (|
               BinOp.Pure.eq
-                (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
-                (Value.Integer Integer.U32 0)
+                (BinOp.Panic.rem (| Integer.U32, M.read (| lhs |), M.read (| rhs |) |))
+                (Value.Integer 0)
             |)
           |)))
       |)))
@@ -78,7 +75,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     (M.alloc (|
                       M.call_closure (|
                         M.get_function (| "functions::is_divisible_by", [] |),
-                        [ M.read (| n |); Value.Integer Integer.U32 15 ]
+                        [ M.read (| n |); Value.Integer 15 ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -120,7 +117,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "functions::is_divisible_by", [] |),
-                                [ M.read (| n |); Value.Integer Integer.U32 3 ]
+                                [ M.read (| n |); Value.Integer 3 ]
                               |)
                             |)) in
                         let _ :=
@@ -163,7 +160,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                     (M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "functions::is_divisible_by", [] |),
-                                        [ M.read (| n |); Value.Integer Integer.U32 5 ]
+                                        [ M.read (| n |); Value.Integer 5 ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -285,7 +282,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.U32 1; M.read (| n |) ]
+                    [ Value.Integer 1; M.read (| n |) ]
                   |)
                 ]
               |)
@@ -358,7 +355,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions::fizzbuzz_to", [] |),
-              [ Value.Integer Integer.U32 100 ]
+              [ Value.Integer 100 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

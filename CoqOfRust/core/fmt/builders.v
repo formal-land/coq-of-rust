@@ -2245,7 +2245,7 @@ Module fmt.
                 [
                   ("fmt", M.read (| fmt |));
                   ("result", M.read (| result |));
-                  ("fields", Value.Integer Integer.Usize 0);
+                  ("fields", Value.Integer 0);
                   ("empty_name",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
@@ -2430,7 +2430,7 @@ Module fmt.
                                                                       "fields"
                                                                     |)
                                                                   |))
-                                                                  (Value.Integer Integer.Usize 0)
+                                                                  (Value.Integer 0)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -2718,7 +2718,7 @@ Module fmt.
                                                                         "fields"
                                                                       |)
                                                                     |))
-                                                                    (Value.Integer Integer.Usize 0)
+                                                                    (Value.Integer 0)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -2877,7 +2877,7 @@ Module fmt.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -2922,7 +2922,7 @@ Module fmt.
                                     "fields"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2986,9 +2986,7 @@ Module fmt.
                                                                             "fields"
                                                                           |)
                                                                         |))
-                                                                        (Value.Integer
-                                                                          Integer.Usize
-                                                                          1),
+                                                                        (Value.Integer 1),
                                                                       ltac:(M.monadic
                                                                         (M.read (|
                                                                           M.SubPointer.get_struct_record_field (|

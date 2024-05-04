@@ -74,11 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
-              [
-                ("x", Value.Integer Integer.I32 0);
-                ("y", Value.Integer Integer.I32 0);
-                ("z", Value.Integer Integer.I32 0)
-              ]
+              [ ("x", Value.Integer 0); ("y", Value.Integer 0); ("z", Value.Integer 0) ]
           |) in
         let borrowed_point := M.alloc (| point |) in
         let another_borrow := M.alloc (| point |) in
@@ -242,7 +238,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "x"
             |),
-            Value.Integer Integer.I32 5
+            Value.Integer 5
           |) in
         let _ :=
           M.write (|
@@ -251,7 +247,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "y"
             |),
-            Value.Integer Integer.I32 2
+            Value.Integer 2
           |) in
         let _ :=
           M.write (|
@@ -260,7 +256,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "z"
             |),
-            Value.Integer Integer.I32 1
+            Value.Integer 1
           |) in
         let _ :=
           let _ :=

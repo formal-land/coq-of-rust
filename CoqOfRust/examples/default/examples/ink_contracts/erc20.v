@@ -724,7 +724,11 @@ Module Impl_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| from |) |);
-                      BinOp.Panic.sub (| M.read (| from_balance |), M.read (| value |) |)
+                      BinOp.Panic.sub (|
+                        Integer.U128,
+                        M.read (| from_balance |),
+                        M.read (| value |)
+                      |)
                     ]
                   |)
                 |) in
@@ -752,7 +756,11 @@ Module Impl_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| to |) |);
-                      BinOp.Panic.add (| M.read (| to_balance |), M.read (| value |) |)
+                      BinOp.Panic.add (|
+                        Integer.U128,
+                        M.read (| to_balance |),
+                        M.read (| value |)
+                      |)
                     ]
                   |)
                 |) in
@@ -1091,7 +1099,7 @@ Module Impl_erc20_Erc20.
                         "allowances"
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
-                      BinOp.Panic.sub (| M.read (| allowance |), M.read (| value |) |)
+                      BinOp.Panic.sub (| Integer.U128, M.read (| allowance |), M.read (| value |) |)
                     ]
                   |)
                 |) in

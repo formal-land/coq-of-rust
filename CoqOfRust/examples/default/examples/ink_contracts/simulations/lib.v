@@ -7,10 +7,12 @@ Section Mapping.
 
   Context {K V : Set}.
 
-  #[refine]
-  Global Instance IsToValue (_ : ToValue K) (_ : ToValue V) :
-      ToValue (t K V) := {
+  Global Instance IsToTy (_ : ToTy K) (_ : ToTy V) : ToTy (t K V) := {
     Φ := Ty.apply (Ty.path "erc20::Mapping") [ Φ K; Φ V ];
+  }.
+
+  #[refine]
+  Global Instance IsToValue (_ : ToValue K) (_ : ToValue V) : ToValue (t K V) := {
     φ x := _;
   }.
   Admitted.

@@ -55,10 +55,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 10)
-                      ]
+                      [ ("start", Value.Integer 0); ("end_", Value.Integer 10) ]
                   ]
                 |)
               |),
@@ -222,7 +219,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
-                  [ Value.Integer Integer.U64 1 ]
+                  [ Value.Integer 1 ]
                 |)
               ]
             |)

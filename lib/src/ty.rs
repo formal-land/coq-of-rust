@@ -131,6 +131,34 @@ pub(crate) fn compile_path_ty_params(
     }
 }
 
+pub(crate) fn get_integer_ty_name(ty: &rustc_middle::ty::Ty) -> Option<String> {
+    match ty.kind() {
+        rustc_middle::ty::Int(int_ty) => Some(
+            match int_ty {
+                rustc_middle::ty::IntTy::Isize => "Integer.Isize",
+                rustc_middle::ty::IntTy::I8 => "Integer.I8",
+                rustc_middle::ty::IntTy::I16 => "Integer.I16",
+                rustc_middle::ty::IntTy::I32 => "Integer.I32",
+                rustc_middle::ty::IntTy::I64 => "Integer.I64",
+                rustc_middle::ty::IntTy::I128 => "Integer.I128",
+            }
+            .to_string(),
+        ),
+        rustc_middle::ty::Uint(uint_ty) => Some(
+            match uint_ty {
+                rustc_middle::ty::UintTy::Usize => "Integer.Usize",
+                rustc_middle::ty::UintTy::U8 => "Integer.U8",
+                rustc_middle::ty::UintTy::U16 => "Integer.U16",
+                rustc_middle::ty::UintTy::U32 => "Integer.U32",
+                rustc_middle::ty::UintTy::U64 => "Integer.U64",
+                rustc_middle::ty::UintTy::U128 => "Integer.U128",
+            }
+            .to_string(),
+        ),
+        _ => None,
+    }
+}
+
 impl CoqType {
     pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {

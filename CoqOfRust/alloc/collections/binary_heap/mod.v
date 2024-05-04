@@ -89,7 +89,7 @@ Module collections.
                             "alloc::collections::binary_heap::BinaryHeap",
                             "data"
                           |);
-                          Value.Integer Integer.Usize 0
+                          Value.Integer 0
                         ]
                       |))
                   ]
@@ -201,7 +201,7 @@ Module collections.
                                   "heap"
                                 |)
                               |);
-                              Value.Integer Integer.Usize 0
+                              Value.Integer 0
                             ]
                           |)
                         |) in
@@ -337,7 +337,7 @@ Module collections.
                         |)
                       ]
                     |);
-                    Value.Integer Integer.Usize 0
+                    Value.Integer 0
                   ]
                 |)
               |)
@@ -485,9 +485,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.gt (M.read (| len |)) (Value.Integer Integer.Usize 1)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.gt (M.read (| len |)) (Value.Integer 1) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -530,7 +528,7 @@ Module collections.
                                   "alloc::collections::binary_heap::BinaryHeap",
                                   "data"
                                 |);
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               ]
                             |)
                           |) in
@@ -568,7 +566,7 @@ Module collections.
                         |)
                       ]
                     |);
-                    Value.Integer Integer.Usize 0
+                    Value.Integer 0
                   ]
                 |)
               |)
@@ -1274,7 +1272,7 @@ Module collections.
                                                           "alloc::collections::binary_heap::BinaryHeap",
                                                           "data"
                                                         |);
-                                                        Value.Integer Integer.Usize 0
+                                                        Value.Integer 0
                                                       ]
                                                     |)
                                                   ]
@@ -1291,8 +1289,7 @@ Module collections.
                                                     "sift_down_to_bottom",
                                                     []
                                                   |),
-                                                  [ M.read (| self |); Value.Integer Integer.Usize 0
-                                                  ]
+                                                  [ M.read (| self |); Value.Integer 0 ]
                                                 |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
@@ -1368,7 +1365,7 @@ Module collections.
                       "sift_up",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.Usize 0; M.read (| old_len |) ]
+                    [ M.read (| self |); Value.Integer 0; M.read (| old_len |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1430,7 +1427,7 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| end_ |)) (Value.Integer Integer.Usize 1)
+                                  BinOp.Pure.gt (M.read (| end_ |)) (Value.Integer 1)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1438,7 +1435,7 @@ Module collections.
                               let β := end_ in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                               |) in
                             let _ :=
                               let ptr :=
@@ -1486,7 +1483,7 @@ Module collections.
                                     "sift_down_range",
                                     []
                                   |),
-                                  [ self; Value.Integer Integer.Usize 0; M.read (| end_ |) ]
+                                  [ self; Value.Integer 0; M.read (| end_ |) ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -1613,7 +1610,9 @@ Module collections.
                             let parent :=
                               M.alloc (|
                                 BinOp.Panic.div (|
+                                  Integer.Usize,
                                   BinOp.Panic.sub (|
+                                    Integer.Usize,
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
@@ -1624,9 +1623,9 @@ Module collections.
                                       |),
                                       [ hole ]
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |),
-                                  Value.Integer Integer.Usize 2
+                                  Value.Integer 2
                                 |)
                               |) in
                             let _ :=
@@ -1814,8 +1813,10 @@ Module collections.
                   let child :=
                     M.alloc (|
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         BinOp.Panic.mul (|
-                          Value.Integer Integer.Usize 2,
+                          Integer.Usize,
+                          Value.Integer 2,
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
@@ -1825,7 +1826,7 @@ Module collections.
                             [ hole ]
                           |)
                         |),
-                        Value.Integer Integer.Usize 1
+                        Value.Integer 1
                       |)
                     |) in
                   let _ :=
@@ -1847,7 +1848,7 @@ Module collections.
                                             "saturating_sub",
                                             []
                                           |),
-                                          [ M.read (| end_ |); Value.Integer Integer.Usize 2 ]
+                                          [ M.read (| end_ |); Value.Integer 2 ]
                                         |))
                                     |)) in
                                 let _ :=
@@ -1860,6 +1861,7 @@ Module collections.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
                                       M.rust_cast
                                         (M.call_closure (|
@@ -1897,8 +1899,9 @@ Module collections.
                                                 [
                                                   hole;
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| child |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |)
                                                 ]
                                               |)
@@ -1984,8 +1987,10 @@ Module collections.
                                   M.write (|
                                     child,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       BinOp.Panic.mul (|
-                                        Value.Integer Integer.Usize 2,
+                                        Integer.Usize,
+                                        Value.Integer 2,
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
@@ -1997,7 +2002,7 @@ Module collections.
                                           [ hole ]
                                         |)
                                       |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -2029,8 +2034,9 @@ Module collections.
                                   BinOp.Pure.eq
                                     (M.read (| child |))
                                     (BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| end_ |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -2232,8 +2238,10 @@ Module collections.
               let child :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     BinOp.Panic.mul (|
-                      Value.Integer Integer.Usize 2,
+                      Integer.Usize,
+                      Value.Integer 2,
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
@@ -2243,7 +2251,7 @@ Module collections.
                         [ hole ]
                       |)
                     |),
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   |)
                 |) in
               let _ :=
@@ -2265,7 +2273,7 @@ Module collections.
                                         "saturating_sub",
                                         []
                                       |),
-                                      [ M.read (| end_ |); Value.Integer Integer.Usize 2 ]
+                                      [ M.read (| end_ |); Value.Integer 2 ]
                                     |))
                                 |)) in
                             let _ :=
@@ -2275,6 +2283,7 @@ Module collections.
                               M.write (|
                                 β,
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| β |),
                                   M.rust_cast
                                     (M.call_closure (|
@@ -2310,8 +2319,9 @@ Module collections.
                                             [
                                               hole;
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| child |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |)
                                             ]
                                           |)
@@ -2337,8 +2347,10 @@ Module collections.
                               M.write (|
                                 child,
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   BinOp.Panic.mul (|
-                                    Value.Integer Integer.Usize 2,
+                                    Integer.Usize,
+                                    Value.Integer 2,
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
@@ -2350,7 +2362,7 @@ Module collections.
                                       [ hole ]
                                     |)
                                   |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -2380,8 +2392,9 @@ Module collections.
                               BinOp.Pure.eq
                                 (M.read (| child |))
                                 (BinOp.Panic.sub (|
+                                  Integer.Usize,
                                   M.read (| end_ |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |))
                             |)) in
                         let _ :=
@@ -2523,6 +2536,7 @@ Module collections.
                   let tail_len :=
                     M.alloc (|
                       BinOp.Panic.sub (|
+                        Integer.Usize,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -2576,7 +2590,7 @@ Module collections.
                                                 |),
                                                 [ M.read (| self |) ]
                                               |))
-                                              (Value.Integer Integer.Usize 2048)
+                                              (Value.Integer 2048)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -2586,7 +2600,8 @@ Module collections.
                                       M.alloc (|
                                         BinOp.Pure.lt
                                           (BinOp.Panic.mul (|
-                                            Value.Integer Integer.Usize 2,
+                                            Integer.Usize,
+                                            Value.Integer 2,
                                             M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -2600,6 +2615,7 @@ Module collections.
                                             |)
                                           |))
                                           (BinOp.Panic.mul (|
+                                            Integer.Usize,
                                             M.read (| tail_len |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -2616,7 +2632,8 @@ Module collections.
                                       (M.alloc (|
                                         BinOp.Pure.lt
                                           (BinOp.Panic.mul (|
-                                            Value.Integer Integer.Usize 2,
+                                            Integer.Usize,
+                                            Value.Integer 2,
                                             M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -2630,8 +2647,9 @@ Module collections.
                                             |)
                                           |))
                                           (BinOp.Panic.mul (|
+                                            Integer.Usize,
                                             M.read (| tail_len |),
-                                            Value.Integer Integer.Usize 11
+                                            Value.Integer 11
                                           |))
                                       |)))
                                 ]
@@ -2747,7 +2765,7 @@ Module collections.
                                                         |),
                                                         [
                                                           M.read (| self |);
-                                                          Value.Integer Integer.Usize 0;
+                                                          Value.Integer 0;
                                                           M.read (| i |)
                                                         ]
                                                       |)
@@ -2792,6 +2810,7 @@ Module collections.
               let n :=
                 M.alloc (|
                   BinOp.Panic.div (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
@@ -2800,7 +2819,7 @@ Module collections.
                       |),
                       [ M.read (| self |) ]
                     |),
-                    Value.Integer Integer.Usize 2
+                    Value.Integer 2
                   |)
                 |) in
               M.loop (|
@@ -2812,16 +2831,14 @@ Module collections.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (|
-                                BinOp.Pure.gt (M.read (| n |)) (Value.Integer Integer.Usize 0)
-                              |)) in
+                              (M.alloc (| BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             let β := n in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                             |) in
                           let _ :=
                             M.alloc (|
@@ -3058,7 +3075,7 @@ Module collections.
                       ("heap", M.read (| self |))
                     ]
                 |) in
-              let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+              let i := M.alloc (| Value.Integer 0 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -3151,8 +3168,9 @@ Module collections.
                                           M.write (|
                                             β,
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| β |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |)
                                           |) in
                                         keep
@@ -3271,7 +3289,7 @@ Module collections.
                     |)
                   ]
                 |);
-                Value.Integer Integer.Usize 0
+                Value.Integer 0
               ]
             |)))
         | _, _ => M.impossible
@@ -3677,7 +3695,7 @@ Module collections.
                 |),
                 [ M.read (| self |) ]
               |))
-              (Value.Integer Integer.Usize 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -4285,8 +4303,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                      [ M.read (| index_ptr |); M.read (| hole_ptr |); Value.Integer Integer.Usize 1
-                      ]
+                      [ M.read (| index_ptr |); M.read (| hole_ptr |); Value.Integer 1 ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
@@ -4375,7 +4392,7 @@ Module collections.
                           M.read (| pos |)
                         ]
                       |);
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     ]
                   |)
                 |) in
@@ -5188,7 +5205,7 @@ Module collections.
                   "new",
                   []
                 |),
-                [ Value.Integer Integer.Usize 1 ]
+                [ Value.Integer 1 ]
               |)
             |))).
       
@@ -5205,7 +5222,7 @@ Module collections.
                   "new",
                   []
                 |),
-                [ Value.Integer Integer.Usize 1 ]
+                [ Value.Integer 1 ]
               |)
             |))).
       

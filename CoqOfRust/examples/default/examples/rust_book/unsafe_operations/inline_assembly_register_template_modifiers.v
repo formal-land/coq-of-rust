@@ -19,13 +19,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U16 171 |) in
+        let x := M.alloc (| Value.Integer 171 |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer Integer.U16 43947 |) ] |),
+            M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer 43947 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic

@@ -43,7 +43,6 @@ pub(crate) enum CallKind {
 
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) struct LiteralInteger {
-    pub(crate) name: String,
     pub(crate) negative_sign: bool,
     pub(crate) value: u128,
 }
@@ -389,17 +388,13 @@ impl Literal {
             Literal::Bool(b) => coq::Expression::just_name("Value.Bool")
                 .apply(&coq::Expression::just_name(b.to_string().as_str())),
             Literal::Integer(LiteralInteger {
-                name,
                 negative_sign,
                 value,
-            }) => coq::Expression::just_name("Value.Integer").apply_many(&[
-                coq::Expression::just_name(format!("Integer.{name}").as_str()),
-                if *negative_sign {
-                    coq::Expression::just_name(format!("(-{value})").as_str())
-                } else {
-                    coq::Expression::just_name(value.to_string().as_str())
-                },
-            ]),
+            }) => coq::Expression::just_name("Value.Integer").apply(&if *negative_sign {
+                coq::Expression::just_name(format!("(-{value})").as_str())
+            } else {
+                coq::Expression::just_name(value.to_string().as_str())
+            }),
             Literal::Char(c) => coq::Expression::just_name("Value.UnicodeChar").apply(
                 &coq::Expression::just_name((*c as u32).to_string().as_str()),
             ),

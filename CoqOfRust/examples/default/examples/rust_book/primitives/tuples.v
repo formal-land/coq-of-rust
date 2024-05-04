@@ -137,14 +137,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer Integer.U8 1;
-                Value.Integer Integer.U16 2;
-                Value.Integer Integer.U32 3;
-                Value.Integer Integer.U64 4;
-                Value.Integer Integer.I8 (-1);
-                Value.Integer Integer.I16 (-2);
-                Value.Integer Integer.I32 (-3);
-                Value.Integer Integer.I64 (-4);
+                Value.Integer 1;
+                Value.Integer 2;
+                Value.Integer 3;
+                Value.Integer 4;
+                Value.Integer (-1);
+                Value.Integer (-2);
+                Value.Integer (-3);
+                Value.Integer (-4);
                 M.read (| UnsupportedLiteral |);
                 M.read (| UnsupportedLiteral |);
                 Value.UnicodeChar 97;
@@ -235,14 +235,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Tuple
-                  [
-                    Value.Integer Integer.U8 1;
-                    Value.Integer Integer.U16 2;
-                    Value.Integer Integer.U32 2
-                  ];
-                Value.Tuple [ Value.Integer Integer.U64 4; Value.Integer Integer.I8 (-1) ];
-                Value.Integer Integer.I16 (-2)
+                Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 2 ];
+                Value.Tuple [ Value.Integer 4; Value.Integer (-1) ];
+                Value.Integer (-2)
               ]
           |) in
         let _ :=
@@ -292,7 +287,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let pair_ := M.alloc (| Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ] |) in
+        let pair_ := M.alloc (| Value.Tuple [ Value.Integer 1; Value.Bool true ] |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -407,7 +402,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.tuple [ Ty.path "u32" ] ]
                                 |),
-                                [ M.alloc (| Value.Tuple [ Value.Integer Integer.U32 5 ] |) ]
+                                [ M.alloc (| Value.Tuple [ Value.Integer 5 ] |) ]
                               |)
                             ]
                         |))
@@ -447,7 +442,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.path "u32" ]
                                 |),
-                                [ M.alloc (| Value.Integer Integer.U32 5 |) ]
+                                [ M.alloc (| Value.Integer 5 |) ]
                               |)
                             ]
                         |))
@@ -461,7 +456,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer Integer.I32 1;
+                Value.Integer 1;
                 M.read (| Value.String "hello" |);
                 M.read (| UnsupportedLiteral |);
                 Value.Bool true

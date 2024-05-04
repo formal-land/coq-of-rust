@@ -136,7 +136,7 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::enumerate::Enumerate"
-                [ ("iter", M.read (| iter |)); ("count", Value.Integer Integer.Usize 0) ]))
+                [ ("iter", M.read (| iter |)); ("count", Value.Integer 0) ]))
           | _, _ => M.impossible
           end.
         
@@ -265,7 +265,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -408,6 +408,7 @@ Module iter.
                     let i :=
                       M.alloc (|
                         BinOp.Panic.add (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -425,7 +426,7 @@ Module iter.
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
-                        BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -659,6 +660,7 @@ Module iter.
                             let rem := M.copy (| γ0_0 |) in
                             M.alloc (|
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.read (| n |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -680,7 +682,10 @@ Module iter.
                       "core::iter::adapters::enumerate::Enumerate",
                       "count"
                     |) in
-                  M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| advanced |) |) |) in
+                  M.write (|
+                    β,
+                    BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| advanced |) |)
+                  |) in
                 remaining
               |)))
           | _, _ => M.impossible
@@ -723,6 +728,7 @@ Module iter.
                   Value.Tuple
                     [
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -886,6 +892,7 @@ Module iter.
                           Value.Tuple
                             [
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -1029,6 +1036,7 @@ Module iter.
                           Value.Tuple
                             [
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -1082,6 +1090,7 @@ Module iter.
                 let count :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1167,6 +1176,7 @@ Module iter.
                 let count :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,

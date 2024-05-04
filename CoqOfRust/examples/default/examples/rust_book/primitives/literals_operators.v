@@ -61,8 +61,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.add (|
-                                      Value.Integer Integer.U32 1,
-                                      Value.Integer Integer.U32 2
+                                      Integer.U32,
+                                      Value.Integer 1,
+                                      Value.Integer 2
                                     |)
                                   |)
                                 ]
@@ -105,8 +106,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.sub (|
-                                      Value.Integer Integer.I32 1,
-                                      Value.Integer Integer.I32 2
+                                      Integer.I32,
+                                      Value.Integer 1,
+                                      Value.Integer 2
                                     |)
                                   |)
                                 ]
@@ -289,9 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_and
-                                      (Value.Integer Integer.U32 3)
-                                      (Value.Integer Integer.U32 5)
+                                    BinOp.Pure.bit_and (Value.Integer 3) (Value.Integer 5)
                                   |)
                                 ]
                               |)
@@ -309,14 +309,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer Integer.Usize 0;
+                                  Value.Integer 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer Integer.U32 8;
+                                  Value.Integer 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 4 ]
+                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
                                 ]
                               |)
                             ]
@@ -371,9 +369,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_or
-                                      (Value.Integer Integer.U32 3)
-                                      (Value.Integer Integer.U32 5)
+                                    BinOp.Pure.bit_or (Value.Integer 3) (Value.Integer 5)
                                   |)
                                 ]
                               |)
@@ -391,14 +387,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer Integer.Usize 0;
+                                  Value.Integer 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer Integer.U32 8;
+                                  Value.Integer 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 4 ]
+                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
                                 ]
                               |)
                             ]
@@ -453,9 +447,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_xor
-                                      (Value.Integer Integer.U32 3)
-                                      (Value.Integer Integer.U32 5)
+                                    BinOp.Pure.bit_xor (Value.Integer 3) (Value.Integer 5)
                                   |)
                                 ]
                               |)
@@ -473,14 +465,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer Integer.Usize 0;
+                                  Value.Integer 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer Integer.U32 8;
+                                  Value.Integer 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 4 ]
+                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
                                 ]
                               |)
                             ]
@@ -529,10 +519,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.shl (|
-                                      Value.Integer Integer.U32 1,
-                                      Value.Integer Integer.I32 5
-                                    |)
+                                    BinOp.Panic.shl (| Value.Integer 1, Value.Integer 5 |)
                                   |)
                                 ]
                               |)
@@ -576,10 +563,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.shr (|
-                                      Value.Integer Integer.U32 128,
-                                      Value.Integer Integer.I32 2
-                                    |)
+                                    BinOp.Panic.shr (| Value.Integer 128, Value.Integer 2 |)
                                   |)
                                 ]
                               |)

@@ -692,9 +692,7 @@ Module hash.
                                   M.use
                                     (M.alloc (|
                                       UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| len |))
-                                          (Value.Integer Integer.Usize 8))
+                                        (BinOp.Pure.lt (M.read (| len |)) (Value.Integer 8))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -716,8 +714,8 @@ Module hash.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
-            let out := M.alloc (| Value.Integer Integer.U64 0 |) in
+            let i := M.alloc (| Value.Integer 0 |) in
+            let out := M.alloc (| Value.Integer 0 |) in
             let _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -728,7 +726,7 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 3 |))
+                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 3 |))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -761,7 +759,9 @@ Module hash.
                                                         UnOp.Pure.not
                                                           (BinOp.Pure.le
                                                             (BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               BinOp.Panic.add (|
+                                                                Integer.Usize,
                                                                 M.read (| start |),
                                                                 M.read (| i |)
                                                               |),
@@ -813,8 +813,7 @@ Module hash.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let data :=
-                                M.copy (| M.use (M.alloc (| Value.Integer Integer.U32 0 |)) |) in
+                              let data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
                               let _ :=
                                 M.alloc (|
                                   M.call_closure (|
@@ -838,7 +837,11 @@ Module hash.
                                             |),
                                             [ M.read (| buf |) ]
                                           |);
-                                          BinOp.Panic.add (| M.read (| start |), M.read (| i |) |)
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| start |),
+                                            M.read (| i |)
+                                          |)
                                         ]
                                       |);
                                       M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
@@ -864,7 +867,7 @@ Module hash.
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 4 |)
+                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 4 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -880,7 +883,7 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 1 |))
+                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -917,7 +920,9 @@ Module hash.
                                                             UnOp.Pure.not
                                                               (BinOp.Pure.le
                                                                 (BinOp.Panic.add (|
+                                                                  Integer.Usize,
                                                                   BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| start |),
                                                                     M.read (| i |)
                                                                   |),
@@ -969,10 +974,7 @@ Module hash.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let data :=
-                                    M.copy (|
-                                      M.use (M.alloc (| Value.Integer Integer.U16 0 |))
-                                    |) in
+                                  let data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
                                   let _ :=
                                     M.alloc (|
                                       M.call_closure (|
@@ -997,6 +999,7 @@ Module hash.
                                                 [ M.read (| buf |) ]
                                               |);
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| start |),
                                                 M.read (| i |)
                                               |)
@@ -1020,13 +1023,13 @@ Module hash.
                                     |)
                                   |)
                                 |)),
-                              BinOp.Panic.mul (| M.read (| i |), Value.Integer Integer.Usize 8 |)
+                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
                             |))
                         |) in
                       let β := i in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 2 |)
+                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 2 |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -1057,18 +1060,22 @@ Module hash.
                                     |),
                                     [
                                       M.read (| buf |);
-                                      BinOp.Panic.add (| M.read (| start |), M.read (| i |) |)
+                                      BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (| start |),
+                                        M.read (| i |)
+                                      |)
                                     ]
                                   |)
                                 |)),
-                              BinOp.Panic.mul (| M.read (| i |), Value.Integer Integer.Usize 8 |)
+                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
                             |))
                         |) in
                       let _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1137,7 +1144,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ Value.Integer 0; Value.Integer 0 ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1199,7 +1206,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ Value.Integer 0; Value.Integer 0 ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1272,18 +1279,18 @@ Module hash.
                     [
                       ("k0", M.read (| key0 |));
                       ("k1", M.read (| key1 |));
-                      ("length", Value.Integer Integer.Usize 0);
+                      ("length", Value.Integer 0);
                       ("state",
                         Value.StructRecord
                           "core::hash::sip::State"
                           [
-                            ("v0", Value.Integer Integer.U64 0);
-                            ("v1", Value.Integer Integer.U64 0);
-                            ("v2", Value.Integer Integer.U64 0);
-                            ("v3", Value.Integer Integer.U64 0)
+                            ("v0", Value.Integer 0);
+                            ("v1", Value.Integer 0);
+                            ("v2", Value.Integer 0);
+                            ("v3", Value.Integer 0)
                           ]);
-                      ("tail", Value.Integer Integer.U64 0);
-                      ("ntail", Value.Integer Integer.Usize 0);
+                      ("tail", Value.Integer 0);
+                      ("ntail", Value.Integer 0);
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
                 |) in
@@ -1331,7 +1338,7 @@ Module hash.
                     "core::hash::sip::Hasher",
                     "length"
                   |),
-                  Value.Integer Integer.Usize 0
+                  Value.Integer 0
                 |) in
               let _ :=
                 M.write (|
@@ -1352,7 +1359,7 @@ Module hash.
                         "k0"
                       |)
                     |))
-                    (Value.Integer Integer.U64 8317987319222330741)
+                    (Value.Integer 8317987319222330741)
                 |) in
               let _ :=
                 M.write (|
@@ -1373,7 +1380,7 @@ Module hash.
                         "k1"
                       |)
                     |))
-                    (Value.Integer Integer.U64 7237128888997146477)
+                    (Value.Integer 7237128888997146477)
                 |) in
               let _ :=
                 M.write (|
@@ -1394,7 +1401,7 @@ Module hash.
                         "k0"
                       |)
                     |))
-                    (Value.Integer Integer.U64 7816392313619706465)
+                    (Value.Integer 7816392313619706465)
                 |) in
               let _ :=
                 M.write (|
@@ -1415,7 +1422,7 @@ Module hash.
                         "k1"
                       |)
                     |))
-                    (Value.Integer Integer.U64 8387220255154660723)
+                    (Value.Integer 8387220255154660723)
                 |) in
               let _ :=
                 M.write (|
@@ -1424,7 +1431,7 @@ Module hash.
                     "core::hash::sip::Hasher",
                     "ntail"
                   |),
-                  Value.Integer Integer.Usize 0
+                  Value.Integer 0
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1764,8 +1771,11 @@ Module hash.
                         "core::hash::sip::Hasher",
                         "length"
                       |) in
-                    M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| length |) |) |) in
-                  let needed := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    M.write (|
+                      β,
+                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| length |) |)
+                    |) in
+                  let needed := M.alloc (| Value.Integer 0 |) in
                   let _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1783,7 +1793,7 @@ Module hash.
                                         "ntail"
                                       |)
                                     |))
-                                    (Value.Integer Integer.Usize 0)
+                                    (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1791,7 +1801,8 @@ Module hash.
                               M.write (|
                                 needed,
                                 BinOp.Panic.sub (|
-                                  Value.Integer Integer.Usize 8,
+                                  Integer.Usize,
+                                  Value.Integer 8,
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -1817,7 +1828,7 @@ Module hash.
                                       M.get_function (| "core::hash::sip::u8to64_le", [] |),
                                       [
                                         M.read (| msg |);
-                                        Value.Integer Integer.Usize 0;
+                                        Value.Integer 0;
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::cmp::min",
@@ -1828,7 +1839,8 @@ Module hash.
                                       ]
                                     |),
                                     BinOp.Panic.mul (|
-                                      Value.Integer Integer.Usize 8,
+                                      Integer.Usize,
+                                      Value.Integer 8,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1867,6 +1879,7 @@ Module hash.
                                             M.write (|
                                               β,
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| β |),
                                                 M.read (| length |)
                                               |)
@@ -1949,7 +1962,7 @@ Module hash.
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |),
-                                        Value.Integer Integer.Usize 0
+                                        Value.Integer 0
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]
@@ -1958,11 +1971,11 @@ Module hash.
                       ]
                     |) in
                   let len :=
-                    M.alloc (| BinOp.Panic.sub (| M.read (| length |), M.read (| needed |) |) |) in
-                  let left :=
                     M.alloc (|
-                      BinOp.Pure.bit_and (M.read (| len |)) (Value.Integer Integer.Usize 7)
+                      BinOp.Panic.sub (| Integer.Usize, M.read (| length |), M.read (| needed |) |)
                     |) in
+                  let left :=
+                    M.alloc (| BinOp.Pure.bit_and (M.read (| len |)) (Value.Integer 7) |) in
                   let i := M.copy (| needed |) in
                   let _ :=
                     M.loop (|
@@ -1977,7 +1990,11 @@ Module hash.
                                     (M.alloc (|
                                       BinOp.Pure.lt
                                         (M.read (| i |))
-                                        (BinOp.Panic.sub (| M.read (| len |), M.read (| left |) |))
+                                        (BinOp.Panic.sub (|
+                                          Integer.Usize,
+                                          M.read (| len |),
+                                          M.read (| left |)
+                                        |))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2010,6 +2027,7 @@ Module hash.
                                                               UnOp.Pure.not
                                                                 (BinOp.Pure.le
                                                                   (BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| i |),
                                                                     M.call_closure (|
                                                                       M.get_function (|
@@ -2061,9 +2079,7 @@ Module hash.
                                         ]
                                       |) in
                                     let data :=
-                                      M.copy (|
-                                        M.use (M.alloc (| Value.Integer Integer.U64 0 |))
-                                      |) in
+                                      M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
                                     let _ :=
                                       M.alloc (|
                                         M.call_closure (|
@@ -2162,8 +2178,9 @@ Module hash.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 8
+                                      Value.Integer 8
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -2255,7 +2272,7 @@ Module hash.
                       "write_u8",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.U8 255 ]
+                    [ M.read (| self |); Value.Integer 255 ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2307,8 +2324,8 @@ Module hash.
                               "length"
                             |)
                           |)))
-                        (Value.Integer Integer.U64 255),
-                      Value.Integer Integer.I32 56
+                        (Value.Integer 255),
+                      Value.Integer 56
                     |))
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -2348,10 +2365,7 @@ Module hash.
                     "core::hash::sip::State",
                     "v2"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Pure.bit_xor (M.read (| β |)) (Value.Integer Integer.U64 255)
-                |) in
+                M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (Value.Integer 255) |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -2519,7 +2533,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ Value.Integer 0; Value.Integer 0 ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2666,7 +2680,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -2706,7 +2720,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -2754,7 +2768,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -2821,7 +2835,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -2888,7 +2902,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -2928,7 +2942,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -2996,7 +3010,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -3036,7 +3050,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -3084,7 +3098,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -3151,7 +3165,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -3218,7 +3232,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -3258,7 +3272,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -3308,7 +3322,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -3348,7 +3362,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -3396,7 +3410,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -3463,7 +3477,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -3530,7 +3544,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -3570,7 +3584,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -3620,7 +3634,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -3660,7 +3674,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -3708,7 +3722,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -3775,7 +3789,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -3842,7 +3856,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -3882,7 +3896,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4033,7 +4047,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -4073,7 +4087,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4121,7 +4135,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -4188,7 +4202,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -4255,7 +4269,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -4295,7 +4309,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4345,7 +4359,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -4385,7 +4399,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4433,7 +4447,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -4500,7 +4514,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -4567,7 +4581,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -4607,7 +4621,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4676,7 +4690,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -4716,7 +4730,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4764,7 +4778,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -4831,7 +4845,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -4898,7 +4912,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -4938,7 +4952,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -4988,7 +5002,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -5028,7 +5042,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -5076,7 +5090,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -5143,7 +5157,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -5210,7 +5224,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -5250,7 +5264,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -5300,7 +5314,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -5340,7 +5354,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -5388,7 +5402,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -5455,7 +5469,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -5522,7 +5536,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -5562,7 +5576,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -5612,7 +5626,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        Value.Integer 13
                       ]
                     |)
                   |) in
@@ -5652,7 +5666,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in
@@ -5700,7 +5714,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        Value.Integer 16
                       ]
                     |)
                   |) in
@@ -5767,7 +5781,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        Value.Integer 21
                       ]
                     |)
                   |) in
@@ -5834,7 +5848,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        Value.Integer 17
                       ]
                     |)
                   |) in
@@ -5874,7 +5888,7 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        Value.Integer 32
                       ]
                     |)
                   |) in

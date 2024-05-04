@@ -118,7 +118,7 @@ Module collections.
                                                 "saturating_add",
                                                 []
                                               |),
-                                              [ M.read (| lower |); Value.Integer Integer.Usize 1 ]
+                                              [ M.read (| lower |); Value.Integer 1 ]
                                             |)
                                           ]
                                         |)
@@ -786,6 +786,7 @@ Module collections.
                     M.write (|
                       β,
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (| β |),
                         M.call_closure (|
                           M.get_associated_function (|
@@ -978,6 +979,7 @@ Module collections.
                   M.write (|
                     β,
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (| β |),
                       M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),

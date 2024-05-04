@@ -478,7 +478,7 @@ Module ptr.
                     |),
                     [ M.read (| self |) ]
                   |);
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 ]
               |))))
         | _, _ => M.impossible

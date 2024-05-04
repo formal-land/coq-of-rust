@@ -494,6 +494,7 @@ Module str.
                   ("start", M.read (| char_start |));
                   ("end_",
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (| char_start |),
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
@@ -579,7 +580,7 @@ Module str.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 256 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 256 |))).
   End slice_error_fail_rt.
   
   Module Impl_str.
@@ -624,7 +625,7 @@ Module str.
               M.get_associated_function (| Ty.path "str", "len", [] |),
               [ M.read (| self |) ]
             |))
-            (Value.Integer Integer.Usize 0)))
+            (Value.Integer 0)))
       | _, _ => M.impossible
       end.
     
@@ -674,7 +675,7 @@ Module str.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq (M.read (| index |)) (Value.Integer Integer.Usize 0)
+                                BinOp.Pure.eq (M.read (| index |)) (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -792,7 +793,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
-                          [ M.read (| index |); Value.Integer Integer.Usize 3 ]
+                          [ M.read (| index |); Value.Integer 3 ]
                         |)
                       |) in
                     let new_index :=
@@ -882,6 +883,7 @@ Module str.
                       |) in
                     M.alloc (|
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (| lower_bound |),
                         M.call_closure (|
                           M.get_associated_function (|
@@ -951,7 +953,11 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                           [
-                            BinOp.Panic.add (| M.read (| index |), Value.Integer Integer.Usize 4 |);
+                            BinOp.Panic.add (|
+                              Integer.Usize,
+                              M.read (| index |),
+                              Value.Integer 4
+                            |);
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
@@ -1061,6 +1067,7 @@ Module str.
                                         ltac:(M.monadic
                                           (let pos := M.copy (| γ |) in
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| pos |),
                                             M.read (| index |)
                                           |)))
@@ -1387,10 +1394,7 @@ Module str.
                               M.read (| self |);
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [
-                                  ("start", Value.Integer Integer.Usize 0);
-                                  ("end_", M.read (| mid |))
-                                ]
+                                [ ("start", Value.Integer 0); ("end_", M.read (| mid |)) ]
                             ]
                           |);
                           M.call_closure (|
@@ -1421,7 +1425,7 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer Integer.Usize 0; M.read (| mid |) ]
+                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
                         |)
                       |)
                     |)))
@@ -1518,7 +1522,11 @@ Module str.
                                     |),
                                     [ M.read (| ptr |); M.read (| mid |) ]
                                   |);
-                                  BinOp.Panic.sub (| M.read (| len |), M.read (| mid |) |)
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| len |),
+                                    M.read (| mid |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -1531,7 +1539,7 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer Integer.Usize 0; M.read (| mid |) ]
+                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
                         |)
                       |)
                     |)))
@@ -1589,7 +1597,7 @@ Module str.
           Value.StructRecord
             "core::str::iter::CharIndices"
             [
-              ("front_offset", Value.Integer Integer.Usize 0);
+              ("front_offset", Value.Integer 0);
               ("iter",
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "str", "chars", [] |),
@@ -1845,7 +1853,7 @@ Module str.
                   M.get_associated_function (| Ty.path "str", "chars", [] |),
                   [ M.read (| self |) ]
                 |));
-              ("extra", Value.Integer Integer.U16 0)
+              ("extra", Value.Integer 0)
             ]))
       | _, _ => M.impossible
       end.
@@ -2087,7 +2095,7 @@ Module str.
               Value.StructRecord
                 "core::str::iter::SplitInternal"
                 [
-                  ("start", Value.Integer Integer.Usize 0);
+                  ("start", Value.Integer 0);
                   ("end_",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2136,7 +2144,7 @@ Module str.
               Value.StructRecord
                 "core::str::iter::SplitInternal"
                 [
-                  ("start", Value.Integer Integer.Usize 0);
+                  ("start", Value.Integer 0);
                   ("end_",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -3018,8 +3026,8 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
-            let j := M.alloc (| Value.Integer Integer.Usize 0 |) in
+            let i := M.alloc (| Value.Integer 0 |) in
+            let j := M.alloc (| Value.Integer 0 |) in
             let matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3287,7 +3295,7 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let j := M.alloc (| Value.Integer Integer.Usize 0 |) in
+            let j := M.alloc (| Value.Integer 0 |) in
             let matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3345,7 +3353,7 @@ Module str.
                   M.read (| self |);
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| j |)) ]
+                    [ ("start", Value.Integer 0); ("end_", M.read (| j |)) ]
                 ]
               |)
             |)

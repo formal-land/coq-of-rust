@@ -37,7 +37,7 @@ Module ptr.
           [
             M.call_closure (|
               M.get_function (| "core::ptr::invalid", [ Ty.tuple [] ] |),
-              [ Value.Integer Integer.Usize 0 ]
+              [ Value.Integer 0 ]
             |);
             Value.Tuple []
           ]
@@ -59,7 +59,7 @@ Module ptr.
           [
             M.call_closure (|
               M.get_function (| "core::ptr::invalid_mut", [ Ty.tuple [] ] |),
-              [ Value.Integer Integer.Usize 0 ]
+              [ Value.Integer 0 ]
             |);
             Value.Tuple []
           ]
@@ -293,7 +293,7 @@ Module ptr.
                     |),
                     [ tmp ]
                   |);
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 ]
               |)
             |) in
@@ -304,7 +304,7 @@ Module ptr.
                 [
                   (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
                   M.read (| x |);
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 ]
               |)
             |) in
@@ -322,7 +322,7 @@ Module ptr.
                     [ tmp ]
                   |);
                   M.read (| y |);
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 ]
               |)
             |) in
@@ -487,6 +487,7 @@ Module ptr.
                                           []
                                         |))
                                         (BinOp.Panic.mul (|
+                                          Integer.Usize,
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
@@ -494,7 +495,7 @@ Module ptr.
                                             |),
                                             []
                                           |),
-                                          Value.Integer Integer.Usize 2
+                                          Value.Integer 2
                                         |))))
                                   |)))
                               |)
@@ -526,6 +527,7 @@ Module ptr.
                                           ltac:(M.monadic
                                             (BinOp.Pure.eq
                                               (BinOp.Panic.rem (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
@@ -538,7 +540,7 @@ Module ptr.
                                                   []
                                                 |)
                                               |))
-                                              (Value.Integer Integer.Usize 0)))
+                                              (Value.Integer 0)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -574,8 +576,10 @@ Module ptr.
                                         let count :=
                                           M.alloc (|
                                             BinOp.Panic.mul (|
+                                              Integer.Usize,
                                               M.read (| count |),
                                               BinOp.Panic.div (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
@@ -630,6 +634,7 @@ Module ptr.
                                           ltac:(M.monadic
                                             (BinOp.Pure.eq
                                               (BinOp.Panic.rem (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
@@ -642,7 +647,7 @@ Module ptr.
                                                   []
                                                 |)
                                               |))
-                                              (Value.Integer Integer.Usize 0)))
+                                              (Value.Integer 0)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -678,8 +683,10 @@ Module ptr.
                                         let count :=
                                           M.alloc (|
                                             BinOp.Panic.mul (|
+                                              Integer.Usize,
                                               M.read (| count |),
                                               BinOp.Panic.div (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
@@ -771,7 +778,7 @@ Module ptr.
                 [ M.read (| y |) ]
               |)
             |) in
-          let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+          let i := M.alloc (| Value.Integer 0 |) in
           M.loop (|
             ltac:(M.monadic
               (M.match_operator (|
@@ -822,7 +829,7 @@ Module ptr.
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -1497,7 +1504,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                    [ M.read (| a |); Value.Integer Integer.Usize 1 ]
+                    [ M.read (| a |); Value.Integer 1 ]
                   |)
                 |) in
               let _ :=
@@ -1508,9 +1515,7 @@ Module ptr.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.eq (M.read (| stride |)) (Value.Integer Integer.Usize 0)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.eq (M.read (| stride |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -1532,14 +1537,14 @@ Module ptr.
                                               (M.alloc (|
                                                 BinOp.Pure.eq
                                                   (M.read (| p_mod_a |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)));
+                                          M.alloc (| Value.Integer 0 |)));
                                       fun γ =>
                                         ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
                                     ]
@@ -1568,9 +1573,7 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| a_mod_stride |))
-                                (Value.Integer Integer.Usize 0)
+                              BinOp.Pure.eq (M.read (| a_mod_stride |)) (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1592,7 +1595,7 @@ Module ptr.
                                         "core::intrinsics::wrapping_sub",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ Value.Integer Integer.Usize 0; M.read (| a |) ]
+                                      [ Value.Integer 0; M.read (| a |) ]
                                     |))
                                 |) in
                               let byte_offset :=
@@ -1634,7 +1637,7 @@ Module ptr.
                                               (M.alloc (|
                                                 BinOp.Pure.eq
                                                   (M.read (| addr_mod_stride |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1696,7 +1699,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_shl", [ Ty.path "usize" ] |),
-                    [ Value.Integer Integer.Usize 1; M.read (| gcdpow |) ]
+                    [ Value.Integer 1; M.read (| gcdpow |) ]
                   |)
                 |) in
               let _ :=
@@ -1716,9 +1719,9 @@ Module ptr.
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| gcd |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| gcd |); Value.Integer 1 ]
                                   |)))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1742,7 +1745,7 @@ Module ptr.
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| a2 |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| a2 |); Value.Integer 1 ]
                                   |)
                                 |) in
                               let s2 :=
@@ -1868,7 +1871,7 @@ Module ptr.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                  [ M.read (| m |); Value.Integer Integer.Usize 1 ]
+                  [ M.read (| m |); Value.Integer 1 ]
                 |)
               |) in
             let inverse :=
@@ -1882,14 +1885,15 @@ Module ptr.
                           BinOp.Pure.bit_and
                             (M.read (| x |))
                             (BinOp.Panic.sub (|
+                              Integer.Usize,
                               M.read (|
                                 M.get_constant (|
                                   "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
                                 |)
                               |),
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             |)),
-                          Value.Integer Integer.I32 1
+                          Value.Integer 1
                         |)
                       |)
                     |)
@@ -1930,7 +1934,7 @@ Module ptr.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              Value.Integer Integer.Usize 2;
+                              Value.Integer 2;
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::wrapping_mul",
@@ -1993,19 +1997,19 @@ Module ptr.
             (M.alloc (|
               Value.Array
                 [
-                  Value.Integer Integer.U8 1;
-                  Value.Integer Integer.U8 11;
-                  Value.Integer Integer.U8 13;
-                  Value.Integer Integer.U8 7;
-                  Value.Integer Integer.U8 9;
-                  Value.Integer Integer.U8 3;
-                  Value.Integer Integer.U8 5;
-                  Value.Integer Integer.U8 15
+                  Value.Integer 1;
+                  Value.Integer 11;
+                  Value.Integer 13;
+                  Value.Integer 7;
+                  Value.Integer 9;
+                  Value.Integer 3;
+                  Value.Integer 5;
+                  Value.Integer 15
                 ]
             |))).
       
       Definition value_INV_TABLE_MOD : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
     End mod_inv.
   End align_offset.
   

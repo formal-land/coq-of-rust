@@ -10,8 +10,7 @@ Module async_iter.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [ Value.Integer Integer.Usize 0; Value.StructTuple "core::option::Option::None" [] ]))
+            Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
         | _, _ => M.impossible
         end.
       

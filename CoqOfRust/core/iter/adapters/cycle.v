@@ -282,10 +282,7 @@ Module iter.
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ1_0 |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 0 |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ1_1,
@@ -293,26 +290,17 @@ Module iter.
                             0
                           |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ2_0 |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ2_0 |), Value.Integer 0 |) in
                         sz));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ0_0 |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                         M.alloc (|
                           Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple "core::option::Option::None" []
-                            ]
+                            [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -850,9 +838,7 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| n |))
-                                          (Value.Integer Integer.Usize 0)
+                                        BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|

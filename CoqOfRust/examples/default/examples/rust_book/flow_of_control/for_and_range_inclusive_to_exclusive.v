@@ -36,10 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [
-                      ("start", Value.Integer Integer.I32 1);
-                      ("end_", Value.Integer Integer.I32 101)
-                    ]
+                    [ ("start", Value.Integer 1); ("end_", Value.Integer 101) ]
                 ]
               |)
             |),
@@ -86,10 +83,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             (M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Panic.rem (|
+                                                  Integer.I32,
                                                   M.read (| n |),
-                                                  Value.Integer Integer.I32 15
+                                                  Value.Integer 15
                                                 |))
-                                                (Value.Integer Integer.I32 0)
+                                                (Value.Integer 0)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -136,10 +134,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     (M.alloc (|
                                                       BinOp.Pure.eq
                                                         (BinOp.Panic.rem (|
+                                                          Integer.I32,
                                                           M.read (| n |),
-                                                          Value.Integer Integer.I32 3
+                                                          Value.Integer 3
                                                         |))
-                                                        (Value.Integer Integer.I32 0)
+                                                        (Value.Integer 0)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -192,10 +191,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             (M.alloc (|
                                                               BinOp.Pure.eq
                                                                 (BinOp.Panic.rem (|
+                                                                  Integer.I32,
                                                                   M.read (| n |),
-                                                                  Value.Integer Integer.I32 5
+                                                                  Value.Integer 5
                                                                 |))
-                                                                (Value.Integer Integer.I32 0)
+                                                                (Value.Integer 0)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|

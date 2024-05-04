@@ -65,9 +65,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let foo :=
           M.alloc (|
-            Value.StructRecord
-              "polymorphic_associated_function::Foo"
-              [ ("data", Value.Integer Integer.I32 42) ]
+            Value.StructRecord "polymorphic_associated_function::Foo" [ ("data", Value.Integer 42) ]
           |) in
         let bar :=
           M.alloc (|

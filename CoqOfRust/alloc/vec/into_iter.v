@@ -281,7 +281,7 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "cap"
                   |),
-                  Value.Integer Integer.Usize 0
+                  Value.Integer 0
                 |) in
               let _ :=
                 M.write (|
@@ -516,7 +516,7 @@ Module vec.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer Integer.Usize 0);
+                                ("start", Value.Integer 0);
                                 ("end_",
                                   M.call_closure (|
                                     M.get_trait_method (|
@@ -847,7 +847,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -892,7 +892,7 @@ Module vec.
                                           "ptr"
                                         |)
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -1189,7 +1189,8 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| step_size |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| step_size |) |)
+                      ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -1371,8 +1372,7 @@ Module vec.
                                                               Value.StructRecord
                                                                 "core::ops::range::Range"
                                                                 [
-                                                                  ("start",
-                                                                    Value.Integer Integer.Usize 0);
+                                                                  ("start", Value.Integer 0);
                                                                   ("end_", M.read (| len |))
                                                                 ]
                                                             ]
@@ -1540,7 +1540,7 @@ Module vec.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer Integer.Usize 0);
+                                                  ("start", Value.Integer 0);
                                                   ("end_", M.read (| len |))
                                                 ]
                                             ]
@@ -1829,7 +1829,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -1866,7 +1866,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     ]
                                   |)
                                 |) in
@@ -2063,7 +2063,8 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| M.read (| n |), M.read (| step_size |) |) ]
+                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| step_size |) |)
+                      ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -2426,7 +2427,7 @@ Module vec.
                   "new",
                   []
                 |),
-                [ Value.Integer Integer.Usize 1 ]
+                [ Value.Integer 1 ]
               |)
             |))).
       
@@ -2443,7 +2444,7 @@ Module vec.
                   "new",
                   []
                 |),
-                [ Value.Integer Integer.Usize 1 ]
+                [ Value.Integer 1 ]
               |)
             |))).
       

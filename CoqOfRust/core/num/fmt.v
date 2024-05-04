@@ -458,7 +458,7 @@ Module num.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| v |)) (Value.Integer Integer.U16 1000)
+                                    BinOp.Pure.lt (M.read (| v |)) (Value.Integer 1000)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -473,16 +473,14 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt
-                                              (M.read (| v |))
-                                              (Value.Integer Integer.U16 10)
+                                            BinOp.Pure.lt (M.read (| v |)) (Value.Integer 10)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      M.alloc (| Value.Integer Integer.Usize 1 |)));
+                                      M.alloc (| Value.Integer 1 |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
@@ -495,17 +493,15 @@ Module num.
                                                   (M.alloc (|
                                                     BinOp.Pure.lt
                                                       (M.read (| v |))
-                                                      (Value.Integer Integer.U16 100)
+                                                      (Value.Integer 100)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              M.alloc (| Value.Integer Integer.Usize 2 |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.alloc (| Value.Integer Integer.Usize 3 |)))
+                                              M.alloc (| Value.Integer 2 |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 3 |)))
                                         ]
                                       |)))
                                 ]
@@ -520,18 +516,15 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt
-                                              (M.read (| v |))
-                                              (Value.Integer Integer.U16 10000)
+                                            BinOp.Pure.lt (M.read (| v |)) (Value.Integer 10000)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      M.alloc (| Value.Integer Integer.Usize 4 |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 5 |)))
+                                      M.alloc (| Value.Integer 4 |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
                                 ]
                               |)))
                         ]
@@ -841,11 +834,13 @@ Module num.
                                                           M.write (|
                                                             M.read (| c |),
                                                             BinOp.Panic.add (|
+                                                              Integer.U8,
                                                               M.read (| UnsupportedLiteral |),
                                                               M.rust_cast
                                                                 (BinOp.Panic.rem (|
+                                                                  Integer.U16,
                                                                   M.read (| v |),
-                                                                  Value.Integer Integer.U16 10
+                                                                  Value.Integer 10
                                                                 |))
                                                             |)
                                                           |) in
@@ -854,8 +849,9 @@ Module num.
                                                           M.write (|
                                                             β,
                                                             BinOp.Panic.div (|
+                                                              Integer.U16,
                                                               M.read (| β |),
-                                                              Value.Integer Integer.U16 10
+                                                              Value.Integer 10
                                                             |)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)))
@@ -1108,6 +1104,7 @@ Module num.
                                           M.write (|
                                             β,
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| β |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -1439,6 +1436,7 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| β |),
                                                   M.read (| len |)
                                                 |)

@@ -142,7 +142,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                               0
                                             |)
                                           |))
-                                          (Value.Integer Integer.U8 0))
+                                          (Value.Integer 0))
                                         (BinOp.Pure.eq
                                           (M.read (|
                                             M.SubPointer.get_struct_tuple_field (|
@@ -151,7 +151,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                               0
                                             |)
                                           |))
-                                          (Value.Integer Integer.U8 1)))
+                                          (Value.Integer 1)))
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -181,7 +181,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           M.alloc (|
             BinOp.Pure.ne
               (M.read (| M.SubPointer.get_struct_tuple_field (| source, "subtle::Choice", 0 |) |))
-              (Value.Integer Integer.U8 0)
+              (Value.Integer 0)
           |)
         |)))
     | _, _ => M.impossible
@@ -476,7 +476,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_and
-              (Value.Integer Integer.U8 1)
+              (Value.Integer 1)
               (UnOp.Pure.not
                 (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)))
           ]
@@ -534,12 +534,8 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   UnOp.Pure.not
                                     (BinOp.Pure.bit_or
-                                      (BinOp.Pure.eq
-                                        (M.read (| input |))
-                                        (Value.Integer Integer.U8 0))
-                                      (BinOp.Pure.eq
-                                        (M.read (| input |))
-                                        (Value.Integer Integer.U8 1)))
+                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 0))
+                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 1)))
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -705,7 +701,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                     "from",
                                     []
                                   |),
-                                  [ Value.Integer Integer.U8 0 ]
+                                  [ Value.Integer 0 ]
                                 |)
                               |)
                             |)
@@ -714,7 +710,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let x := M.alloc (| Value.Integer Integer.U8 1 |) in
+              let x := M.alloc (| Value.Integer 1 |) in
               let _ :=
                 M.use
                   (M.match_operator (|
@@ -952,7 +948,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                     M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 8, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 8, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -970,7 +966,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                     (M.alloc (|
                       BinOp.Pure.bit_xor
                         (M.read (| y |))
-                        (M.read (| M.use (M.alloc (| Value.Integer Integer.U8 1 |)) |))
+                        (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |))
                     |))
                 |)
               ]
@@ -1066,7 +1062,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                     M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 16, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 16, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1082,7 +1078,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U16 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1176,7 +1172,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                     M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 32, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 32, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1192,7 +1188,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U32 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1286,7 +1282,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                     M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 64, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 64, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1302,7 +1298,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U64 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1397,14 +1393,16 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Panic.sub (|
+                  Integer.Usize,
                   BinOp.Panic.mul (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                       []
                     |),
-                    Value.Integer Integer.Usize 8
+                    Value.Integer 8
                   |),
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 |)
               |)
             |) in
@@ -1421,7 +1419,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.Usize 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1568,6 +1566,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1625,6 +1624,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1671,6 +1671,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1732,6 +1733,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1791,6 +1793,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1839,6 +1842,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1900,6 +1904,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1957,6 +1962,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2003,6 +2009,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2064,6 +2071,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2123,6 +2131,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2171,6 +2180,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2232,6 +2242,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2289,6 +2300,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2335,6 +2347,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2396,6 +2409,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2455,6 +2469,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2503,6 +2518,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2564,6 +2580,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2621,6 +2638,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2667,6 +2685,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2728,6 +2747,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2787,6 +2807,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2835,6 +2856,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -3150,7 +3172,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                               |)
                             ]
                           |))
-                          (Value.Integer Integer.U8 1)
+                          (Value.Integer 1)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -3241,7 +3263,7 @@ Module Impl_subtle_CtOption_T.
                         ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.U8 1 |)
+                    M.alloc (| Value.Integer 1 |)
                   ]
               |),
               [
@@ -3371,7 +3393,7 @@ Module Impl_subtle_CtOption_T.
                         ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.U8 1 |)
+                    M.alloc (| Value.Integer 1 |)
                   ]
               |),
               [
@@ -4126,7 +4148,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4137,9 +4159,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4152,7 +4172,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4172,7 +4195,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4183,9 +4206,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4198,7 +4219,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4225,10 +4249,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               |),
               [
                 M.read (|
-                  M.use
-                    (M.alloc (|
-                      BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U8 1)
-                    |))
+                  M.use (M.alloc (| BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1) |))
                 |)
               ]
             |)
@@ -4328,7 +4349,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4339,9 +4360,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 16)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4354,7 +4373,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4374,7 +4396,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4385,9 +4407,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 16)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4400,7 +4420,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4425,7 +4448,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U16 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))
@@ -4523,7 +4546,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4534,9 +4557,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 32)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4549,7 +4570,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4569,7 +4593,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4580,9 +4604,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 32)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4595,7 +4617,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4620,7 +4645,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U32 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))
@@ -4718,7 +4743,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4729,9 +4754,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 64)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4744,7 +4767,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4764,7 +4790,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4775,9 +4801,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 64)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -4790,7 +4814,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |) |) in
+                          M.write (|
+                            β,
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4815,7 +4842,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U64 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))

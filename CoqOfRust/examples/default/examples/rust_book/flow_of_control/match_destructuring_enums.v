@@ -83,11 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "match_destructuring_enums::Color::RGB"
-              [
-                Value.Integer Integer.U32 122;
-                Value.Integer Integer.U32 17;
-                Value.Integer Integer.U32 40
-              ]
+              [ Value.Integer 122; Value.Integer 17; Value.Integer 40 ]
           |) in
         let _ :=
           let _ :=

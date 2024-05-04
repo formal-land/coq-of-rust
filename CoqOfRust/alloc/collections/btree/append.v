@@ -561,6 +561,7 @@ Module collections.
                                                     let tree_height :=
                                                       M.alloc (|
                                                         BinOp.Panic.sub (|
+                                                          Integer.Usize,
                                                           M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
@@ -579,7 +580,7 @@ Module collections.
                                                             |),
                                                             [ open_node ]
                                                           |),
-                                                          Value.Integer Integer.Usize 1
+                                                          Value.Integer 1
                                                         |)
                                                       |) in
                                                     let right_tree :=
@@ -633,10 +634,7 @@ Module collections.
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
                                                                   [
-                                                                    ("start",
-                                                                      Value.Integer
-                                                                        Integer.Usize
-                                                                        0);
+                                                                    ("start", Value.Integer 0);
                                                                     ("end_",
                                                                       M.read (| tree_height |))
                                                                   ]
@@ -827,8 +825,9 @@ Module collections.
                                             M.write (|
                                               β,
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| β |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))

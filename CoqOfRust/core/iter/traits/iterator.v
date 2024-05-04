@@ -35,9 +35,7 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Tuple
-                [ Value.Integer Integer.Usize 0; Value.StructTuple "core::option::Option::None" []
-                ]))
+              Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
           | _, _ => M.impossible
           end.
         
@@ -61,7 +59,7 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Integer Integer.Usize 0;
+                  Value.Integer 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -79,8 +77,9 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| count |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)))
                                     ]
                                   |)))
@@ -148,10 +147,7 @@ Module iter.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [
-                                    ("start", Value.Integer Integer.Usize 0);
-                                    ("end_", M.read (| n |))
-                                  ]
+                                  [ ("start", Value.Integer 0); ("end_", M.read (| n |)) ]
                               ]
                             |)
                           |),
@@ -245,6 +241,7 @@ Module iter.
                                                                     |),
                                                                     [
                                                                       BinOp.Panic.sub (|
+                                                                        Integer.Usize,
                                                                         M.read (| n |),
                                                                         M.read (| i |)
                                                                       |)
@@ -1035,7 +1032,7 @@ Module iter.
                     ltac:(M.monadic
                       (let predicate := M.alloc (| γ |) in
                       M.read (|
-                        let true_count := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                        let true_count := M.alloc (| Value.Integer 0 |) in
                         let _ :=
                           M.loop (|
                             ltac:(M.monadic
@@ -1121,8 +1118,9 @@ Module iter.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -1990,7 +1988,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Integer Integer.Usize 0;
+                      Value.Integer 0;
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.position", [] |),
                         [ M.read (| predicate |) ]

@@ -729,8 +729,8 @@ Module num.
                       let even :=
                         M.alloc (|
                           BinOp.Pure.eq
-                            (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer Integer.U64 1))
-                            (Value.Integer Integer.U64 0)
+                            (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer 1))
+                            (Value.Integer 0)
                         |) in
                       let decoded :=
                         M.copy (|
@@ -779,8 +779,8 @@ Module num.
                                           "core::num::flt2dec::decoder::Decoded"
                                           [
                                             ("mant", M.read (| mant |));
-                                            ("minus", Value.Integer Integer.U64 1);
-                                            ("plus", Value.Integer Integer.U64 1);
+                                            ("minus", Value.Integer 1);
+                                            ("plus", Value.Integer 1);
                                             ("exp", M.read (| exp |));
                                             ("inclusive", M.read (| even |))
                                           ]
@@ -841,14 +841,15 @@ Module num.
                                                     ("mant",
                                                       BinOp.Panic.shl (|
                                                         M.read (| mant |),
-                                                        Value.Integer Integer.I32 2
+                                                        Value.Integer 2
                                                       |));
-                                                    ("minus", Value.Integer Integer.U64 1);
-                                                    ("plus", Value.Integer Integer.U64 2);
+                                                    ("minus", Value.Integer 1);
+                                                    ("plus", Value.Integer 2);
                                                     ("exp",
                                                       BinOp.Panic.sub (|
+                                                        Integer.I16,
                                                         M.read (| exp |),
-                                                        Value.Integer Integer.I16 2
+                                                        Value.Integer 2
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
@@ -866,14 +867,15 @@ Module num.
                                                     ("mant",
                                                       BinOp.Panic.shl (|
                                                         M.read (| mant |),
-                                                        Value.Integer Integer.I32 1
+                                                        Value.Integer 1
                                                       |));
-                                                    ("minus", Value.Integer Integer.U64 1);
-                                                    ("plus", Value.Integer Integer.U64 1);
+                                                    ("minus", Value.Integer 1);
+                                                    ("plus", Value.Integer 1);
                                                     ("exp",
                                                       BinOp.Panic.sub (|
+                                                        Integer.I16,
                                                         M.read (| exp |),
-                                                        Value.Integer Integer.I16 1
+                                                        Value.Integer 1
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
@@ -887,7 +889,7 @@ Module num.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Pure.lt (M.read (| sign |)) (Value.Integer Integer.I8 0);
+                            BinOp.Pure.lt (M.read (| sign |)) (Value.Integer 0);
                             M.read (| decoded |)
                           ]
                       |)))

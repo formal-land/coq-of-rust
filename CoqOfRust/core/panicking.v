@@ -632,10 +632,10 @@ Module panicking.
                                 []
                               |),
                               [
-                                Value.Integer Integer.Usize 0;
+                                Value.Integer 0;
                                 Value.UnicodeChar 32;
                                 Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer Integer.U32 4;
+                                Value.Integer 4;
                                 Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                 Value.StructTuple "core::fmt::rt::Count::Implied" []
                               ]
@@ -647,10 +647,10 @@ Module panicking.
                                 []
                               |),
                               [
-                                Value.Integer Integer.Usize 1;
+                                Value.Integer 1;
                                 Value.UnicodeChar 32;
                                 Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer Integer.U32 4;
+                                Value.Integer 4;
                                 Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                 Value.StructTuple "core::fmt::rt::Count::Implied" []
                               ]

@@ -2,7 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.result.
-Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.bool.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require Import CoqOfRust.simulations.M.
@@ -13,18 +12,12 @@ Import simulations.bool.Notations.
 (** ** Primitives *)
 
 Module Balance.
-  Inductive t : Set :=
-  | Make (balance : Z).
-
-  Global Instance IsToValue : ToValue t := {
-    Φ := Ty.path "erc721::Balance";
-    φ '(Make x) := Value.Integer Integer.U128 x;
-  }.
+  Definition t : Set := Z.
 End Balance.
 
 Module Impl_Default_for_Balance.
   Global Instance I : core.simulations.default.Default.Trait Balance.t := {
-    default := Balance.Make 0;
+    default := 0;
   }.
 End Impl_Default_for_Balance.
 
@@ -32,17 +25,20 @@ Module AccountId.
   Inductive t : Set :=
   | Make (account_id : Z).
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::AccountId";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ '(Make x) :=
-      Value.StructTuple "erc721::AccountId" [Value.Integer Integer.U128 x];
+      Value.StructTuple "erc721::AccountId" [Value.Integer x];
   }.
 
   Parameter eq : t -> t -> bool.
   Parameter neq : t -> t -> bool.
   Parameter option_eq : option t -> option t -> bool.
   Parameter option_neq : option t -> option t -> bool.
-  Parameter from : list U8.t -> t.
+  Parameter from : list Z -> t.
   Parameter from_zero : t.
 End AccountId.
 
@@ -50,10 +46,13 @@ Module TokenId.
   Inductive t : Set :=
   | Make (account_id : Z).
 
+  Global Instance IsToTy : ToTy t := {
+    Φ := Ty.path "erc721::TokenId";
+  }.
+
   Global Instance IsToValue : ToValue t := {
-    Φ := Ty.path "erc721::AccountId";
     φ '(Make x) :=
-      Value.StructTuple "erc721::TokenId" [Value.Integer Integer.U32 x];
+      Value.StructTuple "erc721::TokenId" [Value.Integer x];
   }.
 End TokenId.
 
@@ -64,8 +63,11 @@ Module Transfer.
     id : TokenId.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Transfer";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc721::Transfer" [
         ("from", φ x.(from));
@@ -82,8 +84,11 @@ Module Approval.
     id : TokenId.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Approval";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc721::Approval" [
         ("from", φ x.(from));
@@ -100,8 +105,11 @@ Module ApprovalForAll.
     approved : bool;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::ApprovalForAll";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc721::ApprovalForAll" [
         ("from", φ x.(owner));
@@ -117,8 +125,11 @@ Module Event.
   | Approval : erc721.Approval.t -> t
   | ApprovalForAll : erc721.ApprovalForAll.t -> t.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Event";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Transfer x => Value.StructTuple "erc721::Event::Transfer" [φ x]
@@ -133,8 +144,11 @@ Module Env.
     caller : AccountId.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Env";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc721::Env" [
         ("caller", φ x.(caller))
@@ -158,8 +172,11 @@ Module Error.
   | CannotFetchValue
   | NotAllowed.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Error";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | NotOwner => Value.StructTuple "erc721::Error::NotOwner" []
@@ -183,12 +200,15 @@ Module Erc721.
   Record t : Set := {
     token_owner : simulations.lib.Mapping.t TokenId.t AccountId.t;
     token_approvals : simulations.lib.Mapping.t TokenId.t AccountId.t;
-    owned_tokens_count : simulations.lib.Mapping.t AccountId.t integer.U32.t;
+    owned_tokens_count : simulations.lib.Mapping.t AccountId.t Z;
     operator_approvals : simulations.lib.Mapping.t (AccountId.t * AccountId.t) unit;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc721::Erc721";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "erc721::Erc721" [
         ("token_owner", φ x.(token_owner));
@@ -204,10 +224,10 @@ End Erc721.
 Definition balance_of_or_zero
     (storage : erc721.Erc721.t)
     (owner : erc721.AccountId.t) :
-    U32.t :=
+    Z :=
   match simulations.lib.Mapping.get owner storage.(erc721.Erc721.owned_tokens_count) with
   | Some count => count
-  | None => U32.Make 0
+  | None => 0
   end.
 
 Definition approved_for_all
@@ -232,7 +252,7 @@ Definition exists_
 Definition balance_of
     (storage : erc721.Erc721.t)
     (owner : erc721.AccountId.t) :
-    U32.t :=
+    Z :=
   balance_of_or_zero storage owner.
 
 Definition get_approved 
@@ -375,8 +395,8 @@ Definition remove_token_from
   else
     match simulations.lib.Mapping.get from owned_tokens_count with
     | None => returnS? (inl erc721.Error.CannotFetchValue)
-    | Some (U32.Make c) =>
-      let count := U32.Make (c - 1) in
+    | Some c =>
+      let count := c - 1 in
       letS? _ := writeS? (
         storage <|
           erc721.Erc721.owned_tokens_count :=
@@ -411,8 +431,8 @@ Definition add_token_to
     else 
       let count :=
         match simulations.lib.Mapping.get to owned_tokens_count with
-        | None => U32.Make 1
-        | Some (U32.Make c) => U32.Make (c + 1)
+        | None => 1
+        | Some c => (c + 1)%Z
         end in
       letS? _ := writeS? (
         storage <|
@@ -506,8 +526,8 @@ Definition burn
     else
       match simulations.lib.Mapping.get owner owned_tokens_count with
       | None => returnS? (inl erc721.Error.CannotFetchValue)
-      | Some (U32.Make c) =>
-        let count := U32.Make (c - 1) in
+      | Some c =>
+        let count := (c - 1)%Z in
         letS? _ := writeS? (
           storage <|
             erc721.Erc721.owned_tokens_count :=
@@ -529,4 +549,3 @@ Definition burn
         returnS? (inr tt)
       end
   end.
-

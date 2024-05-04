@@ -90,7 +90,7 @@ Module iter.
                                     (M.read (|
                                       M.get_constant (| "core::iter::adapters::map_windows::N" |)
                                     |))
-                                    (Value.Integer Integer.Usize 0))
+                                    (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -140,7 +140,7 @@ Module iter.
                                     M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                     []
                                   |))
-                                  (Value.Integer Integer.Usize 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -176,7 +176,7 @@ Module iter.
                                                           "core::iter::adapters::map_windows::N"
                                                         |)
                                                       |);
-                                                      Value.Integer Integer.Usize 2
+                                                      Value.Integer 2
                                                     ]
                                                   |)
                                                 |)
@@ -695,12 +695,13 @@ Module iter.
                                                 [
                                                   M.read (| lo |);
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (|
                                                       M.get_constant (|
                                                         "core::iter::adapters::map_windows::N"
                                                       |)
                                                     |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |)
                                                 ]
                                               |);
@@ -739,14 +740,13 @@ Module iter.
                                                                     [
                                                                       M.read (| hi |);
                                                                       BinOp.Panic.sub (|
+                                                                        Integer.Usize,
                                                                         M.read (|
                                                                           M.get_constant (|
                                                                             "core::iter::adapters::map_windows::N"
                                                                           |)
                                                                         |),
-                                                                        Value.Integer
-                                                                          Integer.Usize
-                                                                          1
+                                                                        Value.Integer 1
                                                                       |)
                                                                     ]
                                                                   |)))
@@ -925,10 +925,7 @@ Module iter.
                         [
                           Value.StructRecord
                             "core::iter::adapters::map_windows::Buffer"
-                            [
-                              ("buffer", M.read (| buffer |));
-                              ("start", Value.Integer Integer.Usize 0)
-                            ]
+                            [ ("buffer", M.read (| buffer |)); ("start", Value.Integer 0) ]
                         ]
                     |)
                   |)))
@@ -1086,6 +1083,7 @@ Module iter.
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
@@ -1100,7 +1098,8 @@ Module iter.
                                                 |)
                                               |))
                                               (BinOp.Panic.mul (|
-                                                Value.Integer Integer.Usize 2,
+                                                Integer.Usize,
+                                                Value.Integer 2,
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
@@ -1216,6 +1215,7 @@ Module iter.
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
@@ -1230,7 +1230,8 @@ Module iter.
                                                 |)
                                               |))
                                               (BinOp.Panic.mul (|
-                                                Value.Integer Integer.Usize 2,
+                                                Integer.Usize,
+                                                Value.Integer 2,
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
@@ -1411,6 +1412,7 @@ Module iter.
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
                                               (BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
@@ -1425,7 +1427,8 @@ Module iter.
                                                 |)
                                               |))
                                               (BinOp.Panic.mul (|
-                                                Value.Integer Integer.Usize 2,
+                                                Integer.Usize,
+                                                Value.Integer 2,
                                                 M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
@@ -1513,6 +1516,7 @@ Module iter.
                                             [
                                               M.read (| buffer_mut_ptr |);
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
@@ -1520,18 +1524,19 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |)
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (|
                                             M.get_constant (|
                                               "core::iter::adapters::map_windows::N"
                                             |)
                                           |),
-                                          Value.Integer Integer.Usize 1
+                                          Value.Integer 1
                                         |)
                                       ]
                                     |)
@@ -1562,12 +1567,13 @@ Module iter.
                                           [
                                             M.read (| buffer_mut_ptr |);
                                             BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
                                               |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |)
                                           ]
                                         |);
@@ -1608,7 +1614,7 @@ Module iter.
                                   "core::iter::adapters::map_windows::Buffer",
                                   "start"
                                 |),
-                                Value.Integer Integer.Usize 0
+                                Value.Integer 0
                               |) in
                             to_drop));
                         fun γ =>
@@ -1641,6 +1647,7 @@ Module iter.
                                           [
                                             M.read (| buffer_mut_ptr |);
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
@@ -1695,7 +1702,7 @@ Module iter.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                               |) in
                             to_drop))
                       ]

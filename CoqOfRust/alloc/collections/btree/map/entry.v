@@ -1447,7 +1447,7 @@ Module collections.
                                     "alloc::collections::btree::map::BTreeMap",
                                     "length"
                                   |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |) in
                               val_ptr));
                           fun γ =>
@@ -1801,8 +1801,9 @@ Module collections.
                                     M.write (|
                                       β,
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| β |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |)
                                     |) in
                                   val_ptr
@@ -2287,7 +2288,7 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                             |) in
                           let _ :=
                             M.match_operator (|

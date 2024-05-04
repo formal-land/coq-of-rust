@@ -137,6 +137,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       BinOp.Panic.sub (|
+        Integer.I32,
         M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
@@ -185,8 +186,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let number_1 := M.alloc (| Value.Integer Integer.I32 3 |) in
-        let number_2 := M.alloc (| Value.Integer Integer.I32 10 |) in
+        let number_1 := M.alloc (| Value.Integer 3 |) in
+        let number_2 := M.alloc (| Value.Integer 10 |) in
         let container :=
           M.alloc (|
             Value.StructTuple

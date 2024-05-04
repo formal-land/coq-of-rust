@@ -3528,7 +3528,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U8 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3558,7 +3558,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U8 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -3614,7 +3614,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U16 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3644,7 +3644,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U16 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -3700,7 +3700,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U32 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3730,7 +3730,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U32 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -3786,7 +3786,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U64 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3816,7 +3816,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U64 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -3872,7 +3872,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U128 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3902,7 +3902,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.U128 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -3958,7 +3958,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.Usize 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -3988,7 +3988,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.Usize 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4044,7 +4044,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I8 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4074,7 +4074,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I8 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4130,7 +4130,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I16 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4160,7 +4160,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I16 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4216,7 +4216,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I32 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4246,7 +4246,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I32 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4302,7 +4302,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I64 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4332,7 +4332,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I64 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4388,7 +4388,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I128 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4418,7 +4418,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.I128 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4474,7 +4474,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.Isize 0
+                Value.Integer 0
               ]
             |))
             (M.call_closure (|
@@ -4504,7 +4504,7 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer Integer.Isize 0
+                Value.Integer 0
               ]
             |))))
       | _, _ => M.impossible
@@ -4671,7 +4671,7 @@ Module option.
               |),
               [
                 M.read (| M.read (| l |) |);
-                Value.Integer Integer.I8 2;
+                Value.Integer 2;
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -4701,7 +4701,7 @@ Module option.
               |),
               [
                 M.read (| M.read (| r |) |);
-                Value.Integer Integer.I8 2;
+                Value.Integer 2;
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -4892,10 +4892,8 @@ Module option.
                     M.alloc (|
                       Value.Tuple
                         [
-                          Value.Integer Integer.Usize 1;
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [ Value.Integer Integer.Usize 1 ]
+                          Value.Integer 1;
+                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
                         ]
                     |)));
                 fun γ =>
@@ -4903,10 +4901,8 @@ Module option.
                     (M.alloc (|
                       Value.Tuple
                         [
-                          Value.Integer Integer.Usize 0;
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [ Value.Integer Integer.Usize 0 ]
+                          Value.Integer 0;
+                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                         ]
                     |)))
               ]

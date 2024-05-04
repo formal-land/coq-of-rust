@@ -427,7 +427,7 @@ Module slice.
                           M.read (| size |)
                         ]
                       |))
-                      (Value.Integer Integer.I32 0)
+                      (Value.Integer 0)
                   |)
                 |)))
             |)))
@@ -553,8 +553,7 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| l |))
-                                ]
+                                [ ("start", Value.Integer 0); ("end_", M.read (| l |)) ]
                             ]
                           |)
                         |),
@@ -1054,8 +1053,7 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| l |))
-                                ]
+                                [ ("start", Value.Integer 0); ("end_", M.read (| l |)) ]
                             ]
                           |)
                         |),
@@ -1209,6 +1207,7 @@ Module slice.
               let diff :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.Isize,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
@@ -1318,9 +1317,7 @@ Module slice.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.eq (M.read (| order |)) (Value.Integer Integer.Isize 0)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.eq (M.read (| order |)) (Value.Integer 0) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ := M.write (| order, M.read (| diff |) |) in
@@ -1331,7 +1328,7 @@ Module slice.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ order; M.alloc (| Value.Integer Integer.Isize 0 |) ]
+                  [ order; M.alloc (| Value.Integer 0 |) ]
                 |)
               |)
             |)))

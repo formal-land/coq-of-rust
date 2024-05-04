@@ -177,7 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let _color_moved := M.copy (| color |) in
-        let count := M.alloc (| Value.Integer Integer.I32 0 |) in
+        let count := M.alloc (| Value.Integer 0 |) in
         let inc :=
           M.alloc (|
             M.closure
@@ -195,7 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 let β := count in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
+                                  BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
                                 |) in
                               let _ :=
                                 let _ :=
@@ -285,7 +285,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 3 ]
+              [ Value.Integer 3 ]
             |)
           |) in
         let consume :=

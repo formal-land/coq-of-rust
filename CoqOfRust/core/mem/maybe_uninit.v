@@ -232,8 +232,8 @@ Module mem.
                         |),
                         [ u ]
                       |);
-                      Value.Integer Integer.U8 0;
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 0;
+                      Value.Integer 1
                     ]
                   |)
                 |) in
@@ -964,7 +964,7 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::write_slice_cloned::Guard"
-                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer Integer.Usize 0) ]
+                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
                 |) in
               let _ :=
                 M.use
@@ -981,7 +981,7 @@ Module mem.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| len |)) ]
+                            [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
                         ]
                       |)
                     |),
@@ -1071,8 +1071,9 @@ Module mem.
                                           M.write (|
                                             β,
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| β |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))

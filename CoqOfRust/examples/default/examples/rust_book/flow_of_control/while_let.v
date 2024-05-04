@@ -29,9 +29,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let optional :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 0 ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ] |) in
         M.loop (|
           ltac:(M.monadic
             (M.match_operator (|
@@ -54,9 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| i |)) (Value.Integer Integer.I32 9)
-                                |)) in
+                                (M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 9) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
@@ -145,8 +141,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::option::Option::Some"
                                   [
                                     BinOp.Panic.add (|
+                                      Integer.I32,
                                       M.read (| i |),
-                                      Value.Integer Integer.I32 1
+                                      Value.Integer 1
                                     |)
                                   ]
                               |) in

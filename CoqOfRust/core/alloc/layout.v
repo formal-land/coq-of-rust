@@ -410,8 +410,10 @@ Module alloc.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             BinOp.Panic.sub (|
+              Integer.Usize,
               M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
               BinOp.Panic.sub (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
@@ -420,7 +422,7 @@ Module alloc.
                   |),
                   [ M.read (| align |) ]
                 |),
-                Value.Integer Integer.Usize 1
+                Value.Integer 1
               |)
             |)))
         | _, _ => M.impossible
@@ -874,13 +876,13 @@ Module alloc.
                           M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
                           [ M.read (| len |); M.read (| align |) ]
                         |);
-                        Value.Integer Integer.Usize 1
+                        Value.Integer 1
                       ]
                     |))
                     (UnOp.Pure.not
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
-                        [ M.read (| align |); Value.Integer Integer.Usize 1 ]
+                        [ M.read (| align |); Value.Integer 1 ]
                       |)))
                 |) in
               M.alloc (|
@@ -939,6 +941,7 @@ Module alloc.
               let new_size :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
@@ -1003,6 +1006,7 @@ Module alloc.
                   let padded_size :=
                     M.alloc (|
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",

@@ -28,7 +28,7 @@ Module vec.
             "alloc::vec::Vec"
             [
               ("buf", M.read (| M.get_constant (| "alloc::raw_vec::NEW" |) |));
-              ("len", Value.Integer Integer.Usize 0)
+              ("len", Value.Integer 0)
             ]))
       | _, _ => M.impossible
       end.
@@ -121,7 +121,7 @@ Module vec.
                   |),
                   [ M.read (| alloc |) ]
                 |));
-              ("len", Value.Integer Integer.Usize 0)
+              ("len", Value.Integer 0)
             ]))
       | _, _ => M.impossible
       end.
@@ -154,7 +154,7 @@ Module vec.
                   |),
                   [ M.read (| capacity |); M.read (| alloc |) ]
                 |));
-              ("len", Value.Integer Integer.Usize 0)
+              ("len", Value.Integer 0)
             ]))
       | _, _ => M.impossible
       end.
@@ -992,6 +992,7 @@ Module vec.
                 let remaining_len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1402,14 +1403,14 @@ Module vec.
                         M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
                         [
                           M.read (| base_ptr |);
-                          BinOp.Panic.sub (| M.read (| len |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
                         ]
                       |));
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
                       [ M.read (| base_ptr |); M.read (| index |) ]
                     |);
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   ]
                 |)
               |) in
@@ -1423,7 +1424,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.sub (| M.read (| len |), Value.Integer Integer.Usize 1 |)
+                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -1529,7 +1530,7 @@ Module vec.
                               "reserve",
                               []
                             |),
-                            [ M.read (| self |); Value.Integer Integer.Usize 1 ]
+                            [ M.read (| self |); Value.Integer 1 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1577,9 +1578,13 @@ Module vec.
                                     "add",
                                     []
                                   |),
-                                  [ M.read (| p |); Value.Integer Integer.Usize 1 ]
+                                  [ M.read (| p |); Value.Integer 1 ]
                                 |);
-                                BinOp.Panic.sub (| M.read (| len |), M.read (| index |) |)
+                                BinOp.Panic.sub (|
+                                  Integer.Usize,
+                                  M.read (| len |),
+                                  M.read (| index |)
+                                |)
                               ]
                             |)
                           |) in
@@ -1638,7 +1643,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.add (| M.read (| len |), Value.Integer Integer.Usize 1 |)
+                    BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -1762,12 +1767,13 @@ Module vec.
                             "add",
                             []
                           |),
-                          [ M.read (| ptr |); Value.Integer Integer.Usize 1 ]
+                          [ M.read (| ptr |); Value.Integer 1 ]
                         |));
                       M.read (| ptr |);
                       BinOp.Panic.sub (|
-                        BinOp.Panic.sub (| M.read (| len |), M.read (| index |) |),
-                        Value.Integer Integer.Usize 1
+                        Integer.Usize,
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| index |) |),
+                        Value.Integer 1
                       |)
                     ]
                   |)
@@ -1783,7 +1789,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.sub (| M.read (| len |), Value.Integer Integer.Usize 1 |)
+                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
                   ]
                 |)
               |) in
@@ -1981,7 +1987,7 @@ Module vec.
                     "set_len",
                     []
                   |),
-                  [ M.read (| self |); Value.Integer Integer.Usize 0 ]
+                  [ M.read (| self |); Value.Integer 0 ]
                 |)
               |) in
             let g :=
@@ -1990,8 +1996,8 @@ Module vec.
                   "alloc::vec::retain_mut::BackshiftOnDrop"
                   [
                     ("v", M.read (| self |));
-                    ("processed_len", Value.Integer Integer.Usize 0);
-                    ("deleted_cnt", Value.Integer Integer.Usize 0);
+                    ("processed_len", Value.Integer 0);
+                    ("deleted_cnt", Value.Integer 0);
                     ("original_len", M.read (| original_len |))
                   ]
               |) in
@@ -2281,9 +2287,7 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (|
-                                BinOp.Pure.le (M.read (| len |)) (Value.Integer Integer.Usize 1)
-                              |)) in
+                              (M.alloc (| BinOp.Pure.le (M.read (| len |)) (Value.Integer 1) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -2292,7 +2296,7 @@ Module vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let first_duplicate_idx := M.alloc (| Value.Integer Integer.Usize 1 |) in
+                let first_duplicate_idx := M.alloc (| Value.Integer 1 |) in
                 let start :=
                   M.alloc (|
                     M.call_closure (|
@@ -2342,10 +2346,7 @@ Module vec.
                                               "wrapping_sub",
                                               []
                                             |),
-                                            [
-                                              M.read (| first_duplicate_idx |);
-                                              Value.Integer Integer.Usize 1
-                                            ]
+                                            [ M.read (| first_duplicate_idx |); Value.Integer 1 ]
                                           |)
                                         ]
                                       |)
@@ -2406,8 +2407,9 @@ Module vec.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -2453,8 +2455,9 @@ Module vec.
                       [
                         ("read",
                           BinOp.Panic.add (|
+                            Integer.Usize,
                             M.read (| first_duplicate_idx |),
-                            Value.Integer Integer.Usize 1
+                            Value.Integer 1
                           |));
                         ("write", M.read (| first_duplicate_idx |));
                         ("vec", M.read (| self |))
@@ -2548,7 +2551,7 @@ Module vec.
                                               "write"
                                             |)
                                           |);
-                                          Value.Integer Integer.Usize 1
+                                          Value.Integer 1
                                         ]
                                       |)
                                     ]
@@ -2597,8 +2600,9 @@ Module vec.
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| β |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       let _ :=
@@ -2642,7 +2646,7 @@ Module vec.
                                               (* MutToConstPointer *)
                                               M.pointer_coercion (M.read (| read_ptr |));
                                               M.read (| write_ptr |);
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             ]
                                           |)
                                         |) in
@@ -2656,8 +2660,9 @@ Module vec.
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| β |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       let _ :=
@@ -2670,8 +2675,9 @@ Module vec.
                                         M.write (|
                                           β,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| β |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -2861,7 +2867,7 @@ Module vec.
                 |) in
               M.write (|
                 β,
-                BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -2983,7 +2989,7 @@ Module vec.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -3032,7 +3038,7 @@ Module vec.
                                 "len"
                               |)
                             |))
-                            (Value.Integer Integer.Usize 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3047,7 +3053,7 @@ Module vec.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -3169,7 +3175,7 @@ Module vec.
                     "set_len",
                     []
                   |),
-                  [ M.read (| other |); Value.Integer Integer.Usize 0 ]
+                  [ M.read (| other |); Value.Integer 0 ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -3258,7 +3264,10 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |) in
-              M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| count |) |) |) in
+              M.write (|
+                β,
+                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| count |) |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -3379,7 +3388,11 @@ Module vec.
                                 M.read (| start |)
                               ]
                             |);
-                            BinOp.Panic.sub (| M.read (| end_ |), M.read (| start |) |)
+                            BinOp.Panic.sub (|
+                              Integer.Usize,
+                              M.read (| end_ |),
+                              M.read (| start |)
+                            |)
                           ]
                         |)
                       |) in
@@ -3388,7 +3401,12 @@ Module vec.
                         "alloc::vec::drain::Drain"
                         [
                           ("tail_start", M.read (| end_ |));
-                          ("tail_len", BinOp.Panic.sub (| M.read (| len |), M.read (| end_ |) |));
+                          ("tail_len",
+                            BinOp.Panic.sub (|
+                              Integer.Usize,
+                              M.read (| len |),
+                              M.read (| end_ |)
+                            |));
                           ("iter",
                             M.call_closure (|
                               M.get_associated_function (|
@@ -3468,7 +3486,7 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |),
-                Value.Integer Integer.Usize 0
+                Value.Integer 0
               |) in
             let _ :=
               M.alloc (|
@@ -3530,7 +3548,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |))
-            (Value.Integer Integer.Usize 0)))
+            (Value.Integer 0)))
       | _, _ => M.impossible
       end.
     
@@ -3636,9 +3654,7 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (|
-                                BinOp.Pure.eq (M.read (| at_ |)) (Value.Integer Integer.Usize 0)
-                              |)) in
+                              (M.alloc (| BinOp.Pure.eq (M.read (| at_ |)) (Value.Integer 0) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -3700,6 +3716,7 @@ Module vec.
                 let other_len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -3890,7 +3907,11 @@ Module vec.
                                   |),
                                   [ M.read (| f |) ]
                                 |);
-                                BinOp.Panic.sub (| M.read (| new_len |), M.read (| len |) |)
+                                BinOp.Panic.sub (|
+                                  Integer.Usize,
+                                  M.read (| new_len |),
+                                  M.read (| len |)
+                                |)
                               ]
                             |)
                           ]
@@ -4051,6 +4072,7 @@ Module vec.
                   ]
                 |));
               BinOp.Panic.sub (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
@@ -4199,6 +4221,7 @@ Module vec.
             let spare_len :=
               M.alloc (|
                 BinOp.Panic.sub (|
+                  Integer.Usize,
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
@@ -4319,7 +4342,11 @@ Module vec.
                         |),
                         [
                           M.read (| self |);
-                          BinOp.Panic.sub (| M.read (| new_len |), M.read (| len |) |);
+                          BinOp.Panic.sub (|
+                            Integer.Usize,
+                            M.read (| new_len |),
+                            M.read (| len |)
+                          |);
                           M.read (| value |)
                         ]
                       |)
@@ -4577,7 +4604,7 @@ Module vec.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
-                          [ ("start", Value.Integer Integer.Usize 1); ("end_", M.read (| n |)) ]
+                          [ ("start", Value.Integer 1); ("end_", M.read (| n |)) ]
                       ]
                     |)
                   |),
@@ -4645,7 +4672,7 @@ Module vec.
                                               "add",
                                               []
                                             |),
-                                            [ M.read (| ptr |); Value.Integer Integer.Usize 1 ]
+                                            [ M.read (| ptr |); Value.Integer 1 ]
                                           |)
                                         |) in
                                       let _ :=
@@ -4656,7 +4683,7 @@ Module vec.
                                               "increment_len",
                                               []
                                             |),
-                                            [ local_len; Value.Integer Integer.Usize 1 ]
+                                            [ local_len; Value.Integer 1 ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -4672,10 +4699,7 @@ Module vec.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.Pure.gt (M.read (| n |)) (Value.Integer Integer.Usize 0)
-                        |)) in
+                      M.use (M.alloc (| BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -4692,7 +4716,7 @@ Module vec.
                             "increment_len",
                             []
                           |),
-                          [ local_len; Value.Integer Integer.Usize 1 ]
+                          [ local_len; Value.Integer 1 ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
@@ -4901,10 +4925,7 @@ Module vec.
                                                       "saturating_add",
                                                       []
                                                     |),
-                                                    [
-                                                      M.read (| lower |);
-                                                      Value.Integer Integer.Usize 1
-                                                    ]
+                                                    [ M.read (| lower |); Value.Integer 1 ]
                                                   |)
                                                 ]
                                               |)
@@ -4953,8 +4974,9 @@ Module vec.
                               [
                                 M.read (| self |);
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| len |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |)
                               ]
                             |)
@@ -5309,10 +5331,7 @@ Module vec.
                                                               "increment_len",
                                                               []
                                                             |),
-                                                            [
-                                                              local_len;
-                                                              Value.Integer Integer.Usize 1
-                                                            ]
+                                                            [ local_len; Value.Integer 1 ]
                                                           |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)
@@ -5454,7 +5473,7 @@ Module vec.
                       "set_len",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.Usize 0 ]
+                    [ M.read (| self |); Value.Integer 0 ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
@@ -5463,8 +5482,8 @@ Module vec.
                 "alloc::vec::extract_if::ExtractIf"
                 [
                   ("vec", M.read (| self |));
-                  ("idx", Value.Integer Integer.Usize 0);
-                  ("del", Value.Integer Integer.Usize 0);
+                  ("idx", Value.Integer 0);
+                  ("del", Value.Integer 0);
                   ("old_len", M.read (| old_len |));
                   ("pred", M.read (| filter |))
                 ]
@@ -5934,8 +5953,9 @@ Module vec.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               |)
                                             |)))
@@ -6086,7 +6106,10 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |) in
-              M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| count |) |) |) in
+              M.write (|
+                β,
+                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| count |) |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -7934,7 +7957,7 @@ Module vec.
                         "set_len",
                         []
                       |),
-                      [ vec; Value.Integer Integer.Usize 0 ]
+                      [ vec; Value.Integer 0 ]
                     |)
                   |) in
                 let array :=

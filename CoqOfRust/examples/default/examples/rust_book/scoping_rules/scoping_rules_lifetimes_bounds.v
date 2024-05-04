@@ -184,7 +184,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 7 |) in
+        let x := M.alloc (| Value.Integer 7 |) in
         let ref_x := M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
         let _ :=
           M.alloc (|

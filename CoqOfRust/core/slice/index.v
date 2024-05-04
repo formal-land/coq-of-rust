@@ -2616,7 +2616,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2656,7 +2656,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2697,7 +2697,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2738,7 +2738,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2778,7 +2778,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2818,7 +2818,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer Integer.Usize 0);
+                    ("start", Value.Integer 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -3801,7 +3801,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3845,7 +3845,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3890,7 +3890,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3935,7 +3935,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3979,7 +3979,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4023,7 +4023,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer Integer.Usize 0;
+                    Value.Integer 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4155,7 +4155,7 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| start |) |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| M.read (| start |) |); Value.Integer 1 ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -4183,7 +4183,7 @@ Module slice.
                             ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in
@@ -4224,7 +4224,7 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| end_ |) |); Value.Integer Integer.Usize 1 ]
+                                [ M.read (| M.read (| end_ |) |); Value.Integer 1 ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -4379,11 +4379,12 @@ Module slice.
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| i |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in
@@ -4403,8 +4404,9 @@ Module slice.
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| i |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |)));
                             fun γ =>
@@ -4517,7 +4519,7 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| start |); Value.Integer Integer.Usize 1 ]
+                                              [ M.read (| start |); Value.Integer 1 ]
                                             |)
                                           ]
                                         |)
@@ -4572,8 +4574,7 @@ Module slice.
                                             val))
                                       ]
                                     |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                               ]
                             |)
                           |) in
@@ -4610,7 +4611,7 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| end_ |); Value.Integer Integer.Usize 1 ]
+                                              [ M.read (| end_ |); Value.Integer 1 ]
                                             |)
                                           ]
                                         |)
@@ -4777,7 +4778,7 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| start |); Value.Integer Integer.Usize 1 ]
+                                        [ M.read (| start |); Value.Integer 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>
@@ -4805,7 +4806,7 @@ Module slice.
                                     ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in
@@ -4837,7 +4838,7 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| end_ |); Value.Integer Integer.Usize 1 ]
+                                        [ M.read (| end_ |); Value.Integer 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>

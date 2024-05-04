@@ -63,6 +63,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 "next"
               |),
               BinOp.Panic.add (|
+                Integer.U32,
                 M.read (| current |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -97,7 +98,7 @@ Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (Value.StructRecord
         "iterators::Fibonacci"
-        [ ("curr", Value.Integer Integer.U32 0); ("next", Value.Integer Integer.U32 1) ]))
+        [ ("curr", Value.Integer 0); ("next", Value.Integer 1) ]))
   | _, _ => M.impossible
   end.
 
@@ -149,7 +150,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
-              [ ("start", Value.Integer Integer.I32 0); ("end_", Value.Integer Integer.I32 3) ]
+              [ ("start", Value.Integer 0); ("end_", Value.Integer 3) ]
           |) in
         let _ :=
           let _ :=
@@ -418,10 +419,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 3)
-                      ]
+                      [ ("start", Value.Integer 0); ("end_", Value.Integer 3) ]
                   ]
                 |)
               |),
@@ -560,7 +558,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (| M.get_function (| "iterators::fibonacci", [] |), [] |);
-                        Value.Integer Integer.Usize 4
+                        Value.Integer 4
                       ]
                     |)
                   ]
@@ -721,10 +719,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_function (| "iterators::fibonacci", [] |),
                               []
                             |);
-                            Value.Integer Integer.Usize 4
+                            Value.Integer 4
                           ]
                         |);
-                        Value.Integer Integer.Usize 4
+                        Value.Integer 4
                       ]
                     |)
                   ]
@@ -822,13 +820,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)) in
         let array :=
           M.alloc (|
-            Value.Array
-              [
-                Value.Integer Integer.U32 1;
-                Value.Integer Integer.U32 3;
-                Value.Integer Integer.U32 3;
-                Value.Integer Integer.U32 7
-              ]
+            Value.Array [ Value.Integer 1; Value.Integer 3; Value.Integer 3; Value.Integer 7 ]
           |) in
         let _ :=
           let _ :=

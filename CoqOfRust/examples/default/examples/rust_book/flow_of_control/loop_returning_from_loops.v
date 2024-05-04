@@ -21,7 +21,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let counter := M.alloc (| Value.Integer Integer.I32 0 |) in
+        let counter := M.alloc (| Value.Integer 0 |) in
         let result :=
           M.copy (|
             M.loop (|
@@ -30,7 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let β := counter in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
+                    BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -40,7 +40,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| counter |)) (Value.Integer Integer.I32 10)
+                              BinOp.Pure.eq (M.read (| counter |)) (Value.Integer 10)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -52,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer Integer.I32 20 |) ] |),
+            M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer 20 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic

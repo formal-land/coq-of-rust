@@ -113,12 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 2;
-                              Value.Integer Integer.I32 3
-                            ]
+                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                         |)
                       ]
                     |)

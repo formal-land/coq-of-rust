@@ -303,7 +303,7 @@ Module iter.
                             [ M.read (| iter |) ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |)))
@@ -358,10 +358,8 @@ Module iter.
                         (M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
+                              Value.Integer 0;
+                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                             ]
                         |)))
                   ]
@@ -812,7 +810,7 @@ Module iter.
                             [ M.read (| iter |) ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |)))

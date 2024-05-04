@@ -316,7 +316,7 @@ Module ops.
             (let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
-              [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| end_ |)) ]))
+              [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]))
         | _, _ => M.impossible
         end.
       
@@ -493,7 +493,7 @@ Module ops.
                   |),
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
-                    [ M.read (| value |); Value.Integer Integer.Usize 1 ]
+                    [ M.read (| value |); Value.Integer 1 ]
                   |)
                 |) in
               value
@@ -591,7 +591,7 @@ Module ops.
                           "end"
                         |)
                       |);
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     ]
                   |)
                 |) in
@@ -872,7 +872,7 @@ Module ops.
                                 |),
                                 [ self ]
                               |))
-                              (Value.Integer Integer.Usize 0)
+                              (Value.Integer 0)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -983,6 +983,7 @@ Module ops.
                       |),
                       [
                         BinOp.Panic.sub (|
+                          Integer.Usize,
                           M.read (| n |),
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1058,7 +1059,7 @@ Module ops.
                                 |),
                                 [ self ]
                               |))
-                              (Value.Integer Integer.Usize 0)
+                              (Value.Integer 0)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1135,6 +1136,7 @@ Module ops.
                       |),
                       [
                         BinOp.Panic.sub (|
+                          Integer.Usize,
                           M.read (| n |),
                           M.call_closure (|
                             M.get_associated_function (|

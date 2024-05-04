@@ -417,7 +417,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let min_precision := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    (let min_precision := M.alloc (| Value.Integer 0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -645,7 +645,7 @@ Module fmt.
                     M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
-                    Value.Tuple [ Value.Integer Integer.I16 0; Value.Integer Integer.I16 0 ];
+                    Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
                     M.read (| upper |);
                     (* Unsize *) M.pointer_coercion buf;
                     (* Unsize *) M.pointer_coercion parts
@@ -747,8 +747,9 @@ Module fmt.
                           M.read (| num |);
                           M.read (| sign |);
                           BinOp.Panic.add (|
+                            Integer.Usize,
                             M.read (| precision |),
-                            Value.Integer Integer.Usize 1
+                            Value.Integer 1
                           |);
                           M.read (| upper |)
                         ]
@@ -902,7 +903,7 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let min_precision := M.alloc (| Value.Integer Integer.Usize 1 |) in
+                            (let min_precision := M.alloc (| Value.Integer 1 |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|

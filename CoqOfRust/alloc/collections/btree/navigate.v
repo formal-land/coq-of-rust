@@ -5364,7 +5364,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let result := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                let result := M.alloc (| Value.Integer 0 |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -5422,6 +5422,7 @@ Module collections.
                                                   M.write (|
                                                     β,
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| β |),
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -5456,6 +5457,7 @@ Module collections.
                                                   M.write (|
                                                     β,
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| β |),
                                                       M.call_closure (|
                                                         M.get_associated_function (|

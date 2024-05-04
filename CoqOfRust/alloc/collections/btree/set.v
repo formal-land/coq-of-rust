@@ -1338,7 +1338,7 @@ Module collections.
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_btree_set_Union_T.
       
       Definition value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -1895,6 +1895,7 @@ Module collections.
                                                               [ M.read (| self |) ]
                                                             |))
                                                             (BinOp.Panic.div (|
+                                                              Integer.Usize,
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -2398,6 +2399,7 @@ Module collections.
                                                               [ M.read (| self |) ]
                                                             |))
                                                             (BinOp.Panic.div (|
+                                                              Integer.Usize,
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -2457,6 +2459,7 @@ Module collections.
                                                               [ M.read (| other |) ]
                                                             |))
                                                             (BinOp.Panic.div (|
+                                                              Integer.Usize,
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -3148,6 +3151,7 @@ Module collections.
                                                         [ self_iter ]
                                                       |))
                                                       (BinOp.Panic.div (|
+                                                        Integer.Usize,
                                                         M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
@@ -4409,7 +4413,7 @@ Module collections.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (Value.Integer Integer.Usize 0)))
+                (Value.Integer 0)))
           | _, _ => M.impossible
           end.
         
@@ -4731,7 +4735,7 @@ Module collections.
                                       (M.read (|
                                         M.get_constant (| "alloc::collections::btree::set::N" |)
                                       |))
-                                      (Value.Integer Integer.Usize 0)
+                                      (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8065,7 +8069,7 @@ Module collections.
                                   |),
                                   [ M.read (| iter |) ]
                                 |);
-                                Value.Integer Integer.Usize 0
+                                Value.Integer 0
                               ]
                           |)))
                     ]
@@ -8386,10 +8390,16 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
+                              Value.Integer 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ BinOp.Panic.add (| M.read (| a_len |), M.read (| b_len |) |) ]
+                                [
+                                  BinOp.Panic.add (|
+                                    Integer.Usize,
+                                    M.read (| a_len |),
+                                    M.read (| b_len |)
+                                  |)
+                                ]
                             ]
                         |)))
                   ]
@@ -9270,7 +9280,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
+                              Value.Integer 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9319,7 +9329,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
+                              Value.Integer 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9350,10 +9360,8 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
+                              Value.Integer 0;
+                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                             ]
                         |)));
                     fun γ =>
@@ -9374,10 +9382,8 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 1;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 1 ]
+                              Value.Integer 1;
+                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
                             ]
                         |)))
                   ]
@@ -9614,7 +9620,13 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ BinOp.Panic.add (| M.read (| a_len |), M.read (| b_len |) |) ]
+                                [
+                                  BinOp.Panic.add (|
+                                    Integer.Usize,
+                                    M.read (| a_len |),
+                                    M.read (| b_len |)
+                                  |)
+                                ]
                             ]
                         |)))
                   ]

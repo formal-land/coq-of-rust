@@ -266,6 +266,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
             BinOp.Panic.add (|
+              Integer.Usize,
               M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   self,

@@ -3150,8 +3150,8 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| Value.Integer 1 |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in
@@ -3421,8 +3421,8 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| Value.Integer 1 |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in
@@ -3693,8 +3693,8 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| Value.Integer 1 |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in

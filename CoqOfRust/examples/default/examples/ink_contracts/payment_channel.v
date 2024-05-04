@@ -726,7 +726,7 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let pub_key := M.alloc (| repeat (Value.Integer Integer.U8 0) 33 |) in
+          let pub_key := M.alloc (| repeat (Value.Integer 0) 33 |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -769,7 +769,7 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let signature_account_id := M.alloc (| repeat (Value.Integer Integer.U8 0) 32 |) in
+          let signature_account_id := M.alloc (| repeat (Value.Integer 0) 32 |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -858,7 +858,7 @@ Module Impl_payment_channel_PaymentChannel.
               |));
             ("recipient", M.read (| recipient |));
             ("expiration", Value.StructTuple "core::option::Option::None" []);
-            ("withdrawn", Value.Integer Integer.U128 0);
+            ("withdrawn", Value.Integer 0);
             ("close_duration", M.read (| close_duration |))
           ]))
     | _, _ => M.impossible
@@ -1093,6 +1093,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   |)
                                 |);
                                 BinOp.Panic.sub (|
+                                  Integer.U128,
                                   M.read (| amount |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -1429,6 +1430,7 @@ Module Impl_payment_channel_PaymentChannel.
               let expiration :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.U64,
                     M.read (| now |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1826,6 +1828,7 @@ Module Impl_payment_channel_PaymentChannel.
               let amount_to_withdraw :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.U128,
                     M.read (| amount |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1845,7 +1848,11 @@ Module Impl_payment_channel_PaymentChannel.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
+                  BinOp.Panic.add (|
+                    Integer.U128,
+                    M.read (| β |),
+                    M.read (| amount_to_withdraw |)
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|

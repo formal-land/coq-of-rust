@@ -75,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 Value.StructRecord
                   "core::ops::range::Range"
-                  [ ("start", Value.Integer Integer.I32 0); ("end_", Value.Integer Integer.I32 10) ]
+                  [ ("start", Value.Integer 0); ("end_", Value.Integer 10) ]
               ]
             |)
           |) in
@@ -148,12 +148,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 2;
-                              Value.Integer Integer.I32 3
-                            ]
+                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                         |)
                       ]
                     |)
@@ -236,7 +231,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 []
               |),
-              [ xs; Value.Integer Integer.I32 4 ]
+              [ xs; Value.Integer 4 ]
             |)
           |) in
         let _ :=
@@ -374,7 +369,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "index",
                                       []
                                     |),
-                                    [ xs; Value.Integer Integer.Usize 1 ]
+                                    [ xs; Value.Integer 1 ]
                                   |)
                                 ]
                               |)
@@ -811,8 +806,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.write (|
                                       β,
                                       BinOp.Panic.mul (|
+                                        Integer.I32,
                                         M.read (| β |),
-                                        Value.Integer Integer.I32 3
+                                        Value.Integer 3
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))

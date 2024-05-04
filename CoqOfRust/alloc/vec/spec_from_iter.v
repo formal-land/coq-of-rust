@@ -140,6 +140,7 @@ Module vec.
                                           [ iterator ]
                                         |))
                                         (BinOp.Panic.div (|
+                                          Integer.Usize,
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               iterator,
@@ -147,7 +148,7 @@ Module vec.
                                               "cap"
                                             |)
                                           |),
-                                          Value.Integer Integer.Usize 2
+                                          Value.Integer 2
                                         |))))
                                   |)
                                 |)) in

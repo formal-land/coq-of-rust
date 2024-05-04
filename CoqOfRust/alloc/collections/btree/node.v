@@ -4,19 +4,20 @@ Require Import CoqOfRust.CoqOfRust.
 Module collections.
   Module btree.
     Module node.
-      Definition value_B : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 6 |))).
+      Definition value_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 6 |))).
       
       Definition value_CAPACITY : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
+                Integer.Usize,
                 BinOp.Panic.mul (|
-                  Value.Integer Integer.Usize 2,
+                  Integer.Usize,
+                  Value.Integer 2,
                   M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |)
                 |),
-                Value.Integer Integer.Usize 1
+                Value.Integer 1
               |)
             |))).
       
@@ -25,8 +26,9 @@ Module collections.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
+                Integer.Usize,
                 M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
-                Value.Integer Integer.Usize 1
+                Value.Integer 1
               |)
             |))).
       
@@ -35,8 +37,9 @@ Module collections.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
+                Integer.Usize,
                 M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
-                Value.Integer Integer.Usize 1
+                Value.Integer 1
               |)
             |))).
       
@@ -45,8 +48,9 @@ Module collections.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
+                Integer.Usize,
                 M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
-                Value.Integer Integer.Usize 1
+                Value.Integer 1
               |)
             |))).
       
@@ -150,7 +154,7 @@ Module collections.
                           "alloc::collections::btree::node::LeafNode",
                           "len"
                         |);
-                        Value.Integer Integer.U16 0
+                        Value.Integer 0
                       ]
                     |)
                   |) in
@@ -608,7 +612,7 @@ Module collections.
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
                 [
-                  ("height", Value.Integer Integer.Usize 0);
+                  ("height", Value.Integer 0);
                   ("node",
                     M.call_closure (|
                       M.get_trait_method (|
@@ -719,7 +723,7 @@ Module collections.
                             "alloc::collections::btree::node::InternalNode",
                             "edges"
                           |),
-                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                          M.alloc (| Value.Integer 0 |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -748,6 +752,7 @@ Module collections.
                     [
                       M.read (| new_node |);
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             child,
@@ -755,7 +760,7 @@ Module collections.
                             "height"
                           |)
                         |),
-                        Value.Integer Integer.Usize 1
+                        Value.Integer 1
                       |)
                     ]
                   |)
@@ -807,9 +812,7 @@ Module collections.
                                       M.use
                                         (M.alloc (|
                                           UnOp.Pure.not
-                                            (BinOp.Pure.gt
-                                              (M.read (| height |))
-                                              (Value.Integer Integer.Usize 0))
+                                            (BinOp.Pure.gt (M.read (| height |)) (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -985,9 +988,7 @@ Module collections.
                                       M.use
                                         (M.alloc (|
                                           UnOp.Pure.not
-                                            (BinOp.Pure.gt
-                                              (M.read (| height |))
-                                              (Value.Integer Integer.Usize 0))
+                                            (BinOp.Pure.gt (M.read (| height |)) (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1564,7 +1565,7 @@ Module collections.
                             "new",
                             []
                           |),
-                          [ Value.Integer Integer.Usize 0; M.read (| len |) ]
+                          [ Value.Integer 0; M.read (| len |) ]
                         |)
                       ]
                     |)
@@ -1625,6 +1626,7 @@ Module collections.
                                       |)
                                     |))
                                     (BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1632,7 +1634,7 @@ Module collections.
                                           "height"
                                         |)
                                       |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)))
                               |)) in
                           let _ :=
@@ -1718,7 +1720,7 @@ Module collections.
                   let β := M.read (| len |) in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U16 1 |)
+                    BinOp.Panic.add (| Integer.U16, M.read (| β |), Value.Integer 1 |)
                   |) in
                 let _ :=
                   M.alloc (|
@@ -1829,7 +1831,7 @@ Module collections.
                           |),
                           [
                             M.read (| self |);
-                            BinOp.Panic.add (| M.read (| idx |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.add (| Integer.Usize, M.read (| idx |), Value.Integer 1 |)
                           ]
                         |);
                         M.read (|
@@ -1897,7 +1899,7 @@ Module collections.
                               |),
                               [ M.read (| self |) ]
                             |);
-                            BinOp.Panic.add (| M.read (| idx |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.add (| Integer.Usize, M.read (| idx |), Value.Integer 1 |)
                           ]
                         |)
                       ]
@@ -2272,6 +2274,7 @@ Module collections.
                                                   [
                                                     M.read (| M.read (| parent |) |);
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           self,
@@ -2279,7 +2282,7 @@ Module collections.
                                                           "height"
                                                         |)
                                                       |),
-                                                      Value.Integer Integer.Usize 1
+                                                      Value.Integer 1
                                                     |)
                                                   ]
                                                 |));
@@ -2363,7 +2366,7 @@ Module collections.
                   "new_edge",
                   []
                 |),
-                [ M.read (| self |); Value.Integer Integer.Usize 0 ]
+                [ M.read (| self |); Value.Integer 0 ]
               |)))
           | _, _ => M.impossible
           end.
@@ -2465,8 +2468,7 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.gt (M.read (| len |)) (Value.Integer Integer.Usize 0))
+                                UnOp.Pure.not (BinOp.Pure.gt (M.read (| len |)) (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2495,7 +2497,7 @@ Module collections.
                       "new_kv",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.Usize 0 ]
+                    [ M.read (| self |); Value.Integer 0 ]
                   |)
                 |)
               |)))
@@ -2545,8 +2547,7 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.gt (M.read (| len |)) (Value.Integer Integer.Usize 0))
+                                UnOp.Pure.not (BinOp.Pure.gt (M.read (| len |)) (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2577,7 +2578,7 @@ Module collections.
                     |),
                     [
                       M.read (| self |);
-                      BinOp.Panic.sub (| M.read (| len |), Value.Integer Integer.Usize 1 |)
+                      BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
                     ]
                   |)
                 |)
@@ -3067,9 +3068,7 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| height |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.gt (M.read (| height |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3779,7 +3778,7 @@ Module collections.
                                                   "height"
                                                 |)
                                               |))
-                                              (Value.Integer Integer.Usize 0))
+                                              (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3876,7 +3875,7 @@ Module collections.
                                                   "height"
                                                 |)
                                               |))
-                                              (Value.Integer Integer.Usize 0))
+                                              (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4668,7 +4667,7 @@ Module collections.
                                         "height"
                                       |)
                                     |))
-                                    (Value.Integer Integer.Usize 0))
+                                    (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4773,7 +4772,7 @@ Module collections.
                             "alloc::collections::btree::node::InternalNode",
                             "edges"
                           |),
-                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                          M.alloc (| Value.Integer 0 |)
                         |)
                       ]
                     |)
@@ -4787,7 +4786,7 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                    BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                   |) in
                 let _ :=
                   M.alloc (|
@@ -5075,7 +5074,7 @@ Module collections.
                   let β := M.read (| len |) in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U16 1 |)
+                    BinOp.Panic.add (| Integer.U16, M.read (| β |), Value.Integer 1 |)
                   |) in
                 M.alloc (|
                   M.read (|
@@ -5250,7 +5249,7 @@ Module collections.
                                     "height"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5625,6 +5624,7 @@ Module collections.
                     |)
                   |);
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -5632,7 +5632,7 @@ Module collections.
                         "idx"
                       |)
                     |),
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   |)
                 ]
               |)))
@@ -6157,7 +6157,7 @@ Module collections.
                                     "idx"
                                   |)
                                 |))
-                                (Value.Integer Integer.Usize 0)
+                                (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6187,6 +6187,7 @@ Module collections.
                                     |)
                                   |);
                                   BinOp.Panic.sub (|
+                                    Integer.Usize,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         self,
@@ -6194,7 +6195,7 @@ Module collections.
                                         "idx"
                                       |)
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 ]
                               |)
@@ -6426,12 +6427,13 @@ Module collections.
                         Value.Tuple
                           [
                             BinOp.Panic.sub (|
+                              Integer.Usize,
                               M.read (|
                                 M.get_constant (|
                                   "alloc::collections::btree::node::KV_IDX_CENTER"
                                 |)
                               |),
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Left"
@@ -6441,10 +6443,7 @@ Module collections.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.Usize 5
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -6459,10 +6458,7 @@ Module collections.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.Usize 6
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -6471,7 +6467,7 @@ Module collections.
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
-                              [ Value.Integer Integer.Usize 0 ]
+                              [ Value.Integer 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -6480,28 +6476,32 @@ Module collections.
                         Value.Tuple
                           [
                             BinOp.Panic.add (|
+                              Integer.Usize,
                               M.read (|
                                 M.get_constant (|
                                   "alloc::collections::btree::node::KV_IDX_CENTER"
                                 |)
                               |),
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
                               [
                                 BinOp.Panic.sub (|
+                                  Integer.Usize,
                                   M.read (| edge_idx |),
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (|
                                         M.get_constant (|
                                           "alloc::collections::btree::node::KV_IDX_CENTER"
                                         |)
                                       |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |)
                               ]
@@ -6634,6 +6634,7 @@ Module collections.
                 let new_len :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -6655,7 +6656,7 @@ Module collections.
                           |)
                         ]
                       |),
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     |)
                   |) in
                 let _ :=
@@ -7935,6 +7936,7 @@ Module collections.
                                                 |)
                                               |))
                                               (BinOp.Panic.sub (|
+                                                Integer.Usize,
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -7946,7 +7948,7 @@ Module collections.
                                                     "height"
                                                   |)
                                                 |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |)))
                                         |)) in
                                     let _ :=
@@ -7977,6 +7979,7 @@ Module collections.
                 let new_len :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -7998,7 +8001,7 @@ Module collections.
                           |)
                         ]
                       |),
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     |)
                   |) in
                 let _ :=
@@ -8148,13 +8151,15 @@ Module collections.
                               [
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| new_len |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |))
                               ]
                           ]
                         |);
                         BinOp.Panic.add (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -8162,7 +8167,7 @@ Module collections.
                               "idx"
                             |)
                           |),
-                          Value.Integer Integer.Usize 1
+                          Value.Integer 1
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -8225,6 +8230,7 @@ Module collections.
                           [
                             ("start",
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -8232,12 +8238,13 @@ Module collections.
                                     "idx"
                                   |)
                                 |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |));
                             ("end_",
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (| new_len |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |))
                           ]
                       ]
@@ -8312,6 +8319,7 @@ Module collections.
                                       |)
                                     |))
                                     (BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
@@ -8323,7 +8331,7 @@ Module collections.
                                           "height"
                                         |)
                                       |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)))
                               |)) in
                           let _ :=
@@ -8800,6 +8808,7 @@ Module collections.
                       ("node", M.read (| node |));
                       ("height",
                         BinOp.Panic.sub (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.SubPointer.get_struct_record_field (|
@@ -8811,7 +8820,7 @@ Module collections.
                               "height"
                             |)
                           |),
-                          Value.Integer Integer.Usize 1
+                          Value.Integer 1
                         |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -9924,7 +9933,9 @@ Module collections.
                 let new_len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       BinOp.Panic.sub (|
+                        Integer.Usize,
                         M.read (| old_len |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -9934,7 +9945,7 @@ Module collections.
                           |)
                         |)
                       |),
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     |)
                   |) in
                 let _ :=
@@ -10066,6 +10077,7 @@ Module collections.
                               [
                                 ("start",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -10073,7 +10085,7 @@ Module collections.
                                         "idx"
                                       |)
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |));
                                 ("end_", M.read (| old_len |))
                               ]
@@ -10137,6 +10149,7 @@ Module collections.
                               [
                                 ("start",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -10144,7 +10157,7 @@ Module collections.
                                         "idx"
                                       |)
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |));
                                 ("end_", M.read (| old_len |))
                               ]
@@ -10943,7 +10956,7 @@ Module collections.
                       ]
                     |),
                     M.rust_cast
-                      (BinOp.Panic.sub (| M.read (| old_len |), Value.Integer Integer.Usize 1 |))
+                      (BinOp.Panic.sub (| Integer.Usize, M.read (| old_len |), Value.Integer 1 |))
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -11173,6 +11186,7 @@ Module collections.
                               [
                                 ("start",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         self,
@@ -11180,12 +11194,13 @@ Module collections.
                                         "idx"
                                       |)
                                     |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |));
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| old_len |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |))
                               ]
                           ]
@@ -11223,8 +11238,9 @@ Module collections.
                               [
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| new_len |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |))
                               ]
                           ]
@@ -11639,7 +11655,9 @@ Module collections.
               (let self := M.alloc (| self |) in
               BinOp.Pure.le
                 (BinOp.Panic.add (|
+                  Integer.Usize,
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
@@ -11661,7 +11679,7 @@ Module collections.
                         |)
                       ]
                     |),
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   |),
                   M.call_closure (|
                     M.get_associated_function (|
@@ -11870,9 +11888,11 @@ Module collections.
                         let new_left_len :=
                           M.alloc (|
                             BinOp.Panic.add (|
+                              Integer.Usize,
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (| old_left_len |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |),
                               M.read (| right_len |)
                             |)
@@ -12087,8 +12107,9 @@ Module collections.
                                         [
                                           ("start",
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_left_len |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |));
                                           ("end_", M.read (| new_left_len |))
                                         ]
@@ -12247,8 +12268,9 @@ Module collections.
                                         [
                                           ("start",
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_left_len |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |));
                                           ("end_", M.read (| new_left_len |))
                                         ]
@@ -12314,15 +12336,17 @@ Module collections.
                                         [
                                           ("end_",
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_parent_len |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |))
                                         ]
                                     ]
                                   |);
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| parent_idx |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 ]
                               |)
@@ -12350,8 +12374,9 @@ Module collections.
                                     [
                                       ("start",
                                         BinOp.Panic.add (|
+                                          Integer.Usize,
                                           M.read (| parent_idx |),
-                                          Value.Integer Integer.Usize 1
+                                          Value.Integer 1
                                         |));
                                       ("end_", M.read (| old_parent_len |))
                                     ]
@@ -12377,7 +12402,7 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.U16 1 |)
+                              BinOp.Panic.sub (| Integer.U16, M.read (| β |), Value.Integer 1 |)
                             |) in
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -12395,7 +12420,7 @@ Module collections.
                                               "height"
                                             |)
                                           |))
-                                          (Value.Integer Integer.Usize 1)
+                                          (Value.Integer 1)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -12520,8 +12545,9 @@ Module collections.
                                                 [
                                                   ("end_",
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| right_len |),
-                                                      Value.Integer Integer.Usize 1
+                                                      Value.Integer 1
                                                     |))
                                                 ]
                                             ]
@@ -12569,13 +12595,15 @@ Module collections.
                                                 [
                                                   ("start",
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| old_left_len |),
-                                                      Value.Integer Integer.Usize 1
+                                                      Value.Integer 1
                                                     |));
                                                   ("end_",
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| new_left_len |),
-                                                      Value.Integer Integer.Usize 1
+                                                      Value.Integer 1
                                                     |))
                                                 ]
                                             ]
@@ -12611,13 +12639,15 @@ Module collections.
                                             [
                                               ("start",
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| old_left_len |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |));
                                               ("end_",
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| new_left_len |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |))
                                             ]
                                         ]
@@ -13154,9 +13184,11 @@ Module collections.
                             let idx := M.copy (| γ0_0 |) in
                             M.alloc (|
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| old_left_len |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |),
                                 M.read (| idx |)
                               |)
@@ -13224,7 +13256,7 @@ Module collections.
                         "bulk_steal_left",
                         []
                       |),
-                      [ self; Value.Integer Integer.Usize 1 ]
+                      [ self; Value.Integer 1 ]
                     |)
                   |) in
                 M.alloc (|
@@ -13255,7 +13287,8 @@ Module collections.
                         |)
                       |);
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 1,
+                        Integer.Usize,
+                        Value.Integer 1,
                         M.read (| track_right_edge_idx |)
                       |)
                     ]
@@ -13296,7 +13329,7 @@ Module collections.
                         "bulk_steal_right",
                         []
                       |),
-                      [ self; Value.Integer Integer.Usize 1 ]
+                      [ self; Value.Integer 1 ]
                     |)
                   |) in
                 M.alloc (|
@@ -13418,10 +13451,7 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.gt
-                                    (M.read (| count |))
-                                    (Value.Integer Integer.Usize 0))
+                                UnOp.Pure.not (BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13500,6 +13530,7 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.le
                                     (BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| old_right_len |),
                                       M.read (| count |)
                                     |))
@@ -13558,11 +13589,19 @@ Module collections.
                   |) in
                 let new_left_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (| M.read (| old_left_len |), M.read (| count |) |)
+                    BinOp.Panic.sub (|
+                      Integer.Usize,
+                      M.read (| old_left_len |),
+                      M.read (| count |)
+                    |)
                   |) in
                 let new_right_len :=
                   M.alloc (|
-                    BinOp.Panic.add (| M.read (| old_right_len |), M.read (| count |) |)
+                    BinOp.Panic.add (|
+                      Integer.Usize,
+                      M.read (| old_right_len |),
+                      M.read (| count |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -13707,8 +13746,9 @@ Module collections.
                                 [
                                   ("start",
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| new_left_len |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |));
                                   ("end_", M.read (| old_left_len |))
                                 ]
@@ -13740,8 +13780,9 @@ Module collections.
                                 [
                                   ("end_",
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| count |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |))
                                 ]
                             ]
@@ -13783,8 +13824,9 @@ Module collections.
                                 [
                                   ("start",
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| new_left_len |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |));
                                   ("end_", M.read (| old_left_len |))
                                 ]
@@ -13816,8 +13858,9 @@ Module collections.
                                 [
                                   ("end_",
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| count |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |))
                                 ]
                             ]
@@ -13954,8 +13997,9 @@ Module collections.
                                     [
                                       M.read (| right_node |);
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| count |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |)
                                     ]
                                   |);
@@ -13994,8 +14038,9 @@ Module collections.
                                     [
                                       M.read (| right_node |);
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| count |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |)
                                     ]
                                   |);
@@ -14151,8 +14196,9 @@ Module collections.
                                       [
                                         ("end_",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| new_right_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |))
                                       ]
                                   ]
@@ -14217,13 +14263,15 @@ Module collections.
                                       [
                                         ("start",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| new_left_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |));
                                         ("end_",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| old_left_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |))
                                       ]
                                   ]
@@ -14291,11 +14339,12 @@ Module collections.
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
-                                    ("start", Value.Integer Integer.Usize 0);
+                                    ("start", Value.Integer 0);
                                     ("end_",
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| new_right_len |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |))
                                   ]
                               ]
@@ -14421,10 +14470,7 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.gt
-                                    (M.read (| count |))
-                                    (Value.Integer Integer.Usize 0))
+                                UnOp.Pure.not (BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -14503,6 +14549,7 @@ Module collections.
                                 UnOp.Pure.not
                                   (BinOp.Pure.le
                                     (BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| old_left_len |),
                                       M.read (| count |)
                                     |))
@@ -14561,11 +14608,19 @@ Module collections.
                   |) in
                 let new_left_len :=
                   M.alloc (|
-                    BinOp.Panic.add (| M.read (| old_left_len |), M.read (| count |) |)
+                    BinOp.Panic.add (|
+                      Integer.Usize,
+                      M.read (| old_left_len |),
+                      M.read (| count |)
+                    |)
                   |) in
                 let new_right_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (| M.read (| old_right_len |), M.read (| count |) |)
+                    BinOp.Panic.sub (|
+                      Integer.Usize,
+                      M.read (| old_right_len |),
+                      M.read (| count |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -14634,8 +14689,9 @@ Module collections.
                             [
                               M.read (| right_node |);
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.read (| count |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |)
                             ]
                           |)
@@ -14670,8 +14726,9 @@ Module collections.
                             [
                               M.read (| right_node |);
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.read (| count |),
-                                Value.Integer Integer.Usize 1
+                                Value.Integer 1
                               |)
                             ]
                           |)
@@ -14824,8 +14881,9 @@ Module collections.
                                         [
                                           ("end_",
                                             BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.read (| count |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |))
                                         ]
                                     ]
@@ -14862,8 +14920,9 @@ Module collections.
                                         [
                                           ("start",
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_left_len |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |));
                                           ("end_", M.read (| new_left_len |))
                                         ]
@@ -14912,8 +14971,9 @@ Module collections.
                                         [
                                           ("end_",
                                             BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.read (| count |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |))
                                         ]
                                     ]
@@ -14950,8 +15010,9 @@ Module collections.
                                         [
                                           ("start",
                                             BinOp.Panic.add (|
+                                              Integer.Usize,
                                               M.read (| old_left_len |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |));
                                           ("end_", M.read (| new_left_len |))
                                         ]
@@ -15236,13 +15297,15 @@ Module collections.
                                       [
                                         ("start",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| old_left_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |));
                                         ("end_",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| new_left_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |))
                                       ]
                                   ]
@@ -15306,8 +15369,9 @@ Module collections.
                                       [
                                         ("end_",
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| old_right_len |),
-                                            Value.Integer Integer.Usize 1
+                                            Value.Integer 1
                                           |))
                                       ]
                                   ]
@@ -15338,13 +15402,15 @@ Module collections.
                                   [
                                     ("start",
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| old_left_len |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |));
                                     ("end_",
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| new_left_len |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |))
                                   ]
                               ]
@@ -15370,11 +15436,12 @@ Module collections.
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
-                                    ("start", Value.Integer Integer.Usize 0);
+                                    ("start", Value.Integer 0);
                                     ("end_",
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| new_right_len |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |))
                                   ]
                               ]
@@ -15959,7 +16026,11 @@ Module collections.
                   |) in
                 let new_right_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (| M.read (| old_left_len |), M.read (| new_left_len |) |)
+                    BinOp.Panic.sub (|
+                      Integer.Usize,
+                      M.read (| old_left_len |),
+                      M.read (| new_left_len |)
+                    |)
                   |) in
                 let right_node :=
                   M.alloc (|
@@ -16006,7 +16077,7 @@ Module collections.
                                       |),
                                       [ right_node ]
                                     |))
-                                    (Value.Integer Integer.Usize 0))
+                                    (Value.Integer 0))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16077,9 +16148,7 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| new_right_len |))
-                                (Value.Integer Integer.Usize 0)
+                              BinOp.Pure.gt (M.read (| new_right_len |)) (Value.Integer 0)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16395,13 +16464,15 @@ Module collections.
                                               [
                                                 ("start",
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| new_left_len |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |));
                                                 ("end_",
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| old_left_len |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |))
                                               ]
                                           ]
@@ -16446,11 +16517,12 @@ Module collections.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer Integer.Usize 1);
+                                                ("start", Value.Integer 1);
                                                 ("end_",
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| new_right_len |),
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   |))
                                               ]
                                           ]
@@ -16483,11 +16555,12 @@ Module collections.
                                         Value.StructRecord
                                           "core::ops::range::Range"
                                           [
-                                            ("start", Value.Integer Integer.Usize 1);
+                                            ("start", Value.Integer 1);
                                             ("end_",
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| new_right_len |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |))
                                           ]
                                       ]
@@ -17024,8 +17097,9 @@ Module collections.
                               BinOp.Pure.gt
                                 (M.read (| len |))
                                 (BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| idx |),
-                                  Value.Integer Integer.Usize 1
+                                  Value.Integer 1
                                 |))
                             |)) in
                         let _ :=
@@ -17069,14 +17143,20 @@ Module collections.
                                   [
                                     M.read (| slice_ptr |);
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| idx |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   ]
                                 |);
                                 BinOp.Panic.sub (|
-                                  BinOp.Panic.sub (| M.read (| len |), M.read (| idx |) |),
-                                  Value.Integer Integer.Usize 1
+                                  Integer.Usize,
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| len |),
+                                    M.read (| idx |)
+                                  |),
+                                  Value.Integer 1
                                 |)
                               ]
                             |)
@@ -17241,7 +17321,7 @@ Module collections.
                           |),
                           [
                             M.read (| slice_ptr |);
-                            BinOp.Panic.add (| M.read (| idx |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.add (| Integer.Usize, M.read (| idx |), Value.Integer 1 |)
                           ]
                         |));
                       M.call_closure (|
@@ -17255,8 +17335,9 @@ Module collections.
                         [ M.read (| slice_ptr |); M.read (| idx |) ]
                       |);
                       BinOp.Panic.sub (|
-                        BinOp.Panic.sub (| M.read (| len |), M.read (| idx |) |),
-                        Value.Integer Integer.Usize 1
+                        Integer.Usize,
+                        BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| idx |) |),
+                        Value.Integer 1
                       |)
                     ]
                   |)
@@ -17316,6 +17397,7 @@ Module collections.
                         |));
                       M.read (| slice_ptr |);
                       BinOp.Panic.sub (|
+                        Integer.Usize,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -17384,6 +17466,7 @@ Module collections.
                         [ M.read (| slice_ptr |); M.read (| distance |) ]
                       |);
                       BinOp.Panic.sub (|
+                        Integer.Usize,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply

@@ -211,9 +211,7 @@ Module iter.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.eq
-                                                    (M.read (| n |))
-                                                    (Value.Integer Integer.Usize 0)
+                                                  BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -239,8 +237,9 @@ Module iter.
                                     M.write (|
                                       β,
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| β |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -548,9 +547,9 @@ Module iter.
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
-                  ("index", Value.Integer Integer.Usize 0);
-                  ("len", Value.Integer Integer.Usize 0);
-                  ("a_len", Value.Integer Integer.Usize 0)
+                  ("index", Value.Integer 0);
+                  ("len", Value.Integer 0);
+                  ("a_len", Value.Integer 0)
                 ]))
           | _, _ => M.impossible
           end.
@@ -883,9 +882,10 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer Integer.Usize 0);
+                                                ("start", Value.Integer 0);
                                                 ("end_",
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| a_sz |),
                                                     M.read (| b_sz |)
                                                   |))
@@ -976,9 +976,10 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer Integer.Usize 0);
+                                                ("start", Value.Integer 0);
                                                 ("end_",
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| b_sz |),
                                                     M.read (| a_sz |)
                                                   |))
@@ -1441,9 +1442,9 @@ Module iter.
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
-                  ("index", Value.Integer Integer.Usize 0);
-                  ("len", Value.Integer Integer.Usize 0);
-                  ("a_len", Value.Integer Integer.Usize 0)
+                  ("index", Value.Integer 0);
+                  ("len", Value.Integer 0);
+                  ("a_len", Value.Integer 0)
                 ]))
           | _, _ => M.impossible
           end.
@@ -1776,9 +1777,10 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer Integer.Usize 0);
+                                                ("start", Value.Integer 0);
                                                 ("end_",
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| a_sz |),
                                                     M.read (| b_sz |)
                                                   |))
@@ -1869,9 +1871,10 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer Integer.Usize 0);
+                                                ("start", Value.Integer 0);
                                                 ("end_",
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| b_sz |),
                                                     M.read (| a_sz |)
                                                   |))
@@ -2115,6 +2118,7 @@ Module iter.
                 let idx :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -2229,8 +2233,7 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| len |))
-                              ]
+                              [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
                           ]
                         |)
                       |),
@@ -2397,7 +2400,7 @@ Module iter.
                     [
                       ("a", M.read (| a |));
                       ("b", M.read (| b |));
-                      ("index", Value.Integer Integer.Usize 0);
+                      ("index", Value.Integer 0);
                       ("len", M.read (| len |));
                       ("a_len", M.read (| a_len |))
                     ]
@@ -2483,7 +2486,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2585,8 +2588,9 @@ Module iter.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 let _ :=
@@ -2599,8 +2603,9 @@ Module iter.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |) in
                                 let _ :=
@@ -2653,6 +2658,7 @@ Module iter.
                 let len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -2723,6 +2729,7 @@ Module iter.
                       [
                         M.read (| n |);
                         BinOp.Panic.sub (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -2744,6 +2751,7 @@ Module iter.
                 let end_ :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -2798,8 +2806,9 @@ Module iter.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |) in
                               let _ :=
@@ -2904,7 +2913,10 @@ Module iter.
                       "super_nth",
                       []
                     |),
-                    [ M.read (| self |); BinOp.Panic.sub (| M.read (| n |), M.read (| delta |) |) ]
+                    [
+                      M.read (| self |);
+                      BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| delta |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -3112,10 +3124,10 @@ Module iter.
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
                                                           [
-                                                            ("start",
-                                                              Value.Integer Integer.Usize 0);
+                                                            ("start", Value.Integer 0);
                                                             ("end_",
                                                               BinOp.Panic.sub (|
+                                                                Integer.Usize,
                                                                 M.read (| sz_a |),
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
@@ -3178,10 +3190,9 @@ Module iter.
                                                                         M.write (|
                                                                           β,
                                                                           BinOp.Panic.sub (|
+                                                                            Integer.Usize,
                                                                             M.read (| β |),
-                                                                            Value.Integer
-                                                                              Integer.Usize
-                                                                              1
+                                                                            Value.Integer 1
                                                                           |)
                                                                         |) in
                                                                       let _ :=
@@ -3406,9 +3417,10 @@ Module iter.
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
                                                       [
-                                                        ("start", Value.Integer Integer.Usize 0);
+                                                        ("start", Value.Integer 0);
                                                         ("end_",
                                                           BinOp.Panic.sub (|
+                                                            Integer.Usize,
                                                             M.read (| sz_b |),
                                                             M.read (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -3531,7 +3543,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         let _ :=
                           let β :=
@@ -3542,7 +3554,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
                           |) in
                         let i :=
                           M.copy (|
@@ -4375,7 +4387,7 @@ Module iter.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer Integer.Usize 0);
+                                              ("start", Value.Integer 0);
                                               ("end_", M.read (| upper |))
                                             ]
                                         ]

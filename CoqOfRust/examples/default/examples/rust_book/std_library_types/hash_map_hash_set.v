@@ -97,12 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  Value.Array
-                                    [
-                                      Value.Integer Integer.I32 1;
-                                      Value.Integer Integer.I32 2;
-                                      Value.Integer Integer.I32 3
-                                    ]
+                                  Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                                 |)
                               ]
                             |)
@@ -165,12 +160,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  Value.Array
-                                    [
-                                      Value.Integer Integer.I32 2;
-                                      Value.Integer Integer.I32 3;
-                                      Value.Integer Integer.I32 4
-                                    ]
+                                  Value.Array [ Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
                                 |)
                               ]
                             |)
@@ -200,7 +190,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "insert",
                               []
                             |),
-                            [ a; Value.Integer Integer.I32 4 ]
+                            [ a; Value.Integer 4 ]
                           |))
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -233,7 +223,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "contains",
                               [ Ty.path "i32" ]
                             |),
-                            [ a; M.alloc (| Value.Integer Integer.I32 4 |) ]
+                            [ a; M.alloc (| Value.Integer 4 |) ]
                           |))
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -258,7 +248,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ b; Value.Integer Integer.I32 5 ]
+              [ b; Value.Integer 5 ]
             |)
           |) in
         let _ :=

@@ -36,7 +36,7 @@ Module tuple.
                       |) in
                     let c := M.copy (| γ0_0 |) in
                     M.alloc (| M.rust_cast (M.read (| c |)) |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I8 2 |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
               ]
             |)
           |))))

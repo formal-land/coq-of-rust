@@ -375,7 +375,7 @@ Module iter.
                                 [ M.read (| a |) ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
@@ -409,11 +409,13 @@ Module iter.
                                 [ M.read (| b |) ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
-                M.alloc (| BinOp.Panic.add (| M.read (| a_count |), M.read (| b_count |) |) |)
+                M.alloc (|
+                  BinOp.Panic.add (| Integer.Usize, M.read (| a_count |), M.read (| b_count |) |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -1045,8 +1047,7 @@ Module iter.
                                               |),
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (| Value.Integer Integer.Usize 0 |)));
+                                                  ltac:(M.monadic (M.alloc (| Value.Integer 0 |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
@@ -1717,10 +1718,8 @@ Module iter.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
+                              Value.Integer 0;
+                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                             ]
                         |)))
                   ]
@@ -2215,8 +2214,7 @@ Module iter.
                                               |),
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (| Value.Integer Integer.Usize 0 |)));
+                                                  ltac:(M.monadic (M.alloc (| Value.Integer 0 |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in

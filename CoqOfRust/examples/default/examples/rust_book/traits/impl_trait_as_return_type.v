@@ -201,12 +201,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 2;
-                              Value.Integer Integer.I32 3
-                            ]
+                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                         |)
                       ]
                     |)
@@ -237,11 +232,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "new",
                         []
                       |),
-                      [
-                        M.alloc (|
-                          Value.Array [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ]
-                        |)
-                      ]
+                      [ M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5 ] |) ]
                     |)
                   |))
               ]
@@ -259,9 +250,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 1 ]
-                  |);
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ] |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -343,9 +332,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 2 ]
-                  |);
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 2 ] |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -427,9 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 3 ]
-                  |);
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 3 ] |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -511,9 +496,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 4 ]
-                  |);
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 4 ] |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -595,9 +578,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 5 ]
-                  |);
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|

@@ -2,7 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.proofs.lib.
-Require Import CoqOfRust.lib.simulations.lib.
 Require CoqOfRust.core.convert.mod.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.result.
@@ -16,15 +15,15 @@ Import simulations.M.Notations.
 Import Run.
 
 Definition sum_of_money (storage : erc20.Erc20.t) : Z :=
-  simulations.lib.Mapping.sum u128.get storage.(erc20.Erc20.balances).
+  simulations.lib.Mapping.sum id storage.(erc20.Erc20.balances).
 
 Module Balance.
   Module Valid.
     Definition t (x : erc20.Balance.t) : Prop :=
-      Integer.Valid.t Integer.U128 (u128.get x).
+      Integer.Valid.t Integer.U128 x.
   End Valid.
 
-  Lemma run_Default : default.Default.TraitHasRun erc20.Balance.t.
+  Lemma run_Default : default.Default.TraitHasRun erc20.Balance.t (Ty.path "u128").
   Proof.
     constructor.
     eexists; split.
@@ -62,9 +61,7 @@ Module Erc20.
   Module Valid.
     Record t (storage : erc20.Erc20.t) : Prop := {
       valid_without_sum : Valid_without_sum.t storage;
-      sum :
-        storage.(erc20.Erc20.total_supply) =
-        u128.Make (sum_of_money storage);
+      sum : storage.(erc20.Erc20.total_supply) = sum_of_money storage;
     }.
   End Valid.
 
@@ -93,7 +90,7 @@ Module AccountId.
   Lemma eq_or_neq (x y : erc20.AccountId.t) :
     x = y \/ x <> y.
   Proof.
-    destruct x as [[x]], y as [[y]].
+    destruct x as [x], y as [y].
     destruct (Z.eq_dec x y); sfirstorder.
   Qed.
 
@@ -324,7 +321,6 @@ Proof.
   }
   rewrite proofs.lib.Mapping.run_get.
   eapply Run.CallClosure. {
-    replace (Ty.path "u128") with (Φ erc20.Balance.t) by reflexivity.
     apply core.proofs.option.Impl_Option_T.run_unwrap_or_default.
     apply Balance.run_Default.
   }
@@ -341,7 +337,7 @@ Lemma balance_of_impl_is_valid
   Balance.Valid.t (simulations.erc20.balance_of_impl state.(erc20.MState.storage) owner).
 Proof.
   destruct state; intros.
-  unfold simulations.erc20.balance_of_impl, Balance.Valid.t, Integer.Valid.t, u128.get.
+  unfold simulations.erc20.balance_of_impl, Balance.Valid.t, Integer.Valid.t.
   destruct simulations.lib.Mapping.get eqn:H_get; cbn.
   { destruct H_storage.
     unfold lib.Mapping.Forall in *.
@@ -412,7 +408,6 @@ Proof.
   eapply Run.CallClosure. {
     replace (Value.Tuple _) with (φ (owner, spender)) by reflexivity.
     rewrite proofs.lib.Mapping.run_get.
-    replace (Ty.path "u128") with (Φ erc20.Balance.t) by reflexivity.
     apply core.proofs.option.Impl_Option_T.run_unwrap_or_default.
     apply Balance.run_Default.
   }
@@ -475,9 +470,9 @@ Lemma sub_eq_optimistic (v1 v2 : Z) :
     Integer.Valid.t Integer.U128 v1 ->
     Integer.Valid.t Integer.U128 v2 ->
     v1 <? v2 = false ->
-    let v1 := Value.Integer Integer.U128 v1 in
-    let v2 := Value.Integer Integer.U128 v2 in
-    BinOp.Panic.make_arithmetic Z.sub v1 v2 =
+    let v1 := Value.Integer v1 in
+    let v2 := Value.Integer v2 in
+    BinOp.Panic.make_arithmetic Z.sub Integer.U128 v1 v2 =
     M.pure (BinOp.Optimistic.sub v1 v2).
 Proof.
   unfold Integer.Valid.t.
@@ -547,9 +542,6 @@ Proof.
     apply run_balance_of_impl.
   }
   run_symbolic.
-  destruct erc20.balance_of_impl as [balance_from] eqn:H_eq_balance_from.
-  destruct value as [value].
-  cbn.
   destruct (_ <? _) eqn:H_lt; cbn.
   { run_symbolic. }
   { run_symbolic.
@@ -558,10 +550,7 @@ Proof.
     }
     rewrite sub_eq_optimistic; trivial.
     2: {
-      pose proof (balance_of_impl_is_valid state from) as H.
-      destruct state; cbn in *.
-      rewrite H_eq_balance_from in H.
-      apply H.
+      apply balance_of_impl_is_valid.
       apply H_storage.
     }
     run_symbolic.
@@ -569,9 +558,7 @@ Proof.
     eapply Run.CallClosure. {
       run_symbolic.
       rewrite <- proofs.lib.Mapping.run_insert.
-      f_equal; cbn.
-      { now instantiate (1 := from). }
-      { now instantiate (1 := u128.Make (balance_from - value)). }
+      reflexivity.
     }
     rewrite State.of_mstate_storage_eq.
     run_symbolic.
@@ -591,15 +578,12 @@ Proof.
       BinOp.Panic.make_arithmetic,
       BinOp.Error.make_arithmetic.
     cbn.
-    destruct erc20.balance_of_impl as [balance_to] eqn:H_eq_balance_to in |- *.
-    cbn.
     destruct Integer.normalize_with_error as [sum|]; run_symbolic.
     eapply Run.CallClosure. {
       run_symbolic.
       set (map_from := simulations.lib.Mapping.insert from _ _).
       rewrite <- proofs.lib.Mapping.run_insert; f_equal.
-      { now instantiate (1 := to). }
-      { now instantiate (1 := u128.Make _). }
+      reflexivity.
     }
     rewrite State.of_mstate_storage_eq.
     run_symbolic.
@@ -620,9 +604,7 @@ Proof.
         unfold event, event_value; cbn.
         instantiate (1 := erc20.Event.Transfer _); cbn.
         instantiate (1 := erc20.Transfer.Build_t _ _ _); cbn.
-        repeat f_equal.
-        all: try instantiate (1 := Some _); cbn; repeat f_equal.
-        now instantiate (1 := u128.Make value).
+        repeat f_equal; now instantiate (1 := Some _).
       }
       rewrite <- H.
       apply Env.run_emit_event.
@@ -793,8 +775,6 @@ Proof.
     apply run_allowance_impl.
   }
   run_symbolic.
-  destruct erc20.allowance_impl as [allowance] eqn:H_allowance_eq; cbn.
-  destruct value as [value].
   destruct (_ <? _) eqn:H_lt; cbn; run_symbolic.
   eapply Run.CallPrimitiveGetTraitMethod. {
     eexists; split.
@@ -807,12 +787,10 @@ Proof.
     apply erc20.Impl_erc20_Erc20.AssociatedFunction_transfer_from_to.
   }
   eapply Run.CallClosure. {
-    pose proof (H := run_transfer_from_to env state from to (u128.Make value)).
-    apply H; sauto lq: on.
+    apply run_transfer_from_to; sauto lq: on.
   }
   unfold lift_simulation, M.StateError.bind.
-  destruct erc20.transfer_from_to as [[[]| ?panic_message] [?storage ?logs]] eqn:?;
-    run_symbolic.
+  destruct erc20.transfer_from_to as [[[]| ?panic_message] [?storage ?logs]] eqn:?; run_symbolic.
   { eapply Run.CallClosure. {
       run_symbolic.
     }
@@ -823,9 +801,7 @@ Proof.
     apply (SubPointer.run Erc20.SubPointer.get_allowances_is_valid); [reflexivity|].
     rewrite sub_eq_optimistic; try assumption.
     2: {
-      epose proof (H := allowance_impl_is_valid _ _ _).
-      rewrite H_allowance_eq in H.
-      apply H.
+      apply allowance_impl_is_valid.
       sauto lq: on rew: off.
     }
     run_symbolic.
@@ -833,8 +809,7 @@ Proof.
       run_symbolic.
       rewrite <- proofs.lib.Mapping.run_insert.
       f_equal; cbn.
-      { now instantiate (1 := (_, _)). }
-      { now instantiate (1 := u128.Make _). }
+      now instantiate (1 := (_, _)).
     }
     rewrite State.of_mstate_storage_eq.
     run_symbolic.
@@ -1028,22 +1003,20 @@ Proof.
   unfold simulations.erc20.transfer_from_to; cbn.
   destruct (_ <? _) eqn:H_lt; [scongruence|]; cbn.
   match goal with
-  | |- context[simulations.lib.Mapping.insert _ (u128.Make ?diff_value) _] =>
+  | |- context[simulations.lib.Mapping.insert _ ?diff_value _] =>
     set (diff := diff_value)
   end.
   assert (H_diff : Integer.Valid.t Integer.U128 diff). {
     unfold diff; clear diff.
     pose proof (balance_of_impl_is_valid state from).
-    destruct erc20.balance_of_impl as [balance].
-    destruct value as [value].
     unfold Balance.Valid.t, Integer.Valid.t in *; cbn in *.
     sauto lq: on solve: lia.
   }
-  destruct erc20.balance_of_impl as [to_balance] in |- *.
   destruct Integer.normalize_with_error as [sum |] eqn:H_sum_eq; cbn; [|easy].
   constructor; cbn.
   destruct state.
   assert (H_sum : Integer.Valid.t Integer.U128 sum). {
+    set (balance := erc20.balance_of_impl _ _) in H_sum_eq.
     unfold Integer.normalize_with_error in H_sum_eq.
     unfold Integer.Valid.t; cbn in *.
     repeat destruct (_ <? _) eqn:? in H_sum_eq; try congruence.
